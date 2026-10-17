@@ -1,0 +1,100 @@
+/* ---- الهدهد: ألوان إضافية وحركات ---- */
+:root{--hp-line:#5E280C;--hp-shade:#A94E16;--hp-blush:#E8665E}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--hp-line:#4A1F08}}
+:root[data-theme="dark"]{--hp-line:#4A1F08}
+.hp{overflow:visible;transform-origin:50% 100%}
+.hp .crest{transform-box:fill-box;transform-origin:50% 100%}
+.hp .eyes{transform-box:fill-box;transform-origin:50% 50%;animation:blink 5s infinite}
+@keyframes blink{0%,94%,100%{transform:scaleY(1)}96.5%{transform:scaleY(.08)}}
+.hp-happy{animation:bob 3.4s ease-in-out infinite}
+@keyframes bob{50%{transform:translateY(-3px)}}
+.hp-cheer{animation:hop .7s ease-in-out 2}
+@keyframes hop{0%,100%{transform:translateY(0) scale(1,1)}25%{transform:translateY(0) scale(1.06,.92)}55%{transform:translateY(-14px) scale(.96,1.05)}}
+.hp-cheer .crest{animation:wig .35s ease-in-out 4}
+@keyframes wig{50%{transform:rotate(7deg)}}
+.hp-sad{animation:sag .9s ease-out 1 both}
+@keyframes sag{from{transform:translateY(-4px)}to{transform:translateY(2px) scale(1,.97)}}
+.hp-wow{animation:pop .45s cubic-bezier(.3,1.6,.5,1) 1}
+@keyframes pop{from{transform:scale(.82)}to{transform:scale(1)}}
+/* +حسنات */
+.plus{position:fixed;inset-inline:0;top:38%;margin-inline:auto;width:max-content;z-index:60;pointer-events:none;display:flex;align-items:center;gap:6px;background:var(--surface);border:2px solid var(--gold);border-radius:999px;padding:2px 14px 2px 8px;font:800 1.15rem var(--display);color:var(--accent-d);box-shadow:0 6px 18px rgba(0,0,0,.18);animation:plus 1.6s ease-out forwards}
+:root[data-theme="dark"] .plus{color:var(--accent)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .plus{color:var(--accent)}}
+.plus svg{display:block}
+@keyframes plus{0%{opacity:0;transform:translateY(20px) scale(.8)}15%{opacity:1;transform:translateY(0) scale(1.05)}80%{opacity:1}100%{opacity:0;transform:translateY(-70px)}}
+#cele{position:fixed;inset:0;z-index:70;background:color-mix(in srgb,var(--bg) 72%,transparent);backdrop-filter:blur(4px);display:grid;place-items:center;padding:16px}
+#cele[hidden]{display:none}
+#cele .card{max-width:380px;width:100%;display:grid;gap:10px;text-align:center;border-color:var(--gold)}
+.iconbtn.sm{padding:4px 8px}
+.iconbtn.sm svg{width:20px;height:20px}
+.combo{display:inline-flex;gap:4px;align-items:center;font:800 .9rem var(--display);color:var(--flame)}
+/* بطاقات جديدة */
+.tabs2{display:flex;gap:6px;overflow-x:auto;padding:2px 0 6px;scrollbar-width:none}
+.tabs2::-webkit-scrollbar{display:none}
+.tabs2 button{flex:none}
+.day{display:grid;gap:6px}
+.day .q{font:400 1.35rem/2 var(--quran)}
+.bigs{font:700 2.2rem/1.2 var(--display);font-variant-numeric:tabular-nums}
+.ptimes{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.ptimes div{border:2px solid var(--line);border-radius:14px;background:var(--surface);text-align:center;padding:4px}
+.ptimes div.nx{border-color:var(--gold);background:color-mix(in srgb,var(--gold) 20%,var(--surface))}
+.ptimes b{display:block;font:700 1.15rem var(--display);font-variant-numeric:tabular-nums}
+.ptimes span{font-size:.82rem;color:var(--muted)}
+.qibla{display:flex;align-items:center;gap:14px}
+.qibla .dial{width:76px;height:76px;border-radius:50%;border:3px solid var(--gold);position:relative;flex:none;background:var(--surface)}
+.qibla .dial i{position:absolute;left:50%;top:50%;width:6px;height:32px;margin:-32px 0 0 -3px;background:var(--accent);border-radius:3px 3px 0 0;transform-origin:50% 32px}
+.tsb{width:min(60vw,210px);aspect-ratio:1;border-radius:50%;border:6px solid var(--gold);background:var(--surface);font:800 3rem var(--display);color:var(--fg);display:grid;place-items:center;margin-inline:auto;box-shadow:0 6px 0 var(--gold-d)}
+.tsb:active{transform:translateY(4px);box-shadow:0 2px 0 var(--gold-d)}
+.bars{display:flex;align-items:flex-end;gap:5px;height:110px;padding-top:6px}
+.bars div{flex:1;display:grid;align-items:end;justify-items:center;height:100%;gap:2px}
+.bars i{display:block;width:100%;background:var(--accent);border-radius:6px 6px 2px 2px;min-height:3px}
+.bars span{font-size:.7rem;color:var(--muted)}
+.hifz{display:grid;gap:8px}
+.hrow{display:flex;align-items:center;gap:10px;border:2px solid var(--line);border-radius:16px;background:var(--surface);padding:8px 12px}
+.hrow .pbar{flex:1}
+.hrow b{min-width:5.5rem}
+.trn{margin-top:6px;padding:8px 10px;border-inline-start:3px solid var(--gold);background:color-mix(in srgb,var(--gold) 10%,var(--surface));border-radius:8px;font:400 .95rem/1.6 'Segoe UI',Tahoma,sans-serif;direction:ltr;text-align:left}
+.rd{border-color:var(--accent)!important;color:var(--accent-d)!important}
+.rd.done{background:var(--accent-soft)}
+.setrow{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:6px 0;border-bottom:1px dashed var(--line)}
+.setrow:last-child{border:0}
+.kids .qtext{font-size:1.9rem}.kids .opt{font-size:1.3rem;padding-block:14px}.kids .btn{font-size:1.3rem}
+.lb{display:grid;gap:6px}
+.lb div{display:flex;gap:10px;align-items:center;border:2px solid var(--line);border-radius:14px;background:var(--surface);padding:4px 12px;font-weight:700}
+.lb div.me{border-color:var(--gold);background:color-mix(in srgb,var(--gold) 18%,var(--surface))}
+.lb span:last-child{margin-inline-start:auto;font-variant-numeric:tabular-nums}
+.dot{display:inline-block;width:10px;height:10px;border-radius:50%;background:var(--gold);margin-inline-end:6px}
+
+.ayt{font-size:calc(1.75rem*var(--qs,1))}
+.bsm{font-size:calc(1.7rem*var(--qs,1))}
+.uh{display:flex;align-items:center;gap:12px;width:100%;text-align:start;background:var(--surface);border:2px solid var(--line);border-radius:18px;padding:10px 14px;margin-top:14px;color:var(--fg)}
+.uh .un{flex:none;width:36px;height:36px;display:grid;place-items:center;background:var(--uc,var(--accent));color:var(--on-accent);font:800 1rem var(--display);clip-path:polygon(50% 0,62% 18%,82% 18%,82% 38%,100% 50%,82% 62%,82% 82%,62% 82%,50% 100%,38% 82%,18% 82%,18% 62%,0 50%,18% 38%,18% 18%,38% 18%)}
+.uh .ut{flex:1;display:grid;min-width:0}
+.uh .ut b{font:700 1.05rem var(--display)}
+.uh .ut small{color:var(--muted);font-size:.8rem}
+.chev{width:10px;height:10px;border-inline-end:3px solid var(--muted);border-bottom:3px solid var(--muted);transform:rotate(45deg);margin-inline-start:4px;transition:transform .2s}
+.chev.up{transform:rotate(-135deg)}
+section.unit{margin-top:0}
+section.unit .path{margin-top:8px}
+.brand span{white-space:nowrap;font-size:1.1rem}
+.chips{gap:5px}
+.chip{padding:2px 8px;gap:4px;font-size:.92rem}
+.top{gap:6px}
+.chip{white-space:nowrap}
+@media (max-width:430px){.brand svg{width:28px;height:28px}.chip svg{width:16px;height:16px}.chip{padding:1px 6px;font-size:.82rem;gap:3px}.brand span{font-size:1rem}.chips{gap:4px}.top{padding-inline:10px}}
+@media (max-width:430px){.brand svg{display:none}.top{gap:4px}.iconbtn.sm{padding:3px 6px}}
+
+.sharebtn{display:inline-flex;align-items:center;justify-content:center;width:32px;height:32px;border-radius:50%;border:2px solid var(--line);background:var(--surface);color:var(--accent-d);padding:0;cursor:pointer}.sharebtn svg{width:16px;height:16px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}@media (max-width:430px){.sharebtn{width:28px;height:28px}.sharebtn svg{width:14px;height:14px}}
+
+html:not([lang="ar"]) :is(.ayt,.bsm,.rhead h2,.srow b,.had p.t,.day .q){direction:rtl}
+html:not([lang="ar"]) body{font-family:var(--text)}
+
+.gd summary{cursor:pointer;font:700 1.1rem var(--display);list-style:none}.gd summary::-webkit-details-marker{display:none}.gd summary::after{content:'+';float:inline-end;color:var(--accent-d)}.gd[open] summary::after{content:'−'}.gdp{margin:8px 0 0;line-height:1.8}
+
+.spk{margin-inline-start:8px;vertical-align:middle;font-size:1rem}
+:root.hc{--fg:#000;--muted:#1d2a22;--line:#6d5a18;--surface:#FFFDF3;--accent-d:#063D25}
+:root.hc[data-theme="dark"]{--fg:#fff;--muted:#e8efe3;--line:#7dbf99;--surface:#0B1810}
+@media (prefers-color-scheme:dark){:root.hc:not([data-theme="light"]){--fg:#fff;--muted:#e8efe3;--line:#7dbf99;--surface:#0B1810}}
+:root.hc .tag,:root.hc .card,:root.hc .opt{border-width:3px}
+.rm *,.rm *::before,.rm *::after{animation:none!important;transition:none!important}
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}}

@@ -1,0 +1,190 @@
+{
+"سورة": [
+"Surah",
+"Sourate"
+],
+"آية": [
+"verse",
+"verset"
+],
+"الآية": [
+"Verse",
+"Verset"
+],
+"السورة التالية": [
+"Next surah",
+"Sourate suivante"
+],
+"أتممت": [
+"You completed",
+"Vous avez terminé"
+],
+"حفظ": [
+"Memorize",
+"Mémoriser"
+],
+"استمع إلى": [
+"Listen to",
+"Écoutez"
+],
+"بصوت": [
+"recited by",
+"par"
+],
+"حُفظ موضع القراءة": [
+"Reading position saved",
+"Position de lecture enregistrée"
+],
+"مكية": [
+"Meccan",
+"Mecquoise"
+],
+"مدنية": [
+"Medinan",
+"Médinoise"
+],
+"ثانية": [
+"seconds",
+"secondes"
+],
+"سهل": [
+"Easy",
+"Facile"
+],
+"متوسط": [
+"Medium",
+"Moyen"
+],
+"صعب": [
+"Hard",
+"Difficile"
+],
+"دقائق": [
+"minutes",
+"minutes"
+],
+"دقيقة": [
+"minute",
+"minute"
+],
+"دقيقة أو أكثر": [
+"minute or more",
+"minute ou plus"
+],
+"فأكثر": [
+"or more",
+"ou plus"
+],
+"إلى": [
+"to",
+"à"
+],
+"ع": [
+"AR",
+"AR"
+],
+"أ": [
+"A",
+"A"
+],
+"ف": [
+"F",
+"F"
+],
+"نقطة": [
+"points",
+"points"
+],
+"حسنة": [
+"hasanat",
+"hasanat"
+],
+"يوم": [
+"day",
+"jour"
+],
+"أيام": [
+"days",
+"jours"
+],
+"يومًا": [
+"days",
+"jours"
+],
+"صحيحة": [
+"correct",
+"correctes"
+],
+"حسناتك": [
+"Your hasanat",
+"Vos hasanat"
+],
+"العربية": [
+"العربية",
+"العربية"
+],
+"اللغة · Language · Langue": [
+"Language",
+"Langue"
+],
+"السلام عليكم يا ¤. دروس قصيرة، ومصحف مفسَّر، وتلاوات، وتحديات وألعاب. كل شيء في مكان واحد.": [
+"Peace be upon you, ¤. Short lessons, an annotated Qur'an, recitations, challenges and games. Everything in one place.",
+"Que la paix soit sur vous, ¤. Des leçons courtes, un Coran commenté, des récitations, des défis et des jeux. Tout au même endroit."
+],
+"مرحبًا يا ¤! أنا هدهد. اختر وحدة وابدأ، أو جرّب اختبار تحديد المستوى.": [
+"Hello, ¤! I'm Hoopoe. Pick a unit and start, or try the placement test.",
+"Bonjour, ¤ ! Je suis Huppe. Choisissez une unité et commencez, ou essayez le test de niveau."
+],
+"أهلًا بك يا ¤": [
+"Welcome, ¤",
+"Bienvenue, ¤"
+],
+"اتجاه القبلة: §° من الشمال": [
+"Qibla direction: §° from North",
+"Direction de la Qibla : §° depuis le nord"
+],
+"التنقل": [
+"Navigation",
+"Navigation"
+],
+"تابع": [
+"Continue",
+"Continuer"
+],
+"مغلق": [
+"locked",
+"verrouillé"
+],
+"ختمة في § يومًا · أتممت § ختمة · تقدّم الختمة §%": [
+"Khatma in § days · § completed · progress §%",
+"Khatma en § jours · § terminée(s) · progression §%"
+],
+"قرأتها +§": [
+"Read it +§",
+"Lue +§"
+],
+"من § · تسبيحك اليوم: §": [
+"of § · today's tasbih: §",
+"sur § · tasbih du jour : §"
+],
+"تجميد السلسلة ❄ ×§ (§ نقطة)": [
+"Streak freeze ❄ ×§ (§ points)",
+"Gel de série ❄ ×§ (§ points)"
+],
+"الأسئلة الجاهزة بهذا الاختيار: § + أسئلة «أكمل الآية» تُولَّد من المصحف.": [
+"Ready-made questions with this choice: § + “complete the verse” questions generated from the Mushaf.",
+"Questions prêtes avec ce choix : § + questions « complétez le verset » générées à partir du Mushaf."
+],
+"الأسئلة الجاهزة بهذا الاختيار: § + أسئلة «أكمل الآية» تُولَّد من المصحف. يُوزَّع العدد بالتساوي بين اللاعبين.": [
+"Ready-made questions with this choice: § + “complete the verse” questions generated from the Mushaf. The number is split equally between players.",
+"Questions prêtes avec ce choix : § + questions « complétez le verset » générées à partir du Mushaf. Le nombre est réparti équitablement entre les joueurs."
+],
+"الحساب: غير مرتبط": [
+"Account: not linked",
+"Compte : non lié"
+],
+"ترجمة فرنسية": [
+"French translation",
+"Traduction française"
+]
+}
