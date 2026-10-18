@@ -53,3 +53,41 @@ function importProgress(file){
     }
   });
 })();
+
+/* ---------- حفظ التقدم: ضمانات إضافية للضيف ---------- */
+let SAVEWARN=0;
+save=function(){
+  try{localStorage.setItem(KEY,JSON.stringify(S))}
+  catch(e){if(!SAVEWARN){SAVEWARN=1;toast(g3(["تعذّر حفظ تقدّمك في هذا المتصفح. صدِّر نسخة احتياطية من الإعدادات.","Your progress can’t be saved in this browser. Export a backup from Settings.","Impossible d’enregistrer votre progression dans ce navigateur. Exportez une sauvegarde depuis les Réglages."]))}}
+  if(typeof schedulePush==='function')schedulePush();
+};
+window.addEventListener('pagehide',function(){save()});
+document.addEventListener('visibilitychange',function(){if(document.visibilityState==='hidden')save()});
+// استئناف الدرس من حيث توقف المستخدم (يعمل للضيف ولصاحب الحساب)
+(function(){
+  const rl=renderLesson;
+  renderLesson=function(){
+    rl.apply(this,arguments);
+    try{
+      if(L&&L.lesson&&!L.review&&!L.placement&&!L.hifzTest){
+        if(L.state==='ask'&&L.solved>0&&L.solved<L.total&&L.hearts>0){S.res={id:L.lesson.id,solved:L.solved,gain:L.gain,hearts:L.hearts,wr:L.wrongs,t:Date.now()};save()}
+        else if(L.hearts<=0&&S.res){S.res=null;save()}
+      }
+    }catch(e){}
+  };
+  const sl=startLesson;
+  startLesson=function(id){
+    sl(id);
+    try{
+      const r=S.res;
+      if(r&&r.id===id&&L&&L.lesson&&L.lesson.id===id&&r.solved>0&&r.solved<L.total&&Date.now()-r.t<7*864e5){
+        L.queue=L.lesson.qs.slice(r.solved).map(mkQ);L.solved=r.solved;L.gain=r.gain||0;L.hearts=Math.max(1,r.hearts||1);L.wrongs=r.wr||0;
+        renderLesson();
+        toast(g3(["استأنفتَ الدرس من حيث توقفت","Resumed where you left off","Reprise là où vous vous étiez arrêté"]));
+      }
+    }catch(e){}
+  };
+  const fl=finishLesson;
+  finishLesson=function(){const r=fl.apply(this,arguments);S.res=null;save();return r};
+  document.addEventListener('click',function(e){const t=e.target.closest('button');if(t&&t.dataset&&t.dataset.restart!==undefined&&S.res){S.res=null;save()}});
+})();

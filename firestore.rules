@@ -1,0 +1,36 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // تقدّم المستخدم الخاص: لا يقرؤه ولا يكتبه إلا صاحبه
+    match /data/users/{uid}/{doc=**} {
+      allow read, delete: if request.auth != null && request.auth.uid == uid;
+      allow create, update: if request.auth != null && request.auth.uid == uid
+        && request.resource.data.keys().hasOnly(['s','t'])
+        && request.resource.data.s is string && request.resource.data.s.size() < 300000;
+    }
+
+    // اللوحة الأسبوعية: يقرؤها كل مسجَّل، ويكتب كل مستخدم سجلّه فقط وبقيم معقولة
+    match /board/{uid} {
+      allow read: if request.auth != null;
+      allow delete: if request.auth != null && request.auth.uid == uid;
+      allow create, update: if request.auth != null && request.auth.uid == uid
+        && request.resource.data.keys().hasOnly(['wk','xp','has','upd','circle','kh','kn','nm'])
+        && request.resource.data.xp is number && request.resource.data.xp >= 0 && request.resource.data.xp <= 20000
+        && request.resource.data.has is number && request.resource.data.has >= 0
+        && request.resource.data.kh is number && request.resource.data.kn is number
+        && request.resource.data.nm is string && request.resource.data.nm.size() <= 24
+        && request.resource.data.circle is string && request.resource.data.circle.size() <= 8;
+    }
+
+    // بلاغات المستخدمين: يكتب كل مستخدم بلاغاته ولا يقرؤها أحد من التطبيق (تُقرأ من لوحة Firebase)
+    match /reports/{uid} {
+      allow read: if false;
+      allow delete: if request.auth != null && request.auth.uid == uid;
+      allow create, update: if request.auth != null && request.auth.uid == uid
+        && request.resource.data.items.size() <= 50;
+    }
+
+    match /{document=**} { allow read, write: if false; }
+  }
+}

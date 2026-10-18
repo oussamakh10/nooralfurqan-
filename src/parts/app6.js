@@ -137,7 +137,7 @@ function syncBoard(){
   if(!DBH||!UID)return;
   clearTimeout(syncBoard.t);
   syncBoard.t=setTimeout(function(){
-    try{DBH.collection('board').doc(UID).set({wk:weekKey(),xp:weekSum(S.xpd),has:weekSum(S.has.d),upd:Date.now(),circle:S.circle||'',kh:S.khat.read,kn:S.khat.n}).catch(function(){})}catch(e){}
+    try{DBH.collection('board').doc(UID).set({wk:weekKey(),xp:weekSum(S.xpd),has:weekSum(S.has.d),upd:Date.now(),circle:S.circle||'',kh:S.khat.read,kn:S.khat.n,nm:((S.prof&&S.prof.name)||'').slice(0,24)||'مستخدم'}).catch(function(){})}catch(e){}
   },2500);
 }
 function initBoard(){
