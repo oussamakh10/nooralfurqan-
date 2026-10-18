@@ -22,9 +22,21 @@ let S={xp:0,xpd:{},done:{},days:{},max:0,q:0,qc:0,games:0,wins:0,opened:{},liste
   sr:{},rev:0,hifz:{},hsur:112,
   mute:false,kids:false,tr:'',city:'',method:'mwl',tsd:{},adk:{d:'',m:0,e:0},wkc:{},
   prof:null,lvl:'',freeze:0,fsd:{},rem:'',qs:1,place:null,circle:'',acct:null,theme:''};
+function cleanData(o,d){
+  d=d||0;if(o===null)return null;const t=typeof o;
+  if(t==='number')return isFinite(o)?o:0;if(t==='boolean')return o;
+  if(t==='string')return o.length>400?o.slice(0,400):o;
+  if(d>6)return undefined;
+  if(Array.isArray(o))return o.slice(0,5000).map(function(x){return cleanData(x,d+1)});
+  if(t==='object'){const r={};let n=0;for(const k of Object.keys(o)){if(k==='__proto__'||k==='constructor'||k==='prototype')continue;if(++n>20000)break;const v=cleanData(o[k],d+1);if(v!==undefined)r[k]=v}return r}
+  return undefined;
+}
+function anchorSave(name,blob){
+  try{const u=URL.createObjectURL(blob),a=document.createElement('a');a.href=u;a.download=name;a.rel='noopener';document.body.appendChild(a);a.click();setTimeout(function(){a.remove();URL.revokeObjectURL(u)},1500);return true}catch(e){return false}
+}
 try{
   const r=localStorage.getItem(KEY);
-  if(r){Object.assign(S,JSON.parse(r))}
+  if(r){const j=cleanData(JSON.parse(r));for(const k of Object.keys(j)){if(!(k in S)||typeof j[k]===typeof S[k]||S[k]===null||S[k]==='')S[k]=j[k]}}
   else{const o=localStorage.getItem('hudhud-v1');if(o){const j=JSON.parse(o);S.xp=j.xp||0;S.done=j.done||{};if(j.last)S.days[j.last]=1}}
 }catch(e){}
 (function(){const t=ymd(new Date());for(const k in S.ayd)if(S.ayd[k]!==t)delete S.ayd[k]})();

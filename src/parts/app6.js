@@ -91,9 +91,10 @@ function pushNow(){
   try{return DBH.doc('data/users/'+UID+'/state').set({s:JSON.stringify(compactState()),t:Date.now()}).catch(function(){})}catch(e){return Promise.resolve()}
 }
 function mergeState(r){
+  r=cleanData(r);if(!r||typeof r!=='object')return;
   Object.keys(r).forEach(function(k){
     const a=S[k],b=r[k];
-    if(k==='acct')return;
+    if(k==='acct'||!(k in S))return;
     if(typeof b==='number'){S[k]=Math.max(a||0,b);return}
     if(b&&typeof b==='object'&&!Array.isArray(b)){
       if(a&&typeof a==='object'&&!Array.isArray(a)){
@@ -183,7 +184,7 @@ function joinCircle(){
 
 /* ---------- التذكير اليومي (ملف تقويم) ---------- */
 function dlSave(name,data,type){
-  if(!window.claude||!claude.use){toast('الحفظ غير متاح في هذا العرض');return Promise.resolve()}
+  if(!window.claude||!claude.use){if(anchorSave(name,new Blob([data],{type:type})))toast('تم الحفظ');else toast('الحفظ غير متاح في هذا العرض');return Promise.resolve()}
   return claude.use('downloads').then(function(D){
     if(!D){toast('الحفظ غير متاح في هذا العرض');return}
     return D.save({filename:name,data:new Blob([data],{type:type})}).then(function(r){if(r&&r.status==='saved')toast('تم الحفظ')}).catch(function(){toast('لم يُحفظ الملف')});
@@ -327,7 +328,17 @@ function duelJoin(code,host){
     });
   }).catch(function(){toast('تعذّر دخول الغرفة (قد لا يكون مسموحًا لك).')});
 }
-function duelStart(qs){DU.qs=qs;DU.i=0;DU.sc=0;DU.state='play';DU.sel=null;DU.room.presence({n:duelName(),sc:0,dn:0}).catch(function(){});SND.nav();renderDuel()}
+function duelValid(qs){
+  if(!Array.isArray(qs)||!qs.length||qs.length>20)return null;
+  const out=[];
+  for(const x of qs){
+    if(!x||typeof x.q!=='string'||typeof x.c!=='string'||!Array.isArray(x.o)||x.o.length<2||x.o.length>6)return null;
+    if(x.o.some(function(o){return typeof o!=='string'||o.length>300})||x.q.length>400||x.c.length>300||x.o.indexOf(x.c)<0)return null;
+    out.push({q:x.q,c:x.c,o:x.o.slice()});
+  }
+  return out;
+}
+function duelStart(qs){qs=duelValid(qs);if(!qs){toast('بيانات التحدي غير صالحة');return}DU.qs=qs;DU.i=0;DU.sc=0;DU.state='play';DU.sel=null;DU.room.presence({n:duelName(),sc:0,dn:0}).catch(function(){});SND.nav();renderDuel()}
 function duelHostStart(){
   let pool=[];F.forEach(function(f){if(f.id==='order'||f.id==='ayat')return;['e','m'].forEach(function(l){((B[f.id]||{})[l]||[]).forEach(function(x){pool.push({q:x[0],c:x[1],o:shuffle(x.slice(1,5))})})})});
   const qs=shuffle(pool).slice(0,8);

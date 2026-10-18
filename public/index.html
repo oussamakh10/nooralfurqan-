@@ -2044,9 +2044,21 @@ let S={xp:0,xpd:{},done:{},days:{},max:0,q:0,qc:0,games:0,wins:0,opened:{},liste
   sr:{},rev:0,hifz:{},hsur:112,
   mute:false,kids:false,tr:'',city:'',method:'mwl',tsd:{},adk:{d:'',m:0,e:0},wkc:{},
   prof:null,lvl:'',freeze:0,fsd:{},rem:'',qs:1,place:null,circle:'',acct:null,theme:''};
+function cleanData(o,d){
+  d=d||0;if(o===null)return null;const t=typeof o;
+  if(t==='number')return isFinite(o)?o:0;if(t==='boolean')return o;
+  if(t==='string')return o.length>400?o.slice(0,400):o;
+  if(d>6)return undefined;
+  if(Array.isArray(o))return o.slice(0,5000).map(function(x){return cleanData(x,d+1)});
+  if(t==='object'){const r={};let n=0;for(const k of Object.keys(o)){if(k==='__proto__'||k==='constructor'||k==='prototype')continue;if(++n>20000)break;const v=cleanData(o[k],d+1);if(v!==undefined)r[k]=v}return r}
+  return undefined;
+}
+function anchorSave(name,blob){
+  try{const u=URL.createObjectURL(blob),a=document.createElement('a');a.href=u;a.download=name;a.rel='noopener';document.body.appendChild(a);a.click();setTimeout(function(){a.remove();URL.revokeObjectURL(u)},1500);return true}catch(e){return false}
+}
 try{
   const r=localStorage.getItem(KEY);
-  if(r){Object.assign(S,JSON.parse(r))}
+  if(r){const j=cleanData(JSON.parse(r));for(const k of Object.keys(j)){if(!(k in S)||typeof j[k]===typeof S[k]||S[k]===null||S[k]==='')S[k]=j[k]}}
   else{const o=localStorage.getItem('hudhud-v1');if(o){const j=JSON.parse(o);S.xp=j.xp||0;S.done=j.done||{};if(j.last)S.days[j.last]=1}}
 }catch(e){}
 (function(){const t=ymd(new Date());for(const k in S.ayd)if(S.ayd[k]!==t)delete S.ayd[k]})();
@@ -2282,22 +2294,36 @@ function openLangPicker(){
 })();
 
 /* ================= الأصوات (مولَّدة بالمتصفح، بلا ملفات) ================= */
-let AC=null;
-function ac(){try{if(!AC){const C=window.AudioContext||window.webkitAudioContext;if(!C)return null;AC=new C()}if(AC.state==='suspended')AC.resume();return AC}catch(e){return null}}
+let AC=null,MG=null;
+function ac(){try{if(!AC){const C=window.AudioContext||window.webkitAudioContext;if(!C)return null;AC=new C();
+  // سلسلة ماستر: ضاغط يمنع التشويه + فلتر ناعم + مستوى صوت قابل للضبط
+  const cp=AC.createDynamicsCompressor();cp.threshold.value=-18;cp.ratio.value=6;cp.attack.value=.003;cp.release.value=.2;
+  const lp=AC.createBiquadFilter();lp.type='lowpass';lp.frequency.value=7000;lp.Q.value=.4;
+  MG=AC.createGain();MG.connect(lp);lp.connect(cp);cp.connect(AC.destination)}
+  MG.gain.value=volLevel();
+  if(AC.state==='suspended')AC.resume();return AC}catch(e){return null}}
+function volLevel(){const v=(typeof S!=='undefined'&&S.vol!=null)?S.vol:100;return Math.max(0,Math.min(100,+v||0))/100}
+function setVol(v){S.vol=v;save();if(MG)MG.gain.value=volLevel()}
+function buzz(p){try{if(!S.mute&&S.hap!==0&&navigator.vibrate)navigator.vibrate(p)}catch(e){}}
 function tone(f,t0,d,type,vol,f2){
   if(S.mute)return;const c=ac();if(!c)return;
   try{
-    const t=c.currentTime+t0,o=c.createOscillator(),g=c.createGain();
-    o.type=type||'sine';o.frequency.setValueAtTime(f,t);if(f2)o.frequency.exponentialRampToValueAtTime(f2,t+d);
+    const t=c.currentTime+t0,g=c.createGain();
     g.gain.setValueAtTime(0.0001,t);g.gain.exponentialRampToValueAtTime(vol||.2,t+.012);g.gain.exponentialRampToValueAtTime(0.0001,t+d);
-    o.connect(g);g.connect(c.destination);o.start(t);o.stop(t+d+.03);
+    g.connect(MG||c.destination);
+    // مذبذبان بانحراف طفيف لصوت أدفأ وأغنى
+    [-4,4].forEach(function(dt){
+      const o=c.createOscillator();o.type=type||'sine';o.detune.value=dt;o.frequency.setValueAtTime(f,t);
+      if(f2)o.frequency.exponentialRampToValueAtTime(f2,t+d);
+      const h=c.createGain();h.gain.value=.5;o.connect(h);h.connect(g);o.start(t);o.stop(t+d+.03);
+    });
   }catch(e){}
 }
 const SND={
   tap(){tone(520,0,.05,'square',.05)},
   nav(){tone(620,0,.07,'sine',.12);tone(930,.05,.09,'sine',.1)},
-  correct(){tone(523.25,0,.14,'triangle',.22);tone(659.25,.09,.14,'triangle',.22);tone(783.99,.18,.34,'triangle',.24);tone(1567.98,.2,.2,'sine',.05)},
-  wrong(){tone(233,0,.16,'sawtooth',.14,160);tone(155,.15,.36,'sawtooth',.14,110)},
+  correct(){buzz(25);tone(523.25,0,.14,'triangle',.22);tone(659.25,.09,.14,'triangle',.22);tone(783.99,.18,.34,'triangle',.24);tone(1567.98,.2,.2,'sine',.05)},
+  wrong(){buzz([40,40,60]);tone(233,0,.16,'sawtooth',.14,160);tone(155,.15,.36,'sawtooth',.14,110)},
   combo(n){const b=523.25*Math.pow(1.122,Math.min(n,6));tone(b,0,.1,'triangle',.2);tone(b*1.5,.08,.1,'triangle',.2);tone(b*2,.16,.26,'triangle',.22)},
   ayah(){tone(880,0,.55,'sine',.18);tone(1320,0,.5,'sine',.07);tone(1760,.04,.4,'sine',.04)},
   surah(){[523.25,659.25,783.99,1046.5].forEach(function(f,i){tone(f,i*.12,.4,'triangle',.2)});tone(2093,.5,.7,'sine',.06);tone(1568,.55,.7,'sine',.06)},
@@ -3030,9 +3056,10 @@ function pushNow(){
   try{return DBH.doc('data/users/'+UID+'/state').set({s:JSON.stringify(compactState()),t:Date.now()}).catch(function(){})}catch(e){return Promise.resolve()}
 }
 function mergeState(r){
+  r=cleanData(r);if(!r||typeof r!=='object')return;
   Object.keys(r).forEach(function(k){
     const a=S[k],b=r[k];
-    if(k==='acct')return;
+    if(k==='acct'||!(k in S))return;
     if(typeof b==='number'){S[k]=Math.max(a||0,b);return}
     if(b&&typeof b==='object'&&!Array.isArray(b)){
       if(a&&typeof a==='object'&&!Array.isArray(a)){
@@ -3122,7 +3149,7 @@ function joinCircle(){
 
 /* ---------- التذكير اليومي (ملف تقويم) ---------- */
 function dlSave(name,data,type){
-  if(!window.claude||!claude.use){toast('الحفظ غير متاح في هذا العرض');return Promise.resolve()}
+  if(!window.claude||!claude.use){if(anchorSave(name,new Blob([data],{type:type})))toast('تم الحفظ');else toast('الحفظ غير متاح في هذا العرض');return Promise.resolve()}
   return claude.use('downloads').then(function(D){
     if(!D){toast('الحفظ غير متاح في هذا العرض');return}
     return D.save({filename:name,data:new Blob([data],{type:type})}).then(function(r){if(r&&r.status==='saved')toast('تم الحفظ')}).catch(function(){toast('لم يُحفظ الملف')});
@@ -3266,7 +3293,17 @@ function duelJoin(code,host){
     });
   }).catch(function(){toast('تعذّر دخول الغرفة (قد لا يكون مسموحًا لك).')});
 }
-function duelStart(qs){DU.qs=qs;DU.i=0;DU.sc=0;DU.state='play';DU.sel=null;DU.room.presence({n:duelName(),sc:0,dn:0}).catch(function(){});SND.nav();renderDuel()}
+function duelValid(qs){
+  if(!Array.isArray(qs)||!qs.length||qs.length>20)return null;
+  const out=[];
+  for(const x of qs){
+    if(!x||typeof x.q!=='string'||typeof x.c!=='string'||!Array.isArray(x.o)||x.o.length<2||x.o.length>6)return null;
+    if(x.o.some(function(o){return typeof o!=='string'||o.length>300})||x.q.length>400||x.c.length>300||x.o.indexOf(x.c)<0)return null;
+    out.push({q:x.q,c:x.c,o:x.o.slice()});
+  }
+  return out;
+}
+function duelStart(qs){qs=duelValid(qs);if(!qs){toast('بيانات التحدي غير صالحة');return}DU.qs=qs;DU.i=0;DU.sc=0;DU.state='play';DU.sel=null;DU.room.presence({n:duelName(),sc:0,dn:0}).catch(function(){});SND.nav();renderDuel()}
 function duelHostStart(){
   let pool=[];F.forEach(function(f){if(f.id==='order'||f.id==='ayat')return;['e','m'].forEach(function(l){((B[f.id]||{})[l]||[]).forEach(function(x){pool.push({q:x[0],c:x[1],o:shuffle(x.slice(1,5))})})})});
   const qs=shuffle(pool).slice(0,8);
@@ -3531,6 +3568,62 @@ document.addEventListener('click',function(e){
   if(d.xset){S[d.xset]=!S[d.xset];save();applyA11y();openSettings();return}
 });
 applyA11y();
+
+/* ================= حماية البيانات + نسخ التقدم احتياطيًا ================= */
+(function(){
+  // اطلب تخزينًا دائمًا حتى لا يمسح المتصفح التقدم عند ضيق المساحة
+  try{if(navigator.storage&&navigator.storage.persist)navigator.storage.persist()}catch(e){}
+})();
+function exportProgress(){
+  const fn='nur-alfurqan-progress-'+today()+'.json';
+  const blob=new Blob([JSON.stringify({app:'nur-alfurqan',v:2,t:Date.now(),data:S})],{type:'application/json'});
+  const ok=g3(["تم الحفظ","Saved","Enregistré"]),no=g3(["لم يُحفظ الملف","File not saved","Fichier non enregistré"]);
+  if(window.claude&&claude.use){
+    claude.use('downloads').then(function(D){
+      if(!D){if(anchorSave(fn,blob))toast(ok);else toast(no);return}
+      return D.save({filename:fn,data:blob}).then(function(){toast(ok)}).catch(function(){toast(no)});
+    }).catch(function(){toast(no)});
+  }else{toast(anchorSave(fn,blob)?ok:no)}
+}
+function importProgress(file){
+  const bad=g3(["الملف غير صالح","Invalid file","Fichier invalide"]);
+  if(!file||file.size>2e6){toast(bad);return}
+  const r=new FileReader();
+  r.onload=function(){
+    try{
+      const j=JSON.parse(String(r.result));
+      if(!j||j.app!=='nur-alfurqan'||!j.data||typeof j.data!=='object'){toast(bad);return}
+      const before=S.xp;
+      mergeState(j.data);          // دمج آمن: لا ينقص أي تقدم موجود
+      save();renderTop();renderPage();
+      toast(g3(["تم استيراد التقدم","Progress imported","Progression importée"]));
+    }catch(e){toast(bad)}
+  };
+  r.onerror=function(){toast(bad)};
+  r.readAsText(file);
+}
+(function(){
+  const base=extraSettings;
+  extraSettings=function(){
+    return base()+
+     '<div class="setrow"><span>'+esc(g3(["مستوى الصوت","Volume","Volume"]))+'</span><span class="opts2">'+[[30,g3(["منخفض","Low","Bas"])],[60,g3(["متوسط","Medium","Moyen"])],[100,g3(["عالٍ","High","Fort"])]].map(function(x){return '<button class="tag" data-xvol="'+x[0]+'" aria-pressed="'+((S.vol==null?100:S.vol)===x[0])+'">'+esc(x[1])+'</button>'}).join('')+'</span></div>'+
+     '<div class="setrow"><span>'+esc(g3(["الاهتزاز عند الإجابة","Vibration feedback","Vibrations"]))+'</span><button class="tag" data-xhap="1" aria-pressed="'+(S.hap!==0)+'">'+esc(S.hap!==0?g3(["مُفعّل","On","Activé"]):g3(["مُغلق","Off","Désactivé"]))+'</button></div>'+
+     '<div class="setrow"><span>'+esc(g3(["نسخة احتياطية من تقدمي","Back up my progress","Sauvegarder ma progression"]))+'</span><button class="btn sm ghost" data-act="prog-export">'+esc(g3(["تصدير","Export","Exporter"]))+'</button></div>'+
+     '<div class="setrow"><span>'+esc(g3(["استعادة التقدم من ملف","Restore progress from a file","Restaurer depuis un fichier"]))+'</span><button class="btn sm ghost" data-act="prog-import">'+esc(g3(["استيراد","Import","Importer"]))+'</button></div>';
+  };
+  document.addEventListener('click',function(e){
+    const t=e.target.closest('button');if(!t||t.disabled)return;const a=t.dataset.act;
+    if(t.dataset.xvol!==undefined){setVol(+t.dataset.xvol);SND.correct();openSettings();return}
+    if(t.dataset.xhap!==undefined){S.hap=S.hap===0?1:0;save();buzz(30);openSettings();return}
+    if(a==='prog-export'){exportProgress();return}
+    if(a==='prog-import'){
+      let inp=document.getElementById('progfile');
+      if(!inp){inp=document.createElement('input');inp.type='file';inp.id='progfile';inp.accept='application/json,.json';inp.hidden=true;
+        inp.addEventListener('change',function(){const f=inp.files&&inp.files[0];inp.value='';importProgress(f)});document.body.appendChild(inp)}
+      inp.click();
+    }
+  });
+})();
 
 /* ================= الإنجازات والتحديات ================= */
 const DQ=[
