@@ -105,3 +105,11 @@ html:not([lang="ar"]) body{font-family:var(--text)}
 @keyframes spIn{from{opacity:0;transform:scale(.9)}to{opacity:1;transform:none}}
 #instbar{position:fixed;inset-inline:12px;bottom:calc(76px + env(safe-area-inset-bottom,0px));z-index:60;display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:16px;background:var(--surface,#fff);color:var(--fg,#111);border:1px solid var(--line,#ccc);box-shadow:0 8px 28px rgba(0,0,0,.25);font-size:.92rem}
 #instbar span{flex:1}
+.sch-it{display:flex;align-items:center;gap:12px;text-align:start;width:100%;cursor:pointer;font:inherit;color:inherit}
+.sch-n{flex:none;width:34px;height:34px;border-radius:50%;display:grid;place-items:center;background:var(--accent-soft);color:var(--accent);font-weight:800}
+.sch-n.on{background:var(--accent);color:#fff}
+.sch-t{flex:1;font-weight:700;line-height:1.5}
+.sch-sec{margin-top:10px}.sch-sec h3{margin:0 0 6px;font:700 1.05rem var(--display)}
+.sch-sec ul{margin:0;padding-inline-start:20px;display:grid;gap:6px;line-height:1.8}
+.sch-ev{margin:6px 0;line-height:1.9}.sch-ev.q{font-family:var(--display);font-size:1.1rem}
+.sch-bad{color:var(--flame,#c0392b);margin:4px 0}.sch-good{color:var(--accent);margin:4px 0}

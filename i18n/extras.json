@@ -186,5 +186,21 @@
 "ترجمة فرنسية": [
 "French translation",
 "Traduction française"
+],
+"سيُحذف تقدّمك المحفوظ في السحابة نهائيًا (يبقى ما على جهازك). متأكد؟": [
+"Your progress saved in the cloud will be permanently deleted (what is on your device stays). Are you sure?",
+"Votre progression enregistrée dans le cloud sera définitivement supprimée (celle de votre appareil reste). Êtes-vous sûr ?"
+],
+"بيانات التحدي غير صالحة": [
+"Invalid challenge data",
+"Données du défi invalides"
+],
+"الحفظ غير متاح في هذا العرض": [
+"Saving is not available in this view",
+"L’enregistrement n’est pas disponible ici"
+],
+"المدرسية": [
+"School",
+"École"
 ]
 }
