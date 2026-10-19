@@ -380,6 +380,13 @@ html:not([lang="ar"]) body{font-family:var(--text)}
 :root.hc .tag,:root.hc .card,:root.hc .opt{border-width:3px}
 .rm *,.rm *::before,.rm *::after{animation:none!important;transition:none!important}
 @media (prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}}
+#splash{position:fixed;inset:0;z-index:9999;display:grid;place-items:center;background:radial-gradient(circle at 50% 40%,#17595a,#0f3b3a 70%);transition:opacity .45s}
+#splash.out{opacity:0;pointer-events:none}
+#splash .sp-in{display:grid;place-items:center;gap:6px;animation:spIn .7s ease both}
+#splash h1{margin:0;color:#f3e9c6;font:700 2rem/1.3 var(--quran,inherit)}
+@keyframes spIn{from{opacity:0;transform:scale(.9)}to{opacity:1;transform:none}}
+#instbar{position:fixed;inset-inline:12px;bottom:calc(76px + env(safe-area-inset-bottom,0px));z-index:60;display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:16px;background:var(--surface,#fff);color:var(--fg,#111);border:1px solid var(--line,#ccc);box-shadow:0 8px 28px rgba(0,0,0,.25);font-size:.92rem}
+#instbar span{flex:1}
 </style>
 <div class="bgpat" id="bg"></div>
 <header class="top" id="top"></header>
@@ -3762,6 +3769,96 @@ function fbOut(del){
     const t=e.target.closest('button');if(!t||t.disabled)return;const a=t.dataset.act;
     if(a==='fb-out'){fbOut(false).then(function(){toast(g3(["تم تسجيل الخروج. تقدّمك محفوظ على هذا الجهاز.","Signed out. Your progress stays on this device.","Déconnecté. Votre progression reste sur cet appareil."]));openSettings()});return}
     if(a==='fb-del'){if(confirm(T('سيُحذف تقدّمك المحفوظ في السحابة نهائيًا (يبقى ما على جهازك). متأكد؟'))){fbOut(true).then(function(){toast(g3(["حُذفت بياناتك من السحابة","Your cloud data was deleted","Vos données cloud ont été supprimées"]));openSettings()})}return}
+  });
+})();
+
+/* ================= لمسات احترافية: شاشة البداية، التثبيت، التحديث، عن التطبيق والخصوصية ================= */
+const APPVER='10';
+function isStandalone(){try{return window.matchMedia('(display-mode: standalone)').matches||navigator.standalone===true}catch(e){return false}}
+function isIOS(){return /iphone|ipad|ipod/i.test(navigator.userAgent)&&!window.MSStream}
+const HOSTED=!(window.claude&&claude.use)&&/^https?:$/.test(location.protocol);
+
+/* ---- شاشة البداية (للتطبيق المثبَّت فقط) ---- */
+(function(){
+  if(!isStandalone())return;
+  const d=document.createElement('div');d.id='splash';
+  d.innerHTML='<div class="sp-in">'+hoopoe('happy',150)+'<h1>نور الفرقان</h1></div>';
+  document.body.appendChild(d);
+  setTimeout(function(){d.classList.add('out');setTimeout(function(){d.remove()},500)},1100);
+})();
+
+/* ---- زر التثبيت ---- */
+let DEFP=null;
+window.addEventListener('beforeinstallprompt',function(e){e.preventDefault();DEFP=e;showInstBar()});
+window.addEventListener('appinstalled',function(){DEFP=null;S.instDis=1;save();const b=document.getElementById('instbar');if(b)b.remove()});
+function showInstBar(){
+  if(!HOSTED||isStandalone()||S.instDis||document.getElementById('instbar'))return;
+  if(!DEFP&&!isIOS())return;
+  const b=document.createElement('div');b.id='instbar';b.setAttribute('role','region');
+  b.innerHTML='<span>'+esc(DEFP?g3(["ثبّت التطبيق على هاتفك للوصول السريع ودون إنترنت","Install the app for quick, offline access","Installez l’application pour un accès rapide, même hors ligne"]):g3(["للتثبيت: اضغط زر المشاركة ثم «إضافة إلى الشاشة الرئيسية»","To install: tap Share, then “Add to Home Screen”","Pour installer : touchez Partager, puis « Sur l’écran d’accueil »"]))+'</span>'+
+    (DEFP?'<button class="btn sm" data-act="inst-go">'+esc(g3(["تثبيت","Install","Installer"]))+'</button>':'')+
+    '<button class="iconbtn" data-act="inst-x" aria-label="'+esc(g3(["إغلاق","Close","Fermer"]))+'">'+IC.x+'</button>';
+  document.body.appendChild(b);
+}
+function doInstall(){
+  if(DEFP){DEFP.prompt();DEFP.userChoice.then(function(){DEFP=null;const b=document.getElementById('instbar');if(b)b.remove()}).catch(function(){})}
+  else if(isIOS()){toast(g3(["اضغط زر المشاركة ثم «إضافة إلى الشاشة الرئيسية»","Tap Share, then “Add to Home Screen”","Touchez Partager, puis « Sur l’écran d’accueil »"]))}
+  else toast(g3(["افتح قائمة المتصفح واختر «تثبيت التطبيق»","Open the browser menu and choose “Install app”","Ouvrez le menu du navigateur et choisissez « Installer l’application »"]));
+}
+setTimeout(showInstBar,4000);
+
+/* ---- إشعار التحديث ---- */
+if(HOSTED&&'serviceWorker' in navigator){
+  const had=!!navigator.serviceWorker.controller;
+  navigator.serviceWorker.addEventListener('controllerchange',function(){
+    if(!had)return;
+    toast(g3(["صدر تحديث جديد. أعد فتح التطبيق للاستفادة منه.","A new update is available. Reopen the app to use it.","Une mise à jour est disponible. Rouvrez l’application pour en profiter."]));
+  });
+}
+
+/* ---- اختصارات الأيقونة (?go=...) ---- */
+setTimeout(function(){
+  try{
+    const g=new URLSearchParams(location.search).get('go');
+    if(!g||$('#lesson').hidden===false)return;
+    if(g==='dhikr'){loadQ().then(function(){openDhikr('tasbih')}).catch(function(){openDhikr('tasbih')})}
+    else if(TABS.some(function(t){return t[0]===g}))go(g);
+  }catch(e){}
+},900);
+
+/* ---- عن التطبيق والخصوصية ---- */
+const ABOUT=[
+ {t:["عن التطبيق","About the app","À propos"],p:[
+  ["«نور الفرقان» تطبيق مجاني لتعلّم الإسلام والقرآن بطريقة ممتعة، يرافقك فيه الهدهد. أعدّه خلوفي أسامة.","“Nur al-Furqan” is a free app for learning Islam and the Qur’an in a fun way, with the Hoopoe as your companion. Created by Khelloufi Oussama.","« Nur al-Furqan » est une application gratuite pour apprendre l’islam et le Coran de façon ludique, avec la Huppe pour compagnon. Créée par Khelloufi Oussama."]]},
+ {t:["المصادر","Sources","Sources"],p:[
+  ["نص المصحف، والتفسير الميسر وتفسير الجلالين، وترجمة معاني القرآن إلى الإنجليزية (Pickthall) والفرنسية (Hamidullah)، والتلاوات من mp3quran.net وEveryAyah.","The Qur’an text, Al-Muyassar and Al-Jalalayn tafsirs, English (Pickthall) and French (Hamidullah) translations, and recitations from mp3quran.net and EveryAyah.","Le texte coranique, les tafsirs Al-Muyassar et Al-Jalalayn, les traductions anglaise (Pickthall) et française (Hamidullah), et les récitations de mp3quran.net et EveryAyah."],
+  ["الدروس والأسئلة معدّة للتعليم العام ولم تخضع بعدُ لمراجعة شرعية رسمية، فقد تحتوي أخطاءً. إن وجدتَ خطأً فاستعمل «أبلغ عن خطأ». وللفتوى الخاصة راجع عالمًا موثوقًا.","Lessons and questions are for general education and have not yet had a formal scholarly review, so they may contain mistakes. If you find one, use “Report a mistake”. For personal rulings, consult a trusted scholar.","Les leçons et questions sont destinées à l’éducation générale et n’ont pas encore fait l’objet d’une relecture savante officielle ; elles peuvent contenir des erreurs. Si vous en trouvez une, utilisez « Signaler une erreur ». Pour un avis personnel, consultez un savant de confiance."]]},
+ {t:["الخصوصية","Privacy","Confidentialité"],p:[
+  ["تقدّمك محفوظ على جهازك فقط ما لم تربط حسابك. لا توجد إعلانات ولا أدوات تتبّع.","Your progress is stored on your device only unless you link an account. There are no ads and no trackers.","Votre progression est enregistrée uniquement sur votre appareil, sauf si vous reliez un compte. Il n’y a ni publicité ni traceur."],
+  ["عند ربط Google (اختياري): يُحفظ تقدّمك والاسم الذي اخترتَه للّوحة الأسبوعية في خدمة Google Firebase، ويحتفظ المزوّد بمعرّف حسابك وبريدك لتسجيل الدخول. لا يظهر بريدك لغيرك. يمكنك حذف بياناتك من السحابة في أي وقت من الإعدادات.","If you link Google (optional): your progress and the display name you chose for the weekly board are stored in Google Firebase, and the provider keeps your account ID and email for sign-in. Your email is not shown to others. You can delete your cloud data at any time in Settings.","Si vous reliez Google (facultatif) : votre progression et le nom d’affichage choisi pour le classement hebdomadaire sont stockés dans Google Firebase, qui conserve votre identifiant et votre e-mail pour la connexion. Votre e-mail n’est pas visible par les autres. Vous pouvez supprimer vos données cloud à tout moment dans les Réglages."],
+  ["الأصوات والترجمات الفرنسية تُحمَّل من خوادم خارجية (mp3quran وEveryAyah وalquran.cloud)، وقد ترى هذه الخوادم عنوان الإنترنت الخاص بك كأي موقع.","Audio and French translations are loaded from external servers (mp3quran, EveryAyah, alquran.cloud), which may see your IP address like any website.","Les audios et les traductions françaises sont chargés depuis des serveurs externes (mp3quran, EveryAyah, alquran.cloud), qui peuvent voir votre adresse IP comme tout site web."],
+  ["نوصي بأن يستعين الأطفال بوليّ أمرهم قبل ربط أي حساب.","We recommend that children ask a parent or guardian before linking any account.","Nous recommandons que les enfants demandent l’accord d’un parent avant de relier un compte."]]},
+ {t:["التواصل","Contact","Contact"],p:[
+  ["اقتراحاتك وملاحظاتك تصلنا من «أبلغ عن مشكلة أو اقتراح» في الإعدادات.","Your suggestions reach us through “Report a problem or suggestion” in Settings.","Vos suggestions nous parviennent via « Signaler un problème ou une suggestion » dans les Réglages."]]}
+];
+function openAbout(){
+  openOverlay();
+  $('#lesson').innerHTML='<div class="ltop"><button class="xbtn" data-act="leave" aria-label="'+esc(g3(["إغلاق","Close","Fermer"]))+'">'+IC.x+'</button><h2 style="flex:1;font-size:1.2rem">'+esc(g3(["عن التطبيق والخصوصية","About & privacy","À propos et confidentialité"]))+'</h2></div>'+
+   '<div class="lmain"><div class="center" style="margin-bottom:8px"><div class="mas">'+hoopoe('happy',96)+'</div><b>نور الفرقان</b><span class="muted" style="font-size:.85rem">'+esc(g3(["الإصدار","Version","Version"]))+' '+APPVER+'</span></div>'+
+   ABOUT.map(function(s){return '<div class="card gd"><b>'+esc(g3(s.t))+'</b>'+s.p.map(function(x){return '<p class="gdp">'+esc(g3(x))+'</p>'}).join('')+'</div>'}).join('')+'</div>';
+}
+(function(){
+  const es=extraSettings;
+  extraSettings=function(){
+    let h=es();
+    if(HOSTED&&!isStandalone())h+='<div class="setrow"><span>'+esc(g3(["تثبيت التطبيق","Install the app","Installer l’application"]))+'</span><button class="btn sm ghost" data-act="inst-go">'+esc(g3(["تثبيت","Install","Installer"]))+'</button></div>';
+    return h+'<div class="setrow"><span>'+esc(g3(["عن التطبيق والخصوصية","About & privacy","À propos et confidentialité"]))+'</span><button class="btn sm ghost" data-act="about-open">'+esc(g3(["فتح","Open","Ouvrir"]))+'</button></div>';
+  };
+  document.addEventListener('click',function(e){
+    const t=e.target.closest('button');if(!t||t.disabled)return;const a=t.dataset.act;
+    if(a==='inst-go'){doInstall();return}
+    if(a==='inst-x'){S.instDis=1;save();const b=document.getElementById('instbar');if(b)b.remove();return}
+    if(a==='about-open'){$('#cele').hidden=true;openAbout();return}
   });
 })();
 

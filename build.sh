@@ -14,7 +14,7 @@ echo '<div class="bgpat" id="bg"></div>
 <div id="cele" hidden dir="rtl" lang="ar"></div>
 <div id="toast" hidden role="status"></div>
 <script>'
-for f in meta lessons lessons2 new_A new_B new_C new_D data hoopoe app1 i18n snd app2 app3 app5 app6 guide extra safe fb app4 app9; do cat $P/$f.js; echo; done
+for f in meta lessons lessons2 new_A new_B new_C new_D data hoopoe app1 i18n snd app2 app3 app5 app6 guide extra safe fb pro app4 app9; do cat $P/$f.js; echo; done
 echo '</script></body></html>'; } > public/index.html
 node --check <(sed -n '/<script>$/,$p' public/index.html | sed '1d;$d') 2>/dev/null || true
 python3 - <<'INJ'
