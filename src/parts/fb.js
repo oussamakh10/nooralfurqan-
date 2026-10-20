@@ -47,7 +47,7 @@ function fbBoard(){
 }
 function fbLink(){
   return fbLoad().then(function(auth){
-    if(!auth){toast(g3(["ربط Google غير مفعّل بعد في هذه النسخة","Google sign-in isn’t enabled yet in this version","La connexion Google n’est pas encore activée dans cette version"]));return false}
+    if(!auth){toast(g3(["الدخول بجوجل سيُفعَّل قريبًا في هذه النسخة (ينتظر إعداد المطوّر). تقدّمك محفوظ على جهازك.","Google sign-in will be enabled soon in this version (pending developer setup). Your progress is saved on your device.","La connexion Google sera bientôt activée (en attente de la configuration). Votre progression est enregistrée sur votre appareil."]));return false}
     const pr=new firebase.auth.GoogleAuthProvider();
     return auth.signInWithPopup(pr).then(function(r){
       fbSetUser(r.user);

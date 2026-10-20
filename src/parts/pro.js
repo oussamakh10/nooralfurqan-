@@ -1,5 +1,5 @@
 /* ================= لمسات احترافية: شاشة البداية، التثبيت، التحديث، عن التطبيق والخصوصية ================= */
-const APPVER='13';
+const APPVER='14';
 function isStandalone(){try{return window.matchMedia('(display-mode: standalone)').matches||navigator.standalone===true}catch(e){return false}}
 function isIOS(){return /iphone|ipad|ipod/i.test(navigator.userAgent)&&!window.MSStream}
 const HOSTED=!(window.claude&&claude.use)&&/^https?:$/.test(location.protocol);
