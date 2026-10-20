@@ -13,9 +13,9 @@ function schLes(id){return SCH.find(function(l){return l.id===id})}
 function schOf(n){return SCH.filter(function(l){return l.tri===n})}
 function schReadN(n){const s=schS();return schOf(n).filter(function(l){return s['r:'+l.id]}).length}
 function schQs(l){
-  return l.q.map(function(x){return{q:x[0],c:x[1],w:x.slice(2,5),n:x[5]||'',l:l.id}});
+  return l.q.map(function(x,i){return{q:x[0],c:x[1],w:x.slice(2,5),n:x[5]||'',l:l.id,i:i}});
 }
-function schMk(q){return{q:q.q,opts:shuffle([q.c].concat(q.w)),c:q.c,n:q.n,l:q.l}}
+function schMk(q){return{q:q.q,opts:q.o?q.o.slice():shuffle([q.c].concat(q.w)),c:q.c,n:q.n,l:q.l,i:q.i}}
 function schScore(ok,tot){return tot?Math.round(ok/tot*40)/2:0}
 function schFmt(x){return String(x).replace(/\.0$/,'')}
 
@@ -84,6 +84,8 @@ function schStart(kind){
     qs=shuffle([].concat.apply([],SCH.map(schQs))).slice(0,40);limit=45*60;title=sg(['الاختبار الشامل للسنة','Final exam of the year','Examen final']);
   }else if(/^t[123]$/.test(kind)){
     const n=+kind[1];qs=shuffle([].concat.apply([],schOf(n).map(schQs))).slice(0,20);limit=20*60;title=sg(['اختبار','Exam','Examen'])+' — '+SCHTRI[n-1].t[0];
+  }else if(kind==='rv'){
+    qs=schReview();if(!qs.length){toast(sg(['لا أخطاء مسجلة بعد، ابدأ باختبار أولًا.','No mistakes recorded yet.','Aucune erreur enregistrée.']));return}title=sg(['مراجعة أخطائي','My mistakes review','Révision de mes erreurs']);
   }else{
     const l=schLes(kind);if(!l)return;qs=shuffle(schQs(l));title=l.t;
   }
@@ -161,6 +163,7 @@ function schFinish(){
     if(a==='opt'){if(SX.checked)return;SX.sel=+p;return renderSchQ()}
     if(a==='check'){
       const q=SX.qs[SX.i];SX.checked=true;
+      try{schRec(q,q.opts[SX.sel]===q.c)}catch(e){}
       if(q.opts[SX.sel]===q.c){SX.ok++;try{SND.correct()}catch(e){}}
       else{SX.wrong.push({q:q.q,a:q.opts[SX.sel],c:q.c,n:q.n,l:q.l});try{SND.wrong()}catch(e){}}
       return renderSchQ();
