@@ -21,7 +21,7 @@ python3 - <<'INJ'
 p='public/index.html'
 s=open(p,encoding='utf8').read()
 if 'rel="manifest"' not in s:
-    inj='<link rel="manifest" href="manifest.json"><meta name="theme-color" content="#0f3b3a"><link rel="icon" href="icon-192.png"><link rel="apple-touch-icon" href="icon-192.png"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="mobile-web-app-capable" content="yes">'
+    inj='<link rel="manifest" href="manifest.json"><meta name="theme-color" content="#0f3b3a"><link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png"><link rel="apple-touch-icon" href="apple-touch-icon.png"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="mobile-web-app-capable" content="yes">'
     s=s.replace('</head>',inj+'</head>',1)
     s=s.replace('</body>','<script>if("serviceWorker" in navigator&&/^https?:/.test(location.protocol)){window.addEventListener("load",function(){navigator.serviceWorker.register("sw.js").catch(function(){})})}</script></body>',1)
     open(p,'w',encoding='utf8').write(s)
