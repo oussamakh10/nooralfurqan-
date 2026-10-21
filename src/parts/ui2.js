@@ -100,3 +100,12 @@
     OBD=Object.assign({},S.prof||{});OBI=-1;renderOnboard();
   });
 })();
+/* انتقال ناعم بين الصفحات */
+(function(){
+  const _rp=renderPage;
+  renderPage=function(){
+    const r=_rp.apply(this,arguments),p=$('#page');
+    if(p){p.classList.remove('pgx');void p.offsetWidth;p.classList.add('pgx')}
+    return r;
+  };
+})();

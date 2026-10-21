@@ -3,7 +3,7 @@
 set -e
 cd "$(dirname "$0")"
 P=src/parts
-{ echo '<!doctype html><html lang="ar" dir="rtl"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"></head><body>'
+{ echo '<!doctype html><html lang="ar" dir="rtl"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"></head><body>'
 cat $P/head.html; echo '<style>'; cat $P/head2.css; echo '</style>'
 echo '<div class="bgpat" id="bg"></div>
 <header class="top" id="top"></header>
