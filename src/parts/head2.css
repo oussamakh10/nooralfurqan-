@@ -152,3 +152,11 @@ img,svg{-webkit-user-drag:none}
 @keyframes pgin{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
 #page.pgx{animation:pgin .22s ease both}
 html.rm #page.pgx{animation:none}
+#ldr{position:fixed;inset:0;z-index:90;display:grid;place-items:center;background:color-mix(in srgb,var(--bg) 80%,transparent);backdrop-filter:blur(5px)}
+#ldr[hidden]{display:none}
+.ldr-in{display:grid;place-items:center;gap:10px;text-align:center;max-width:300px;padding:22px;background:var(--surface);border:2px solid var(--gold);border-radius:26px;box-shadow:0 14px 40px #0004}
+.ldr-bar{width:200px;height:8px;border-radius:6px;background:var(--line);overflow:hidden}
+.ldr-bar i{display:block;height:100%;width:40%;border-radius:6px;background:linear-gradient(90deg,var(--accent),var(--gold));animation:ldrmv 1.2s ease-in-out infinite}
+@keyframes ldrmv{0%{transform:translateX(-120%)}100%{transform:translateX(320%)}}
+.ldr-in small{color:var(--muted);line-height:1.7}
+.tourico{animation:pop .4s ease both}

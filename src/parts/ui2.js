@@ -77,7 +77,7 @@
   openOnboard=function(){_oo();OBI=(S.prof&&S.prof.done)?0:-1;renderOnboard()};
   renderOnboard=function(){
     const c=$('#cele'),intro=OBI<0,q=intro?null:OB[OBI],last=!intro&&OBI===OB.length-1,key=intro?'intro':q.k;
-    const nm=OBD&&OBD.name?' '+OBD.name:'',line=g3(SAY[key]||SAY.name).replace('{n}',nm);
+    const nm=OBD&&OBD.name?' '+OBD.name:'',line=(intro&&S.inv?g3(['دعاك '+S.inv+' للانضمام! ',''+S.inv+' invited you! ','Invité par '+S.inv+' ! '])+' ':'')+g3(SAY[key]||SAY.name).replace('{n}',nm);
     const mood=intro?'cheer':(last?'wow':(OBI%2?'happy':'cheer'));
     let h='<div class="obx"><div class="obtop"><div class="obowl">'+hoopoe(mood,intro?120:96)+'</div>'+
       '<div class="obdots" aria-hidden="true">'+OB.map(function(_,i){return '<i class="'+(i===OBI?'on':'')+'"></i>'}).join('')+'</div></div>'+
@@ -97,7 +97,7 @@
   };
   document.addEventListener('click',function(e){
     const t=e.target.closest('button');if(!t||t.dataset.act!=='ob-replay')return;
-    OBD=Object.assign({},S.prof||{});OBI=-1;renderOnboard();
+    if(window.startTour)return startTour(true);OBD=Object.assign({},S.prof||{});OBI=-1;renderOnboard();
   });
 })();
 /* انتقال ناعم بين الصفحات */
