@@ -446,6 +446,10 @@ html.rm #page.pgx{animation:none}
 .iosic{flex:none;color:var(--accent);background:var(--accent-soft);border-radius:12px;padding:8px;display:grid;place-items:center}
 .iosarrow{position:fixed;bottom:calc(8px + env(safe-area-inset-bottom,0px));left:50%;margin-left:-16px;z-index:80;font-size:2rem;color:var(--gold);animation:iosb 1s ease-in-out infinite;text-shadow:0 2px 6px #0008}
 @keyframes iosb{50%{transform:translateY(8px)}}
+.ak-chips{display:flex;flex-wrap:wrap;gap:8px;margin:10px 0}
+.ak-chips .chip{white-space:normal;padding:6px 12px;font-size:.9rem;cursor:pointer;border:1px solid var(--line,#d9c9a3);background:var(--card,#fff);border-radius:999px}
+.ak-ayah{font-family:var(--quran,inherit);font-size:1.25rem;line-height:2;text-align:center;margin:4px 0}
+.ak-part{padding:8px 0;border-bottom:1px dashed var(--line,#d9c9a3)}.ak-part:last-child{border-bottom:0}
 </style>
 <div class="bgpat" id="bg"></div>
 <header class="top" id="top"></header>
@@ -3832,7 +3836,7 @@ function fbOut(del){
 })();
 
 /* ================= لمسات احترافية: شاشة البداية، التثبيت، التحديث، عن التطبيق والخصوصية ================= */
-const APPVER='17';
+const APPVER='18';
 function isStandalone(){try{return window.matchMedia('(display-mode: standalone)').matches||navigator.standalone===true}catch(e){return false}}
 function isIOS(){return (/iphone|ipad|ipod/i.test(navigator.userAgent)||(navigator.platform==='MacIntel'&&navigator.maxTouchPoints>1))&&!window.MSStream}
 const HOSTED=!(window.claude&&claude.use)&&/^https?:$/.test(location.protocol);
@@ -3848,22 +3852,19 @@ const HOSTED=!(window.claude&&claude.use)&&/^https?:$/.test(location.protocol);
 
 /* ---- زر التثبيت ---- */
 let DEFP=null;
-window.addEventListener('beforeinstallprompt',function(e){e.preventDefault();DEFP=e;showInstBar()});
-window.addEventListener('appinstalled',function(){DEFP=null;S.instDis=1;save();const b=document.getElementById('instbar');if(b)b.remove()});
+if(window.__dip)DEFP=window.__dip;
+window.addEventListener('beforeinstallprompt',function(e){e.preventDefault();DEFP=e;window.__dip=e;showInstBar()});
+window.addEventListener('appinstalled',function(){DEFP=null;S.instOk=1;save();const b=document.getElementById('instbar');if(b)b.remove()});
 function showInstBar(){
-  if(!HOSTED||isStandalone()||S.instDis||document.getElementById('instbar'))return;
-  if(!DEFP&&!isIOS())return;
+  if(!HOSTED||isStandalone()||S.instOk||document.getElementById('instbar'))return;
+  if(S.instDis&&Date.now()-S.instDis<3*864e5)return;
   const b=document.createElement('div');b.id='instbar';b.setAttribute('role','region');
-  b.innerHTML='<span>'+esc(DEFP?g3(["ثبّت التطبيق على هاتفك للوصول السريع ودون إنترنت","Install the app for quick, offline access","Installez l’application pour un accès rapide, même hors ligne"]):g3(["للتثبيت: اضغط زر المشاركة ثم «إضافة إلى الشاشة الرئيسية»","To install: tap Share, then “Add to Home Screen”","Pour installer : touchez Partager, puis « Sur l’écran d’accueil »"]))+'</span>'+
-    ((DEFP||isIOS())?'<button class="btn sm" data-act="inst-go">'+esc(DEFP?g3(["تثبيت","Install","Installer"]):g3(["كيف؟","How?","Comment ?"]))+'</button>':'')+
+  b.innerHTML='<span>'+esc(g3(["ثبّت التطبيق على هاتفك للوصول السريع ودون إنترنت","Install the app for quick, offline access","Installez l’application pour un accès rapide, même hors ligne"]))+'</span>'+
+    '<button class="btn sm" data-act="inst-go">'+esc(g3(["تثبيت","Install","Installer"]))+'</button>'+
     '<button class="iconbtn" data-act="inst-x" aria-label="'+esc(g3(["إغلاق","Close","Fermer"]))+'">'+IC.x+'</button>';
   document.body.appendChild(b);
 }
-function doInstall(){
-  if(DEFP){DEFP.prompt();DEFP.userChoice.then(function(){DEFP=null;const b=document.getElementById('instbar');if(b)b.remove()}).catch(function(){})}
-  else if(isIOS()){openIosGuide()}
-  else toast(g3(["افتح قائمة المتصفح واختر «تثبيت التطبيق»","Open the browser menu and choose “Install app”","Ouvrez le menu du navigateur et choisissez « Installer l’application »"]));
-}
+function doInstall(){openInstall()}
 setTimeout(showInstBar,4000);
 
 /* ---- إشعار التحديث ---- */
@@ -3910,13 +3911,13 @@ function openAbout(){
   const es=extraSettings;
   extraSettings=function(){
     let h=es();
-    if(HOSTED&&!isStandalone())h+='<div class="setrow"><span>'+esc(g3(["تثبيت التطبيق","Install the app","Installer l’application"]))+'</span><button class="btn sm ghost" data-act="inst-go">'+esc(g3(["تثبيت","Install","Installer"]))+'</button></div>';
+    if(!isStandalone())h+='<div class="setrow"><span>'+esc(g3(["تثبيت التطبيق","Install the app","Installer l’application"]))+'</span><button class="btn sm ghost" data-act="inst-go">'+esc(g3(["تثبيت","Install","Installer"]))+'</button></div>';
     return h+'<div class="setrow"><span>'+esc(g3(["عن التطبيق والخصوصية","About & privacy","À propos et confidentialité"]))+'</span><button class="btn sm ghost" data-act="about-open">'+esc(g3(["فتح","Open","Ouvrir"]))+'</button></div>';
   };
   document.addEventListener('click',function(e){
     const t=e.target.closest('button');if(!t||t.disabled)return;const a=t.dataset.act;
     if(a==='inst-go'){doInstall();return}
-    if(a==='inst-x'){S.instDis=1;save();const b=document.getElementById('instbar');if(b)b.remove();return}
+    if(a==='inst-x'){S.instDis=Date.now();save();const b=document.getElementById('instbar');if(b)b.remove();return}
     if(a==='about-open'){$('#cele').hidden=true;openAbout();return}
   });
 })();
@@ -5170,6 +5171,238 @@ function finishGame(){
   document.addEventListener('click',function(e){
     const b=e.target.closest('button');if(!b)return;
     if(b.dataset.act==='ios-copy'){try{navigator.clipboard.writeText(location.href.split('#')[0]).then(function(){toast(g3(['تم نسخ الرابط','Link copied','Lien copié']))})}catch(x){}}
+  });
+})();
+
+/* ================= هدهد المساعد: محرك معرفة إسلامي من محتوى التطبيق ================= */
+/* يبحث في الدروس والمدرسية والأحاديث والأذكار والقرآن وتفسيريه (الميسر والجلالين)،
+   ويجيب مع ذكر المصدر. وإن توفّر نموذج Claude (داخل claude.ai) يصوغ الجواب من هذه المقاطع. */
+const KB={docs:null,df:null,avg:0,tafDocs:null,tafDf:null,tafAvg:0,qn:null};
+const ASTOP=new Set(('ما ماذا هو هي هذا هذه ذلك من في علي الي عن هل كيف لماذا متي اين كم ان او ثم لا اذا التي الذي يا مع قد كان كانت يكون تكون هم هن نحن انا انت اشرح اذكر عرف عرفني اخبرني اريد اعطني قل لي لنا ببساطه باختصار معلومات معلومه سؤال اسال بين عند به بها له لها منه منها بعض كل ايضا الا غير فقط حتي بعد قبل ايه').split(' '));
+function aNorm(s){return String(s||'').replace(/[٠-٩]/g,function(d){return d.charCodeAt(0)-1632}).replace(/[ً-ٰٟۖ-ۭـ]/g,'').replace(/[ٱأإآ]/g,'ا').replace(/ة/g,'ه').replace(/ى/g,'ي').replace(/ؤ/g,'و').replace(/ئ/g,'ي')}
+function aNoA(s){return aNorm(s).replace(/ا/g,'')}
+function aStem(w){
+  w=w.replace(/^(وال|فال|بال|كال|لل|ال)/,'');
+  if(w.length>4)w=w.replace(/^[وفبلك](?=.{4,})/,'');
+  if(w.length>4)w=w.replace(/(ات|ون|ين|ان|ها|هم|يه|ه|ي)$/,'');
+  return w;
+}
+function aTok(s){return aNorm(s).split(/[^ء-ي0-9]+/).filter(function(w){return w&&w.length>1&&!ASTOP.has(w)}).map(aStem).filter(function(w){return w.length>1})}
+function kbAdd(arr,t,d,s,wt){arr.push({t:t,d:d,s:s,wt:wt||1})}
+function kbIndex(docs){
+  const df={};let tot=0;
+  docs.forEach(function(x){const tk=aTok(x.t),tf={};tk.forEach(function(w){tf[w]=(tf[w]||0)+1});x.tf=tf;x.len=tk.length||1;tot+=x.len;for(const w in tf)df[w]=(df[w]||0)+1});
+  return {df:df,avg:tot/Math.max(1,docs.length)};
+}
+function kbBuild(){
+  if(KB.docs)return;
+  const d=[];
+  try{DATA.forEach(function(u){u.lessons.forEach(function(l){l.qs.forEach(function(x){
+    if(x.t==='ord'&&x.items)kbAdd(d,x.q+' '+x.items.join(' ')+' '+(x.n||'')+' '+l.title,x.q+' '+x.items.join(' ← ')+(x.n?'. '+x.n:''),'درس: '+l.title,1.1);
+    else if(x.c)kbAdd(d,x.q+' '+x.c+' '+(x.n||'')+' '+l.title,x.c+(x.n?'. '+x.n:''),'درس: '+l.title,1.15)})})})}catch(e){}
+  try{SCH.forEach(function(L){
+    (L.sec||[]).forEach(function(sc){kbAdd(d,L.t+' '+sc[0]+' '+sc[1].join(' '),sc[0]+': '+sc[1].join(' • '),'المدرسية (3 ثانوي): '+L.t,1.25)});
+    (L.q||[]).forEach(function(x){if(x[5])kbAdd(d,x[0]+' '+x[1]+' '+x[5],x[1]+'. '+x[5],'المدرسية: '+L.t,1)});
+    (L.es||[]).forEach(function(x){kbAdd(d,x[0]+' '+x[1],x[1],'المدرسية: '+L.t,1.1)});
+  })}catch(e){}
+  try{HAD.forEach(function(h){kbAdd(d,h.t,'﴿حديث﴾ '+h.t.replace('﴿حديث﴾ ','')+' ('+h.r+')','حديث شريف',1.1)})}catch(e){}
+  try{ADK.forEach(function(a){if(a.t&&!a.sur&&!a.s)kbAdd(d,a.t+' '+(a.f||''),a.t+(a.n>1?' ('+a.n+' مرات)':''),'ذكر وورد',1)})}catch(e){}
+  try{GUIDE.forEach(function(g){(g.items||[]).forEach(function(it){var q=it[0];if(q&&q[0])kbAdd(d,q[0]+' '+(g.t&&g.t[0]||''),q[0],'دليل التطبيق',.8)})})}catch(e){}
+  try{for(const k in B){['e','m','h'].forEach(function(l){((B[k]||{})[l]||[]).forEach(function(x){if(x[0]&&x[1])kbAdd(d,x[0]+' '+x[1],x[0]+' — '+x[1],'أسئلة التحدي',.9)})})}}catch(e){}
+  try{SN.forEach(function(n,i){const m=(typeof QCH!=='undefined'?0:0);kbAdd(d,'سورة '+n+' عدد آيات '+AYC[i]+' ترتيبها '+(i+1),'سورة '+n+': ترتيبها '+(i+1)+' في المصحف وعدد آياتها '+AYC[i],'فهرس القرآن',.9)})}catch(e){}
+  KB.docs=d;const r=kbIndex(d);KB.df=r.df;KB.avg=r.avg;
+}
+function kbScore(docs,df,avg,qt,qn){
+  const N=docs.length,out=[];
+  docs.forEach(function(x){
+    let sc=0,hit=0;
+    qt.forEach(function(w){const f=x.tf[w];if(!f)return;hit++;const idf=Math.log(1+(N-df[w]+.5)/(df[w]+.5));sc+=idf*(f*2.2)/(f+1.2*(.25+.75*x.len/avg))});
+    if(!hit)return;
+    const cov=hit/qt.length;sc=sc*(.5+cov)*x.wt;
+    if(qn.length>5&&aNorm(x.t).indexOf(qn)>=0)sc*=1.6;
+    out.push({x:x,sc:sc,cov:cov});
+  });
+  out.sort(function(a,b){return b.sc-a.sc});return out;
+}
+function kbQN(){
+  if(KB.qn)return;
+  KB.qn=Q.v.map(function(s){return s.map(aNoA)});
+}
+function tafOf(arrs,s,a){const t=arrs&&arrs[s-1]&&arrs[s-1][a-1];if(!t)return '';const i=t.indexOf('[التفسير]');return (i>=0?t.slice(i+9):t).replace(/^\s+/,'').trim()}
+function clip(t,n){t=String(t).replace(/\s+/g,' ').trim();if(t.length<=n)return t;const c=t.slice(0,n),i=c.lastIndexOf(' ');return c.slice(0,i>n*.6?i:n)+'…'}
+function surahFind(nq){
+  const sp=' '+nq+' ';let best=-1,bl=0;
+  SN.forEach(function(n,i){
+    const nn=aNorm(n),ns=nn.replace(/^ال/,'');
+    const short=nn.length<=3;
+    const hasWord=function(w){return sp.indexOf(' '+w+' ')>=0};
+    let ok=false;
+    if(short)ok=sp.indexOf(' سوره '+nn+' ')>=0;else ok=hasWord(nn)||(ns.length>3&&hasWord(ns))||hasWord(nn.replace(/^ال/,'ال'));
+    if(ok&&nn.length>bl){best=i;bl=nn.length}
+  });
+  return best+1;
+}
+function ayahPart(s,a){
+  const t=Q.v[s-1]&&Q.v[s-1][a-1];if(!t)return null;
+  const tm=tafOf(TF.muy,s,a),tj=tafOf(TF.jal,s,a);
+  return {h:'<div class="ak-ayah">﴿ '+esc(t)+' ﴾</div><div class="muted">'+esc(SN[s-1])+' — الآية '+N(a)+'</div>'+(tm?'<p><b>التفسير الميسر:</b> '+esc(clip(tm,520))+'</p>':'')+(tj?'<p class="muted"><b>الجلالين:</b> '+esc(clip(tj,260))+'</p>':''),
+    c:'الآية ('+SN[s-1]+' '+a+'): '+t+'\nالتفسير الميسر: '+clip(tm,600)};
+}
+function surahPart(s,short){
+  const intro=(TF.muy&&TF.muy[s-1]&&TF.muy[s-1][0])||'';let extra='';
+  const m=intro.indexOf('[التفسير]');const head=m>0?intro.slice(0,m):'';
+  if(head&&!short)extra=head.replace(/\n{2,}/g,'\n').replace(/^\s+/,'');
+  const mk=Q.ch[s-1]&&Q.ch[s-1][1]==='م'?'مكية':'مدنية';
+  const line='سورة '+SN[s-1]+' — '+mk+'، ترتيبها '+N(s)+' وعدد آياتها '+N(AYC[s-1])+'.';
+  return {h:'<p><b>'+esc(line)+'</b></p>'+(extra?'<p style="white-space:pre-wrap">'+esc(clip(extra,900))+'</p><div class="muted">المصدر: التفسير الميسر</div>':''),c:line+(extra?'\n'+clip(extra,900):'')};
+}
+function quoteSearch(nq,qt){
+  kbQN();const res=[];
+  const strip=nq.replace(/(^| )(ما|تفسير|معني|معنا|اية|ايه|قال|تعالي|سوره|من|في|اين|هذه|الايه|الاية|هي|هو)(?= |$)/g,' ').replace(/\s+/g,' ').trim();
+  const sn=strip.replace(/ا/g,'');
+  if(sn.length>=7){KB.qn.forEach(function(sv,i){sv.forEach(function(t,j){if(res.length<4&&t.indexOf(sn)>=0)res.push([i+1,j+1,9])})})}
+  const qword=/^(ما|كم|كيف|لماذا|هل|متي|اين|من|اذكر|عدد|اشرح)( |$)/.test(nq)&&!/اية|ايه|تفسير|قال تعالي/.test(nq);
+  if(!res.length&&!qword){
+    const raw=strip.split(' ').filter(function(w){return w.length>2}).map(function(w){return w.replace(/ا/g,'')}).filter(function(w){return w.length>1});
+    if(raw.length>=4)KB.qn.forEach(function(sv,i){sv.forEach(function(t,j){let h=0;raw.forEach(function(w){if(t.indexOf(w)>=0)h++});if(h===raw.length&&res.length<3)res.push([i+1,j+1,h])})});
+  }
+  return res.slice(0,3);
+}
+const RULING=/حكم|يجوز|حلال|حرام|فتو|يبطل|يصح|هل يحق|ما حكم|جائز|مكروه|كفاره/;
+function askLocal(q){
+  const nq=aNorm(q).replace(/[^ء-ي0-9: ]+/g,' ').replace(/\s+/g,' ').trim(),qt=aTok(q);
+  return loadQ().then(function(){return Promise.all([loadTF('muy').catch(function(){return null}),loadTF('jal').catch(function(){return null})])}).then(function(){
+    kbBuild();
+    const parts=[],ctx=[];let used=false,shortS=false;
+    /* 1) مرجع آية: 2:255 أو البقرة 255 */
+    let s=0,a=0,m=nq.match(/(\d{1,3}) ?: ?(\d{1,3})/);
+    if(m){s=+m[1];a=+m[2]}
+    const sf=surahFind(nq);
+    if(!s&&sf){const m2=nq.match(/(?:اي[هة]|رقم)? ?(\d{1,3})/);if(m2&&+m2[1]>0&&+m2[1]<=AYC[sf-1]&&!/كم|عدد/.test(nq)){s=sf;a=+m2[1]}}
+    if(s>=1&&s<=114&&a>=1&&a<=AYC[s-1]){const p=ayahPart(s,a);if(p){parts.push(p);ctx.push(p.c);used=true}}
+    else if(sf){shortS=/كم|عدد|مكيه|مدنيه|ترتيب|اي سوره/.test(nq)&&!/تفسير|مقاصد|معني|تسميه|فضل/.test(nq);const p=surahPart(sf,/كم|عدد|مكيه|مدنيه|ترتيب|اي سوره/.test(nq)&&!/تفسير|مقاصد|معني|تسميه|فضل/.test(nq));parts.push(p);ctx.push(p.c);used=true}
+    /* 2) البحث بنص آية */
+    if(!used||qt.length>=3){
+      const qs=used?[]:quoteSearch(nq,qt);
+      qs.forEach(function(r){const p=ayahPart(r[0],r[1]);if(p){parts.push(p);ctx.push(p.c);used=true}});
+    }
+    /* 3) محتوى التطبيق */
+    let res=qt.length?kbScore(KB.docs,KB.df,KB.avg,qt,nq):[];
+    const lim=shortS?0:(used?2:3);
+    if(res.length&&res[0].cov>=.34){
+      const seen={};let n=0;
+      for(let i=0;i<res.length&&n<lim;i++){
+        const r=res[i];if(r.cov<.34)break;const key=r.x.s+'|'+r.x.d.slice(0,30);if(seen[key])continue;seen[key]=1;
+        parts.push({h:'<p>'+esc(clip(r.x.d,420))+'</p><div class="muted">'+esc(r.x.s)+'</div>',c:r.x.d+' ['+r.x.s+']'});ctx.push(r.x.d+' ['+r.x.s+']');n++;used=true;
+      }
+    }
+    /* 4) تفسير الميسر عند ضعف النتائج */
+    if(!used&&(!res.length||res[0].cov<.6)&&TF.muy&&qt.length){
+      if(!KB.tafDocs){const td=[];TF.muy.forEach(function(sv,i){sv.forEach(function(t,j){if(t)kbAdd(td,tafOf(TF.muy,i+1,j+1),tafOf(TF.muy,i+1,j+1),SN[i]+' '+(j+1),1)})});KB.tafDocs=td;const r=kbIndex(td);KB.tafDf=r.df;KB.tafAvg=r.avg;
+        td.forEach(function(x,k){});}
+      const tr=kbScore(KB.tafDocs,KB.tafDf,KB.tafAvg,qt,nq);
+      if(tr.length&&tr[0].cov>=.5){
+        let n=0;for(let i=0;i<tr.length&&n<2;i++){
+          const x=tr[i].x,mm=x.s.match(/^(.*) (\d+)$/);if(!mm||tr[i].cov<.5)continue;
+          const si=SN.indexOf(mm[1])+1,ai=+mm[2];const dup=parts.some(function(p){return p.c.indexOf('الآية ('+mm[1]+' '+ai+')')===0});if(dup)continue;
+          const p=ayahPart(si,ai);if(p){parts.push(p);ctx.push(p.c);used=true;n++}
+        }
+      }
+    }
+    return {parts:parts,ctx:ctx,used:used,ruling:RULING.test(nq)};
+  });
+}
+function localHtml(r){
+  if(!r.used)return '<p>لم أجد في محتوى التطبيق ما يجيب عن سؤالك بدقة. جرّب صياغة أخرى أو كلمات مفتاحية (مثل: «أركان الصلاة»، «تفسير آية الكرسي»، «سورة الكهف»، «2:255»).</p>';
+  return '<div class="muted" style="margin-bottom:6px">من محتوى التطبيق:</div>'+r.parts.map(function(p){return '<div class="ak-part">'+p.h+'</div>'}).join('')+(r.ruling?'<p class="muted">هذا عرض عام من محتوى التطبيق وليس فتوى؛ وفي حالتك الخاصة اسأل عالمًا موثوقًا أو دار الإفتاء.</p>':'');
+}
+function aiPrompt(q,r){
+  const hist=AS.slice(-7,-1).map(function(m){return (m.r==='u'?'السائل: ':'المساعد: ')+m.t}).join('\n');
+  return 'أنت «هدهد»، مساعد إسلامي تعليمي لطيف في تطبيق «نور الفرقان». أجب بالعربية الفصحى المبسطة في ست جمل كحدّ أقصى.\n'+
+  'قواعد: (1) اعتمد أولًا على «مقاطع من التطبيق» أدناه إن وُجدت، وتحقق أنها تجيب عن السؤال. (2) لا تذكر آية أو حديثًا إلا إن كنت متأكدًا من نصه ومصدره، ولا تخترع شيئًا. (3) في المسائل الخلافية اعرض الأقوال باختصار دون ترجيح قاطع، وفي الفتاوى الشخصية أحِل إلى عالم موثوق. (4) إن لم تعرف فقل ذلك. (5) كن لطيفًا مع الطفل والمبتدئ.\n'+
+  (hist?'المحادثة السابقة:\n'+hist+'\n':'')+(r.ctx.length?'مقاطع من التطبيق:\n'+r.ctx.map(function(c,i){return (i+1)+') '+c}).join('\n')+'\n':'')+'السؤال: '+q;
+}
+function renderAssistant(){
+  const chips=['ما أركان الإسلام؟','ما فضل آية الكرسي؟','تفسير سورة الإخلاص','ما شروط الصلاة؟','2:286','ما معنى الإحسان؟'];
+  $('#lesson').innerHTML='<div class="ltop"><button class="xbtn" data-act="leave" aria-label="'+esc(g3(['إغلاق','Close','Fermer']))+'">'+IC.x+'</button><h2 style="flex:1;font-size:1.2rem">'+esc(g3(['اسأل هدهد','Ask Hoopoe','Demandez à Hoopoe']))+'</h2></div><div class="lmain" id="aslog">'+
+   '<div class="say"><div class="mas">'+hoopoe('happy',72)+'</div><div class="bubble"><p>'+esc(g3(['اسألني عن آية أو سورة أو حكم أو معلومة في الدين، وأبحث لك في كل محتوى التطبيق: الدروس والمدرسية والأحاديث والأذكار والقرآن وتفسيره. وفي الفتاوى أحيلك إلى أهل العلم.','Ask me about a verse, a surah or any Islamic topic. I search all the app’s content (lessons, school, hadith, adhkar, Quran and tafsir). For fatwas, please ask a scholar.','Posez-moi une question sur un verset, une sourate ou un sujet islamique. Je cherche dans tout le contenu de l’application. Pour les fatwas, consultez un savant.']))+'</p></div></div>'+
+   (AS.length?'':'<div class="ak-chips">'+chips.map(function(c){return '<button class="chip" data-act="ask-chip" data-q="'+esc(c)+'">'+esc(c)+'</button>'}).join('')+'</div>')+
+   AS.map(function(m){return '<div class="card"'+(m.r==='u'?' data-u="1"':'')+' style="'+(m.r==='u'?'background:var(--accent-soft)':'')+'">'+(m.h?m.h:'<p style="white-space:pre-wrap">'+esc(m.t)+'</p>')+'</div>'}).join('')+'<div id="asa"></div></div>'+
+   '<div class="lfoot"><div class="in" style="display:grid;gap:8px"><input type="text" id="asq" placeholder="'+esc(g3(['اكتب سؤالك','Type your question','Écrivez votre question']))+'" maxlength="300" aria-label="'+esc(g3(['سؤالك','Your question','Votre question']))+'"><button class="btn" data-act="ask-send">'+esc(g3(['أرسل','Send','Envoyer']))+'</button></div></div>';
+  const l=$('#aslog');if(l){const us=l.querySelectorAll('[data-u]');if(us.length)us[us.length-1].scrollIntoView({block:'start'});else l.scrollTop=0}
+}
+function askSend(txt){
+  const inp=$('#asq'),q=(typeof txt==='string'?txt:(inp&&inp.value)||'').trim();if(!q)return;
+  if(inp)inp.value='';AS.push({r:'u',t:q});renderAssistant();
+  const out=$('#asa');out.innerHTML='<div class="card"><p class="muted">'+esc(g3(['جارٍ البحث…','Searching…','Recherche…']))+'</p></div>';
+  askLocal(q).then(function(r){
+    const done=function(h,t){AS.push({r:'a',t:t,h:h});renderAssistant();try{SND.coin()}catch(e){}};
+    const lh=localHtml(r),lt=r.used?r.ctx.join('\n'):'لم أجد جوابًا في محتوى التطبيق.';
+    if(window.claude&&claude.use){
+      return claude.use('sample').then(function(sm){
+        if(!sm)return done(lh,lt);
+        return sm(aiPrompt(q,r),{cache:false,modelTier:'default',onText:function(u){out.innerHTML='<div class="card"><p style="white-space:pre-wrap">'+esc(u.text)+'</p></div>'}}).then(function(a){
+          const src=r.used?'<div class="muted" style="margin-top:6px">استندتُ إلى: '+esc(r.parts.length)+' مقاطع من محتوى التطبيق</div>':'';
+          done('<p style="white-space:pre-wrap">'+esc(a.text)+'</p>'+src+(r.ruling?'<p class="muted">هذا ليس فتوى؛ اسأل عالمًا موثوقًا في حالتك الخاصة.</p>':''),a.text);
+        });
+      }).catch(function(){done(lh,lt)});
+    }
+    done(lh,lt);
+  }).catch(function(){out.innerHTML='<div class="card"><p>تعذّر البحث الآن، حاول مرة أخرى.</p></div>'});
+}
+document.addEventListener('click',function(e){const b=e.target.closest&&e.target.closest('[data-act="ask-chip"]');if(b){askSend(b.getAttribute('data-q'))}});
+document.addEventListener('keydown',function(e){if(e.key==='Enter'&&e.target&&e.target.id==='asq'){e.preventDefault();askSend()}});
+
+/* ================= التثبيت: نافذة موحّدة لأندرويد وآيفون وسطح المكتب ================= */
+(function(){
+  const SITE='https://nooralfurqan.netlify.app';
+  const ua=navigator.userAgent;
+  function env(){
+    const ios=isIOS(),and=/android/i.test(ua);
+    const inapp=/FBAN|FBAV|FB_IAB|Instagram|TikTok|musical_ly|Snapchat|Twitter|MicroMessenger|Telegram|WhatsApp|Line\/|Messenger|GSA\/|; wv\)/i.test(ua);
+    const sam=/SamsungBrowser/i.test(ua),ff=/Firefox|FxiOS/i.test(ua),edge=/EdgA|EdgiOS|Edg\//i.test(ua),opr=/OPR\/|OPT\//i.test(ua);
+    return {ios:ios,and:and,inapp:inapp,sam:sam,ff:ff,edge:edge,opr:opr,desk:!ios&&!and};
+  }
+  function step(n,t,d){return '<div class="card" style="display:flex;gap:12px;align-items:center;text-align:start"><div class="iosn"><span class="iosno">'+n+'</span></div><div style="flex:1"><b>'+esc(t)+'</b>'+(d?'<div class="muted" style="font-size:.9rem;line-height:1.6">'+esc(d)+'</div>':'')+'</div></div>'}
+  function shell(title,body,foot){
+    const c=$('#cele');
+    c.innerHTML='<div class="obx"><div class="obtop"><div class="obowl">'+hoopoe('cheer',84)+'</div></div><div class="obbody"><h2 style="margin:0;text-align:center">'+esc(title)+'</h2>'+body+'</div><div class="obfoot">'+(foot||'')+'<button class="btn '+(foot?'ghost':'')+'" data-act="cclose">'+esc(g3(['إغلاق','Close','Fermer']))+'</button></div></div>';
+    c.hidden=false;
+  }
+  window.openInstall=function(){
+    if(window.__dip&&!DEFP)DEFP=window.__dip;
+    const e=env();
+    if(isStandalone()){shell(g3(['التطبيق مثبّت','Already installed','Déjà installée']),'<div class="card"><p>'+esc(g3(['أنت تستخدم التطبيق المثبّت الآن. بارك الله فيك!','You are using the installed app. Great!','Vous utilisez déjà l’application installée.']))+'</p></div>');return}
+    if(!HOSTED){
+      shell(g3(['التثبيت من الموقع','Install from the website','Installer depuis le site']),'<div class="card"><p>'+esc(g3(['أنت تتصفح النسخة المدمجة داخل Claude، ولا يمكن تثبيتها. افتح رابط الموقع نفسه في متصفح هاتفك ثم ثبّت من هناك.','You are viewing the preview inside Claude, which cannot be installed. Open the website link in your phone browser and install from there.','Vous voyez l’aperçu dans Claude, qui ne peut pas être installé. Ouvrez le lien du site dans le navigateur de votre téléphone.']))+'</p><div class="muted" dir="ltr">'+esc(SITE)+'</div></div>','<button class="btn gold" data-act="inst-copy" data-u="'+esc(SITE)+'">'+esc(g3(['نسخ رابط الموقع','Copy site link','Copier le lien']))+'</button>');
+      return;
+    }
+    if(e.ios){openIosGuide();return}
+    const link=location.href.split('#')[0].split('?')[0];
+    if(e.inapp){
+      const intent='intent://'+location.host+location.pathname+'#Intent;scheme=https;package=com.android.chrome;end';
+      shell(g3(['افتح في المتصفح','Open in your browser','Ouvrir dans le navigateur']),'<div class="card"><p>'+esc(g3(['المتصفح الحالي (داخل تطبيق آخر) لا يدعم التثبيت. افتح الرابط في Chrome ثم اضغط «تثبيت».','This in-app browser cannot install apps. Open the link in Chrome, then tap “Install”.','Ce navigateur intégré ne permet pas l’installation. Ouvrez le lien dans Chrome.']))+'</p></div>',
+        (e.and?'<a class="btn" style="text-decoration:none;text-align:center" href="'+esc(intent)+'">'+esc(g3(['فتح في Chrome','Open in Chrome','Ouvrir dans Chrome']))+'</a>':'')+'<button class="btn gold" data-act="inst-copy" data-u="'+esc(link)+'">'+esc(g3(['نسخ الرابط','Copy link','Copier le lien']))+'</button>');
+      return;
+    }
+    if(DEFP){
+      shell(g3(['ثبّت التطبيق','Install the app','Installer l’application']),'<div class="card"><p>'+esc(g3(['ثبّت «نور الفرقان» ليعمل بملء الشاشة ودون إنترنت وتجده بين تطبيقاتك.','Install “Nur al-Furqan” to use it full-screen and offline, right among your apps.','Installez « Nur al-Furqan » pour l’utiliser en plein écran et hors ligne.']))+'</p></div>','<button class="btn gold" data-act="inst-native">'+esc(g3(['تثبيت الآن','Install now','Installer maintenant']))+'</button>');
+      return;
+    }
+    let st;
+    if(e.sam)st=[[g3(['اضغط زر القائمة ☰ في أسفل المتصفح','Tap the ☰ menu at the bottom','Touchez le menu ☰ en bas']),''],[g3(['اختر «إضافة صفحة إلى» ثم «الشاشة الرئيسية»','Choose “Add page to” then “Home screen”','Choisissez « Ajouter la page à » puis « Écran d’accueil »']),''],[g3(['اضغط «إضافة»','Tap “Add”','Touchez « Ajouter »']),'']];
+    else if(e.ff)st=[[g3(['اضغط ⋮ (القائمة)','Tap ⋮ (menu)','Touchez ⋮ (menu)']),''],[g3(['اختر «تثبيت»','Choose “Install”','Choisissez « Installer »']),g3(['أو «إضافة إلى الشاشة الرئيسية».','or “Add to Home screen”.','ou « Ajouter à l’écran d’accueil ».'])],[g3(['اضغط «إضافة»','Tap “Add”','Touchez « Ajouter »']),'']];
+    else if(e.desk)st=[[g3(['ابحث عن أيقونة التثبيت ⊕ في شريط العنوان (يمين الشريط)','Look for the install icon ⊕ in the address bar','Cherchez l’icône d’installation ⊕ dans la barre d’adresse']),g3(['أو من القائمة ⋮ ← «حفظ ومشاركة» ← «تثبيت الصفحة كتطبيق».','Or menu ⋮ → “Save and share” → “Install page as app”.','Ou menu ⋮ → « Enregistrer et partager » → « Installer ».'])],[g3(['اضغط «تثبيت»','Click “Install”','Cliquez sur « Installer »']),'']];
+    else st=[[g3(['اضغط ⋮ (القائمة) أعلى المتصفح','Tap the ⋮ menu at the top','Touchez le menu ⋮ en haut']),''],[g3(['اختر «تثبيت التطبيق»','Choose “Install app”','Choisissez « Installer l’application »']),g3(['وإن لم تجدها فاختر «إضافة إلى الشاشة الرئيسية».','If missing, choose “Add to Home screen”.','Sinon « Ajouter à l’écran d’accueil ».'])],[g3(['اضغط «تثبيت»','Tap “Install”','Touchez « Installer »']),g3(['ستجد أيقونة الهدهد بين تطبيقاتك.','The Hoopoe icon will appear among your apps.','L’icône de la huppe apparaîtra parmi vos applications.'])]];
+    shell(g3(['ثبّت التطبيق','Install the app','Installer l’application']),st.map(function(s,i){return step(i+1,s[0],s[1])}).join('')+'<div class="card muted" style="font-size:.88rem;text-align:start">'+esc(g3(['إن لم يظهر الخيار: حدّث المتصفح، وأعد تحميل الصفحة، واستخدمها دقيقة ثم جرّب. ويظهر الخيار فقط في Chrome وSamsung Internet وEdge.','If the option is missing: update your browser, reload the page, use it for a minute and try again. It only appears in Chrome, Samsung Internet and Edge.','Si l’option manque : mettez à jour le navigateur, rechargez la page et réessayez.']))+'</div>','');
+  };
+  document.addEventListener('click',function(ev){
+    const b=ev.target.closest&&ev.target.closest('button');if(!b)return;const a=b.dataset.act;
+    if(a==='inst-native'&&DEFP){
+      const d=DEFP;DEFP=null;window.__dip=null;
+      try{d.prompt();d.userChoice.then(function(r){if(r&&r.outcome==='accepted'){S.instOk=1;save();const bar=document.getElementById('instbar');if(bar)bar.remove();$('#cele').hidden=true;toast(g3(['تم التثبيت!','Installed!','Installée !']))}else{toast(g3(['لم يكتمل التثبيت','Install cancelled','Installation annulée']))}}).catch(function(){})}catch(x){toast(g3(['تعذّر فتح نافذة التثبيت','Could not open the install dialog','Impossible d’ouvrir l’installation']))}
+    }
+    if(a==='inst-copy'){const u=b.dataset.u||location.href;try{navigator.clipboard.writeText(u).then(function(){toast(g3(['تم نسخ الرابط','Link copied','Lien copié']))},function(){toast(u)})}catch(x){toast(u)}}
   });
 })();
 
