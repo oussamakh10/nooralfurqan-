@@ -97,3 +97,35 @@
     }catch(e){}
   };
 })();
+
+/* ===== دليل التثبيت على آيفون وآيباد ===== */
+(function(){
+  const ua=navigator.userAgent;
+  const INAPP=/FBAN|FBAV|Instagram|Line\/|TikTok|musical_ly|Snapchat|MicroMessenger|GSA\/|Twitter|LinkedInApp/i.test(ua);
+  const SHARE='<svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 15V3M8 7l4-4 4 4"/><path d="M6 11H5a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-6a2 2 0 0 0-2-2h-1"/></svg>';
+  const PLUS='<svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="4"/><path d="M12 8v8M8 12h8"/></svg>';
+  window.openIosGuide=function(){
+    const pad=/ipad/i.test(ua)||(navigator.platform==='MacIntel'&&navigator.maxTouchPoints>1);
+    const c=$('#cele');
+    let steps;
+    if(INAPP){
+      steps=[[ '🧭',g3(['افتح الرابط في Safari','Open this link in Safari','Ouvrez ce lien dans Safari']),g3(['المتصفح الذي تستعمله الآن (داخل تطبيق آخر) لا يسمح بالتثبيت. انسخ الرابط وافتحه في Safari.','This in-app browser cannot install apps. Copy the link and open it in Safari.','Ce navigateur intégré ne permet pas l’installation. Copiez le lien et ouvrez-le dans Safari.'])]];
+    }else{
+      steps=[
+       [SHARE,g3(['اضغط زر المشاركة','Tap the Share button','Touchez le bouton Partager']),g3([pad?'في أعلى الشاشة بجانب شريط العنوان.':'في أسفل شاشة Safari (مربع بسهم للأعلى).','At the '+(pad?'top next to the address bar.':'bottom of Safari (a square with an up arrow).'),(pad?'En haut, près de la barre d’adresse.':'En bas de Safari (un carré avec une flèche vers le haut).')])],
+       [PLUS,g3(['اختر «إضافة إلى الشاشة الرئيسية»','Choose “Add to Home Screen”','Choisissez « Sur l’écran d’accueil »']),g3(['مرّر القائمة للأسفل إن لم تجدها.','Scroll the menu down if you don’t see it.','Faites défiler le menu si vous ne la voyez pas.'])],
+       ['✅',g3(['اضغط «إضافة»','Tap “Add”','Touchez « Ajouter »']),g3(['ستجد أيقونة الهدهد على شاشتك الرئيسية، افتحها كأي تطبيق.','The Hoopoe icon will appear on your home screen. Open it like any app.','L’icône de la huppe apparaît sur l’écran d’accueil. Ouvrez-la comme une application.'])]
+      ];
+    }
+    c.innerHTML='<div class="obx"><div class="obtop"><div class="obowl">'+hoopoe('cheer',84)+'</div></div><div class="obbody"><h2 style="margin:0;text-align:center">'+esc(g3(['ثبّت التطبيق على آيفون','Install on iPhone','Installer sur iPhone']))+'</h2>'+
+     steps.map(function(s,i){return '<div class="card" style="display:flex;gap:12px;align-items:center"><div class="iosn">'+(INAPP?s[0]:'<span class="iosno">'+(i+1)+'</span>')+'</div><div style="flex:1"><b>'+esc(s[1])+'</b><div class="muted" style="font-size:.9rem;line-height:1.6">'+esc(s[2])+'</div></div>'+(INAPP?'':'<div class="iosic">'+s[0]+'</div>')+'</div>'}).join('')+
+     (INAPP?'<button class="btn gold" data-act="ios-copy">'+esc(g3(['نسخ الرابط','Copy link','Copier le lien']))+'</button>':'')+
+     '</div><div class="obfoot"><button class="btn" data-act="cclose">'+esc(g3(['فهمت','Got it','Compris']))+'</button></div></div>'+
+     (!INAPP&&!pad?'<div class="iosarrow" aria-hidden="true">⬇</div>':'');
+    c.hidden=false;
+  };
+  document.addEventListener('click',function(e){
+    const b=e.target.closest('button');if(!b)return;
+    if(b.dataset.act==='ios-copy'){try{navigator.clipboard.writeText(location.href.split('#')[0]).then(function(){toast(g3(['تم نسخ الرابط','Link copied','Lien copié']))})}catch(x){}}
+  });
+})();

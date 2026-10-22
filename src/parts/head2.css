@@ -160,3 +160,7 @@ html.rm #page.pgx{animation:none}
 @keyframes ldrmv{0%{transform:translateX(-120%)}100%{transform:translateX(320%)}}
 .ldr-in small{color:var(--muted);line-height:1.7}
 .tourico{animation:pop .4s ease both}
+.iosn{flex:none;width:44px;text-align:center;font-size:1.8rem}.iosno{display:inline-grid;place-items:center;width:34px;height:34px;border-radius:50%;background:var(--accent);color:#fff;font:800 1.05rem var(--text)}
+.iosic{flex:none;color:var(--accent);background:var(--accent-soft);border-radius:12px;padding:8px;display:grid;place-items:center}
+.iosarrow{position:fixed;bottom:calc(8px + env(safe-area-inset-bottom,0px));left:50%;margin-left:-16px;z-index:80;font-size:2rem;color:var(--gold);animation:iosb 1s ease-in-out infinite;text-shadow:0 2px 6px #0008}
+@keyframes iosb{50%{transform:translateY(8px)}}

@@ -1,7 +1,7 @@
 /* ================= لمسات احترافية: شاشة البداية، التثبيت، التحديث، عن التطبيق والخصوصية ================= */
-const APPVER='16';
+const APPVER='17';
 function isStandalone(){try{return window.matchMedia('(display-mode: standalone)').matches||navigator.standalone===true}catch(e){return false}}
-function isIOS(){return /iphone|ipad|ipod/i.test(navigator.userAgent)&&!window.MSStream}
+function isIOS(){return (/iphone|ipad|ipod/i.test(navigator.userAgent)||(navigator.platform==='MacIntel'&&navigator.maxTouchPoints>1))&&!window.MSStream}
 const HOSTED=!(window.claude&&claude.use)&&/^https?:$/.test(location.protocol);
 
 /* ---- شاشة البداية (للتطبيق المثبَّت فقط) ---- */
@@ -22,13 +22,13 @@ function showInstBar(){
   if(!DEFP&&!isIOS())return;
   const b=document.createElement('div');b.id='instbar';b.setAttribute('role','region');
   b.innerHTML='<span>'+esc(DEFP?g3(["ثبّت التطبيق على هاتفك للوصول السريع ودون إنترنت","Install the app for quick, offline access","Installez l’application pour un accès rapide, même hors ligne"]):g3(["للتثبيت: اضغط زر المشاركة ثم «إضافة إلى الشاشة الرئيسية»","To install: tap Share, then “Add to Home Screen”","Pour installer : touchez Partager, puis « Sur l’écran d’accueil »"]))+'</span>'+
-    (DEFP?'<button class="btn sm" data-act="inst-go">'+esc(g3(["تثبيت","Install","Installer"]))+'</button>':'')+
+    ((DEFP||isIOS())?'<button class="btn sm" data-act="inst-go">'+esc(DEFP?g3(["تثبيت","Install","Installer"]):g3(["كيف؟","How?","Comment ?"]))+'</button>':'')+
     '<button class="iconbtn" data-act="inst-x" aria-label="'+esc(g3(["إغلاق","Close","Fermer"]))+'">'+IC.x+'</button>';
   document.body.appendChild(b);
 }
 function doInstall(){
   if(DEFP){DEFP.prompt();DEFP.userChoice.then(function(){DEFP=null;const b=document.getElementById('instbar');if(b)b.remove()}).catch(function(){})}
-  else if(isIOS()){toast(g3(["اضغط زر المشاركة ثم «إضافة إلى الشاشة الرئيسية»","Tap Share, then “Add to Home Screen”","Touchez Partager, puis « Sur l’écran d’accueil »"]))}
+  else if(isIOS()){openIosGuide()}
   else toast(g3(["افتح قائمة المتصفح واختر «تثبيت التطبيق»","Open the browser menu and choose “Install app”","Ouvrez le menu du navigateur et choisissez « Installer l’application »"]));
 }
 setTimeout(showInstBar,4000);
