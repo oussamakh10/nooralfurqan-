@@ -164,3 +164,7 @@ html.rm #page.pgx{animation:none}
 .iosic{flex:none;color:var(--accent);background:var(--accent-soft);border-radius:12px;padding:8px;display:grid;place-items:center}
 .iosarrow{position:fixed;bottom:calc(8px + env(safe-area-inset-bottom,0px));left:50%;margin-left:-16px;z-index:80;font-size:2rem;color:var(--gold);animation:iosb 1s ease-in-out infinite;text-shadow:0 2px 6px #0008}
 @keyframes iosb{50%{transform:translateY(8px)}}
+.ak-chips{display:flex;flex-wrap:wrap;gap:8px;margin:10px 0}
+.ak-chips .chip{white-space:normal;padding:6px 12px;font-size:.9rem;cursor:pointer;border:1px solid var(--line,#d9c9a3);background:var(--card,#fff);border-radius:999px}
+.ak-ayah{font-family:var(--quran,inherit);font-size:1.25rem;line-height:2;text-align:center;margin:4px 0}
+.ak-part{padding:8px 0;border-bottom:1px dashed var(--line,#d9c9a3)}.ak-part:last-child{border-bottom:0}

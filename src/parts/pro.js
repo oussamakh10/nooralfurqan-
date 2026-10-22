@@ -1,5 +1,5 @@
 /* ================= لمسات احترافية: شاشة البداية، التثبيت، التحديث، عن التطبيق والخصوصية ================= */
-const APPVER='17';
+const APPVER='18';
 function isStandalone(){try{return window.matchMedia('(display-mode: standalone)').matches||navigator.standalone===true}catch(e){return false}}
 function isIOS(){return (/iphone|ipad|ipod/i.test(navigator.userAgent)||(navigator.platform==='MacIntel'&&navigator.maxTouchPoints>1))&&!window.MSStream}
 const HOSTED=!(window.claude&&claude.use)&&/^https?:$/.test(location.protocol);
@@ -15,22 +15,19 @@ const HOSTED=!(window.claude&&claude.use)&&/^https?:$/.test(location.protocol);
 
 /* ---- زر التثبيت ---- */
 let DEFP=null;
-window.addEventListener('beforeinstallprompt',function(e){e.preventDefault();DEFP=e;showInstBar()});
-window.addEventListener('appinstalled',function(){DEFP=null;S.instDis=1;save();const b=document.getElementById('instbar');if(b)b.remove()});
+if(window.__dip)DEFP=window.__dip;
+window.addEventListener('beforeinstallprompt',function(e){e.preventDefault();DEFP=e;window.__dip=e;showInstBar()});
+window.addEventListener('appinstalled',function(){DEFP=null;S.instOk=1;save();const b=document.getElementById('instbar');if(b)b.remove()});
 function showInstBar(){
-  if(!HOSTED||isStandalone()||S.instDis||document.getElementById('instbar'))return;
-  if(!DEFP&&!isIOS())return;
+  if(!HOSTED||isStandalone()||S.instOk||document.getElementById('instbar'))return;
+  if(S.instDis&&Date.now()-S.instDis<3*864e5)return;
   const b=document.createElement('div');b.id='instbar';b.setAttribute('role','region');
-  b.innerHTML='<span>'+esc(DEFP?g3(["ثبّت التطبيق على هاتفك للوصول السريع ودون إنترنت","Install the app for quick, offline access","Installez l’application pour un accès rapide, même hors ligne"]):g3(["للتثبيت: اضغط زر المشاركة ثم «إضافة إلى الشاشة الرئيسية»","To install: tap Share, then “Add to Home Screen”","Pour installer : touchez Partager, puis « Sur l’écran d’accueil »"]))+'</span>'+
-    ((DEFP||isIOS())?'<button class="btn sm" data-act="inst-go">'+esc(DEFP?g3(["تثبيت","Install","Installer"]):g3(["كيف؟","How?","Comment ?"]))+'</button>':'')+
+  b.innerHTML='<span>'+esc(g3(["ثبّت التطبيق على هاتفك للوصول السريع ودون إنترنت","Install the app for quick, offline access","Installez l’application pour un accès rapide, même hors ligne"]))+'</span>'+
+    '<button class="btn sm" data-act="inst-go">'+esc(g3(["تثبيت","Install","Installer"]))+'</button>'+
     '<button class="iconbtn" data-act="inst-x" aria-label="'+esc(g3(["إغلاق","Close","Fermer"]))+'">'+IC.x+'</button>';
   document.body.appendChild(b);
 }
-function doInstall(){
-  if(DEFP){DEFP.prompt();DEFP.userChoice.then(function(){DEFP=null;const b=document.getElementById('instbar');if(b)b.remove()}).catch(function(){})}
-  else if(isIOS()){openIosGuide()}
-  else toast(g3(["افتح قائمة المتصفح واختر «تثبيت التطبيق»","Open the browser menu and choose “Install app”","Ouvrez le menu du navigateur et choisissez « Installer l’application »"]));
-}
+function doInstall(){openInstall()}
 setTimeout(showInstBar,4000);
 
 /* ---- إشعار التحديث ---- */
@@ -77,13 +74,13 @@ function openAbout(){
   const es=extraSettings;
   extraSettings=function(){
     let h=es();
-    if(HOSTED&&!isStandalone())h+='<div class="setrow"><span>'+esc(g3(["تثبيت التطبيق","Install the app","Installer l’application"]))+'</span><button class="btn sm ghost" data-act="inst-go">'+esc(g3(["تثبيت","Install","Installer"]))+'</button></div>';
+    if(!isStandalone())h+='<div class="setrow"><span>'+esc(g3(["تثبيت التطبيق","Install the app","Installer l’application"]))+'</span><button class="btn sm ghost" data-act="inst-go">'+esc(g3(["تثبيت","Install","Installer"]))+'</button></div>';
     return h+'<div class="setrow"><span>'+esc(g3(["عن التطبيق والخصوصية","About & privacy","À propos et confidentialité"]))+'</span><button class="btn sm ghost" data-act="about-open">'+esc(g3(["فتح","Open","Ouvrir"]))+'</button></div>';
   };
   document.addEventListener('click',function(e){
     const t=e.target.closest('button');if(!t||t.disabled)return;const a=t.dataset.act;
     if(a==='inst-go'){doInstall();return}
-    if(a==='inst-x'){S.instDis=1;save();const b=document.getElementById('instbar');if(b)b.remove();return}
+    if(a==='inst-x'){S.instDis=Date.now();save();const b=document.getElementById('instbar');if(b)b.remove();return}
     if(a==='about-open'){$('#cele').hidden=true;openAbout();return}
   });
 })();
