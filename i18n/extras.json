@@ -202,5 +202,49 @@
 "المدرسية": [
 "School",
 "École"
+],
+"كل المستويات": [
+"All levels",
+"Tous niveaux"
+],
+"أساسي": [
+"Basic",
+"Basique"
+],
+"متقدّم 🎓": [
+"Advanced 🎓",
+"Avancé 🎓"
+],
+"متقدّم": [
+"Advanced",
+"Avancé"
+],
+"المستوى": [
+"Level",
+"Niveau"
+],
+"العقيدة المتقدمة": [
+"Advanced Creed",
+"Croyance avancée"
+],
+"أصول الفقه وقواعده": [
+"Principles & Rules of Fiqh",
+"Principes et règles du fiqh"
+],
+"علوم الحديث": [
+"Hadith Sciences",
+"Sciences du hadith"
+],
+"علوم القرآن والتفسير": [
+"Quran Sciences & Tafsir",
+"Sciences du Coran et tafsir"
+],
+"التاريخ الإسلامي": [
+"Islamic History",
+"Histoire islamique"
+],
+"أعلام الأمة ومؤلفاتهم": [
+"Scholars & Their Works",
+"Savants et leurs œuvres"
 ]
 }

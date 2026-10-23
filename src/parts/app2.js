@@ -48,6 +48,7 @@ function loadVod(){
 
 /* ================= تعلّم ================= */
 let LTAB='path',UO=null;
+function lvf(){return S.lvf||0}
 function unitDone(u){let d=0;u.lessons.forEach(function(l){if(S.done[l.id])d++});return d}
 function pageLearn(){
   const due=srDue().length;
@@ -62,10 +63,12 @@ function pageLearn(){
   if(!UO){UO={};if(cur)UO[cur.unit]=1}
   h+='<div class="say"><div class="mas">'+hoopoe(mood,88)+'</div><div class="bubble"><p>'+msg+'</p><p class="muted" style="font-size:.9rem">أتممت '+N(dn)+' من '+N(ALL.length)+' درسًا في '+N(DATA.length)+' وحدة</p></div></div>'+
    '<div class="pbar gold" style="margin-bottom:10px"><i style="width:'+(dn/ALL.length*100)+'%"></i></div>'+
-   '<div class="opts2" style="margin-bottom:6px">'+(cur?'<button class="btn sm" data-lesson="'+cur.id+'">تابع: '+cur.title+'</button>':'')+'<button class="btn sm ghost" data-act="place">اختبار تحديد المستوى</button></div>';
+   '<div class="opts2" style="margin-bottom:6px">'+(cur?'<button class="btn sm" data-lesson="'+cur.id+'">تابع: '+cur.title+'</button>':'')+'<button class="btn sm ghost" data-act="place">اختبار تحديد المستوى</button></div>'+
+   '<div class="seg lvseg" role="group" aria-label="المستوى">'+[[0,'كل المستويات'],[1,'أساسي'],[2,'متقدّم 🎓']].map(function(x){return '<button data-lvf="'+x[0]+'" aria-pressed="'+(lvf()===x[0])+'">'+x[1]+'</button>'}).join('')+'</div>';
   DATA.forEach(function(u,ui){
+    if((lvf()===1&&u.lv==='a')||(lvf()===2&&u.lv!=='a'))return;
     const dd=unitDone(u),open=!!UO[ui];
-    h+='<section class="unit u'+((ui%4)+1)+'"><button class="uh" data-unit="'+ui+'" aria-expanded="'+open+'"><span class="un">'+N(ui+1)+'</span><span class="ut"><b>'+u.title+'</b><small>'+u.sub+'</small></span><span class="pill">'+N(dd)+'/'+N(u.lessons.length)+'</span><i class="chev'+(open?' up':'')+'" aria-hidden="true"></i></button>';
+    h+='<section class="unit u'+((ui%4)+1)+'"><button class="uh" data-unit="'+ui+'" aria-expanded="'+open+'"><span class="un">'+N(ui+1)+'</span><span class="ut"><b>'+u.title+(u.lv==='a'?' <span class="advtag">متقدّم</span>':'')+'</b><small>'+u.sub+'</small></span><span class="pill">'+N(dd)+'/'+N(u.lessons.length)+'</span><i class="chev'+(open?' up':'')+'" aria-hidden="true"></i></button>';
     if(open){
       h+='<div class="path">';
       u.lessons.forEach(function(l,li){

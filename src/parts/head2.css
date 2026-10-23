@@ -168,3 +168,5 @@ html.rm #page.pgx{animation:none}
 .ak-chips .chip{white-space:normal;padding:6px 12px;font-size:.9rem;cursor:pointer;border:1px solid var(--line,#d9c9a3);background:var(--card,#fff);border-radius:999px}
 .ak-ayah{font-family:var(--quran,inherit);font-size:1.25rem;line-height:2;text-align:center;margin:4px 0}
 .ak-part{padding:8px 0;border-bottom:1px dashed var(--line,#d9c9a3)}.ak-part:last-child{border-bottom:0}
+.lvseg{margin:6px 0 10px}.lvseg button{font-size:.9rem}
+.advtag{display:inline-block;font-size:.68rem;font-weight:700;padding:1px 8px;border-radius:999px;background:var(--gold,#c8a24a);color:#2b2108;vertical-align:middle;margin-inline-start:6px}
