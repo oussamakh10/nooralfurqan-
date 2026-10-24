@@ -170,3 +170,21 @@ html.rm #page.pgx{animation:none}
 .ak-part{padding:8px 0;border-bottom:1px dashed var(--line,#d9c9a3)}.ak-part:last-child{border-bottom:0}
 .lvseg{margin:6px 0 10px}.lvseg button{font-size:.9rem}
 .advtag{display:inline-block;font-size:.68rem;font-weight:700;padding:1px 8px;border-radius:999px;background:var(--gold,#c8a24a);color:#2b2108;vertical-align:middle;margin-inline-start:6px}
+.mtg{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:8px}.mtc{display:grid;gap:8px;align-content:start}
+.mt{position:relative;padding:10px 8px;border-radius:14px;border:2px solid var(--line);background:var(--surface);font:inherit;color:inherit;cursor:pointer;min-height:48px;line-height:1.5}
+.mt.sel{outline:3px solid var(--gold)}.mt.right{background:var(--ok-soft,#d9f2e3);border-color:#1f9d62}.mt.wrong{background:#fde2e0;border-color:#d33}
+.mt.pc0{border-color:#1f9d62}.mt.pc1{border-color:#c8a24a}.mt.pc2{border-color:#3b82c4}.mt.pc3{border-color:#b04fa0}
+.mn{display:inline-grid;place-items:center;width:20px;height:20px;border-radius:50%;background:var(--accent);color:#fff;font-size:.75rem;margin-inline-end:6px}
+.tyin{width:100%;padding:14px;border-radius:14px;border:2px solid var(--line);background:var(--surface);font:inherit;font-size:1.15rem;color:inherit;text-align:center}
+.blank{display:inline-block;min-width:72px;border-bottom:3px solid var(--gold);padding:0 8px;text-align:center;color:var(--accent)}.blank.ok{color:#1f9d62}.blank.no{color:#d33}
+.opt.gone{opacity:.15;pointer-events:none}
+.tmb{height:6px;background:var(--line);margin:0 12px}.tmb i{display:block;height:100%;width:100%;background:var(--gold);transition:width .25s linear}
+.fcard{margin:20px 0;padding:36px 18px;border-radius:24px;border:3px solid var(--gold);background:var(--surface);text-align:center;min-height:220px;display:grid;align-content:center;cursor:pointer}
+@keyframes sheetUp{from{transform:translateY(100%)}to{transform:none}}
+@media (max-width:600px){
+ #cele:has(.setcard){place-items:end center;padding:0}
+ #cele .setcard{max-width:none;width:100%;border-radius:26px 26px 0 0;animation:sheetUp .28s cubic-bezier(.2,.8,.2,1);max-height:90dvh}
+ #cele .setcard::before{content:"";display:block;width:44px;height:5px;border-radius:3px;background:var(--line);margin:8px auto 0}
+}
+.sk{border-radius:12px;background:linear-gradient(90deg,var(--line) 25%,var(--surface) 50%,var(--line) 75%);background-size:200% 100%;animation:skm 1.2s infinite;height:16px;margin:8px 0}
+@keyframes skm{to{background-position:-200% 0}}

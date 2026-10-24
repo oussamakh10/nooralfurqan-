@@ -176,7 +176,7 @@ function askSend(txt){
   if(inp)inp.value='';AS.push({r:'u',t:q});
   const gd=askGuard(q);if(gd){AS.push({r:'a',t:gd.k,h:gd.h});renderAssistant();return}
   renderAssistant();
-  const out=$('#asa');out.innerHTML='<div class="card"><p class="muted">'+esc(g3(['جارٍ البحث…','Searching…','Recherche…']))+'</p></div>';
+  const out=$('#asa');out.innerHTML='<div class="card" aria-label="'+esc(g3(['جارٍ البحث…','Searching…','Recherche…']))+'"><div class="sk" style="width:85%"></div><div class="sk"></div><div class="sk" style="width:60%"></div></div>';
   askLocal(q).then(function(r){
     const done=function(h,t){AS.push({r:'a',t:t,h:h});renderAssistant();try{SND.coin()}catch(e){}};
     const lh=localHtml(r),lt=r.used?r.ctx.join('\n'):'لم أجد جوابًا في محتوى التطبيق.';

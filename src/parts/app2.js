@@ -64,6 +64,7 @@ function pageLearn(){
   h+='<div class="say"><div class="mas">'+hoopoe(mood,88)+'</div><div class="bubble"><p>'+msg+'</p><p class="muted" style="font-size:.9rem">أتممت '+N(dn)+' من '+N(ALL.length)+' درسًا في '+N(DATA.length)+' وحدة</p></div></div>'+
    '<div class="pbar gold" style="margin-bottom:10px"><i style="width:'+(dn/ALL.length*100)+'%"></i></div>'+
    '<div class="opts2" style="margin-bottom:6px">'+(cur?'<button class="btn sm" data-lesson="'+cur.id+'">تابع: '+cur.title+'</button>':'')+'<button class="btn sm ghost" data-act="place">اختبار تحديد المستوى</button></div>'+
+   '<div class="opts2" style="margin:6px 0"><button class="btn sm ghost" data-act="mixed">🎲 تمارين متنوعة</button><button class="btn sm ghost" data-act="cards">🃏 بطاقات</button><button class="btn sm ghost" data-tm="1" aria-pressed="'+(!!S.tmode)+'">⏱ تحدي الوقت: '+(S.tmode?'يعمل':'متوقف')+'</button></div>'+
    '<div class="seg lvseg" role="group" aria-label="المستوى">'+[[0,'كل المستويات'],[1,'أساسي'],[2,'متقدّم 🎓']].map(function(x){return '<button data-lvf="'+x[0]+'" aria-pressed="'+(lvf()===x[0])+'">'+x[1]+'</button>'}).join('')+'</div>';
   DATA.forEach(function(u,ui){
     if((lvf()===1&&u.lv==='a')||(lvf()===2&&u.lv!=='a'))return;
@@ -98,7 +99,7 @@ function closeOverlay(){
   $('#lesson').hidden=true;document.documentElement.classList.remove('lock');L=null;G=null;
   renderTop();renderPage();
 }
-function mkQ(q){return Object.assign({},q,{missed:false,opts:null,pool:null})}
+function mkQ(q){return Object.assign({},q,{missed:false,opts:null,pool:null,st:null,hid:null,dl:null})}
 function startLesson(id){
   const lesson=ALL.find(function(l){return l.id===id});
   L={lesson:lesson,queue:lesson.qs.map(mkQ),total:lesson.qs.length,solved:0,hearts:S.kids?99:5,gain:0,wrongs:0,state:'ask',sel:null,ans:[],ok:false,confirm:false,mood:'happy',say:'',combo:0,best:0};
@@ -111,47 +112,57 @@ function startReviewSession(){
 }
 function prep(q){
   if(q.t==='ord'){if(!q.pool){let p;do{p=shuffle(q.items)}while(p.join('|')===q.items.join('|')&&q.items.length>1);q.pool=p}}
+  else if(q.t==='match'){if(!q.st)q.st={right:shuffle(q.pairs.map(function(p){return p[1]})),sel:null,map:{}}}
+  else if(q.t==='type'){}
+  else if(q.t==='multi'){if(!q.opts)q.opts=shuffle(q.c.concat(q.w))}
   else if(!q.opts){q.opts=shuffle([q.c].concat(q.w))}
 }
 function renderLesson(){
   const q=L.queue[0];prep(q);
   const pct=Math.round(L.solved/L.total*100),checked=L.state==='checked';
-  const hint=checked?L.say:(q.t==='ord'?'اضغط على العناصر لترتيبها.':'اختر الإجابة الصحيحة.');
+  const hint=checked?L.say:(q.t==='ord'?'اضغط على العناصر لترتيبها.':(QT[q.t]?QT[q.t].hint:'اختر الإجابة الصحيحة.'));
   let h='<div class="ltop"><button class="xbtn" data-act="quit" aria-label="خروج من الدرس">'+IC.x+'</button>'+
     '<div class="bar" role="progressbar" aria-valuenow="'+pct+'" aria-valuemin="0" aria-valuemax="100"><i style="width:'+pct+'%"></i></div>'+
     '<div class="hearts" aria-label="القلوب المتبقية">'+IC.heart+'<span>'+(L.hearts>9?'∞':N(L.hearts))+'</span></div></div>';
-  h+='<div class="lmain"><h2 class="qtext">'+q.q+'</h2>'+
+  h+=(S.tmode&&!checked?'<div class="tmb"><i id="tmb"></i></div>':'')+'<div class="lmain"><h2 class="qtext">'+qtShow(q)+'</h2>'+
     '<div class="say" style="margin:0"><div class="mas">'+hoopoe(L.mood,72)+'</div><div class="bubble"><p>'+hint+'</p>'+(L.combo>=2?'<span class="combo">'+IC.flame.replace('<svg','<svg width="16" height="16"')+' تتابع ×'+N(L.combo)+'</span>':'')+'</div></div>';
   if(q.t==='ord'){
     h+='<div class="ans" aria-label="الترتيب الحالي">'+L.ans.map(function(t,i){return '<button class="tile" data-un="'+i+'" '+(checked?'disabled':'')+'>'+t+'</button>'}).join('')+'</div>'+
        '<div class="pool">'+q.pool.filter(function(t){return !L.ans.includes(t)}).map(function(t){return '<button class="tile" data-add="'+esc(t)+'" '+(checked?'disabled':'')+'>'+t+'</button>'}).join('')+'</div>';
+  }else if(QT[q.t]){
+    h+=QT[q.t].body(q,checked);
   }else{
     h+='<div class="opts">'+q.opts.map(function(o,i){
-      let c='';
+      let c='';if(q.hid&&q.hid.indexOf(i)>=0)c=' gone';
       if(checked){if(o===q.c)c=' right';else if(i===L.sel)c=' wrong'}
       else if(i===L.sel)c=' sel';
       return '<button class="opt'+c+'" data-opt="'+i+'" '+(checked?'disabled':'')+'><span class="k">'+N(i+1)+'</span><span>'+o+'</span></button>'}).join('')+'</div>';
   }
   h+='</div>';
   if(!checked){
-    const ready=q.t==='ord'?L.ans.length===q.items.length:L.sel!==null;
-    h+='<div class="lfoot"><div class="in"><button class="btn" data-act="check" '+(ready?'':'disabled')+'>تحقق</button></div></div>';
+    const ready=q.t==='ord'?L.ans.length===q.items.length:(QT[q.t]?QT[q.t].ready(q):L.sel!==null);
+    const canHint=(!q.t||q.t==='fill')&&!q.hid&&q.opts&&q.opts.length>=4;
+    h+='<div class="lfoot"><div class="in" style="display:grid;gap:8px">'+(canHint?'<button class="btn ghost sm" data-hint="1">💡 تلميح (−3 نقاط)</button>':'')+'<button class="btn" data-act="check" '+(ready?'':'disabled')+'>تحقق</button></div></div>';
   }else{
-    const ans=q.t==='ord'?q.items.join(' ثم '):q.c;
+    const ans=q.t==='ord'?q.items.join(' ثم '):(QT[q.t]?QT[q.t].ans(q):q.c);
     h+='<div class="lfoot '+(L.ok?'ok':'bad')+'" aria-live="polite"><div class="in"><div class="fb">'+
       (L.ok?'<h3>'+pick(PRAISE)+'</h3>':'<h3>الإجابة الصحيحة</h3><p><b>'+ans+'</b></p>')+
       (q.n?'<p>'+q.n+'</p>':'')+'</div><button class="btn '+(L.ok?'':'bad')+'" data-act="next">متابعة</button></div></div>';
   }
   if(L.confirm)h+='<div class="modal"><div class="card"><div class="mas" style="display:grid;place-items:center">'+hoopoe('sad',84)+'</div><h3>هل تريد الخروج؟</h3><p class="muted">ستفقد تقدمك في هذا الدرس.</p><button class="btn" data-act="stay">أكمل الدرس</button><button class="btn ghost" data-act="leave">اخرج</button></div></div>';
   $('#lesson').innerHTML=h;
+  qtTick();
 }
 function checkLesson(){
   const q=L.queue[0];let ok;
-  if(q.t==='ord')ok=L.ans.join('|')===q.items.join('|');
+  if(L.force)ok=false;
+  else if(q.t==='ord')ok=L.ans.join('|')===q.items.join('|');
+  else if(QT[q.t])ok=QT[q.t].check(q);
   else ok=q.opts[L.sel]===q.c;
+  L.force=false;qtStop();
   L.ok=ok;L.state='checked';S.q++;
   if(!q.missed){if(q.f)fsRec(q.f,ok);if(L.placement&&ok)L.pc++}
-  if(q.t!=='ord'&&!q.missed&&!L.placement)srUpdate(q,ok);
+  if((!q.t||q.t==='fill')&&!q.missed&&!L.placement)srUpdate(q,ok);
   if(ok){
     S.qc++;if(!q.missed)L.combo++;L.best=Math.max(L.best,L.combo);
     if(L.combo>=3){L.mood='wow';L.say='تتابع ×'+N(L.combo)+'! ما شاء الله!';SND.combo(L.combo)}
@@ -163,12 +174,12 @@ function checkLesson(){
 }
 function nextLesson(){
   const q=L.queue[0];
-  if(L.placement){L.queue.shift();L.solved++;if(L.queue.length===0)return placementResult();L.state='ask';L.sel=null;L.ans=[];L.mood='happy';return renderLesson()}
+  if(L.placement){L.queue.shift();L.solved++;if(L.queue.length===0)return placementResult();L.state='ask';L.sel=null;L.ans=[];L.ms=[];L.tv='';L.force=false;L.mood='happy';return renderLesson()}
   if(L.ok){L.gain+=(q.missed?5:10)+(L.combo>=3?2:0);L.solved++;L.queue.shift()}
-  else{q.missed=true;q.opts=null;q.pool=null;L.queue.push(L.queue.shift())}
+  else{q.missed=true;q.opts=null;q.pool=null;q.st=null;q.hid=null;q.dl=null;L.queue.push(L.queue.shift())}
   if(L.hearts<=0&&!L.ok)return failLesson();
   if(L.queue.length===0)return finishLesson();
-  L.state='ask';L.sel=null;L.ans=[];L.mood='happy';renderLesson();
+  L.state='ask';L.sel=null;L.ans=[];L.ms=[];L.tv='';L.force=false;L.mood='happy';renderLesson();
 }
 function confetti(){
   const cols=['var(--gold)','var(--accent)','var(--c2)','var(--c4)','var(--flame)'];let h='';
