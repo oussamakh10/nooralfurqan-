@@ -2,22 +2,6 @@
 (function(){
   const PLAY_URL='';/* ضع رابط التطبيق في Play Store هنا بعد النشر */
   const SITE_=(typeof SITE!=='undefined'&&SITE)||'https://nooralfurqan.netlify.app';
-  /* شاشة البداية: دخول فخم هادئ */
-  try{
-    if(!sessionStorage.getItem('nfsp')){
-      sessionStorage.setItem('nfsp','1');
-      const d=document.createElement('div');d.id='splash';
-      let st='';for(let i=0;i<34;i++){st+='<i style="left:'+((i*37+11)%100)+'%;top:'+((i*53+7)%100)+'%;animation-delay:'+((i%9)*0.5)+'s;width:'+(2+(i%3))+'px;height:'+(2+(i%3))+'px"></i>'}
-      const star='<svg class="spor" viewBox="-200 -200 400 400" aria-hidden="true"><g fill="none" stroke="#e6c473" stroke-linejoin="round"><circle r="190" stroke-width="1.2" class="dr"/><circle r="172" stroke-width=".8" stroke-dasharray="2 7" opacity=".7"/><rect x="-120" y="-120" width="240" height="240" stroke-width="1.6" class="dr"/><rect x="-120" y="-120" width="240" height="240" stroke-width="1.6" transform="rotate(45)" class="dr"/><circle r="146" stroke-width=".8" opacity=".55"/><rect x="-84" y="-84" width="168" height="168" stroke-width="1" transform="rotate(22.5)" opacity=".5"/><rect x="-84" y="-84" width="168" height="168" stroke-width="1" transform="rotate(67.5)" opacity=".5"/></g></svg>';
-      const corner='<svg class="spcn" viewBox="0 0 80 80" aria-hidden="true"><g fill="none" stroke="#e6c473" stroke-width="1.4"><path d="M6 74V30Q6 6 30 6H74" /><path d="M16 74V34Q16 16 34 16H74" opacity=".5"/><circle cx="30" cy="30" r="5"/><path d="M30 20l3 7 7 3-7 3-3 7-3-7-7-3 7-3z" fill="#e6c473" stroke="none" opacity=".9"/></g></svg>';
-      d.innerHTML='<div class="spst">'+st+'</div><div class="spglow"></div>'+
-        '<div class="spcns"><span class="c1">'+corner+'</span><span class="c2">'+corner+'</span><span class="c3">'+corner+'</span><span class="c4">'+corner+'</span></div>'+
-        '<div class="spc"><div class="sparch">'+star+'<div class="mas sph">'+hoopoe('happy',128)+'</div></div><h1><span>نور الفرقان</span></h1><div class="spdv"><b></b><em>✦</em><b></b></div><p class="spv">﴿وَقُل رَّبِّ زِدْنِي عِلْمًا﴾</p><small>'+esc(g3(['رفيقك لتعلّم الدين خطوة خطوة','Learn your faith step by step','Apprenez votre foi pas à pas']))+'</small></div><div class="spbar"><b></b></div>';
-      document.body.appendChild(d);
-      const end=function(){if(!d.isConnected||d.classList.contains('out'))return;d.classList.add('out');setTimeout(function(){d.remove()},1000)};
-      d.addEventListener('click',end);setTimeout(end,5200);
-    }
-  }catch(e){}
   /* اختصارات ?go= */
   try{const g=new URLSearchParams(location.search).get('go');if(g&&['learn','read','dhikr','home','ach','games','listen'].indexOf(g)>=0)setTimeout(function(){go(g)},400)}catch(e){}
   /* حجم الخط */
