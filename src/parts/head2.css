@@ -211,3 +211,9 @@ html.rm #page.pgx{animation:none}
 .dg .ring{flex:none;width:76px;height:76px;border-radius:50%;display:grid;place-items:center;background:conic-gradient(var(--accent) var(--p),var(--line) 0)}
 .dg .ring b{display:grid;place-items:center;width:58px;height:58px;border-radius:50%;background:var(--surface);font-size:.95rem}
 .dg .dgt{display:grid;gap:4px;flex:1}
+#splash{position:fixed;inset:0;z-index:9999;display:grid;place-items:center;text-align:center;background:linear-gradient(#0f3b3a,#0b2a28);color:#fff;transition:opacity .45s}
+#splash.out{opacity:0;pointer-events:none}
+#splash h1{font-size:2.2rem;margin:10px 0 4px;color:#d9b45a}#splash p{opacity:.8}
+button,.btn,.tag,[data-go],.setrow>*{min-height:44px}
+.tag{min-width:44px}
+#splash .mas{display:flex;justify-content:center;margin:0 auto}
