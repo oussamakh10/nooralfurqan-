@@ -2,12 +2,16 @@
 (function(){
   const PLAY_URL='';/* ضع رابط التطبيق في Play Store هنا بعد النشر */
   const SITE_=(typeof SITE!=='undefined'&&SITE)||'https://nooralfurqan.netlify.app';
-  /* شاشة البداية */
+  /* شاشة البداية: دخول هادئ */
   try{
     if(!sessionStorage.getItem('nfsp')){
       sessionStorage.setItem('nfsp','1');
-      const d=document.createElement('div');d.id='splash';d.innerHTML='<div><div class="mas">'+hoopoe('happy',120)+'</div><h1>نور الفرقان</h1><p>'+esc(g3(['رفيقك لتعلّم الدين خطوة خطوة','Learn your faith step by step','Apprenez votre foi pas à pas']))+'</p></div>';
-      document.body.appendChild(d);setTimeout(function(){d.classList.add('out');setTimeout(function(){d.remove()},450)},900);
+      const d=document.createElement('div');d.id='splash';
+      let st='';for(let i=0;i<26;i++){st+='<i style="left:'+((i*37+11)%100)+'%;top:'+((i*53+7)%100)+'%;animation-delay:'+((i%9)*0.45)+'s;width:'+(2+(i%3))+'px;height:'+(2+(i%3))+'px"></i>'}
+      d.innerHTML='<div class="spst">'+st+'</div><div class="spglow"></div><div class="spc"><div class="mas sph">'+hoopoe('happy',132)+'</div><h1>نور الفرقان</h1><p class="spv">﴿وَقُل رَّبِّ زِدْنِي عِلْمًا﴾</p><small>'+esc(g3(['رفيقك لتعلّم الدين خطوة خطوة','Learn your faith step by step','Apprenez votre foi pas à pas']))+'</small></div><div class="spbar"><b></b></div>';
+      document.body.appendChild(d);
+      const end=function(){if(!d.isConnected||d.classList.contains('out'))return;d.classList.add('out');setTimeout(function(){d.remove()},800)};
+      d.addEventListener('click',end);setTimeout(end,2900);
     }
   }catch(e){}
   /* اختصارات ?go= */
