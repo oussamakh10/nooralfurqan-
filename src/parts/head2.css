@@ -207,3 +207,7 @@ html.rm #page.pgx{animation:none}
 .rm .mas svg{animation:none!important}
 .offp{position:fixed;top:calc(8px + env(safe-area-inset-top,0px));left:50%;transform:translateX(-50%);z-index:90;background:var(--surface);color:var(--fg);border:2px solid var(--gold);border-radius:999px;padding:4px 14px;font-size:.85rem;box-shadow:0 4px 12px #0003}
 .offp[hidden]{display:none}
+.dg{display:flex;gap:14px;align-items:center;text-align:start}
+.dg .ring{flex:none;width:76px;height:76px;border-radius:50%;display:grid;place-items:center;background:conic-gradient(var(--accent) var(--p),var(--line) 0)}
+.dg .ring b{display:grid;place-items:center;width:58px;height:58px;border-radius:50%;background:var(--surface);font-size:.95rem}
+.dg .dgt{display:grid;gap:4px;flex:1}
