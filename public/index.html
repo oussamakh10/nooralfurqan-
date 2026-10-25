@@ -445,6 +445,37 @@ html:not([lang="ar"]) body{font-family:var(--text)}
 #splash .dbc{margin-top:-30%}
 #splash .dbv,#splash .dbs{text-shadow:0 1px 10px #04121c,0 0 18px #04121ccc}
 #splash .dbsun{bottom:2%;width:300px;height:300px;margin-left:-150px}
+/* ===== شاشة الدخول c: المصحف ===== */
+#splash.vc{background:radial-gradient(120% 90% at 50% 40%,#fffaf0 0%,#f8edcc 55%,#ecd9a2 100%);color:#0f3b3a;transition:opacity 1.1s ease,transform 1.1s cubic-bezier(.4,0,.2,1)}
+#splash .dcpat{position:absolute;inset:-64px;width:calc(100% + 128px);height:calc(100% + 128px);opacity:.13;animation:dcdr 40s linear infinite}
+@keyframes dcdr{to{transform:translate(64px,64px)}}
+#splash .dcray{position:absolute;left:50%;top:44%;width:900px;height:900px;margin:-450px 0 0 -450px;border-radius:50%;background:repeating-conic-gradient(from 0deg,#f0c75a55 0 6deg,transparent 6deg 18deg);-webkit-mask:radial-gradient(circle,#000 0%,transparent 62%);mask:radial-gradient(circle,#000 0%,transparent 62%);opacity:0;animation:dcri 2.2s 1.2s ease-out forwards,dcrot 60s linear infinite}
+@keyframes dcri{to{opacity:.9}}@keyframes dcrot{to{transform:rotate(360deg)}}
+#splash .dcpt{position:absolute;left:0;right:0;top:0;bottom:0}
+#splash .dcpt i{position:absolute;bottom:38%;border-radius:50%;background:#d9a93a;box-shadow:0 0 8px #f0c75a;opacity:0;animation:dcup 4s ease-out infinite}
+@keyframes dcup{0%{opacity:0;transform:translateY(0) scale(.6)}20%{opacity:.95}100%{opacity:0;transform:translateY(-190px) scale(1)}}
+#splash .dcc{position:relative;display:grid;gap:4px;justify-items:center;margin-top:-4%}
+#splash .dch{position:relative;z-index:2;margin-bottom:-22px;opacity:0;transform:translateY(40px) scale(.7);animation:dcpop 1.3s 2.2s cubic-bezier(.3,1.5,.5,1) forwards,dcbob 4.6s 3.6s ease-in-out infinite}
+@keyframes dcpop{to{opacity:1;transform:none}}@keyframes dcbob{0%,100%{transform:translateY(0)}50%{transform:translateY(-4px)}}
+#splash .dch .mas{filter:drop-shadow(0 8px 14px #0f3b3a55)}
+#splash .dcb{width:250px;transform:scale(.8);opacity:0;animation:dcbk 1.2s .2s cubic-bezier(.2,.8,.2,1) forwards}
+@keyframes dcbk{to{opacity:1;transform:none}}
+#splash .dcbk{width:100%;display:block;filter:drop-shadow(0 12px 14px #0f3b3a40)}
+#splash .dcbk .pgl,#splash .dcbk .pgr{transform-box:view-box;transform-origin:50% 60%;transform:scaleX(0);animation:dcpg 1.4s .8s cubic-bezier(.3,.9,.3,1) forwards}
+@keyframes dcpg{to{transform:scaleX(1)}}
+#splash .dct{font-size:2.6rem;font-weight:700;line-height:1.35;margin-top:14px;color:#0f4a42}
+#splash .dct span{display:inline-block;opacity:0;letter-spacing:.3em;filter:blur(6px);animation:dctt 1.6s 3s cubic-bezier(.2,.7,.2,1) forwards}
+@keyframes dctt{to{opacity:1;letter-spacing:0;filter:blur(0)}}
+#splash .dcl{display:flex;align-items:center;gap:10px;width:0;overflow:hidden;animation:dcln 1.2s 3.9s ease-out forwards}
+@keyframes dcln{to{width:200px}}
+#splash .dcl b{flex:1;height:1.5px;background:linear-gradient(90deg,transparent,#b8892e,transparent)}
+#splash .dcl em{color:#b8892e;font-style:normal;font-size:.9rem}
+#splash .dcv{margin:2px 0 0;font:400 1.3rem/1.9 var(--quran,serif);color:#0f3b3a;opacity:0;animation:spu 1.2s 4.2s cubic-bezier(.2,.7,.2,1) forwards}
+#splash .dcs{color:#0f3b3a99;font-size:.95rem;opacity:0;animation:spu 1.1s 4.7s ease-out forwards}
+#splash .dcdots{position:absolute;bottom:6%;left:0;right:0;display:flex;justify-content:center;gap:9px}
+#splash .dcdots i{width:7px;height:7px;border-radius:50%;background:#b8892e;opacity:.25;animation:dcdt 1.2s ease-in-out infinite}
+#splash .dcdots i:nth-child(2){animation-delay:.2s}#splash .dcdots i:nth-child(3){animation-delay:.4s}
+@keyframes dcdt{0%,100%{opacity:.25;transform:scale(.8)}50%{opacity:1;transform:scale(1.2)}}
 </style>
 <div class="bgpat" id="bg"></div>
 <header class="top" id="top"></header>
@@ -4603,7 +4634,7 @@ function fbOut(del){
 })();
 
 /* ================= لمسات احترافية: شاشة البداية، التثبيت، التحديث، عن التطبيق والخصوصية ================= */
-const APPVER='26';
+const APPVER='27';
 function isStandalone(){try{return window.matchMedia('(display-mode: standalone)').matches||navigator.standalone===true}catch(e){return false}}
 function isIOS(){return (/iphone|ipad|ipod/i.test(navigator.userAgent)||(navigator.platform==='MacIntel'&&navigator.maxTouchPoints>1))&&!window.MSStream}
 const HOSTED=!(window.claude&&claude.use)&&/^https?:$/.test(location.protocol);
@@ -6535,11 +6566,19 @@ document.addEventListener('click',function(e){
       '<div class="dbc"><div class="dbh">'+hoopoe('happy',120)+'</div><div class="dbt"><span>نور الفرقان</span></div><div class="dbl"></div><p class="dbv">﴿وَقُل رَّبِّ زِدْنِي عِلْمًا﴾</p><div class="dbs">'+slogan()+'</div></div><div class="dbbar"><b></b></div>';
     return 5600;
   }
+  function buildC(d){
+    const tile='<svg class="dcpat" aria-hidden="true"><defs><pattern id="dcp" width="64" height="64" patternUnits="userSpaceOnUse"><g fill="none" stroke="#b8892e" stroke-width="1"><rect x="14" y="14" width="36" height="36"/><rect x="14" y="14" width="36" height="36" transform="rotate(45 32 32)"/><circle cx="32" cy="32" r="6"/></g></pattern></defs><rect width="100%" height="100%" fill="url(#dcp)"/></svg>';
+    const book='<svg class="dcbk" viewBox="0 0 240 150" aria-hidden="true"><path d="M8 132Q120 154 232 132V112Q120 132 8 112Z" fill="#0f5c52"/><path d="M8 132Q120 154 232 132" fill="none" stroke="#d9b45a" stroke-width="2"/><g class="pgl"><path d="M120 126Q70 106 12 113V30Q70 22 120 42Z" fill="#fffaf0" stroke="#c9a14a" stroke-width="1.5"/><g stroke="#b8892e" stroke-width="1.4" opacity=".6" fill="none"><path d="M30 52Q70 46 108 58M30 66Q70 60 108 72M30 80Q70 74 108 86M30 94Q70 88 108 100"/></g></g><g class="pgr"><path d="M120 126Q170 106 228 113V30Q170 22 120 42Z" fill="#fffaf0" stroke="#c9a14a" stroke-width="1.5"/><g stroke="#b8892e" stroke-width="1.4" opacity=".6" fill="none"><path d="M132 58Q170 46 210 52M132 72Q170 60 210 66M132 86Q170 74 210 80M132 100Q170 88 210 94"/></g></g></svg>';
+    let pr='';for(let i=0;i<18;i++){pr+='<i style="left:'+(30+((i*29)%46))+'%;animation-delay:'+(1.4+(i%9)*0.32)+'s;animation-duration:'+(3.2+(i%4)*0.5)+'s;width:'+(3+(i%3))+'px;height:'+(3+(i%3))+'px"></i>'}
+    d.className='vc';
+    d.innerHTML=tile+'<div class="dcray"></div><div class="dcpt">'+pr+'</div><div class="dcc"><div class="dch">'+hoopoe('happy',112)+'</div><div class="dcb">'+book+'</div><div class="dct"><span>نور الفرقان</span></div><div class="dcl"><b></b><em>✦</em><b></b></div><p class="dcv">﴿وَقُل رَّبِّ زِدْنِي عِلْمًا﴾</p><div class="dcs">'+slogan()+'</div></div><div class="dcdots"><i></i><i></i><i></i></div>';
+    return 5600;
+  }
   window.showSplash=function(kind){
     try{
       const old=document.getElementById('splash');if(old)old.remove();
       const d=document.createElement('div');d.id='splash';
-      const ms=(kind==='a'?buildA:buildB)(d);
+      const ms=(kind==='a'?buildA:kind==='c'?buildC:buildB)(d);
       document.body.appendChild(d);
       const end=function(){if(!d.isConnected||d.classList.contains('out'))return;d.classList.add('out');setTimeout(function(){d.remove()},1000)};
       d.addEventListener('click',end);setTimeout(end,ms);
@@ -6549,7 +6588,7 @@ document.addEventListener('click',function(e){
   const es=extraSettings;
   extraSettings=function(){
     const k=S.spv||'b';
-    return es()+'<div class="setrow"><span>'+esc(g3(['شاشة الدخول','Intro screen','Écran d’accueil']))+'</span><span class="opts2"><button class="tag" data-spv="b" aria-pressed="'+(k==='b')+'">'+esc(g3(['الفجر','Dawn','Aube']))+'</button><button class="tag" data-spv="a" aria-pressed="'+(k==='a')+'">'+esc(g3(['الزخرفية','Ornate','Ornée']))+'</button></span></div>';
+    return es()+'<div class="setrow"><span>'+esc(g3(['شاشة الدخول','Intro screen','Écran d’accueil']))+'</span><span class="opts2"><button class="tag" data-spv="b" aria-pressed="'+(k==='b')+'">'+esc(g3(['الفجر','Dawn','Aube']))+'</button><button class="tag" data-spv="a" aria-pressed="'+(k==='a')+'">'+esc(g3(['الزخرفية','Ornate','Ornée']))+'</button><button class="tag" data-spv="c" aria-pressed="'+(k==='c')+'">'+esc(g3(['المصحف','Mushaf','Mushaf']))+'</button></span></div>';
   };
   document.addEventListener('click',function(e){
     const b=e.target.closest&&e.target.closest('[data-spv]');if(!b)return;

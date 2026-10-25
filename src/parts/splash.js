@@ -21,11 +21,19 @@
       '<div class="dbc"><div class="dbh">'+hoopoe('happy',120)+'</div><div class="dbt"><span>نور الفرقان</span></div><div class="dbl"></div><p class="dbv">﴿وَقُل رَّبِّ زِدْنِي عِلْمًا﴾</p><div class="dbs">'+slogan()+'</div></div><div class="dbbar"><b></b></div>';
     return 5600;
   }
+  function buildC(d){
+    const tile='<svg class="dcpat" aria-hidden="true"><defs><pattern id="dcp" width="64" height="64" patternUnits="userSpaceOnUse"><g fill="none" stroke="#b8892e" stroke-width="1"><rect x="14" y="14" width="36" height="36"/><rect x="14" y="14" width="36" height="36" transform="rotate(45 32 32)"/><circle cx="32" cy="32" r="6"/></g></pattern></defs><rect width="100%" height="100%" fill="url(#dcp)"/></svg>';
+    const book='<svg class="dcbk" viewBox="0 0 240 150" aria-hidden="true"><path d="M8 132Q120 154 232 132V112Q120 132 8 112Z" fill="#0f5c52"/><path d="M8 132Q120 154 232 132" fill="none" stroke="#d9b45a" stroke-width="2"/><g class="pgl"><path d="M120 126Q70 106 12 113V30Q70 22 120 42Z" fill="#fffaf0" stroke="#c9a14a" stroke-width="1.5"/><g stroke="#b8892e" stroke-width="1.4" opacity=".6" fill="none"><path d="M30 52Q70 46 108 58M30 66Q70 60 108 72M30 80Q70 74 108 86M30 94Q70 88 108 100"/></g></g><g class="pgr"><path d="M120 126Q170 106 228 113V30Q170 22 120 42Z" fill="#fffaf0" stroke="#c9a14a" stroke-width="1.5"/><g stroke="#b8892e" stroke-width="1.4" opacity=".6" fill="none"><path d="M132 58Q170 46 210 52M132 72Q170 60 210 66M132 86Q170 74 210 80M132 100Q170 88 210 94"/></g></g></svg>';
+    let pr='';for(let i=0;i<18;i++){pr+='<i style="left:'+(30+((i*29)%46))+'%;animation-delay:'+(1.4+(i%9)*0.32)+'s;animation-duration:'+(3.2+(i%4)*0.5)+'s;width:'+(3+(i%3))+'px;height:'+(3+(i%3))+'px"></i>'}
+    d.className='vc';
+    d.innerHTML=tile+'<div class="dcray"></div><div class="dcpt">'+pr+'</div><div class="dcc"><div class="dch">'+hoopoe('happy',112)+'</div><div class="dcb">'+book+'</div><div class="dct"><span>نور الفرقان</span></div><div class="dcl"><b></b><em>✦</em><b></b></div><p class="dcv">﴿وَقُل رَّبِّ زِدْنِي عِلْمًا﴾</p><div class="dcs">'+slogan()+'</div></div><div class="dcdots"><i></i><i></i><i></i></div>';
+    return 5600;
+  }
   window.showSplash=function(kind){
     try{
       const old=document.getElementById('splash');if(old)old.remove();
       const d=document.createElement('div');d.id='splash';
-      const ms=(kind==='a'?buildA:buildB)(d);
+      const ms=(kind==='a'?buildA:kind==='c'?buildC:buildB)(d);
       document.body.appendChild(d);
       const end=function(){if(!d.isConnected||d.classList.contains('out'))return;d.classList.add('out');setTimeout(function(){d.remove()},1000)};
       d.addEventListener('click',end);setTimeout(end,ms);
@@ -35,7 +43,7 @@
   const es=extraSettings;
   extraSettings=function(){
     const k=S.spv||'b';
-    return es()+'<div class="setrow"><span>'+esc(g3(['شاشة الدخول','Intro screen','Écran d’accueil']))+'</span><span class="opts2"><button class="tag" data-spv="b" aria-pressed="'+(k==='b')+'">'+esc(g3(['الفجر','Dawn','Aube']))+'</button><button class="tag" data-spv="a" aria-pressed="'+(k==='a')+'">'+esc(g3(['الزخرفية','Ornate','Ornée']))+'</button></span></div>';
+    return es()+'<div class="setrow"><span>'+esc(g3(['شاشة الدخول','Intro screen','Écran d’accueil']))+'</span><span class="opts2"><button class="tag" data-spv="b" aria-pressed="'+(k==='b')+'">'+esc(g3(['الفجر','Dawn','Aube']))+'</button><button class="tag" data-spv="a" aria-pressed="'+(k==='a')+'">'+esc(g3(['الزخرفية','Ornate','Ornée']))+'</button><button class="tag" data-spv="c" aria-pressed="'+(k==='c')+'">'+esc(g3(['المصحف','Mushaf','Mushaf']))+'</button></span></div>';
   };
   document.addEventListener('click',function(e){
     const b=e.target.closest&&e.target.closest('[data-spv]');if(!b)return;
