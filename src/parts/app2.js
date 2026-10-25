@@ -125,7 +125,7 @@ function renderLesson(){
     '<div class="bar" role="progressbar" aria-valuenow="'+pct+'" aria-valuemin="0" aria-valuemax="100"><i style="width:'+pct+'%"></i></div>'+
     '<div class="hearts" aria-label="القلوب المتبقية">'+IC.heart+'<span>'+(L.hearts>9?'∞':N(L.hearts))+'</span></div></div>';
   h+=(S.tmode&&!checked?'<div class="tmb"><i id="tmb"></i></div>':'')+'<div class="lmain"><h2 class="qtext">'+qtShow(q)+'</h2>'+
-    '<div class="say" style="margin:0"><div class="mas">'+hoopoe(L.mood,72)+'</div><div class="bubble"><p>'+hint+'</p>'+(L.combo>=2?'<span class="combo">'+IC.flame.replace('<svg','<svg width="16" height="16"')+' تتابع ×'+N(L.combo)+'</span>':'')+'</div></div>';
+    '<div class="say" style="margin:0"><div class="mas '+L.mood+'">'+hoopoe(L.mood,72)+'</div><div class="bubble"><p>'+hint+'</p>'+(L.combo>=2?'<span class="combo">'+IC.flame.replace('<svg','<svg width="16" height="16"')+' تتابع ×'+N(L.combo)+'</span>':'')+'</div></div>';
   if(q.t==='ord'){
     h+='<div class="ans" aria-label="الترتيب الحالي">'+L.ans.map(function(t,i){return '<button class="tile" data-un="'+i+'" '+(checked?'disabled':'')+'>'+t+'</button>'}).join('')+'</div>'+
        '<div class="pool">'+q.pool.filter(function(t){return !L.ans.includes(t)}).map(function(t){return '<button class="tile" data-add="'+esc(t)+'" '+(checked?'disabled':'')+'>'+t+'</button>'}).join('')+'</div>';

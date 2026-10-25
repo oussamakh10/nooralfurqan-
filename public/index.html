@@ -470,6 +470,25 @@ html.rm #page.pgx{animation:none}
 }
 .sk{border-radius:12px;background:linear-gradient(90deg,var(--line) 25%,var(--surface) 50%,var(--line) 75%);background-size:200% 100%;animation:skm 1.2s infinite;height:16px;margin:8px 0}
 @keyframes skm{to{background-position:-200% 0}}
+/* لوحات الألوان */
+:root[data-pal="gold"]{--accent:#A8730A;--accent-d:#7E5506;--accent-soft:#F1DFA8;--c1:#A8730A;--c1d:#7E5506}
+:root[data-pal="ocean"]{--accent:#1C7E9E;--accent-d:#12607A;--accent-soft:#CBE6EF;--c1:#1C7E9E;--c1d:#12607A}
+:root[data-pal="rose"]{--accent:#B8456B;--accent-d:#8E3050;--accent-soft:#F3D3DD;--c1:#B8456B;--c1d:#8E3050}
+@media (prefers-color-scheme:dark){
+ :root:not([data-theme="light"])[data-pal="gold"]{--accent:#F2C14A;--accent-d:#B98615;--accent-soft:#3A2F10;--on-accent:#2B2108;--c1:#F2C14A;--c1d:#B98615}
+ :root:not([data-theme="light"])[data-pal="ocean"]{--accent:#4DB8D8;--accent-d:#2A86A3;--accent-soft:#12303A;--on-accent:#04222B;--c1:#4DB8D8;--c1d:#2A86A3}
+ :root:not([data-theme="light"])[data-pal="rose"]{--accent:#F08AAB;--accent-d:#B8456B;--accent-soft:#3D1C29;--on-accent:#34101E;--c1:#F08AAB;--c1d:#B8456B}}
+:root[data-theme="dark"][data-pal="gold"]{--accent:#F2C14A;--accent-d:#B98615;--accent-soft:#3A2F10;--on-accent:#2B2108;--c1:#F2C14A;--c1d:#B98615}
+:root[data-theme="dark"][data-pal="ocean"]{--accent:#4DB8D8;--accent-d:#2A86A3;--accent-soft:#12303A;--on-accent:#04222B;--c1:#4DB8D8;--c1d:#2A86A3}
+:root[data-theme="dark"][data-pal="rose"]{--accent:#F08AAB;--accent-d:#B8456B;--accent-soft:#3D1C29;--on-accent:#34101E;--c1:#F08AAB;--c1d:#B8456B}
+.palb{width:34px;height:34px;border-radius:50%;border:3px solid var(--line);padding:0;cursor:pointer}.palb[aria-pressed="true"]{border-color:var(--fg);outline:2px solid var(--gold)}
+@keyframes hphop{0%,100%{transform:translateY(0)}30%{transform:translateY(-16px) rotate(-4deg)}60%{transform:translateY(0) rotate(3deg)}}
+@keyframes hpshk{0%,100%{transform:none}20%{transform:translateX(-7px) rotate(-3deg)}40%{transform:translateX(7px) rotate(3deg)}60%{transform:translateX(-5px)}80%{transform:translateX(5px)}}
+.lmain .say .mas.cheer svg,.lmain .say .mas.wow svg{animation:hphop .7s ease-out}
+.lmain .say .mas.sad svg{animation:hpshk .55s ease-in-out}
+.rm .mas svg{animation:none!important}
+.offp{position:fixed;top:calc(8px + env(safe-area-inset-top,0px));left:50%;transform:translateX(-50%);z-index:90;background:var(--surface);color:var(--fg);border:2px solid var(--gold);border-radius:999px;padding:4px 14px;font-size:.85rem;box-shadow:0 4px 12px #0003}
+.offp[hidden]{display:none}
 </style>
 <div class="bgpat" id="bg"></div>
 <header class="top" id="top"></header>
@@ -3156,7 +3175,7 @@ function renderLesson(){
     '<div class="bar" role="progressbar" aria-valuenow="'+pct+'" aria-valuemin="0" aria-valuemax="100"><i style="width:'+pct+'%"></i></div>'+
     '<div class="hearts" aria-label="القلوب المتبقية">'+IC.heart+'<span>'+(L.hearts>9?'∞':N(L.hearts))+'</span></div></div>';
   h+=(S.tmode&&!checked?'<div class="tmb"><i id="tmb"></i></div>':'')+'<div class="lmain"><h2 class="qtext">'+qtShow(q)+'</h2>'+
-    '<div class="say" style="margin:0"><div class="mas">'+hoopoe(L.mood,72)+'</div><div class="bubble"><p>'+hint+'</p>'+(L.combo>=2?'<span class="combo">'+IC.flame.replace('<svg','<svg width="16" height="16"')+' تتابع ×'+N(L.combo)+'</span>':'')+'</div></div>';
+    '<div class="say" style="margin:0"><div class="mas '+L.mood+'">'+hoopoe(L.mood,72)+'</div><div class="bubble"><p>'+hint+'</p>'+(L.combo>=2?'<span class="combo">'+IC.flame.replace('<svg','<svg width="16" height="16"')+' تتابع ×'+N(L.combo)+'</span>':'')+'</div></div>';
   if(q.t==='ord'){
     h+='<div class="ans" aria-label="الترتيب الحالي">'+L.ans.map(function(t,i){return '<button class="tile" data-un="'+i+'" '+(checked?'disabled':'')+'>'+t+'</button>'}).join('')+'</div>'+
        '<div class="pool">'+q.pool.filter(function(t){return !L.ans.includes(t)}).map(function(t){return '<button class="tile" data-add="'+esc(t)+'" '+(checked?'disabled':'')+'>'+t+'</button>'}).join('')+'</div>';
@@ -3642,6 +3661,7 @@ function adkTap(i){
 function applyTheme(){
   const r=document.documentElement;
   if(S.theme==='dark'||S.theme==='light')r.setAttribute('data-theme',S.theme);else r.removeAttribute('data-theme');
+  if(S.pal&&S.pal!=='green')r.setAttribute('data-pal',S.pal);else r.removeAttribute('data-pal');
   document.body.classList.toggle('kids',!!S.kids);r.style.setProperty('--qs',S.qs||1);
 }
 function openSettings(){
@@ -4473,7 +4493,7 @@ function fbOut(del){
 })();
 
 /* ================= لمسات احترافية: شاشة البداية، التثبيت، التحديث، عن التطبيق والخصوصية ================= */
-const APPVER='20';
+const APPVER='21';
 function isStandalone(){try{return window.matchMedia('(display-mode: standalone)').matches||navigator.standalone===true}catch(e){return false}}
 function isIOS(){return (/iphone|ipad|ipod/i.test(navigator.userAgent)||(navigator.platform==='MacIntel'&&navigator.maxTouchPoints>1))&&!window.MSStream}
 const HOSTED=!(window.claude&&claude.use)&&/^https?:$/.test(location.protocol);
@@ -5573,7 +5593,7 @@ function finishGame(){
   /* ---------- الإعدادات ---------- */
   const _os=openSettings;
   const GR=[
-   ['look','🎨',['المظهر','Appearance','Apparence'],['data-theme=','data-hpv=','data-xhat=','data-set="kids"']],
+   ['look','🎨',['المظهر','Appearance','Apparence'],['data-theme=','data-pal=','data-hpv=','data-xhat=','data-set="kids"']],
    ['sound','🔊',['الصوت واللمس','Sound & touch','Son et vibrations'],['data-set="mute"','data-xvol','data-xhap']],
    ['read','📖',['القراءة والخط','Reading & text','Lecture et texte'],['data-qs=','data-xfs=','data-xset=']],
    ['pray','🕌',['الصلاة والتذكير','Prayer & reminders','Prière et rappels'],['methsel','remtime']],
@@ -6246,6 +6266,38 @@ document.addEventListener('click',function(e){
       closeOverlay();
     }
   });
+})();
+
+/* ===== لمسات: لوحات الألوان، شارة عدم الاتصال، الإبلاغ عند غياب الحساب ===== */
+(function(){
+  const PAL=[['green','#0F7A4C','أخضر','Green','Vert'],['gold','#A8730A','ذهبي','Gold','Or'],['ocean','#1C7E9E','أزرق','Blue','Bleu'],['rose','#B8456B','وردي','Rose','Rose']];
+  const es=extraSettings;
+  extraSettings=function(){
+    const cur=S.pal||'green';
+    return es()+'<div class="setrow"><span>'+esc(g3(['لون التطبيق','App color','Couleur']))+'</span><span class="opts2">'+PAL.map(function(p){return '<button class="palb" data-pal="'+p[0]+'" style="background:'+p[1]+'" aria-label="'+esc(g3([p[2],p[3],p[4]]))+'" aria-pressed="'+(cur===p[0])+'"></button>'}).join('')+'</span></div>';
+  };
+  document.addEventListener('click',function(e){
+    const b=e.target.closest&&e.target.closest('[data-pal]');if(!b)return;
+    S.pal=b.getAttribute('data-pal');save();applyTheme();openSettings();
+  });
+  /* شارة بلا إنترنت */
+  const pill=document.createElement('div');pill.className='offp';pill.hidden=true;pill.setAttribute('role','status');
+  pill.textContent=g3(['بلا إنترنت — يعمل التطبيق محليًا','Offline — the app works locally','Hors ligne — l’application fonctionne en local']);
+  document.body.appendChild(pill);
+  function upd(){pill.hidden=navigator.onLine!==false}
+  window.addEventListener('online',upd);window.addEventListener('offline',upd);upd();
+  /* الإبلاغ: إن لم يتوفر حساب نسخ البلاغ ليُلصق في رسالة */
+  const sr=sendReport;
+  sendReport=function(){
+    const had=!!(typeof DBH!=='undefined'&&DBH&&typeof UID!=='undefined'&&UID);
+    const note=(($('#repnote')||{}).value||'').trim();
+    const q=(typeof RC!=='undefined'&&RC&&RC.q)||'';
+    sr();
+    if(!had){
+      const txt='نور الفرقان — بلاغ\n'+(q?'السؤال: '+q+'\n':'')+(note?'الملاحظة: '+note:'');
+      try{navigator.clipboard.writeText(txt).then(function(){toast(g3(['نُسخ البلاغ؛ الصقه في رسالة لنا','Report copied; paste it in a message to us','Signalement copié ; collez-le dans un message']))})}catch(x){}
+    }
+  };
 })();
 
 /* ================= الأحداث ================= */

@@ -180,6 +180,7 @@ function adkTap(i){
 function applyTheme(){
   const r=document.documentElement;
   if(S.theme==='dark'||S.theme==='light')r.setAttribute('data-theme',S.theme);else r.removeAttribute('data-theme');
+  if(S.pal&&S.pal!=='green')r.setAttribute('data-pal',S.pal);else r.removeAttribute('data-pal');
   document.body.classList.toggle('kids',!!S.kids);r.style.setProperty('--qs',S.qs||1);
 }
 function openSettings(){

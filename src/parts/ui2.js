@@ -4,7 +4,7 @@
   /* ---------- الإعدادات ---------- */
   const _os=openSettings;
   const GR=[
-   ['look','🎨',['المظهر','Appearance','Apparence'],['data-theme=','data-hpv=','data-xhat=','data-set="kids"']],
+   ['look','🎨',['المظهر','Appearance','Apparence'],['data-theme=','data-pal=','data-hpv=','data-xhat=','data-set="kids"']],
    ['sound','🔊',['الصوت واللمس','Sound & touch','Son et vibrations'],['data-set="mute"','data-xvol','data-xhap']],
    ['read','📖',['القراءة والخط','Reading & text','Lecture et texte'],['data-qs=','data-xfs=','data-xset=']],
    ['pray','🕌',['الصلاة والتذكير','Prayer & reminders','Prière et rappels'],['methsel','remtime']],

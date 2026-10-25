@@ -188,3 +188,22 @@ html.rm #page.pgx{animation:none}
 }
 .sk{border-radius:12px;background:linear-gradient(90deg,var(--line) 25%,var(--surface) 50%,var(--line) 75%);background-size:200% 100%;animation:skm 1.2s infinite;height:16px;margin:8px 0}
 @keyframes skm{to{background-position:-200% 0}}
+/* لوحات الألوان */
+:root[data-pal="gold"]{--accent:#A8730A;--accent-d:#7E5506;--accent-soft:#F1DFA8;--c1:#A8730A;--c1d:#7E5506}
+:root[data-pal="ocean"]{--accent:#1C7E9E;--accent-d:#12607A;--accent-soft:#CBE6EF;--c1:#1C7E9E;--c1d:#12607A}
+:root[data-pal="rose"]{--accent:#B8456B;--accent-d:#8E3050;--accent-soft:#F3D3DD;--c1:#B8456B;--c1d:#8E3050}
+@media (prefers-color-scheme:dark){
+ :root:not([data-theme="light"])[data-pal="gold"]{--accent:#F2C14A;--accent-d:#B98615;--accent-soft:#3A2F10;--on-accent:#2B2108;--c1:#F2C14A;--c1d:#B98615}
+ :root:not([data-theme="light"])[data-pal="ocean"]{--accent:#4DB8D8;--accent-d:#2A86A3;--accent-soft:#12303A;--on-accent:#04222B;--c1:#4DB8D8;--c1d:#2A86A3}
+ :root:not([data-theme="light"])[data-pal="rose"]{--accent:#F08AAB;--accent-d:#B8456B;--accent-soft:#3D1C29;--on-accent:#34101E;--c1:#F08AAB;--c1d:#B8456B}}
+:root[data-theme="dark"][data-pal="gold"]{--accent:#F2C14A;--accent-d:#B98615;--accent-soft:#3A2F10;--on-accent:#2B2108;--c1:#F2C14A;--c1d:#B98615}
+:root[data-theme="dark"][data-pal="ocean"]{--accent:#4DB8D8;--accent-d:#2A86A3;--accent-soft:#12303A;--on-accent:#04222B;--c1:#4DB8D8;--c1d:#2A86A3}
+:root[data-theme="dark"][data-pal="rose"]{--accent:#F08AAB;--accent-d:#B8456B;--accent-soft:#3D1C29;--on-accent:#34101E;--c1:#F08AAB;--c1d:#B8456B}
+.palb{width:34px;height:34px;border-radius:50%;border:3px solid var(--line);padding:0;cursor:pointer}.palb[aria-pressed="true"]{border-color:var(--fg);outline:2px solid var(--gold)}
+@keyframes hphop{0%,100%{transform:translateY(0)}30%{transform:translateY(-16px) rotate(-4deg)}60%{transform:translateY(0) rotate(3deg)}}
+@keyframes hpshk{0%,100%{transform:none}20%{transform:translateX(-7px) rotate(-3deg)}40%{transform:translateX(7px) rotate(3deg)}60%{transform:translateX(-5px)}80%{transform:translateX(5px)}}
+.lmain .say .mas.cheer svg,.lmain .say .mas.wow svg{animation:hphop .7s ease-out}
+.lmain .say .mas.sad svg{animation:hpshk .55s ease-in-out}
+.rm .mas svg{animation:none!important}
+.offp{position:fixed;top:calc(8px + env(safe-area-inset-top,0px));left:50%;transform:translateX(-50%);z-index:90;background:var(--surface);color:var(--fg);border:2px solid var(--gold);border-radius:999px;padding:4px 14px;font-size:.85rem;box-shadow:0 4px 12px #0003}
+.offp[hidden]{display:none}
