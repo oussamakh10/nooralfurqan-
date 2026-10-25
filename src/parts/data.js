@@ -14,7 +14,8 @@ const REC=[
  {id:'budair',n:'صلاح البدير',e:'Salah_Al_Budair_128kbps',s:'https://server6.mp3quran.net/s_bud/'},
  {id:'yasser',n:'ياسر الدوسري',e:'Yasser_Ad-Dussary_128kbps',s:'https://server11.mp3quran.net/yasser/'},
  {id:'qatami',n:'ناصر القطامي',e:'Nasser_Alqatami_128kbps',s:'https://server6.mp3quran.net/qtm/'},
- {id:'abbad',n:'فارس عباد',e:'Fares_Abbad_64kbps',s:'https://server8.mp3quran.net/frs_a/'}
+ {id:'abbad',n:'فارس عباد',e:'Fares_Abbad_64kbps',s:'https://server8.mp3quran.net/frs_a/'},
+ {id:'yassine',n:'ياسين الجزائري (ورش عن نافع)',s:'https://archive.org/download/www.elahmad.com_69/'}
 ];
 
 /* ---------- أحاديث مختارة للاستماع (قراءة آلية من الجهاز) ---------- */

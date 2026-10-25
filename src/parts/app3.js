@@ -126,7 +126,7 @@ const AU=new Audio();AU.preload='none';
 let AP=null,LS={mode:'surah',s:1,a:1},SP=-1;
 function recById(id){return REC.find(function(r){return r.id===id})||REC[0]}
 function surahUrl(r,s){return r.s+pad(s,3)+'.mp3'}
-function ayahUrl(r,s,a){return 'https://everyayah.com/data/'+r.e+'/'+pad(s,3)+pad(a,3)+'.mp3'}
+function ayahUrl(r,s,a){if(!r.e)r=REC[0];return 'https://everyayah.com/data/'+r.e+'/'+pad(s,3)+pad(a,3)+'.mp3'}
 function startAudio(url){
   AU.src=url;
   const p=AU.play();if(p&&p.catch)p.catch(function(){audioErr()});
