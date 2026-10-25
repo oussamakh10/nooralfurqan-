@@ -1,0 +1,20 @@
+{
+  "packageId": "com.nooralfurqan.app",
+  "host": "nooralfurqan.netlify.app",
+  "name": "نور الفرقان",
+  "launcherName": "نور الفرقان",
+  "display": "standalone",
+  "orientation": "portrait",
+  "themeColor": "#0f3b3a",
+  "navigationColor": "#0f3b3a",
+  "backgroundColor": "#0b3330",
+  "startUrl": "/index.html",
+  "iconUrl": "https://nooralfurqan.netlify.app/icon-512.png",
+  "maskableIconUrl": "https://nooralfurqan.netlify.app/icon-maskable-512.png",
+  "appVersionName": "1",
+  "appVersionCode": 1,
+  "enableNotifications": false,
+  "isChromeOSOnly": false,
+  "fallbackType": "customtabs",
+  "signingKey": {"path": "./nooralfurqan.keystore", "alias": "nooralfurqan"}
+}
