@@ -194,3 +194,13 @@ html:not([lang="ar"]) body{font-family:var(--text)}
 #splash .dcdots i{width:7px;height:7px;border-radius:50%;background:#b8892e;opacity:.25;animation:dcdt 1.2s ease-in-out infinite}
 #splash .dcdots i:nth-child(2){animation-delay:.2s}#splash .dcdots i:nth-child(3){animation-delay:.4s}
 @keyframes dcdt{0%,100%{opacity:.25;transform:scale(.8)}50%{opacity:1;transform:scale(1.2)}}
+.bxin{width:100%;box-sizing:border-box;padding:12px;border:2px solid var(--line);border-radius:14px;background:var(--card,#fff);color:inherit;font:inherit;font-size:1rem;line-height:1.7;resize:vertical}
+.bxin:focus{outline:none;border-color:var(--accent)}
+.bxq{font-size:1.15rem;line-height:2;margin:0}
+.bxex{margin:2px 0 10px}
+.bxmt{display:grid;gap:6px}.bxmt select{padding:10px;border-radius:10px;border:2px solid var(--line);background:inherit;color:inherit;font:inherit}
+.bxol{margin:0;padding-inline-start:22px;line-height:1.9}
+.bxfb{margin-top:12px;display:grid;gap:6px;border-width:2px}.bxfb.ok{border-color:#2e9e5b}.bxfb.part{border-color:#d9a21b}.bxfb.bad{border-color:#d4574a}
+.bxpts{list-style:none;margin:0;padding:0;display:grid;gap:4px}
+.sch-good{color:#1f8a4c}.sch-bad{color:#c0463a}
+.bigs{font-size:2.2rem;font-weight:800}
