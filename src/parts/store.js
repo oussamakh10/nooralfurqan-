@@ -5,8 +5,6 @@
   /* اختصارات ?go= */
   try{const g=new URLSearchParams(location.search).get('go');if(g&&['learn','read','dhikr','home','ach','games','listen'].indexOf(g)>=0)setTimeout(function(){go(g)},400)}catch(e){}
   /* حجم الخط */
-  function fs(){document.documentElement.style.fontSize=['100%','112%','125%'][S.fs||0]}
-  fs();
   /* اهتزاز خفيف */
   function vib(p){try{if(!S.nov&&navigator.vibrate)navigator.vibrate(p)}catch(e){}}
   try{const c=SND.correct,w=SND.wrong;SND.correct=function(){vib(15);return c.apply(this,arguments)};SND.wrong=function(){vib([30,40,30]);return w.apply(this,arguments)}}catch(e){}
@@ -14,14 +12,11 @@
   const es=extraSettings;
   extraSettings=function(){
     let h=es();
-    h+='<div class="setrow"><span>'+esc(g3(['حجم الخط','Text size','Taille du texte']))+'</span><span class="opts2">'+[0,1,2].map(function(i){return '<button class="tag" data-fs="'+i+'" aria-pressed="'+((S.fs||0)===i)+'" style="font-size:'+(0.9+i*0.15)+'rem">أ</button>'}).join('')+'</span></div>';
     h+='<div class="setrow"><span>'+esc(g3(['الاهتزاز','Vibration','Vibration']))+'</span><button class="btn sm ghost" data-act="vib-t">'+esc(S.nov?g3(['مُوقف','Off','Désactivée']):g3(['مُفعّل','On','Activée']))+'</button></div>';
     if(PLAY_URL)h+='<div class="setrow"><span>'+esc(g3(['قيّم التطبيق','Rate the app','Noter l’application']))+'</span><a class="btn sm ghost" href="'+PLAY_URL+'" target="_blank" rel="noopener">★</a></div>';
     return h;
   };
   document.addEventListener('click',function(e){
-    const f=e.target.closest&&e.target.closest('[data-fs]');
-    if(f){S.fs=+f.getAttribute('data-fs');save();fs();openSettings();return}
     const t=e.target.closest&&e.target.closest('[data-act="vib-t"]');
     if(t){S.nov=!S.nov;save();if(!S.nov)vib(20);openSettings()}
   });

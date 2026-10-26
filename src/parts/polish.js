@@ -7,7 +7,7 @@
     return es()+'<div class="setrow"><span>'+esc(g3(['لون التطبيق','App color','Couleur']))+'</span><span class="opts2">'+PAL.map(function(p){return '<button class="palb" data-pal="'+p[0]+'" style="background:'+p[1]+'" aria-label="'+esc(g3([p[2],p[3],p[4]]))+'" aria-pressed="'+(cur===p[0])+'"></button>'}).join('')+'</span></div>';
   };
   document.addEventListener('click',function(e){
-    const b=e.target.closest&&e.target.closest('[data-pal]');if(!b)return;
+    const b=e.target.closest&&e.target.closest('button[data-pal]');if(!b)return;
     S.pal=b.getAttribute('data-pal');save();applyTheme();openSettings();
   });
   /* شارة بلا إنترنت */
