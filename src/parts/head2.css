@@ -204,3 +204,15 @@ html:not([lang="ar"]) body{font-family:var(--text)}
 .bxpts{list-style:none;margin:0;padding:0;display:grid;gap:4px}
 .sch-good{color:#1f8a4c}.sch-bad{color:#c0463a}
 .bigs{font-size:2.2rem;font-weight:800}
+#follow{position:fixed;inset:0;z-index:30;display:flex;flex-direction:column;background:var(--bg,#0f3b3a);color:inherit;padding-top:env(safe-area-inset-top,0px)}
+#follow[hidden]{display:none}
+.fw-top{display:flex;align-items:center;gap:10px;padding:10px 14px;border-bottom:2px solid var(--gold,#c8a24a)}
+.fw-top button{background:none;border:0;color:inherit;display:grid;place-items:center;padding:6px;border-radius:12px;width:44px;height:44px}
+.fw-top button svg{width:24px;height:24px;fill:currentColor;stroke:currentColor}
+.fw-t{flex:1;min-width:0}.fw-t b{display:block;font:700 1.15rem/1.3 var(--display)}.fw-t small{opacity:.85}
+.fw-body{flex:1;overflow:auto;padding:18px 18px 30px;font:400 1.55rem/2.4 var(--quran);text-align:start}
+.fw-bsm{text-align:center;margin:0 0 10px}
+.fw-a{border-radius:10px;padding:2px 4px;transition:background .3s}
+.fw-a.on{background:#c8a24a40;box-shadow:0 0 0 2px var(--gold,#c8a24a)}
+.fw-a .no{font:700 .8rem var(--display);opacity:.8}
+.fw-hint{text-align:center;opacity:.7;padding:6px 10px calc(10px + env(safe-area-inset-bottom,0px))}

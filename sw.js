@@ -1,5 +1,5 @@
 /* نور الفرقان — عمل دون إنترنت: يخزّن ملفات التطبيق والبيانات بعد أول زيارة */
-const V='nf-v34';
+const V='nf-v35';
 const CORE=['./','index.html','manifest.json','icon-192.png','icon-512.png','quran.json','muy.json','jal.json','en.json','i18n_en.json','i18n_fr.json'];
 self.addEventListener('install',e=>{e.waitUntil(caches.open(V).then(c=>Promise.allSettled(CORE.map(u=>c.add(u)))).then(()=>self.skipWaiting()))});
 self.addEventListener('activate',e=>{e.waitUntil(caches.keys().then(ks=>Promise.all(ks.filter(k=>k!==V).map(k=>caches.delete(k)))).then(()=>self.clients.claim()))});
