@@ -353,7 +353,7 @@ function renderDuel(){
   if(!DU)return;
   let h='<div class="ltop"><button class="xbtn" data-act="duel-close" aria-label="إغلاق">'+IC.x+'</button><h2 style="flex:1;font-size:1.2rem">تحدٍّ مباشر</h2></div><div class="lmain">';
   if(DU.state==='lobby'){
-    h+='<div class="say"><div class="mas">'+hoopoe('happy',80)+'</div><div class="bubble"><p>تنافس مع صديق على جهاز آخر في اللحظة نفسها. يحتاج كلاكما أن يفتح الصفحة من حساب claude.ai.</p></div></div>'+
+    h+='<div class="say"><div class="mas">'+hoopoe('happy',80)+'</div><div class="bubble"><p>تنافس مع صديق على جهاز آخر في اللحظة نفسها: أنشئ غرفة وأعطِه الرمز، أو انضم برمزه. يلزم اتصال بالإنترنت.</p></div></div>'+
      '<button class="btn" data-act="duel-new">إنشاء غرفة</button><div class="field"><label for="ducode">أو انضم برمز</label><input type="text" id="ducode" maxlength="8" dir="ltr" placeholder="الرمز"><button class="btn ghost" data-act="duel-join">انضم</button></div>';
   }else if(DU.state==='wait'){
     const rk=duelRank();
