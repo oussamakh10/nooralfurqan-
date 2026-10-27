@@ -188,11 +188,13 @@ function confetti(){
 }
 function finishLesson(){
   const rev=L.review||L.hifzTest;
-  addXP(L.gain);
+  const bonus=(!rev&&!S.done[L.lesson.id])?15:0;
+  addXP(L.gain+bonus);
   if(rev){S.rev=(S.rev||0)+1}else S.done[L.lesson.id]=true;
   act(rev?'review':'lesson');save();
   const acc=Math.max(0,Math.round((L.total/(L.total+L.wrongs))*100));
   $('#lesson').innerHTML='<div class="lmain"><div class="center"><div class="mas">'+hoopoe('cheer',150)+'</div><h2>'+(rev?'أتممت المراجعة!':'أتممت الدرس!')+'</h2><p class="muted">'+L.lesson.title+'</p>'+
+   (bonus?'<p class="sch-good" style="font-weight:800">+'+N(bonus)+' نقطة مكافأة إتمام المرحلة</p>':'')+
    '<div class="statr"><div class="stat"><b>'+N(L.gain)+'</b><span>نقطة</span></div><div class="stat"><b>'+N(acc)+'%</b><span>دقة الإجابات</span></div><div class="stat"><b>'+N(streak())+'</b><span>أيام متتالية</span></div></div></div></div>'+
    '<div class="lfoot"><div class="in"><button class="btn" data-act="leave">متابعة</button></div></div>';
   confetti();SND.win();

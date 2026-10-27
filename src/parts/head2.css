@@ -263,3 +263,4 @@ html.rm *,html.rm *::before,html.rm *::after{animation-duration:.01ms!important;
 #lesson{background:radial-gradient(110% 40% at 50% 0,color-mix(in srgb,var(--accent,#0F7A4C) 16%,transparent),transparent 70%),var(--bg)}
 .lfoot{backdrop-filter:blur(12px);background:color-mix(in srgb,var(--bg) 88%,transparent)}
 .ltop .bar{height:16px;border-radius:10px;overflow:hidden}.ltop .bar i{transition:width .5s cubic-bezier(.2,.7,.2,1)}
+.shi svg{width:48px;height:48px}.shi:has(svg){background:transparent}

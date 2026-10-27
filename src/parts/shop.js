@@ -9,7 +9,11 @@
     {id:'freeze',sec:'مساعدات',t:'تجميد السلسلة',d:'يحفظ سلسلتك إن فاتك يوم (حتى 3)',p:50,k:'cons',ic:'❄'},
     {id:'boost',sec:'مساعدات',t:'مضاعف النقاط ×2',d:'ضعف النقاط لمدة ساعة (يتراكم)',p:150,k:'cons',ic:'⚡'},
     {id:'hat:fez',sec:'الهدهد',t:'طربوش',d:'إكسسوار للهدهد',p:100,k:'own',ic:'🎩',eq:'hat',v:'fez'},
-    {id:'hat:cap',sec:'الهدهد',t:'قبعة التخرج',d:'إكسسوار للهدهد',p:300,k:'own',ic:'🎓',eq:'hat',v:'cap'},
+    {id:'hat:turban',sec:'الهدهد',t:'عمامة',d:'غطاء رأس للهدهد',p:150,k:'own',ic:'🧕',eq:'hat',v:'turban'},
+    {id:'hat:cap',sec:'الهدهد',t:'قبعة التخرج',d:'غطاء رأس للهدهد',p:300,k:'own',ic:'🎓',eq:'hat',v:'cap'},
+    {id:'hat:crown',sec:'الهدهد',t:'تاج',d:'غطاء رأس للهدهد',p:400,k:'own',ic:'👑',eq:'hat',v:'crown'},
+    {id:'face:glasses',sec:'الهدهد',t:'نظارة',d:'للوجه، تُلبس مع أي غطاء رأس',p:200,k:'own',ic:'👓',eq:'face',v:'glasses'},
+    {id:'neck:scarf',sec:'الهدهد',t:'وشاح أخضر',d:'للعنق، يُلبس مع الباقي',p:150,k:'own',ic:'🧣',eq:'neck',v:'scarf'},
     {id:'pal:gold',sec:'ألوان التطبيق',t:'ذهبي',d:'لون التطبيق',p:120,k:'own',col:'#A8730A',eq:'pal',v:'gold'},
     {id:'pal:ocean',sec:'ألوان التطبيق',t:'أزرق',d:'لون التطبيق',p:120,k:'own',col:'#1C7E9E',eq:'pal',v:'ocean'},
     {id:'pal:rose',sec:'ألوان التطبيق',t:'وردي',d:'لون التطبيق',p:120,k:'own',col:'#B8456B',eq:'pal',v:'rose'},
@@ -24,6 +28,8 @@
     const o=own();
     if(S.pal&&S.pal!=='green')o['pal:'+S.pal]=1;
     if(S.hat)o['hat:'+S.hat]=1;
+    if(S.face)o['face:'+S.face]=1;
+    if(S.neck)o['neck:'+S.neck]=1;
     if(S.spv&&S.spv!=='b')o['spv:'+S.spv]=1;
   }
   function boostLeft(){return Math.max(0,(S.boost||0)-Date.now())}
@@ -72,20 +78,32 @@
   function equip(id){
     const it=ITEMS.find(function(x){return x.id===id});if(!it||!isOwned(it))return;
     if(it.eq==='hat'){S.hat=(S.hat===it.v)?'':it.v;save();renderTop()}
+    else if(it.eq==='face'){S.face=(S.face===it.v)?'':it.v;save();renderTop()}
+    else if(it.eq==='neck'){S.neck=(S.neck===it.v)?'':it.v;save();renderTop()}
     else if(it.eq==='pal'){S.pal=it.v;save();applyTheme()}
     else if(it.eq==='spv'){S.spv=it.v;save();try{showSplash(it.v)}catch(e){}}
     renderShop();
   }
   function equipped(it){
     if(it.eq==='hat')return (S.hat||'')===it.v;
+    if(it.eq==='face')return (S.face||'')===it.v;
+    if(it.eq==='neck')return (S.neck||'')===it.v;
     if(it.eq==='pal')return (S.pal||'green')===it.v;
     if(it.eq==='spv')return (S.spv||'b')===it.v;
     return false;
   }
   /* ---- الواجهة ---- */
+  function preview(it){
+    const keep={hat:S.hat,face:S.face,neck:S.neck};
+    S.hat='';S.face='';S.neck='';
+    if(it.eq==='hat')S.hat=it.v;else if(it.eq==='face')S.face=it.v;else if(it.eq==='neck')S.neck=it.v;
+    let h='';try{h=hoopoe('happy',60)}catch(e){h=it.ic||''}
+    S.hat=keep.hat;S.face=keep.face;S.neck=keep.neck;
+    return h;
+  }
   function card(it){
     let btn;
-    if(it.k==='own'&&isOwned(it))btn=equipped(it)?'<button class="btn sm ghost" disabled>مُستخدَم ✓</button>':'<button class="btn sm gold" data-shop="eq:'+it.id+'">استخدم</button>';
+    if(it.k==='own'&&isOwned(it))btn=equipped(it)?(it.eq==='pal'||it.eq==='spv'?'<button class="btn sm ghost" disabled>مُستخدَم ✓</button>':'<button class="btn sm ghost" data-shop="eq:'+it.id+'">إزالة ✓</button>'):'<button class="btn sm gold" data-shop="eq:'+it.id+'">استخدم</button>';
     else{
       const lack=S.xp<it.p;
       btn='<button class="btn sm'+(lack?' ghost':'')+'" data-shop="buy:'+it.id+'">'+N(it.p)+' نقطة</button>';
@@ -93,12 +111,12 @@
     let st='';
     if(it.id==='freeze')st='<small class="muted">لديك: '+N(S.freeze||0)+' / 3</small>';
     if(it.id==='boost'&&boostLeft()>0)st='<small class="muted">فعّال: '+N(Math.ceil(boostLeft()/60000))+' دقيقة</small>';
-    return '<div class="card shopit"><div class="shi" '+(it.col?'style="background:'+it.col+'"':'')+'>'+(it.col?'':it.ic)+'</div><div class="shd"><b>'+esc(it.t)+'</b><small>'+esc(it.d)+'</small>'+st+'</div>'+btn+'</div>';
+    return '<div class="card shopit"><div class="shi" '+(it.col?'style="background:'+it.col+'"':'')+'>'+(it.col?'':((it.eq==='hat'||it.eq==='face'||it.eq==='neck')?preview(it):it.ic))+'</div><div class="shd"><b>'+esc(it.t)+'</b><small>'+esc(it.d)+'</small>'+st+'</div>'+btn+'</div>';
   }
   function pageShop(){
     migrate();
     const a=adS(),ready=adReady(),left=ADS_CFG.dailyCap-a.n;
-    let h='<section class="sec" style="margin-top:16px"><div class="card shopbal"><div>'+IC.gem+'</div><div><b>'+N(S.xp)+' نقطة</b><small class="muted">تجمعها من الإجابة الصحيحة في دروس تعلّم والألعاب</small>'+
+    let h='<section class="sec" style="margin-top:16px"><div class="card shopbal"><div>'+IC.gem+'</div><div><b>'+N(S.xp)+' نقطة</b><small class="muted">تجمعها من الإجابة الصحيحة في دروس تعلّم والألعاب</small><small class="muted">كل مرحلة تُتمّها في «تعلّم» تمنحك +15 نقطة إضافية</small>'+
       (boostLeft()>0?'<small class="sch-good">مضاعف ×2 فعّال: '+N(Math.ceil(boostLeft()/60000))+' دقيقة</small>':'')+'</div></div></section>'+
       '<section class="sec"><h2>اكسب نقاطًا</h2><div style="display:grid;gap:10px"><div class="card shopit"><div class="shi">▶</div><div class="shd"><b>شاهد إعلانًا قصيرًا</b><small>+'+ADS_CFG.reward+' نقطة'+(ready?' · المتبقي اليوم: '+N(Math.max(0,left)):'')+'</small></div>'+
       (ready?'<button class="btn sm gold" data-shop="ad">شاهد</button>':'<button class="btn sm ghost" disabled>قريبًا</button>')+'</div>'+
@@ -140,7 +158,7 @@
   const _es=extraSettings;
   extraSettings=function(){
     migrate();
-    return _es().replace(/ disabled>(قبعة التخرج)/,'>$1');
+    return _es().replace(/(<button class="tag" data-xhat="[^"]*" aria-pressed="[^"]*") disabled>/g,'$1>');
   };
   migrate();
   try{if(location.hash==='#shop'){TAB='shop';renderNav();renderPage()}}catch(e){}
