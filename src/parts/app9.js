@@ -86,7 +86,7 @@ document.addEventListener('click',function(e){
   if(a==='reset'){if(confirm(T('هل تريد مسح كل تقدّمك؟'))){try{localStorage.removeItem(KEY)}catch(e){}location.reload()}return}
   if(a==='trtoggle'){S.tr=S.tr==='en'?'':'en';save();return openSurah(RV.s)}
   if(a==='khat-set'){const v=prompt(T('في كم يومًا تريد ختم المصحف؟ (من 1 إلى 365)'),S.khat.days);const n=parseInt(toLatin(v),10);if(n>=1&&n<=365){S.khat.days=n;save();renderPage()}return}
-  if(a==='wkclaim'){const k=weekKey();if(!S.wkc[k]&&weekSum(S.xpd)>=WK_TARGET){S.wkc[k]=1;addXP(50);SND.bell();celebrate('أتممت تحدي الأسبوع','أضفت 50 نقطة إلى رصيدك.','cheer')}return}
+  if(a==='wkclaim'){const k=weekKey();if(!S.wkc[k]&&weekSum(S.xpd)>=WK_TARGET){S.wkc[k]=1;addXP(50);SND.bell();celebrate('أتممت تحدي الأسبوع','أضفت 50 نقطة إلى رصيدك.','cheer')}else if(S.wkc[k])toast('استلمتَ مكافأة هذا الأسبوع');else toast('أكمل نقاط تحدي الأسبوع أولًا');return}
   if(a==='review-go'){go('learn');LTAB='review';return startReviewSession()}
   if(a==='dhikr-open'){loadQ().then(function(){openDhikr('tasbih')}).catch(function(){openDhikr('tasbih')});return}
   if(a==='tsb')return dhikrTap();
