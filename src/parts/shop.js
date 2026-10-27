@@ -132,12 +132,22 @@
     if(TAB==='shop'){if(pageTimer){clearInterval(pageTimer);pageTimer=0}return pageShop()}
     return _rp();
   };
+  /* بطاقة المتجر في الرئيسية + زر حقيبة في الشريط العلوي */
+  const _ph=pageHome;
+  pageHome=function(){
+    _ph();
+    const pg=document.getElementById('page');if(!pg||document.getElementById('shopcard'))return;
+    const sec=document.createElement('section');sec.className='sec';sec.id='shopcard';
+    sec.innerHTML='<button class="card shopit" data-go="shop"><div class="shi">🛍</div><div class="shd"><b>المتجر</b><small>اشترِ إكسسوارات للهدهد وألوانًا بنقاطك: '+N(S.xp)+' نقطة</small></div><span class="btn sm gold">افتح</span></button>';
+    const first=pg.querySelector('section.sec');
+    if(first)pg.insertBefore(sec,first);else pg.appendChild(sec);
+  };
   /* زر النقاط في الشريط العلوي يفتح المتجر */
   const _rt=renderTop;
   renderTop=function(){
     _rt();
     const c=document.querySelector('#top .chip[title="نقاط"]');
-    if(c){const b=document.createElement('button');b.className='chip shopchip';b.setAttribute('data-go','shop');b.setAttribute('aria-label','المتجر');b.innerHTML=c.innerHTML;c.replaceWith(b)}
+    if(c){const b=document.createElement('button');b.className='chip shopchip';b.setAttribute('data-go','shop');b.setAttribute('aria-label','المتجر');b.innerHTML=c.innerHTML+'<span aria-hidden="true" style="margin-inline-start:4px">🛍</span>';c.replaceWith(b)}
   };
   /* قفل العناصر غير المملوكة في الإعدادات + أزرار المتجر (مرحلة الالتقاط ليسبق المعالجات القديمة) */
   document.addEventListener('click',function(e){
