@@ -223,3 +223,43 @@ html:not([lang="ar"]) body{font-family:var(--text)}
 .shd{flex:1;min-width:0;display:grid;gap:2px;text-align:start}.shd small{opacity:.8}
 .shopit .btn{white-space:nowrap}
 .adsim{position:fixed;inset:0;z-index:99;background:#000d;color:#fff;display:grid;place-items:center;text-align:center;font-size:1.3rem}
+/* ===== صقل بصري v5: خلفية، عمق، حركة، أهداف لمس ===== */
+html{scroll-behavior:smooth;-webkit-tap-highlight-color:transparent;-webkit-text-size-adjust:100%}
+button,a,[data-go],[data-act],.card,.opt{touch-action:manipulation}
+body{overscroll-behavior-y:none;-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
+body::before{content:"";position:fixed;inset:0;z-index:0;pointer-events:none;background:radial-gradient(120% 55% at 50% -8%,color-mix(in srgb,var(--accent,#0F7A4C) 20%,transparent),transparent 62%),radial-gradient(90% 45% at 50% 112%,color-mix(in srgb,var(--gold,#C8A24A) 22%,transparent),transparent 70%),radial-gradient(150% 100% at 50% 50%,transparent 58%,rgba(20,10,0,.13))}
+.card{box-shadow:inset 0 1px 0 #ffffff55,0 8px 18px -12px rgba(50,30,0,.45);transition:transform .16s ease,box-shadow .2s ease,border-color .2s}
+button.card:active,a.card:active{transform:scale(.985)}
+.btn{transition:transform .08s,filter .2s,box-shadow .2s;box-shadow:0 6px 14px -8px rgba(0,0,0,.45)}
+.btn:hover:not(:disabled){filter:brightness(1.05)}
+.btn.sm{min-height:40px;display:inline-flex;align-items:center;justify-content:center}
+.opt{transition:transform .12s,background-color .2s,border-color .2s,box-shadow .2s}
+.opt:active:not(:disabled){transform:scale(.985)}
+.tag{min-height:40px}
+.chip{min-height:38px}
+.iconbtn,.sharebtn{min-width:42px;min-height:42px}
+.top{backdrop-filter:blur(14px) saturate(1.25);-webkit-backdrop-filter:blur(14px) saturate(1.25)}
+#nav{background:color-mix(in srgb,var(--surface) 90%,transparent);backdrop-filter:blur(16px) saturate(1.3);-webkit-backdrop-filter:blur(16px) saturate(1.3);box-shadow:0 -10px 24px -14px rgba(0,0,0,.4);border-radius:22px 22px 0 0}
+#nav button{min-height:54px;justify-content:center;transition:background-color .2s,color .2s,transform .15s;font-size:.7rem}
+#nav button svg{transition:transform .2s}
+#nav button[aria-current="page"] svg{transform:translateY(-1px) scale(1.12)}
+#nav button:active{transform:scale(.92)}
+.mini{box-shadow:0 12px 28px -12px rgba(0,0,0,.6);backdrop-filter:blur(8px)}
+/* قائمة المدرسية وتمارين الباك */
+button.sch-it{display:flex;align-items:center;gap:12px;width:100%;text-align:start;padding:10px 14px;font:inherit;color:inherit}
+.sch-n{flex:none;width:38px;height:38px;border-radius:12px;display:grid;place-items:center;font-weight:800;background:var(--accent-soft);color:var(--accent);border:2px solid var(--line)}
+.sch-n.on{background:var(--accent);color:var(--on-accent);border-color:var(--accent)}
+.sch-t{flex:1;min-width:0;line-height:1.55;font-weight:700}
+/* دخول الصفحات والشاشات */
+@keyframes pgin{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+@keyframes ovin{from{opacity:0;transform:translateY(22px) scale(.985)}to{opacity:1;transform:none}}
+#page.pgin>*{animation:pgin .38s cubic-bezier(.2,.7,.2,1) both}
+#page.pgin>*:nth-child(2){animation-delay:.04s}#page.pgin>*:nth-child(3){animation-delay:.08s}#page.pgin>*:nth-child(4){animation-delay:.12s}#page.pgin>*:nth-child(n+5){animation-delay:.16s}
+#lesson:not([hidden]){animation:ovin .3s cubic-bezier(.2,.7,.2,1)}
+html.rm *,html.rm *::before,html.rm *::after{animation-duration:.01ms!important;animation-delay:0ms!important;transition-duration:.01ms!important;scroll-behavior:auto!important}
+@media (prefers-reduced-motion:reduce){#page.pgin>*,#lesson:not([hidden]){animation:none}html{scroll-behavior:auto}}
+.dgt{display:grid;gap:2px}.dgt b,.dgt small{display:block}
+.opts2{gap:8px}
+#lesson{background:radial-gradient(110% 40% at 50% 0,color-mix(in srgb,var(--accent,#0F7A4C) 16%,transparent),transparent 70%),var(--bg)}
+.lfoot{backdrop-filter:blur(12px);background:color-mix(in srgb,var(--bg) 88%,transparent)}
+.ltop .bar{height:16px;border-radius:10px;overflow:hidden}.ltop .bar i{transition:width .5s cubic-bezier(.2,.7,.2,1)}
