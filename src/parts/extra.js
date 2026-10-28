@@ -88,7 +88,7 @@ function certCard(ui){
 function applyA11y(){const r=document.documentElement;r.classList.toggle('hc',!!S.hc);r.classList.toggle('rm',!!S.rm);r.style.fontSize=(S.fs||100)+'%'}
 function extraSettings(){
   const o=function(attr,val,label,on,dis){return '<button class="tag" '+attr+'="'+val+'" aria-pressed="'+on+'"'+(dis?' disabled':'')+'>'+label+'</button>'};
-  const hats=[['',g3(["بدون","None","Aucun"]),0],['fez',g3(["طربوش","Fez","Fez"]),0],['cap',g3(["قبعة التخرج (300 نقطة)","Graduation cap (300 pts)","Toque de diplômé (300 pts)"]),300],['turban',g3(["عمامة","Turban","Turban"]),150],['crown',g3(["تاج","Crown","Couronne"]),400]];
+  const hats=[['',g3(["بدون","None","Aucun"]),0],['fez',g3(["طربوش","Fez","Fez"]),0],['turban',g3(["عمامة","Turban","Turban"]),150],['crown',g3(["تاج","Crown","Couronne"]),400]];
   return '<div class="setrow"><span>'+esc(g3(["إكسسوار الهدهد","Hoopoe accessory","Accessoire de la huppe"]))+'</span><span class="opts2">'+hats.map(function(h){return o('data-xhat',h[0],esc(h[1]),(S.hat||'')===h[0],h[2]&&(S.xp||0)<h[2])}).join('')+'</span></div>'+
    '<div class="setrow"><span>'+esc(g3(["حجم الخط العام","Text size","Taille du texte"]))+'</span><span class="opts2">'+[[100,'A'],[115,'A+'],[130,'A++']].map(function(x){return o('data-xfs',x[0],x[1],(S.fs||100)===x[0])}).join('')+'</span></div>'+
    '<div class="setrow"><span>'+esc(g3(["تباين عالٍ","High contrast","Contraste élevé"]))+'</span>'+o('data-xset','hc',esc(S.hc?g3(["مُفعّل","On","Activé"]):g3(["مُغلق","Off","Désactivé"])),!!S.hc)+'</div>'+

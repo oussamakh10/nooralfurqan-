@@ -322,3 +322,9 @@ html.lock #top,html.lock #nav,html.lock #bg{visibility:hidden}
 #cele .langrow .opts2{flex-wrap:nowrap;max-width:none;width:auto}
 #cele .langrow .tag{padding:6px 11px}
 #cele .setcard .sgb .setrow>span:first-child{flex:1;min-width:0}
+#buyconf{position:fixed;inset:0;z-index:95;background:rgba(0,0,0,.45);display:grid;place-items:center;padding:20px}
+#buyconf[hidden]{display:none}
+#buyconf .bc-card{background:var(--surface);color:var(--fg);border-radius:22px;padding:20px;width:min(90vw,340px);box-shadow:0 20px 50px -15px rgba(0,0,0,.5);text-align:center}
+#buyconf .bc-t{font:800 1.2rem var(--display);margin-bottom:6px}
+#buyconf p{margin:0 0 16px;line-height:1.7}
+#buyconf .bc-b{display:grid;grid-template-columns:1fr 1fr;gap:10px}

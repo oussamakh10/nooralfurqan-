@@ -68,12 +68,26 @@
     if(it.k==='own'&&owned(id))return;
     if(S.xp<it.p){toast('ينقصك '+N(it.p-S.xp)+' نقطة');return}
     if(id==='freeze'&&(S.freeze||0)>=3){toast('لديك الحد الأقصى: 3');return}
-    if(!confirm('شراء «'+it.t+'» مقابل '+N(it.p)+' نقطة؟'))return;
-    S.xp-=it.p;
-    if(id==='freeze')S.freeze=(S.freeze||0)+1;
-    else if(id==='boost')S.boost=Math.max(Date.now(),S.boost||0)+3600*1000;
-    else own()[id]=1;
-    save();try{SND.coin()}catch(e){}renderTop();toast('تم الشراء');renderShop();
+    askBuy(it,function(){
+      if(S.xp<it.p){toast('ينقصك '+N(it.p-S.xp)+' نقطة');return}
+      if(it.k==='own'&&owned(id))return;
+      S.xp-=it.p;
+      if(id==='freeze')S.freeze=(S.freeze||0)+1;
+      else if(id==='boost')S.boost=Math.max(Date.now(),S.boost||0)+3600*1000;
+      else own()[id]=1;
+      save();try{SND.coin()}catch(e){}renderTop();toast('تم الشراء');renderShop();
+    });
+  }
+  /* نافذة تأكيد داخل التطبيق (confirm() قد تُحجب في الغلاف) */
+  function askBuy(it,ok){
+    let m=document.getElementById('buyconf');
+    if(!m){m=document.createElement('div');m.id='buyconf';m.setAttribute('role','dialog');m.setAttribute('aria-modal','true');document.body.appendChild(m)}
+    m.innerHTML='<div class="bc-card"><div class="bc-t">تأكيد الشراء</div><p>شراء «'+esc(it.t)+'» مقابل '+N(it.p)+' نقطة؟</p><div class="bc-b"><button class="btn ghost sm" data-bc="no">إلغاء</button><button class="btn sm" data-bc="yes">شراء</button></div></div>';
+    m.hidden=false;
+    m.onclick=function(e){
+      const b=e.target.closest('button[data-bc]');if(!b)return;
+      m.hidden=true;if(b.dataset.bc==='yes')ok();
+    };
   }
   function equip(id){
     const it=ITEMS.find(function(x){return x.id===id});if(!it||!isOwned(it))return;
