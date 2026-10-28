@@ -18,7 +18,7 @@
   function renderTour(){
     const c=$('#cele'),s=SL[TI],last=TI===SL.length-1;
     c.innerHTML='<div class="obx" id="tourbox" '+(TI?'style="animation:none"':'')+'><div class="obtop"><div class="obowl" '+(TI?'style="animation:bob 3s ease-in-out infinite"':'')+'>'+hoopoe(s[1],104)+'</div><div class="obdots" aria-hidden="true">'+SL.map(function(_,i){return '<i class="'+(i===TI?'on':'')+'"></i>'}).join('')+'</div></div>'+
-     '<div class="obbody" style="text-align:center;padding-top:18px"><div style="font-size:2.6rem;line-height:1" class="tourico">'+s[0]+'</div><h2 style="margin:4px 0 0">'+esc(g3(s[2]))+'</h2><p style="margin:0;line-height:1.9;min-height:96px">'+esc(g3(s[3]))+'</p></div>'+
+     '<div class="obbody" style="text-align:center;padding-top:18px"><div style="font-size:2.6rem;line-height:1" class="tourico">'+icoSvg(s[0])+'</div><h2 style="margin:4px 0 0">'+esc(g3(s[2]))+'</h2><p style="margin:0;line-height:1.9;min-height:96px">'+esc(g3(s[3]))+'</p></div>'+
      '<div class="obfoot"><button class="btn" data-tr="next">'+esc(last?g3(['هيا نتعارف','Let’s get started','Faisons connaissance']):g3(['التالي','Next','Suivant']))+'</button>'+
      '<button class="btn ghost" data-tr="skip">'+esc(g3(['تخطَّ الجولة','Skip tour','Passer la visite']))+'</button></div></div>';
     c.hidden=false;

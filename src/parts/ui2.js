@@ -83,7 +83,7 @@
     let h='<div class="obx"><div class="obtop"><div class="obowl">'+hoopoe(mood,intro?120:96)+'</div>'+
       '<div class="obdots" aria-hidden="true">'+OB.map(function(_,i){return '<i class="'+(i===OBI?'on':'')+'"></i>'}).join('')+'</div></div>'+
       '<div class="obbub" aria-live="polite" aria-label="'+esc(line)+'"><span id="obsay"></span></div><div class="obbody">';
-    if(intro){h+='<div style="text-align:center;font-size:2.6rem">🌙 📖 ✨</div>'}
+    if(intro){h+='<div style="text-align:center;display:flex;gap:14px;justify-content:center;color:var(--accent)">'+icoSvg('🌙')+icoSvg('📖')+icoSvg('✦')+'</div>'}
     else if(q.type==='text')h+='<input type="text" id="obin" maxlength="24" autocomplete="given-name" placeholder="'+esc(g3(['اكتب اسمك هنا','Type your name here','Écrivez votre prénom']))+'" value="'+esc((OBD&&OBD.name)||'')+'" aria-label="'+esc(q.t)+'">';
     else if(q.type==='city')h+='<select id="obin">'+CITIES.map(function(x){return '<option'+(x[0]===(OBD.city||S.city||CITIES[0][0])?' selected':'')+'>'+x[0]+'</option>'}).join('')+'</select>';
     else if(q.type==='rec')h+='<select id="obin">'+REC.map(function(x){return '<option value="'+x.id+'"'+(x.id===(OBD.rec||S.rec)?' selected':'')+'>'+x.n+'</option>'}).join('')+'</select>';
