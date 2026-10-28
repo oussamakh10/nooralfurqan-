@@ -526,3 +526,25 @@ html:not([data-theme="light"])[data-pal="brown"]{--accent:#C8905F;--accent-d:#B6
 #page[data-tab="read"],html[data-tab="read"] #page{background:radial-gradient(70% 50% at 50% 0%,color-mix(in srgb,var(--accent) 14%,transparent),transparent 70%)}
 html[data-tab="play"] #page{background:radial-gradient(60% 40% at 50% 100%,color-mix(in srgb,var(--accent) 16%,transparent),transparent 70%)}
 #lesson.game-bg,#lesson .lmain.game{background:radial-gradient(80% 60% at 50% 0%,color-mix(in srgb,var(--accent) 22%,transparent),transparent 70%)}
+/* ===== ألعاب مصغّرة ===== */
+.mggrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.mgcard{display:grid;gap:4px;text-align:center;padding:16px 10px;border-radius:20px;border:2px solid color-mix(in srgb,var(--accent) 30%,transparent);background:linear-gradient(160deg,var(--surface),var(--accent-soft));box-shadow:0 4px 0 color-mix(in srgb,var(--accent) 35%,transparent);font:inherit;color:inherit;cursor:pointer}
+.mgcard b{font:800 1rem var(--display)}.mgcard small{opacity:.75;font-size:.78rem}
+.mgcard:active{transform:translateY(2px);box-shadow:none}
+.mgmain{display:grid;gap:12px;align-content:start}
+.mgcols{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.mgcol{display:grid;gap:8px;align-content:start}
+.mgm{padding:12px 8px;border-radius:14px;border:2px solid color-mix(in srgb,var(--accent) 30%,transparent);background:var(--surface);font:inherit;color:inherit;line-height:1.6;min-height:56px}
+.mgm.on{border-color:var(--accent);background:var(--accent-soft)}
+.mgm.ok{opacity:.45;border-color:#2e9c5a;background:color-mix(in srgb,#2e9c5a 16%,var(--surface))}
+.mgverse{font:600 1.35rem/2 var(--quran,var(--display));text-align:center;padding:14px;border-radius:18px;background:var(--accent-soft)}
+.blk{display:inline-block;min-width:3em;border-bottom:3px dashed var(--accent);color:transparent}
+.mgans{min-height:64px;display:flex;flex-wrap:wrap;gap:8px;justify-content:center;align-items:center;padding:12px;border-radius:18px;border:2px dashed color-mix(in srgb,var(--accent) 40%,transparent)}
+.mgchips{display:flex;flex-wrap:wrap;gap:8px;justify-content:center}
+.chipw{padding:10px 16px;border-radius:14px;border:2px solid color-mix(in srgb,var(--accent) 35%,transparent);background:var(--surface);font:600 1.15rem var(--quran,var(--display));color:inherit}
+.chipw.ok{background:color-mix(in srgb,#2e9c5a 18%,var(--surface));border-color:#2e9c5a}
+.chipw.used{opacity:.25}
+.mgtf{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.mgtf .opt{justify-content:center;font:800 1.3rem var(--display)}
+.mgnote{text-align:center;padding:10px 14px;border-radius:14px;background:var(--accent-soft)}
+.mgh svg{width:18px;height:18px}.mgh.off{opacity:.25}.mgls{display:inline-flex;gap:4px}
