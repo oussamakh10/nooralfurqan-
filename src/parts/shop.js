@@ -124,9 +124,9 @@
   const TABS=[['all','الكل'],['hoopoe','الهدهد'],['colors','الألوان'],['screens','الشاشات'],['boost','مساعدات'],['mine','مقتنياتي']];
   function tabOf(it){return it.sec==='الهدهد'?'hoopoe':it.sec==='ألوان التطبيق'?'colors':it.sec==='شاشة الدخول'?'screens':'boost'}
   function dealItem(){
-    const pool=ITEMS.filter(function(i){return i.k==='own'&&!isOwned(i)});if(!pool.length)return null;
+    const pool=ITEMS.filter(function(i){return i.k==='own'});
     let h=0;const d=today();for(let k=0;k<d.length;k++)h=(h*31+d.charCodeAt(k))>>>0;
-    return pool[h%pool.length];
+    const it=pool[h%pool.length];return isOwned(it)?null:it;
   }
   function priceOf(it){const d=dealItem();return (d&&d.id===it.id)?Math.max(5,Math.round(it.p*0.7/5)*5):it.p}
   function outfitSvg(size){
