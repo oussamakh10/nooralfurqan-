@@ -188,7 +188,7 @@ function confetti(){
 }
 function finishLesson(){
   const rev=L.review||L.hifzTest;
-  const bonus=(!rev&&!S.done[L.lesson.id])?15:0;
+  const bonus=rev?20:15;
   L.gain=bonus;
   addXP(bonus);
   if(rev){S.rev=(S.rev||0)+1}else S.done[L.lesson.id]=true;
