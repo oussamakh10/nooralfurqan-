@@ -278,3 +278,12 @@ body::after{content:"";position:fixed;inset:0;z-index:0;pointer-events:none;opac
 .btn,button.big{transition:transform .12s ease,box-shadow .15s ease}
 .btn:active,button.big:active{transform:translateY(2px);box-shadow:0 0 0 transparent}
 @media (prefers-reduced-motion:reduce){*{transition:none!important;animation-duration:.001ms!important}}
+/* lesson stage: separate immersive backdrop, hides app chrome behind questions */
+#lesson{z-index:50;isolation:isolate;background:
+ radial-gradient(circle at 50% 0,color-mix(in srgb,var(--gold,#C8A24A) 22%,transparent),transparent 60%),
+ repeating-linear-gradient(45deg,transparent 0 22px,color-mix(in srgb,var(--accent,#0F7A4C) 5%,transparent) 22px 23px),
+ repeating-linear-gradient(-45deg,transparent 0 22px,color-mix(in srgb,var(--accent,#0F7A4C) 5%,transparent) 22px 23px),
+ var(--bg)}
+#lesson::before{content:"";position:absolute;inset:0;pointer-events:none;background:radial-gradient(120% 45% at 50% 100%,color-mix(in srgb,var(--accent,#0F7A4C) 12%,transparent),transparent 70%)}
+#lesson>*{position:relative}
+html.lock #top,html.lock #nav,html.lock #bg{visibility:hidden}
