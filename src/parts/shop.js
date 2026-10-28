@@ -152,7 +152,7 @@
     _ph();
     const pg=document.getElementById('page');if(!pg||document.getElementById('shopcard'))return;
     const sec=document.createElement('section');sec.className='sec';sec.id='shopcard';
-    sec.innerHTML='<button class="card shopit" data-go="shop"><div class="shi">🛍</div><div class="shd"><b>المتجر</b><small>اشترِ إكسسوارات للهدهد وألوانًا بنقاطك: '+N(S.xp)+' نقطة</small></div><span class="btn sm gold">افتح</span></button>';
+    sec.innerHTML='<button class="card shopit" data-go="shop"><div class="shi"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 8h14l-1 12H6z"/><path d="M9 8V6a3 3 0 0 1 6 0v2"/></svg></div><div class="shd"><b>المتجر</b><small>اشترِ إكسسوارات للهدهد وألوانًا بنقاطك: '+N(S.xp)+' نقطة</small></div><span class="btn sm gold">افتح</span></button>';
     const first=pg.querySelector('section.sec');
     if(first)pg.insertBefore(sec,first);else pg.appendChild(sec);
   };
@@ -161,7 +161,7 @@
   renderTop=function(){
     _rt();
     const c=document.querySelector('#top .chip[title="نقاط"]');
-    if(c){const b=document.createElement('button');b.className='chip shopchip';b.setAttribute('data-go','shop');b.setAttribute('aria-label','المتجر');b.innerHTML=c.innerHTML+'<span aria-hidden="true" style="margin-inline-start:4px">🛍</span>';c.replaceWith(b)}
+    if(c){const b=document.createElement('button');b.className='chip shopchip';b.setAttribute('data-go','shop');b.setAttribute('aria-label','المتجر');b.innerHTML=c.innerHTML+'<span aria-hidden="true" style="margin-inline-start:4px;display:inline-flex"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 8h14l-1 12H6z"/><path d="M9 8V6a3 3 0 0 1 6 0v2"/></svg></span>';c.replaceWith(b)}
   };
   /* قفل العناصر غير المملوكة في الإعدادات + أزرار المتجر (مرحلة الالتقاط ليسبق المعالجات القديمة) */
   document.addEventListener('click',function(e){

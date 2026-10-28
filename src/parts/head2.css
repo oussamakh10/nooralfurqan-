@@ -337,3 +337,22 @@ html.lock #top,html.lock #nav,html.lock #bg{visibility:hidden}
 .sec+.sec{margin-top:6px}
 .btn:not(.ghost){box-shadow:0 4px 0 color-mix(in srgb,var(--accent) 70%,#000),0 8px 16px -10px rgba(0,0,0,.45)}
 .btn:not(.ghost):active{box-shadow:0 1px 0 color-mix(in srgb,var(--accent) 70%,#000)}
+/* achievements + account + wird + qibla */
+.sub{font:800 .95rem var(--display);color:var(--accent-d,var(--accent));margin:14px 4px 6px;display:flex;align-items:center;gap:8px}
+.sub::before{content:"";width:14px;height:2px;border-radius:2px;background:var(--gold,#C8A24A)}
+.acard{display:grid;gap:0;padding:0;overflow:hidden}
+.ahead{display:flex;align-items:center;gap:12px;padding:16px 18px;background:linear-gradient(135deg,color-mix(in srgb,var(--accent) 16%,transparent),transparent)}
+.aav{width:52px;height:52px;border-radius:50%;display:grid;place-items:center;font:800 1.4rem var(--display);background:var(--accent);color:var(--on-accent,#fff);box-shadow:0 0 0 3px var(--surface),0 0 0 5px var(--gold,#C8A24A);flex:none}
+.aname{display:block;font:800 1.15rem var(--display)}
+.arow{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:11px 18px;border-top:1px solid color-mix(in srgb,var(--line) 60%,transparent)}
+.arow span{color:var(--muted,inherit);font-size:.92rem}
+.arow b{font-weight:700;text-align:end;overflow-wrap:anywhere}
+.aact{display:flex;gap:8px;flex-wrap:wrap;padding:12px 18px;border-top:1px solid color-mix(in srgb,var(--line) 60%,transparent)}
+.wird{display:grid;gap:8px}
+.wrow{display:flex;justify-content:space-between;align-items:baseline;gap:8px;flex-wrap:wrap}
+.wfoot{display:flex;flex-direction:column;align-items:stretch;gap:8px}
+.wfoot .btn{align-self:flex-start}
+.wfoot small{line-height:1.7}
+.qibla{display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+.qibla .dial{width:72px!important;height:72px!important;flex:none;margin:0}
+.qibla>div:last-child{flex:1;min-width:150px}

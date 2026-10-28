@@ -47,16 +47,16 @@ function pageAch(){
   }
   bars=vals.map(function(x){return '<div title="'+N(x[0])+'"><i style="height:'+Math.max(3,Math.round(x[0]/mx*88))+'px"></i><span>'+x[1]+'</span></div>'}).join('');
   const wx=weekSum(S.xpd),wkd=S.wkc[weekKey()];
-  let h='<section class="sec" style="margin-top:16px"><h2>حسناتي</h2>'+
+  let h=accountSec()+'<section class="sec"><h2>حسناتي</h2>'+
    '<div class="card" style="text-align:center;display:grid;gap:4px"><div style="display:grid;place-items:center">'+hoopoe(S.has.t?'cheer':'happy',70)+'</div><div class="bigs">'+N(S.has.t)+'</div><small class="muted">مجموع حسناتك منذ بدأت المسيرة</small></div>'+
    '<div class="stats"><div class="stat"><b>'+N(hasSum(1))+'</b><span>اليوم</span></div><div class="stat"><b>'+N(hasSum(7))+'</b><span>آخر 7 أيام</span></div>'+
    '<div class="stat"><b>'+N(hasSum(30))+'</b><span>آخر 30 يومًا</span></div><div class="stat"><b>'+N(S.has.t)+'</b><span>المسيرة كلها</span></div></div>'+
    '<div class="card"><div class="lbl">حسناتك في آخر 7 أيام</div><div class="bars">'+bars+'</div></div>'+
    '<p class="muted" style="font-size:.85rem">الحسنات هنا تقدير للتحفيز، لا حساب فعلي: عشر حسنات لكل حرف، مأخوذ من حديث «الحسنة بعشر أمثالها». الله وحده يعلم الجزاء.</p></section>'+
-  '<section class="sec"><h2>إنجازاتي</h2><div class="opts2"><button class="btn sm gold" data-act="share">شارك إنجازي كصورة</button><button class="btn sm ghost" data-act="buyfreeze">تجميد السلسلة ❄ ×'+N(S.freeze)+' (50 نقطة)</button></div><div class="stats">'+
+  '<section class="sec"><h2>إنجازاتي</h2><h3 class="sub">أرقامي</h3><div class="opts2"><button class="btn sm gold" data-act="share">شارك إنجازي كصورة</button><button class="btn sm ghost" data-act="buyfreeze">تجميد السلسلة ❄ ×'+N(S.freeze)+' (50 نقطة)</button></div><div class="stats">'+
    '<div class="stat"><b>'+N(S.xp)+'</b><span>نقطة</span></div><div class="stat"><b>'+N(streak())+'</b><span>أيام متتالية</span></div>'+
    '<div class="stat"><b>'+N(doneN())+'/'+N(ALL.length)+'</b><span>دروس مكتملة</span></div><div class="stat"><b>'+N(acc)+'%</b><span>دقة الإجابات</span></div></div>'+
-   '<div class="card"><div class="lbl" style="margin-bottom:8px">آخر 7 أيام</div><div class="week">'+wk+'</div></div></section>'+
+   '<h3 class="sub">نشاطي</h3><div class="card"><div class="lbl" style="margin-bottom:8px">آخر 7 أيام</div><div class="week">'+wk+'</div></div></section>'+
   '<section class="sec"><h2>تحدي الأسبوع</h2><div class="card ch"><div class="row"><b>اجمع '+N(WK_TARGET)+' نقطة هذا الأسبوع</b><span class="pill">+50 نقطة</span></div><div class="pbar gold"><i style="width:'+Math.min(100,wx/WK_TARGET*100)+'%"></i></div>'+
    '<div class="row"><small class="muted">'+N(Math.min(wx,WK_TARGET))+' من '+N(WK_TARGET)+' · يتجدد كل سبت</small>'+(wkd?'<span class="pill">تم استلام النقاط</span>':'<button class="btn sm gold" data-act="wkclaim" '+(wx>=WK_TARGET?'':'disabled')+'>استلم</button>')+'</div></div>'+
    '<div class="card"><div class="lbl" style="margin-bottom:6px">لوحة الأسبوع (الأصدقاء)</div><div id="board"></div></div>'+
@@ -285,4 +285,16 @@ function finishGame(){
   }
   h+='</div></div><div class="lfoot"><div class="in" style="display:grid;gap:10px"><button class="btn" data-act="gagain">جولة جديدة</button><button class="btn ghost" data-act="gleave">العودة إلى الألعاب</button></div></div>';
   $('#lesson').innerHTML=h;confetti();
+}
+
+/* قسم حسابي: من المعلومات التي أدخلتها */
+function accountSec(){
+  const p=S.prof||{},L={b:'مبتدئ',m:'متوسط',a:'متقدم'},G={learn:'تعلّم الأساسيات',khatma:'ختم القرآن',hifz:'حفظ القرآن',review:'مراجعة ما أعرفه',all:'كل ذلك'};
+  const linked=!!(S.acct&&S.acct.linked);
+  const acc=linked?((typeof ACCT!=='undefined'&&ACCT&&ACCT.email)?ACCT.email:'مرتبط'):'غير مرتبط';
+  const row=function(k,v){return '<div class="arow"><span>'+k+'</span><b>'+v+'</b></div>'};
+  return '<section class="sec" style="margin-top:16px"><h2>حسابي</h2><div class="card acard">'+
+   '<div class="ahead"><div class="aav" aria-hidden="true">'+esc((p.name||'?').trim().charAt(0))+'</div><div><b class="aname">'+esc(p.name||'بدون اسم')+'</b><small class="muted">'+esc(L[p.lvl]||'لم يُحدَّد المستوى')+'</small></div></div>'+
+   row('العمر',p.age?N(p.age):'—')+row('الهدف',esc(G[p.goal]||'—'))+row('المدينة',esc(p.city||'—'))+row('الحساب',esc(acc))+
+   '<div class="aact"><button class="btn sm ghost" data-act="prof-edit">تعديل المعلومات</button><button class="btn sm ghost" data-act="acct-link">'+(linked?'مزامنة الآن':'ربط الحساب')+'</button></div></div></section>';
 }

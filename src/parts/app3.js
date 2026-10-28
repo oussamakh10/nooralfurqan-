@@ -52,9 +52,9 @@ function markRead(s,a,quiet){
 function surahDoneToday(s){const t=today();for(let a=1;a<=AYC[s-1];a++)if(S.ayd[rdKey(s,a)]!==t)return false;return true}
 function wirdCard(){
   const tgt=wirdTarget(),r=Math.min(readToday(),tgt);
-  return '<div class="card" style="display:grid;gap:6px"><div class="row" style="display:flex;justify-content:space-between;gap:8px"><b>وردك اليوم</b><small class="muted">'+N(r)+' من '+N(tgt)+' آية</small></div>'+
+  return '<div class="card wird"><div class="wrow"><b>وردك اليوم</b><small class="muted">'+N(r)+' من '+N(tgt)+' آية</small></div>'+
    '<div class="pbar gold"><i style="width:'+(r/tgt*100)+'%"></i></div>'+
-   '<div style="display:flex;justify-content:space-between;align-items:center;gap:8px"><small class="muted">ختمة في '+N(S.khat.days)+' يومًا · أتممت '+N(S.khat.n)+' ختمة · تقدّم الختمة '+N(Math.round(S.khat.read/6236*100))+'%</small><button class="btn sm ghost" data-act="khat-set">غيّر المدة</button></div></div>';
+   '<div class="wfoot"><small class="muted">ختمة في '+N(S.khat.days)+' يومًا · أتممت '+N(S.khat.n)+' ختمة · تقدّم الختمة '+N(Math.round(S.khat.read/6236*100))+'%</small><button class="btn sm ghost" data-act="khat-set">تغيير المدة</button></div></div>';
 }
 function pageRead(){
   if(RV.s){openSurah(RV.s);return}
