@@ -168,7 +168,7 @@ function checkLesson(){
     if(L.combo>=3){L.mood='wow';L.say='تتابع ×'+N(L.combo)+'! ما شاء الله!';SND.combo(L.combo)}
     else{L.mood='cheer';L.say=pick(OKSAY);SND.correct()}
   }else{
-    L.hearts--;L.wrongs++;L.combo=0;L.mood='sad';L.say=pick(NOSAY);SND.wrong();
+    L.hearts--;if(L.main&&typeof hpSet==='function')hpSet(L.hearts);L.wrongs++;L.combo=0;L.mood='sad';L.say=pick(NOSAY);SND.wrong();
   }
   act('q');renderLesson();
 }

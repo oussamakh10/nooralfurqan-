@@ -548,3 +548,15 @@ html[data-tab="play"] #page{background:radial-gradient(60% 40% at 50% 100%,color
 .mgtf .opt{justify-content:center;font:800 1.3rem var(--display)}
 .mgnote{text-align:center;padding:10px 14px;border-radius:14px;background:var(--accent-soft)}
 .mgh svg{width:18px;height:18px}.mgh.off{opacity:.25}.mgls{display:inline-flex;gap:4px}
+/* ===== القلوب ===== */
+.hpcard{display:grid;gap:8px;text-align:center;margin-top:14px}
+.hprow{display:flex;gap:6px;justify-content:center}
+.hpi{color:#D9453B;display:inline-flex}.hpi svg{width:26px;height:26px;filter:drop-shadow(0 2px 0 rgba(0,0,0,.18))}.hpi.off{color:color-mix(in srgb,currentColor 0%,var(--muted,#999));opacity:.3}
+.hpinfo{margin:0;font-size:.9rem}
+.hpbtns{display:grid;gap:8px}
+.hpbtns .btn{width:100%}
+#hpm{position:fixed;inset:0;z-index:96;background:rgba(0,0,0,.5);display:grid;place-items:center;padding:20px}
+#hpm[hidden]{display:none}
+#hpm .bc-card{background:var(--surface);color:var(--fg);border-radius:22px;padding:20px;width:min(92vw,360px);box-shadow:0 20px 50px -15px rgba(0,0,0,.5);text-align:center}
+#hpm .bc-t{font:800 1.2rem var(--display);margin-bottom:6px}
+#hpm p{margin:0 0 12px;line-height:1.7}
