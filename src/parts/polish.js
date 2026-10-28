@@ -1,6 +1,6 @@
 /* ===== لمسات: لوحات الألوان، شارة عدم الاتصال، الإبلاغ عند غياب الحساب ===== */
 (function(){
-  const PAL=[['green','#0F7A4C','أخضر','Green','Vert'],['gold','#A8730A','ذهبي','Gold','Or'],['ocean','#1C7E9E','أزرق','Blue','Bleu'],['rose','#B8456B','وردي','Rose','Rose']];
+  const PAL=[['green','#0F7A4C','أخضر','Green','Vert'],['gold','#A8730A','ذهبي','Gold','Or'],['ocean','#1C7E9E','أزرق','Blue','Bleu'],['rose','#B8456B','وردي','Rose','Rose'],['violet','#6F52C4','بنفسجي','Violet','Violet'],['crimson','#B83A33','قرمزي','Crimson','Cramoisi'],['teal','#118A8A','فيروزي','Teal','Turquoise'],['brown','#8A5A33','بنّي','Brown','Brun']];
   const es=extraSettings;
   extraSettings=function(){
     const cur=S.pal||'green';

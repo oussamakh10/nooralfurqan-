@@ -17,6 +17,10 @@
     {id:'pal:gold',sec:'ألوان التطبيق',t:'ذهبي',d:'لون التطبيق',p:120,k:'own',col:'#A8730A',eq:'pal',v:'gold'},
     {id:'pal:ocean',sec:'ألوان التطبيق',t:'أزرق',d:'لون التطبيق',p:120,k:'own',col:'#1C7E9E',eq:'pal',v:'ocean'},
     {id:'pal:rose',sec:'ألوان التطبيق',t:'وردي',d:'لون التطبيق',p:120,k:'own',col:'#B8456B',eq:'pal',v:'rose'},
+    {id:'pal:violet',sec:'ألوان التطبيق',t:'بنفسجي',d:'لون التطبيق',p:150,k:'own',col:'#6F52C4',eq:'pal',v:'violet'},
+    {id:'pal:crimson',sec:'ألوان التطبيق',t:'قرمزي',d:'لون التطبيق',p:150,k:'own',col:'#B83A33',eq:'pal',v:'crimson'},
+    {id:'pal:teal',sec:'ألوان التطبيق',t:'فيروزي',d:'لون التطبيق',p:150,k:'own',col:'#118A8A',eq:'pal',v:'teal'},
+    {id:'pal:brown',sec:'ألوان التطبيق',t:'بنّي ترابي',d:'لون التطبيق',p:150,k:'own',col:'#8A5A33',eq:'pal',v:'brown'},
     {id:'spv:a',sec:'شاشة الدخول',t:'الزخرفية',d:'شاشة افتتاح مزخرفة',p:100,k:'own',ic:'✦',eq:'spv',v:'a'},
     {id:'spv:c',sec:'شاشة الدخول',t:'المصحف',d:'شاشة افتتاح بالمصحف',p:100,k:'own',ic:'📖',eq:'spv',v:'c'}
   ];
@@ -66,12 +70,12 @@
   function buy(id){
     const it=ITEMS.find(function(x){return x.id===id});if(!it)return;
     if(it.k==='own'&&owned(id))return;
-    if(S.xp<it.p){toast('ينقصك '+N(it.p-S.xp)+' نقطة');return}
+    const PR=priceOf(it);if(S.xp<PR){toast('ينقصك '+N(PR-S.xp)+' نقطة');return}
     if(id==='freeze'&&(S.freeze||0)>=3){toast('لديك الحد الأقصى: 3');return}
     askBuy(it,function(){
-      if(S.xp<it.p){toast('ينقصك '+N(it.p-S.xp)+' نقطة');return}
+      const PR=priceOf(it);if(S.xp<PR){toast('ينقصك '+N(PR-S.xp)+' نقطة');return}
       if(it.k==='own'&&owned(id))return;
-      S.xp-=it.p;
+      S.xp-=PR;
       if(id==='freeze')S.freeze=(S.freeze||0)+1;
       else if(id==='boost')S.boost=Math.max(Date.now(),S.boost||0)+3600*1000;
       else own()[id]=1;
@@ -82,7 +86,7 @@
   function askBuy(it,ok){
     let m=document.getElementById('buyconf');
     if(!m){m=document.createElement('div');m.id='buyconf';m.setAttribute('role','dialog');m.setAttribute('aria-modal','true');document.body.appendChild(m)}
-    m.innerHTML='<div class="bc-card"><div class="bc-t">تأكيد الشراء</div><p>شراء «'+esc(it.t)+'» مقابل '+N(it.p)+' نقطة؟</p><div class="bc-b"><button class="btn ghost sm" data-bc="no">إلغاء</button><button class="btn sm" data-bc="yes">شراء</button></div></div>';
+    m.innerHTML='<div class="bc-card"><div class="bc-t">تأكيد الشراء</div><p>شراء «'+esc(it.t)+'» مقابل '+N(priceOf(it))+' نقطة؟</p><div class="bc-b"><button class="btn ghost sm" data-bc="no">إلغاء</button><button class="btn sm" data-bc="yes">شراء</button></div></div>';
     m.hidden=false;
     m.onclick=function(e){
       const b=e.target.closest('button[data-bc]');if(!b)return;
@@ -115,28 +119,77 @@
     S.hat=keep.hat;S.face=keep.face;S.neck=keep.neck;
     return h;
   }
+  /* ---- متجر v2: تبويبات + عرض اليوم + غرفة تجربة ---- */
+  let SHOPTAB='all',TRY=null;
+  const TABS=[['all','الكل'],['hoopoe','الهدهد'],['colors','الألوان'],['screens','الشاشات'],['boost','مساعدات'],['mine','مقتنياتي']];
+  function tabOf(it){return it.sec==='الهدهد'?'hoopoe':it.sec==='ألوان التطبيق'?'colors':it.sec==='شاشة الدخول'?'screens':'boost'}
+  function dealItem(){
+    const pool=ITEMS.filter(function(i){return i.k==='own'&&!isOwned(i)});if(!pool.length)return null;
+    let h=0;const d=today();for(let k=0;k<d.length;k++)h=(h*31+d.charCodeAt(k))>>>0;
+    return pool[h%pool.length];
+  }
+  function priceOf(it){const d=dealItem();return (d&&d.id===it.id)?Math.max(5,Math.round(it.p*0.7/5)*5):it.p}
+  function outfitSvg(size){
+    const keep={hat:S.hat,face:S.face,neck:S.neck};
+    if(TRY){const t=ITEMS.find(function(x){return x.id===TRY});
+      if(t){if(t.eq==='hat')S.hat=t.v;else if(t.eq==='face')S.face=t.v;else if(t.eq==='neck')S.neck=t.v}}
+    let h='';try{h=hoopoe('happy',size)}catch(e){h=''}
+    S.hat=keep.hat;S.face=keep.face;S.neck=keep.neck;return h;
+  }
+  function tickets(it){
+    const b=[];const d=dealItem();
+    if(d&&d.id===it.id)b.push('<span class="sbadge deal">عرض اليوم −30%</span>');
+    if(isOwned(it))b.push('<span class="sbadge own">'+(equipped(it)?'مُستخدَم':'مملوك')+'</span>');
+    return b.join('');
+  }
+  function art(it){
+    if(it.col)return '<div class="shi big sw" style="--sw:'+it.col+';background:'+it.col+'"></div>';
+    if(it.eq==='hat'||it.eq==='face'||it.eq==='neck')return '<div class="shi big">'+preview(it)+'</div>';
+    return '<div class="shi big">'+icoSvg(it.ic)+'</div>';
+  }
   function card(it){
-    let btn;
-    if(it.k==='own'&&isOwned(it))btn=equipped(it)?(it.eq==='pal'||it.eq==='spv'?'<button class="btn sm ghost" disabled>مُستخدَم ✓</button>':'<button class="btn sm ghost" data-shop="eq:'+it.id+'">إزالة ✓</button>'):'<button class="btn sm gold" data-shop="eq:'+it.id+'">استخدم</button>';
+    let btn,tryb='';
+    if(it.k==='own'&&isOwned(it))btn=equipped(it)?(it.eq==='pal'||it.eq==='spv'?'<button class="btn sm ghost" disabled>مُستخدَم</button>':'<button class="btn sm ghost" data-shop="eq:'+it.id+'">إزالة</button>'):'<button class="btn sm gold" data-shop="eq:'+it.id+'">استخدم</button>';
     else{
-      const lack=S.xp<it.p;
-      btn='<button class="btn sm'+(lack?' ghost':'')+'" data-shop="buy:'+it.id+'">'+N(it.p)+' نقطة</button>';
+      const pr=priceOf(it),lack=S.xp<pr,d=dealItem();
+      btn='<button class="btn sm'+(lack?' ghost':'')+'" data-shop="buy:'+it.id+'">'+((d&&d.id===it.id)?'<s class="old">'+N(it.p)+'</s> ':'')+N(pr)+' نقطة</button>';
+      if(it.eq==='hat'||it.eq==='face'||it.eq==='neck')tryb='<button class="btn sm ghost" data-shop="try:'+it.id+'" aria-pressed="'+(TRY===it.id)+'">'+(TRY===it.id?'إيقاف التجربة':'جرّب')+'</button>';
     }
     let st='';
     if(it.id==='freeze')st='<small class="muted">لديك: '+N(S.freeze||0)+' / 3</small>';
     if(it.id==='boost'&&boostLeft()>0)st='<small class="muted">فعّال: '+N(Math.ceil(boostLeft()/60000))+' دقيقة</small>';
-    return '<div class="card shopit"><div class="shi" '+(it.col?'style="background:'+it.col+'"':'')+'>'+(it.col?'':((it.eq==='hat'||it.eq==='face'||it.eq==='neck')?preview(it):icoSvg(it.ic)))+'</div><div class="shd"><b>'+esc(it.t)+'</b><small>'+esc(it.d)+'</small>'+st+'</div>'+btn+'</div>';
+    return '<div class="card shopit v2">'+tickets(it)+art(it)+'<b class="sname">'+esc(it.t)+'</b><small class="sdesc">'+esc(it.d)+'</small>'+st+'<div class="sact">'+tryb+btn+'</div></div>';
   }
   function pageShop(){
     migrate();
-    const a=adS(),ready=adReady(),left=ADS_CFG.dailyCap-a.n;
-    let h='<section class="sec" style="margin-top:16px"><div class="card shopbal"><div>'+IC.gem+'</div><div><b>'+N(S.xp)+' نقطة</b><small class="muted">تجمعها من الإجابة الصحيحة في دروس تعلّم والألعاب</small><small class="muted">كل مرحلة تُتمّها في «تعلّم» تمنحك +15 نقطة إضافية</small>'+
-      (boostLeft()>0?'<small class="sch-good">مضاعف ×2 فعّال: '+N(Math.ceil(boostLeft()/60000))+' دقيقة</small>':'')+'</div></div></section>'+
-      '<section class="sec"><h2>اكسب نقاطًا</h2><div style="display:grid;gap:10px"><div class="card shopit"><div class="shi">▶</div><div class="shd"><b>شاهد إعلانًا قصيرًا</b><small>+'+ADS_CFG.reward+' نقطة'+(ready?' · المتبقي اليوم: '+N(Math.max(0,left)):'')+'</small></div>'+
-      (ready?'<button class="btn sm gold" data-shop="ad">شاهد</button>':'<button class="btn sm ghost" disabled>قريبًا</button>')+'</div>'+
-      '<button class="card shopit" data-go="learn"><div class="shi">★</div><div class="shd"><b>تعلّم لتكسب</b><small>كل إجابة صحيحة تمنحك نقاطًا</small></div><span class="btn sm">ابدأ</span></button></div></section>';
-    const secs=[];ITEMS.forEach(function(it){if(secs.indexOf(it.sec)<0)secs.push(it.sec)});
-    secs.forEach(function(s){h+='<section class="sec"><h2>'+esc(s)+'</h2><div style="display:grid;gap:10px">'+ITEMS.filter(function(i){return i.sec===s}).map(card).join('')+'</div></section>'});
+    const a=adS(),ready=adReady(),left=ADS_CFG.dailyCap-a.n,deal=dealItem();
+    const tryIt=TRY&&ITEMS.find(function(x){return x.id===TRY});
+    let h='<section class="sec" style="margin-top:16px"><div class="card fitroom"><div class="fr-art"><div class="fr-glow"></div>'+outfitSvg(150)+'</div>'+
+      '<div class="fr-info"><div class="fr-bal">'+IC.gem+'<b>'+N(S.xp)+'</b><span>نقطة</span></div>'+
+      '<small class="muted">'+(tryIt?'تجرّب الآن: '+esc(tryIt.t)+' (للمعاينة فقط)':'هدهدك بإطلالته الحالية. اضغط «جرّب» على أي إكسسوار لتراه عليه.')+'</small>'+
+      '<small class="muted">كل مرحلة تُتمّها تمنحك 15 نقطة'+(boostLeft()>0?' · مضاعف ×2 فعّال '+N(Math.ceil(boostLeft()/60000))+' د':'')+'</small></div></div></section>';
+    h+='<div class="seg shoptabs" role="tablist">'+TABS.map(function(t){return '<button role="tab" aria-selected="'+(SHOPTAB===t[0])+'" class="'+(SHOPTAB===t[0]?'on':'')+'" data-shop="tab:'+t[0]+'">'+t[1]+'</button>'}).join('')+'</div>';
+    if(SHOPTAB==='all'&&deal){
+      h+='<section class="sec"><h2>عرض اليوم</h2><div class="dealbox"><div class="dealtag">خصم 30% اليوم فقط</div>'+card(deal)+'</div></section>';
+    }
+    if(SHOPTAB==='all'||SHOPTAB==='boost'){
+      h+='<section class="sec"><h2>اكسب نقاطًا</h2><div style="display:grid;gap:10px"><div class="card shopit"><div class="shi">▶</div><div class="shd"><b>شاهد إعلانًا قصيرًا</b><small>+'+ADS_CFG.reward+' نقطة'+(ready?' · المتبقي اليوم: '+N(Math.max(0,left))+'':'')+'</small></div>'+
+        (ready?'<button class="btn sm gold" data-shop="ad">شاهد</button>':'<button class="btn sm ghost" disabled>قريبًا</button>')+'</div>'+
+        '<button class="card shopit" data-go="learn"><div class="shi">★</div><div class="shd"><b>تعلّم لتكسب</b><small>كل مرحلة تُتمّها تمنحك 15 نقطة</small></div><span class="btn sm">ابدأ</span></button></div></section>';
+    }
+    if(SHOPTAB==='mine'){
+      const mine=ITEMS.filter(function(i){return isOwned(i)});
+      h+='<section class="sec"><h2>مقتنياتي</h2>'+(mine.length?'<div class="shopgrid">'+mine.map(card).join('')+'</div>':
+        (typeof emptyBox==='function'?emptyBox('happy','لا مقتنيات بعد','اشترِ أول إكسسوار للهدهد من تبويب «الهدهد»، وسيظهر هنا.'):'<p class="muted">لا مقتنيات بعد.</p>'))+
+        '<div class="card" style="margin-top:12px;display:grid;gap:4px"><b>رصيد المساعدات</b><small class="muted">تجميد السلسلة: '+N(S.freeze||0)+' / 3 · المضاعف: '+(boostLeft()>0?N(Math.ceil(boostLeft()/60000))+' دقيقة':'غير فعّال')+'</small></div></section>';
+    }else{
+      const groups=[['الهدهد','hoopoe'],['ألوان التطبيق','colors'],['شاشة الدخول','screens'],['مساعدات','boost']];
+      groups.forEach(function(g){
+        if(SHOPTAB!=='all'&&SHOPTAB!==g[1])return;
+        const list=ITEMS.filter(function(i){return tabOf(i)===g[1]});if(!list.length)return;
+        h+='<section class="sec"><h2>'+esc(g[0])+'</h2><div class="shopgrid">'+list.map(card).join('')+'</div></section>';
+      });
+    }
     h+='<p class="muted" style="font-size:.85rem;margin:14px 4px 90px">المشتريات بالنقاط فقط ولا تتطلب مالًا، وتُحفظ في جهازك.</p>';
     $('#page').innerHTML=h;
   }
@@ -174,6 +227,8 @@
     if(h){const v=h.getAttribute('data-xhat');if(v&&!owned('hat:'+v)){e.stopImmediatePropagation();e.preventDefault();toast('اشترِ هذا الإكسسوار من المتجر');return}}
     const b=t.closest('button[data-shop]');if(!b)return;
     const v=b.dataset.shop,a=v.split(':')[0],id=v.split(':').slice(1).join(':');
+    if(a==='tab'){SHOPTAB=id;return renderShop()}
+    if(a==='try'){TRY=(TRY===id)?null:id;return renderShop()}
     if(a==='ad')return watchAd();
     if(a==='buy')return buy(id);
     if(a==='eq')return equip(id);

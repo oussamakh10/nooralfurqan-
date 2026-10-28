@@ -399,7 +399,7 @@ html[data-tab] #page::before,html[data-tab] #page::after{--t1:color-mix(in srgb,
 .shi{background:var(--accent-soft,color-mix(in srgb,var(--gold,#C8A24A) 22%,var(--surface)))!important;color:var(--accent-d,var(--accent))}
 .shi svg{color:inherit}
 /* ===== الشريط العلوي: هوية موحّدة مع بطاقة الترحيب ===== */
-.top{background:linear-gradient(135deg,#0F4F43 0%,#0B3A35 55%,#082B29 100%)!important;color:#FFF1C2;border-bottom:0!important;border-radius:0 0 26px 26px;padding:10px 14px 14px!important;margin-top:0;position:sticky;box-shadow:0 12px 26px -14px rgba(0,0,0,.6),inset 0 -2px 0 color-mix(in srgb,#E6C473 85%,transparent)!important;overflow:hidden}
+.top{background:linear-gradient(135deg,var(--arch) 0%,color-mix(in srgb,var(--arch) 60%,#000) 55%,var(--arch2) 100%)!important;color:#FFF1C2;border-bottom:0!important;border-radius:0 0 26px 26px;padding:10px 14px 14px!important;margin-top:0;position:sticky;box-shadow:0 12px 26px -14px rgba(0,0,0,.6),inset 0 -2px 0 color-mix(in srgb,#E6C473 85%,transparent)!important;overflow:hidden}
 .top::before{content:"";position:absolute;inset:0;pointer-events:none;background:radial-gradient(60% 120% at 12% -20%,rgba(230,196,115,.28),transparent 60%),repeating-linear-gradient(45deg,transparent 0 14px,rgba(230,196,115,.07) 14px 15px),repeating-linear-gradient(-45deg,transparent 0 14px,rgba(230,196,115,.07) 14px 15px)}
 .top::after{content:"";position:absolute;inset-inline:22%;bottom:3px;height:6px;pointer-events:none;background:radial-gradient(circle at 50% 50%,#E6C473 0 2px,transparent 2.5px) center/18px 6px repeat-x;opacity:.55}
 .top>*{position:relative;z-index:1}
@@ -415,7 +415,7 @@ html[data-tab] #page::before,html[data-tab] #page::after{--t1:color-mix(in srgb,
 .chips{gap:6px;align-items:center}
 /* ===== بطاقة الترحيب (المحراب) ===== */
 .hero{margin-top:22px;gap:12px}
-.arch{position:relative;overflow:hidden;padding:34px 18px 22px;background:radial-gradient(70% 45% at 50% 30%,rgba(255,226,140,.20),transparent 70%),radial-gradient(120% 60% at 50% 120%,rgba(230,196,115,.22),transparent 60%),linear-gradient(180deg,#0F5A4C 0%,#0B3F39 55%,#072B29 100%);border:3px solid #E6C473;box-shadow:0 0 0 6px var(--bg),0 0 0 8px #E6C473,0 24px 40px -22px rgba(0,0,0,.7),0 0 60px -10px rgba(230,196,115,.35)}
+.arch{position:relative;overflow:hidden;padding:34px 18px 22px;background:radial-gradient(70% 45% at 50% 30%,rgba(255,226,140,.20),transparent 70%),radial-gradient(120% 60% at 50% 120%,rgba(230,196,115,.22),transparent 60%),linear-gradient(180deg,color-mix(in srgb,var(--arch) 92%,#fff 8%) 0%,var(--arch) 40%,var(--arch2) 100%);border:3px solid #E6C473;box-shadow:0 0 0 6px var(--bg),0 0 0 8px #E6C473,0 24px 40px -22px rgba(0,0,0,.7),0 0 60px -10px rgba(230,196,115,.35)}
 .arch::before{content:"";position:absolute;inset:10px;border-radius:inherit;border:1px solid rgba(230,196,115,.5);pointer-events:none;box-shadow:inset 0 0 0 4px transparent,inset 0 0 22px rgba(230,196,115,.12)}
 .arch::after{content:"";position:absolute;left:50%;top:-30px;width:340px;height:340px;margin-left:-170px;border-radius:50%;pointer-events:none;background:repeating-conic-gradient(rgba(255,226,140,.16) 0 4deg,transparent 4deg 12deg);-webkit-mask:radial-gradient(circle,#000 8%,transparent 64%);mask:radial-gradient(circle,#000 8%,transparent 64%)}
 .arch>*{position:relative;z-index:1}
@@ -465,3 +465,56 @@ html[data-tab] #page::before,html[data-tab] #page::after{--t1:color-mix(in srgb,
 /* ===== عدّاد النقاط ===== */
 .chip.tick{animation:tickup .6s cubic-bezier(.2,1.4,.4,1)}
 @keyframes tickup{0%{transform:scale(1)}40%{transform:scale(1.14)}100%{transform:scale(1)}}
+/* ===== ألوان التطبيق (palettes) ===== */
+html[data-pal="gold"]{--accent:#A8730A;--accent-d:#7A5206;--accent-soft:#F2E2B4;--arch:#8A5C08;--arch2:#4D3204;--c1:#A8730A;--c1d:#7A5206}
+html[data-pal="ocean"]{--accent:#1C7E9E;--accent-d:#12607A;--accent-soft:#CFE8F0;--arch:#136C8A;--arch2:#0A3A4D;--c1:#1C7E9E;--c1d:#12607A}
+html[data-pal="rose"]{--accent:#B8456B;--accent-d:#8C2F50;--accent-soft:#F6D6E0;--arch:#A33B5E;--arch2:#5A1F33;--c1:#B8456B;--c1d:#8C2F50}
+html[data-pal="violet"]{--accent:#6F52C4;--accent-d:#523C99;--accent-soft:#E1D9F6;--arch:#5E44B0;--arch2:#2F2166;--c1:#6F52C4;--c1d:#523C99}
+html[data-pal="crimson"]{--accent:#B83A33;--accent-d:#8C2A25;--accent-soft:#F6D8D4;--arch:#A5312B;--arch2:#561713;--c1:#B83A33;--c1d:#8C2A25}
+html[data-pal="teal"]{--accent:#118A8A;--accent-d:#0C6767;--accent-soft:#CBEDEA;--arch:#0E7575;--arch2:#07403F;--c1:#118A8A;--c1d:#0C6767}
+html[data-pal="brown"]{--accent:#8A5A33;--accent-d:#66401F;--accent-soft:#EBD9C4;--arch:#774B28;--arch2:#3F2512;--c1:#8A5A33;--c1d:#66401F}
+html[data-theme="dark"][data-pal="gold"]{--accent:#E0B04A;--accent-d:#C99A33;--accent-soft:#3A2D10;--on-accent:#2A1D04;--c1:#E0B04A}
+html[data-theme="dark"][data-pal="ocean"]{--accent:#4FB4D4;--accent-d:#37A0C2;--accent-soft:#12303B;--on-accent:#06242E;--c1:#4FB4D4}
+html[data-theme="dark"][data-pal="rose"]{--accent:#E27A9C;--accent-d:#D0628A;--accent-soft:#3A1B28;--on-accent:#35101F;--c1:#E27A9C}
+html[data-theme="dark"][data-pal="violet"]{--accent:#A58BF0;--accent-d:#8F73E0;--accent-soft:#251B47;--on-accent:#1B1236;--c1:#A58BF0}
+html[data-theme="dark"][data-pal="crimson"]{--accent:#E8736B;--accent-d:#D45A52;--accent-soft:#3D1917;--on-accent:#3A0F0C;--c1:#E8736B}
+html[data-theme="dark"][data-pal="teal"]{--accent:#3FC8C4;--accent-d:#2BB0AC;--accent-soft:#0F3332;--on-accent:#062625;--c1:#3FC8C4}
+html[data-theme="dark"][data-pal="brown"]{--accent:#C8905F;--accent-d:#B67C48;--accent-soft:#33241A;--on-accent:#2A180B;--c1:#C8905F}
+@media (prefers-color-scheme:dark){
+html:not([data-theme="light"])[data-pal="gold"]{--accent:#E0B04A;--accent-d:#C99A33;--accent-soft:#3A2D10;--on-accent:#2A1D04;--c1:#E0B04A}
+html:not([data-theme="light"])[data-pal="ocean"]{--accent:#4FB4D4;--accent-d:#37A0C2;--accent-soft:#12303B;--on-accent:#06242E;--c1:#4FB4D4}
+html:not([data-theme="light"])[data-pal="rose"]{--accent:#E27A9C;--accent-d:#D0628A;--accent-soft:#3A1B28;--on-accent:#35101F;--c1:#E27A9C}
+html:not([data-theme="light"])[data-pal="violet"]{--accent:#A58BF0;--accent-d:#8F73E0;--accent-soft:#251B47;--on-accent:#1B1236;--c1:#A58BF0}
+html:not([data-theme="light"])[data-pal="crimson"]{--accent:#E8736B;--accent-d:#D45A52;--accent-soft:#3D1917;--on-accent:#3A0F0C;--c1:#E8736B}
+html:not([data-theme="light"])[data-pal="teal"]{--accent:#3FC8C4;--accent-d:#2BB0AC;--accent-soft:#0F3332;--on-accent:#062625;--c1:#3FC8C4}
+html:not([data-theme="light"])[data-pal="brown"]{--accent:#C8905F;--accent-d:#B67C48;--accent-soft:#33241A;--on-accent:#2A180B;--c1:#C8905F}
+}
+/* ===== المتجر v2 ===== */
+.fitroom{display:grid;grid-template-columns:auto 1fr;gap:14px;align-items:center;padding:14px 16px;background:radial-gradient(80% 90% at 15% 20%,color-mix(in srgb,var(--gold,#C8A24A) 26%,transparent),transparent 70%),var(--surface)}
+.fr-art{position:relative;width:150px;height:150px;display:grid;place-items:center}
+.fr-glow{position:absolute;inset:6px;border-radius:50%;background:radial-gradient(circle,color-mix(in srgb,var(--accent) 28%,transparent),transparent 70%);filter:blur(2px)}
+.fr-art svg{position:relative}
+.fr-info{display:grid;gap:6px;min-width:0}
+.fr-bal{display:flex;align-items:center;gap:8px;font:800 1.7rem var(--display)}
+.fr-bal svg{width:26px;height:26px}.fr-bal span{font-size:.95rem;color:var(--muted,inherit);font-weight:700}
+.shoptabs{display:flex;overflow-x:auto;gap:6px;padding:4px;margin:6px 0 4px;scrollbar-width:none}
+.shoptabs::-webkit-scrollbar{display:none}
+.shoptabs button{flex:none;white-space:nowrap;padding:8px 14px;border-radius:999px}
+.shopgrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.shopit.v2{position:relative;display:grid;gap:6px;justify-items:center;text-align:center;padding:14px 10px 12px;overflow:visible}
+.shopit.v2 .shi.big{width:84px;height:84px;border-radius:22px;display:grid;place-items:center}
+.shopit.v2 .shi.big svg{width:64px;height:64px}
+.sname{font:800 1rem var(--display)}
+.sdesc{color:var(--muted,inherit);line-height:1.5;font-size:.8rem;min-height:2.4em}
+.sact{display:flex;gap:6px;flex-wrap:wrap;justify-content:center;width:100%}
+.sact .btn{flex:1 1 auto;min-width:0}
+.sbadge{position:absolute;top:8px;inset-inline-start:8px;font:800 .7rem var(--display);padding:3px 9px;border-radius:999px;background:var(--accent-soft);color:var(--accent-d)}
+.sbadge.deal{background:linear-gradient(135deg,#F3C65B,#E08A2A);color:#3A2205}
+.sbadge.own{background:var(--accent);color:var(--on-accent,#fff)}
+.old{opacity:.65;font-weight:600;margin-inline-end:4px}
+.dealbox{position:relative;padding:12px;border-radius:26px;background:linear-gradient(135deg,color-mix(in srgb,var(--gold,#C8A24A) 38%,transparent),color-mix(in srgb,var(--accent) 14%,transparent));border:2px solid color-mix(in srgb,var(--gold,#C8A24A) 70%,transparent)}
+.dealbox .dealtag{font:800 .85rem var(--display);color:var(--accent-d);margin:0 4px 8px}
+.dealbox .shopit.v2{max-width:260px;margin-inline:auto}
+@media (max-width:360px){.fitroom{grid-template-columns:1fr;justify-items:center;text-align:center}}
+.shopit.v2 .shi.big[style*="background"]{background:var(--sw)!important}
+.shopit.v2 .shi.big.sw{box-shadow:inset 0 0 0 4px rgba(255,255,255,.55),0 4px 12px rgba(0,0,0,.2)}
