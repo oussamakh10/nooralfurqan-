@@ -40,9 +40,9 @@
       hd.innerHTML=hoopoe('happy',52)+'<div><h2>'+esc(g3(['الإعدادات','Settings','Réglages']))+'</h2>'+(nm?'<small>'+esc(nm)+'</small>':'')+'</div>';
       card.appendChild(hd);
       if(lang){const ls=lang.querySelector('span');if(ls)ls.textContent='';const w=document.createElement('div');w.className='langrow';w.appendChild(lang);card.appendChild(w)}
-      GR.forEach(function(g,i){
+      GR.forEach(function(g){
         if(!buckets[g[0]].length)return;
-        const d=document.createElement('details');d.className='sg';if(i===0||window.__sgopen===g[0])d.open=true;
+        const d=document.createElement('details');d.className='sg';
         d.innerHTML='<summary><span class="ic">'+g[1]+'</span>'+esc(g3(g[2]))+'</summary>';
         const b=document.createElement('div');b.className='sgb';buckets[g[0]].forEach(function(e){
           if(e.matches&&e.matches('button[data-act="reset"]')){e.classList.add('dng');e.style.marginTop='8px'}
