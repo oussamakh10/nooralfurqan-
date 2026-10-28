@@ -1,0 +1,104 @@
+{
+  "id": "/",
+  "name": "نور الفرقان",
+  "short_name": "نور الفرقان",
+  "description": "تعلّم الإسلام والقرآن بطريقة ممتعة — مع الهدهد",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "dir": "rtl",
+  "lang": "ar",
+  "background_color": "#0b3330",
+  "theme_color": "#0f3b3a",
+  "icons": [
+    {
+      "src": "icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "icon-maskable-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "تعلّم",
+      "short_name": "تعلّم",
+      "url": "./index.html?go=learn",
+      "icons": [
+        {
+          "src": "icon-192.png",
+          "sizes": "192x192",
+          "type": "image/png"
+        }
+      ]
+    },
+    {
+      "name": "القراءة",
+      "short_name": "القراءة",
+      "url": "./index.html?go=read",
+      "icons": [
+        {
+          "src": "icon-192.png",
+          "sizes": "192x192",
+          "type": "image/png"
+        }
+      ]
+    },
+    {
+      "name": "الأذكار والسبحة",
+      "short_name": "الأذكار",
+      "url": "./index.html?go=dhikr",
+      "icons": [
+        {
+          "src": "icon-192.png",
+          "sizes": "192x192",
+          "type": "image/png"
+        }
+      ]
+    }
+  ],
+  "categories": [
+    "education",
+    "books"
+  ],
+  "screenshots": [
+    {
+      "src": "shot-1.png",
+      "sizes": "540x1170",
+      "type": "image/png",
+      "form_factor": "narrow",
+      "label": "الرئيسية"
+    },
+    {
+      "src": "shot-2.png",
+      "sizes": "540x1170",
+      "type": "image/png",
+      "form_factor": "narrow",
+      "label": "الدروس"
+    },
+    {
+      "src": "shot-3.png",
+      "sizes": "540x1170",
+      "type": "image/png",
+      "form_factor": "narrow",
+      "label": "القراءة"
+    }
+  ],
+  "prefer_related_applications": false,
+  "display_override": [
+    "standalone",
+    "minimal-ui"
+  ]
+}

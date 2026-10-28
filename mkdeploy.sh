@@ -14,6 +14,7 @@ s=s.replace('</head>',inj+'</head>',1)
 s=s.replace('</body>','<script>if("serviceWorker" in navigator&&/^https?:/.test(location.protocol)){window.addEventListener("load",function(){navigator.serviceWorker.register("sw.js").catch(function(){})})}</script></body>',1)
 open('deploy/index.html','w',encoding='utf8').write(s)
 PY
+mkdir -p deploy/.well-known; [ -f pwa/assetlinks.json ] && cp pwa/assetlinks.json deploy/.well-known/assetlinks.json || true
 cat > deploy/_headers <<'H'
 /*
   X-Content-Type-Options: nosniff
@@ -23,6 +24,10 @@ cat > deploy/_headers <<'H'
   Strict-Transport-Security: max-age=31536000; includeSubDomains
   Content-Security-Policy: default-src 'self'; script-src 'self' 'unsafe-inline' https://www.gstatic.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' data: https://fonts.gstatic.com; img-src 'self' data: blob:; media-src 'self' blob: data: https://*.mp3quran.net https://everyayah.com https://archive.org https://*.archive.org; connect-src 'self' https://ntfy.sh https://api.alquran.cloud https://api.quran.com https://*.googleapis.com https://*.firebaseio.com wss://*.firebaseio.com; object-src 'none'; base-uri 'none'; form-action 'none'; frame-ancestors 'none'; frame-src https://*.firebaseapp.com https://accounts.google.com; worker-src 'self'; manifest-src 'self'
 /sw.js
+  Cache-Control: no-cache
+/.well-known/assetlinks.json
+  Content-Type: application/json
+  Access-Control-Allow-Origin: *
   Cache-Control: no-cache
 H
 rm -f nur-alfurqan-site.zip
