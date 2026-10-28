@@ -19,6 +19,7 @@
       GR.forEach(function(g){buckets[g[0]]=[]});
       kids.forEach(function(el){
         if(el.tagName==='H2')return;
+        if(el.tagName==='DIV'&&/^(لون التطبيق|شكل الهدهد|إكسسوار الهدهد|App color|Hoopoe shape|Hoopoe accessory|Couleur de l’application|Forme de la huppe|Accessoire de la huppe)/.test((el.querySelector('span')||{}).textContent||''))return;
         const h=el.outerHTML;
         if(el.getAttribute('data-act')==='cclose'){done=el;return}
         if(h.indexOf('data-lang=')>=0){lang=el;return}

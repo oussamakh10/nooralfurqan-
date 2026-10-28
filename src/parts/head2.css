@@ -328,3 +328,12 @@ html.lock #top,html.lock #nav,html.lock #bg{visibility:hidden}
 #buyconf .bc-t{font:800 1.2rem var(--display);margin-bottom:6px}
 #buyconf p{margin:0 0 16px;line-height:1.7}
 #buyconf .bc-b{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+/* decoration pass: all pages */
+.card{position:relative;overflow:hidden}
+.card::after{content:"";position:absolute;inset-inline-end:-18px;top:-18px;width:64px;height:64px;pointer-events:none;border-radius:50%;background:radial-gradient(circle,color-mix(in srgb,var(--gold,#C8A24A) 22%,transparent) 0 3px,transparent 3.5px) 0 0/12px 12px;-webkit-mask:radial-gradient(circle,#000 30%,transparent 70%);mask:radial-gradient(circle,#000 30%,transparent 70%);opacity:.8}
+.top{border-bottom:1px solid color-mix(in srgb,var(--gold,#C8A24A) 40%,transparent);box-shadow:0 10px 22px -18px rgba(0,0,0,.45)}
+#page{background-image:linear-gradient(45deg,transparent 48%,color-mix(in srgb,var(--gold,#C8A24A) 7%,transparent) 49% 51%,transparent 52%),linear-gradient(-45deg,transparent 48%,color-mix(in srgb,var(--gold,#C8A24A) 7%,transparent) 49% 51%,transparent 52%);background-size:44px 44px}
+.sec h2{letter-spacing:.2px}
+.sec+.sec{margin-top:6px}
+.btn:not(.ghost){box-shadow:0 4px 0 color-mix(in srgb,var(--accent) 70%,#000),0 8px 16px -10px rgba(0,0,0,.45)}
+.btn:not(.ghost):active{box-shadow:0 1px 0 color-mix(in srgb,var(--accent) 70%,#000)}
