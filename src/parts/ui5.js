@@ -40,3 +40,25 @@
   function start(){mo.observe(document.body,{childList:true,subtree:true,characterData:true});run()}
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',start);else start();
 })();
+
+/* عدّاد النقاط: يرتفع تدريجيًا ونبضة عند الزيادة */
+(function(){
+  let shown=null;
+  const _rt=renderTop;
+  renderTop=function(){
+    _rt.apply(this,arguments);
+    try{
+      const ch=document.querySelector('#top .chip[title="نقاط"] span');if(!ch)return;
+      const target=S.xp||0;
+      if(shown===null){shown=target;ch.textContent=cnum(target);return}
+      if(target===shown){ch.textContent=cnum(target);return}
+      const from=shown,dur=600,t0=performance.now();
+      const chip=ch.parentNode;chip.classList.remove('tick');void chip.offsetWidth;chip.classList.add('tick');
+      (function step(now){
+        const k=Math.min(1,(now-t0)/dur),e=1-Math.pow(1-k,3);
+        ch.textContent=cnum(Math.round(from+(target-from)*e));
+        if(k<1)requestAnimationFrame(step);else shown=target;
+      })(t0);
+    }catch(e){}
+  };
+})();

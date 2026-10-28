@@ -444,3 +444,24 @@ html[data-tab] #page::before,html[data-tab] #page::after{--t1:color-mix(in srgb,
 .top .sharebtn,.top .iconbtn,.top .iconbtn.sm{min-height:32px!important;align-self:center;border-radius:50%!important}
 .emico{display:inline-flex;vertical-align:-0.2em;margin-inline:2px;line-height:0}
 .emico svg{width:1.15em;height:1.15em}
+/* ===== الحالات الفارغة ===== */
+.emptybox{position:relative;margin:18px 0;padding:24px 20px;border-radius:24px;text-align:center;display:grid;justify-items:center;gap:8px;background:radial-gradient(70% 60% at 50% 0,color-mix(in srgb,var(--gold,#C8A24A) 22%,transparent),transparent 70%),var(--surface);border:2px dashed color-mix(in srgb,var(--gold,#C8A24A) 55%,transparent)}
+.emptybox b{font:800 1.12rem var(--display);color:var(--fg)}
+.emptybox p{margin:0;color:var(--muted,inherit);max-width:30ch;line-height:1.8}
+.emptybox .btn{margin-top:6px}
+.emp-ico{position:relative;margin-bottom:4px}
+.emp-ico::after{content:"";position:absolute;inset:auto 18% -6px;height:8px;border-radius:50%;background:radial-gradient(closest-side,rgba(0,0,0,.25),transparent);filter:blur(2px)}
+/* ===== الهدهد: حركة أغنى ===== */
+.hp .wfl{transform-box:fill-box;transform-origin:50% 100%;animation:flap 2.6s ease-in-out infinite}
+.hp-cheer .wfl{animation:flap .5s ease-in-out infinite}
+.hp-sad .wfl{animation:none}
+@keyframes flap{0%,100%{transform:rotate(0) scaleY(1)}50%{transform:rotate(-7deg) scaleY(.94)}}
+.hp-happy .crest{animation:crestflick 4.2s ease-in-out infinite;transform-box:fill-box;transform-origin:50% 100%}
+@keyframes crestflick{0%,100%{transform:rotate(0)}30%{transform:rotate(-4deg)}34%{transform:rotate(5deg)}40%{transform:rotate(0)}}
+.hp-happy{animation:bob 3.4s ease-in-out infinite,hpsway 7s ease-in-out infinite}
+@keyframes hpsway{0%,100%{transform:rotate(0)}50%{transform:rotate(-2deg)}}
+.hp .eyes{animation:blink 4.6s infinite}
+@media (prefers-reduced-motion:reduce){.hp .wfl,.hp .crest,.hp-happy{animation:none!important}}
+/* ===== عدّاد النقاط ===== */
+.chip.tick{animation:tickup .6s cubic-bezier(.2,1.4,.4,1)}
+@keyframes tickup{0%{transform:scale(1)}40%{transform:scale(1.14)}100%{transform:scale(1)}}

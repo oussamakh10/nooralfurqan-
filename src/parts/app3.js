@@ -15,7 +15,7 @@ function fillList(){
     if(q&&!(normAr(n).includes(q)||String(i+1)===q))return;
     h+='<button class="srow" data-surah="'+(i+1)+'"><span class="num">'+N(i+1)+'</span><span><b>'+n+'</b><small>'+N(AYC[i])+' آية</small></span></button>';
   });
-  $('#rlist').innerHTML=h||'<p class="muted">لا توجد سورة بهذا الاسم.</p>';
+  $('#rlist').innerHTML=h||emptyBox('sad','لا توجد سورة بهذا الاسم','جرّب رقم السورة مثل 2، أو جزءًا من اسمها.');
 }
 let EN=null;
 function loadEN(){

@@ -44,7 +44,7 @@ function hoopoeNew(mood,size){
    '<path d="M60 70 C40 72 32 88 36 102 C40 110 80 110 84 102 C88 88 80 72 60 70Z" fill="url(#'+uid+'g)" stroke="var(--hp-line)" stroke-width="1.800" stroke-linejoin="round"/>'+
    '<path d="M60 76 C48 78 44 90 47 101 C52 106 68 106 73 101 C76 90 72 78 60 76Z" fill="var(--hp-belly)"/>'+
    '<path d="M50 88 l-1.500 4 M54 94 l-1 4.500 M70 88 l1.500 4 M66 94 l1 4.500 M60 98 l0 4" stroke="#B87A57" stroke-width="1.800" stroke-linecap="round" opacity=".75"/>'+
-   '<g transform="'+wr+'">'+wing+'</g><g transform="translate(120 0) scale(-1 1)"><g transform="'+wr+'">'+wing+'</g></g>'+
+   '<g transform="'+wr+'"><g class="wfl">'+wing+'</g></g><g transform="translate(120 0) scale(-1 1)"><g transform="'+wr+'"><g class="wfl">'+wing+'</g></g></g>'+
    '<g class="crest">'+crest+'</g>'+
    '<ellipse cx="60" cy="58" rx="30" ry="26" fill="url(#'+uid+'g)" stroke="var(--hp-line)" stroke-width="1.800"/>'+
    (size>=48&&S.hat==='fez'?'<g><path d="M47 34 L73 34 L69.500 15 L50.500 15Z" fill="#B3261E" stroke="#5E0F0B" stroke-width="1.500" stroke-linejoin="round"/><path d="M48 31 L72 31" stroke="#E8B923" stroke-width="2.200"/><path d="M60 15 Q73 11 75 25" stroke="#1b1b1b" stroke-width="1.600" fill="none" stroke-linecap="round"/><circle cx="75" cy="26" r="2.200" fill="#1b1b1b"/></g>':'')+
@@ -92,7 +92,7 @@ function hoopoeOld(mood,size){
     '<g fill="var(--hp-feet)" stroke="var(--hp-line)" stroke-width="1"><ellipse cx="48" cy="114.500" rx="9" ry="3.600"/><ellipse cx="72" cy="114.500" rx="9" ry="3.600"/></g>'+
     '<path d="M42 115 L41 117.500 M48 116 L48 118 M54 115 L55 117.500 M66 115 L65 117.500 M72 116 L72 118 M78 115 L79 117.500" stroke="var(--hp-line)" stroke-width="1.600" stroke-linecap="round"/>'+
     '<ellipse cx="60" cy="92" rx="28" ry="23" fill="url(#hpg)" stroke="var(--hp-line)" stroke-width="1.800"/>'+
-    '<g transform="'+wr+'">'+wing+'</g><g transform="translate(120 0) scale(-1 1)"><g transform="'+wr+'">'+wing+'</g></g>'+
+    '<g transform="'+wr+'"><g class="wfl">'+wing+'</g></g><g transform="translate(120 0) scale(-1 1)"><g transform="'+wr+'"><g class="wfl">'+wing+'</g></g></g>'+
     '<ellipse cx="60" cy="99" rx="15" ry="13" fill="var(--hp-belly)"/>'+
     '<path d="M50 96 l-2 5 M54 101 l-1.500 5 M70 96 l2 5 M66 101 l1.500 5" stroke="#C98F6A" stroke-width="1.800" stroke-linecap="round" opacity=".7"/>'+
     '<ellipse cx="60" cy="87" rx="24" ry="6" fill="var(--hp-shade)" opacity=".3"/>'+

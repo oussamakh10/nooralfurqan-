@@ -37,6 +37,7 @@ const BADGES=[
 ];
 function hasSum(n){return sumDays(S.has.d,n)}
 function pageAch(){
+  if(!doneN()){$('#page').innerHTML='<div class="wrap-pad">'+emptyBox('happy','إنجازاتك تبدأ من هنا','أكمل أول مرحلة في التعلّم لتبدأ سلسلتك ويُسجَّل أول إنجاز. كل خطوة تُحسب.','<button class="btn gold sm" data-go="learn">ابدأ التعلّم</button>')+'</div>'+accountSec().replace('style="margin-top:16px"','');return}
   const ds=dayState(),acc=S.q?Math.round(S.qc/S.q*100):0;
   const AR=['ح','ن','ث','ر','خ','ج','س'];
   let wk='',bars='',mx=1;const vals=[];
@@ -297,4 +298,9 @@ function accountSec(){
    '<div class="ahead"><div class="aav" aria-hidden="true">'+esc((p.name||'?').trim().charAt(0))+'</div><div><b class="aname">'+esc(p.name||'بدون اسم')+'</b><small class="muted">'+esc(L[p.lvl]||'لم يُحدَّد المستوى')+'</small></div></div>'+
    row('العمر',p.age?N(p.age):'—')+row('الهدف',esc(G[p.goal]||'—'))+row('المدينة',esc(p.city||'—'))+row('الحساب',esc(acc))+
    '<div class="aact"><button class="btn sm ghost" data-act="prof-edit">تعديل المعلومات</button><button class="btn sm ghost" data-act="acct-link">'+(linked?'مزامنة الآن':'ربط الحساب')+'</button></div></div></section>';
+}
+
+/* حالة فارغة مصمّمة مع الهدهد */
+function emptyBox(mood,title,text,action){
+  return '<div class="emptybox" role="status"><div class="emp-ico">'+hoopoe(mood||'happy',96)+'</div><b>'+esc(title)+'</b><p>'+esc(text)+'</p>'+(action||'')+'</div>';
 }
