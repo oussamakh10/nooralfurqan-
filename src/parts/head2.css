@@ -518,3 +518,11 @@ html:not([data-theme="light"])[data-pal="brown"]{--accent:#C8905F;--accent-d:#B6
 @media (max-width:360px){.fitroom{grid-template-columns:1fr;justify-items:center;text-align:center}}
 .shopit.v2 .shi.big[style*="background"]{background:var(--sw)!important}
 .shopit.v2 .shi.big.sw{box-shadow:inset 0 0 0 4px rgba(255,255,255,.55),0 4px 12px rgba(0,0,0,.2)}
+/* ===== تحسينات: شريط التقدم، القراءة، الألعاب ===== */
+.bar{position:relative;background:color-mix(in srgb,var(--accent) 14%,var(--surface,#fff));box-shadow:inset 0 2px 4px rgba(0,0,0,.12)}
+.bar i{position:relative;background:linear-gradient(180deg,color-mix(in srgb,var(--accent) 78%,#fff) 0%,var(--accent) 60%,var(--accent-d) 100%)!important;box-shadow:inset 0 1px 0 rgba(255,255,255,.45)}
+.bar i::after{content:"";position:absolute;inset:0;background:linear-gradient(100deg,transparent 30%,rgba(255,255,255,.35) 50%,transparent 70%);background-size:200% 100%;animation:spsh 2.8s linear infinite;border-radius:inherit}
+@media (prefers-reduced-motion:reduce){.bar i::after{animation:none}}
+#page[data-tab="read"],html[data-tab="read"] #page{background:radial-gradient(70% 50% at 50% 0%,color-mix(in srgb,var(--accent) 14%,transparent),transparent 70%)}
+html[data-tab="play"] #page{background:radial-gradient(60% 40% at 50% 100%,color-mix(in srgb,var(--accent) 16%,transparent),transparent 70%)}
+#lesson.game-bg,#lesson .lmain.game{background:radial-gradient(80% 60% at 50% 0%,color-mix(in srgb,var(--accent) 22%,transparent),transparent 70%)}
