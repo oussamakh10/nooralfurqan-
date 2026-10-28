@@ -4,12 +4,12 @@
   /* ---------- الإعدادات ---------- */
   const _os=openSettings;
   const GR=[
-   ['look','🎨',['المظهر','Appearance','Apparence'],['data-theme=','data-pal=','data-hpv=','data-xhat=','data-set="kids"']],
-   ['sound','🔊',['الصوت واللمس','Sound & touch','Son et vibrations'],['data-set="mute"','data-xvol','data-xhap']],
-   ['read','📖',['القراءة والخط','Reading & text','Lecture et texte'],['data-qs=','data-xfs=','data-xset=']],
-   ['pray','🕌',['الصلاة والتذكير','Prayer & reminders','Prière et rappels'],['methsel','remtime']],
-   ['me','👤',['حسابي وبياناتي','My account & data','Mon compte et mes données'],['prof-edit','acct-link','fb-out','fb-del','prog-export','prog-import','data-act="reset"']],
-   ['help','💡',['مساعدة ومعلومات','Help & info','Aide et infos'],['guide-open2','report-gen','inst-go','about-open']]
+   ['look','',['المظهر','Appearance','Apparence'],['data-theme=','data-pal=','data-hpv=','data-xhat=','data-set="kids"']],
+   ['sound','',['الصوت واللمس','Sound & touch','Son et vibrations'],['data-set="mute"','data-xvol','data-xhap']],
+   ['read','',['القراءة والخط','Reading & text','Lecture et texte'],['data-qs=','data-xfs=','data-xset=']],
+   ['pray','',['الصلاة والتذكير','Prayer & reminders','Prière et rappels'],['methsel','remtime']],
+   ['me','',['حسابي وبياناتي','My account & data','Mon compte et mes données'],['prof-edit','acct-link','fb-out','fb-del','prog-export','prog-import','data-act="reset"']],
+   ['help','',['مساعدة ومعلومات','Help & info','Aide et infos'],['guide-open2','report-gen','inst-go','about-open']]
   ];
   openSettings=function(){
     _os();
@@ -39,7 +39,7 @@
       const hd=document.createElement('div');hd.className='sethd';
       hd.innerHTML=hoopoe('happy',52)+'<div><h2>'+esc(g3(['الإعدادات','Settings','Réglages']))+'</h2>'+(nm?'<small>'+esc(nm)+'</small>':'')+'</div>';
       card.appendChild(hd);
-      if(lang){const ls=lang.querySelector('span');if(ls&&ls.nextElementSibling)ls.textContent='🌐';const w=document.createElement('div');w.className='langrow';w.appendChild(lang);card.appendChild(w)}
+      if(lang){const ls=lang.querySelector('span');if(ls)ls.textContent='';const w=document.createElement('div');w.className='langrow';w.appendChild(lang);card.appendChild(w)}
       GR.forEach(function(g,i){
         if(!buckets[g[0]].length)return;
         const d=document.createElement('details');d.className='sg';if(i===0||window.__sgopen===g[0])d.open=true;

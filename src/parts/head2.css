@@ -307,3 +307,18 @@ html.lock #top,html.lock #nav,html.lock #bg{visibility:hidden}
 #cele .card>p.muted+*{margin-top:0}
 #cele .setrow>.opts2{max-width:62%}
 #cele .card>h2:first-child{padding-top:20px}
+/* settings v2: no emoji, clean groups */
+.setcard .sg{border:0!important;border-bottom:1px solid color-mix(in srgb,var(--line) 60%,transparent)!important;padding:0!important;margin:0!important;background:transparent!important}
+.setcard .sg summary{list-style:none;display:flex;align-items:center;gap:10px;padding:16px 18px;font:800 1.02rem var(--display);color:var(--fg)}
+.setcard .sg summary::-webkit-details-marker{display:none}
+.setcard .sg summary .ic{width:8px;height:8px;border-radius:50%;background:var(--gold,#C8A24A);flex:none;font-size:0}
+.setcard .sg summary::after{content:"";margin-inline-start:auto;width:8px;height:8px;border-inline-end:2px solid var(--muted,#888);border-bottom:2px solid var(--muted,#888);transform:rotate(-45deg);transition:transform .2s;float:none;color:inherit}
+.setcard .sg[open] summary::after{transform:rotate(45deg)}
+.setcard .sgb{padding:0 18px 12px}
+.setcard .sgb>.setrow{padding:10px 0}
+.langrow{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:12px 18px;border-bottom:1px solid color-mix(in srgb,var(--line) 60%,transparent)}
+.langrow .opts2{flex-wrap:nowrap;max-width:none;overflow-x:auto}
+.langrow .tag{padding:6px 10px;font-size:.85rem;white-space:nowrap}
+#cele .langrow .opts2{flex-wrap:nowrap;max-width:none;width:auto}
+#cele .langrow .tag{padding:6px 11px}
+#cele .setcard .sgb .setrow>span:first-child{flex:1;min-width:0}
