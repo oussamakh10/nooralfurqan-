@@ -142,7 +142,7 @@ function renderLesson(){
   if(!checked){
     const ready=q.t==='ord'?L.ans.length===q.items.length:(QT[q.t]?QT[q.t].ready(q):L.sel!==null);
     const canHint=(!q.t||q.t==='fill')&&!q.hid&&q.opts&&q.opts.length>=4;
-    h+='<div class="lfoot"><div class="in" style="display:grid;gap:8px">'+(canHint?'<button class="btn ghost sm" data-hint="1">💡 تلميح (−3 نقاط)</button>':'')+'<button class="btn" data-act="check" '+(ready?'':'disabled')+'>تحقق</button></div></div>';
+    h+='<div class="lfoot"><div class="in" style="display:grid;gap:8px">'+(canHint?'<button class="btn ghost sm" data-hint="1">💡 تلميح</button>':'')+'<button class="btn" data-act="check" '+(ready?'':'disabled')+'>تحقق</button></div></div>';
   }else{
     const ans=q.t==='ord'?q.items.join(' ثم '):(QT[q.t]?QT[q.t].ans(q):q.c);
     h+='<div class="lfoot '+(L.ok?'ok':'bad')+'" aria-live="polite"><div class="in"><div class="fb">'+
@@ -175,7 +175,7 @@ function checkLesson(){
 function nextLesson(){
   const q=L.queue[0];
   if(L.placement){L.queue.shift();L.solved++;if(L.queue.length===0)return placementResult();L.state='ask';L.sel=null;L.ans=[];L.ms=[];L.tv='';L.force=false;L.mood='happy';return renderLesson()}
-  if(L.ok){L.gain+=(q.missed?5:10)+(L.combo>=3?2:0);L.solved++;L.queue.shift()}
+  if(L.ok){L.solved++;L.queue.shift()}
   else{q.missed=true;q.opts=null;q.pool=null;q.st=null;q.hid=null;q.dl=null;L.queue.push(L.queue.shift())}
   if(L.hearts<=0&&!L.ok)return failLesson();
   if(L.queue.length===0)return finishLesson();
@@ -189,7 +189,8 @@ function confetti(){
 function finishLesson(){
   const rev=L.review||L.hifzTest;
   const bonus=(!rev&&!S.done[L.lesson.id])?15:0;
-  addXP(L.gain+bonus);
+  L.gain=bonus;
+  addXP(bonus);
   if(rev){S.rev=(S.rev||0)+1}else S.done[L.lesson.id]=true;
   act(rev?'review':'lesson');save();
   const acc=Math.max(0,Math.round((L.total/(L.total+L.wrongs))*100));
