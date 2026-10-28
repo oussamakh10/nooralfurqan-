@@ -201,7 +201,16 @@ function icoSvg(e){
     '🔥':'<path d="M12 22c4 0 7-3 7-7 0-3-2-5-3-8-2 2-3 3-4 5-1-3-1-5 1-7-4 2-7 6-7 10 0 4 3 7 6 7z"/>',
     '🔒':'<rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/>',
     '✅':'<path d="M20 6 9 17l-5-5"/>',
-    '🌙':'<path d="M21 13A9 9 0 1 1 11 3a7 7 0 0 0 10 10z"/>'
+    '🌙':'<path d="M21 13A9 9 0 1 1 11 3a7 7 0 0 0 10 10z"/>',
+    '🎯':'<circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="4"/><circle cx="12" cy="12" r="1"/>',
+    '🔊':'<path d="M11 5 6 9H3v6h3l5 4z"/><path d="M15.5 8.5a5 5 0 0 1 0 7M18.5 5.5a9 9 0 0 1 0 13"/>',
+    '🎲':'<rect x="3" y="3" width="18" height="18" rx="3"/><circle cx="8" cy="8" r="1.2"/><circle cx="16" cy="16" r="1.2"/><circle cx="12" cy="12" r="1.2"/>',
+    '💡':'<path d="M9 18h6M10 21h4M12 3a6 6 0 0 0-4 10.5c.8.8 1 1.5 1 2.5h6c0-1 .2-1.7 1-2.5A6 6 0 0 0 12 3z"/>',
+    '🧭':'<circle cx="12" cy="12" r="9"/><path d="M15.5 8.5 13 13l-4.5 2.5L11 11z"/>',
+    '⚑':'<path d="M5 21V4M5 4h11l-2 4 2 4H5"/>',
+    '📤':'<path d="M12 15V3M7 8l5-5 5 5"/><path d="M4 15v4a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-4"/>',
+    '⬇':'<path d="M12 4v12M6 11l6 6 6-6"/><path d="M4 20h16"/>',
+    '❄':'<path d="M12 2v20M4 6l16 12M20 6 4 18"/>'
   };
   if(!P[e])return e;
   return '<svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">'+P[e]+'</svg>';

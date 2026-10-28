@@ -442,3 +442,5 @@ html[data-tab] #page::before,html[data-tab] #page::after{--t1:color-mix(in srgb,
 .top .sharebtn,.top .iconbtn,.top .iconbtn.sm{width:32px!important;height:32px!important;min-width:32px!important;max-width:32px;padding:0!important;aspect-ratio:1}
 @media (max-width:430px){.top .chip[title="الحسنات"]{display:none}.top .brand span{font-size:1.15rem}}
 .top .sharebtn,.top .iconbtn,.top .iconbtn.sm{min-height:32px!important;align-self:center;border-radius:50%!important}
+.emico{display:inline-flex;vertical-align:-0.2em;margin-inline:2px;line-height:0}
+.emico svg{width:1.15em;height:1.15em}
