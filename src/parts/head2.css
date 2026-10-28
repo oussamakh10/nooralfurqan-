@@ -265,7 +265,6 @@ html.rm *,html.rm *::before,html.rm *::after{animation-duration:.01ms!important;
 .ltop .bar{height:16px;border-radius:10px;overflow:hidden}.ltop .bar i{transition:width .5s cubic-bezier(.2,.7,.2,1)}
 .shi svg{width:48px;height:48px}.shi:has(svg){background:transparent}
 /* polish v6 */
-body::after{content:"";position:fixed;inset:0;z-index:0;pointer-events:none;opacity:.5;background-image:radial-gradient(circle at 1px 1px,color-mix(in srgb,var(--accent,#0F7A4C) 14%,transparent) 1px,transparent 1.6px);background-size:22px 22px;-webkit-mask:linear-gradient(180deg,#000 0%,transparent 45%,transparent 70%,#000 100%);mask:linear-gradient(180deg,#000 0%,transparent 45%,transparent 70%,#000 100%)}
 #page>section.sec,.sec{position:relative}
 .card{box-shadow:0 1px 0 color-mix(in srgb,var(--line) 70%,transparent),0 8px 22px -14px rgba(0,0,0,.35);transition:transform .15s ease,box-shadow .2s ease}
 .card:active{transform:translateY(1px) scale(.99)}
@@ -332,7 +331,6 @@ html.lock #top,html.lock #nav,html.lock #bg{visibility:hidden}
 .card{position:relative;overflow:hidden}
 .card::after{content:"";position:absolute;inset-inline-end:-18px;top:-18px;width:64px;height:64px;pointer-events:none;border-radius:50%;background:radial-gradient(circle,color-mix(in srgb,var(--gold,#C8A24A) 22%,transparent) 0 3px,transparent 3.5px) 0 0/12px 12px;-webkit-mask:radial-gradient(circle,#000 30%,transparent 70%);mask:radial-gradient(circle,#000 30%,transparent 70%);opacity:.8}
 .top{border-bottom:1px solid color-mix(in srgb,var(--gold,#C8A24A) 40%,transparent);box-shadow:0 10px 22px -18px rgba(0,0,0,.45)}
-#page{background-image:linear-gradient(45deg,transparent 48%,color-mix(in srgb,var(--gold,#C8A24A) 7%,transparent) 49% 51%,transparent 52%),linear-gradient(-45deg,transparent 48%,color-mix(in srgb,var(--gold,#C8A24A) 7%,transparent) 49% 51%,transparent 52%);background-size:44px 44px}
 .sec h2{letter-spacing:.2px}
 .sec+.sec{margin-top:6px}
 .btn:not(.ghost){box-shadow:0 4px 0 color-mix(in srgb,var(--accent) 70%,#000),0 8px 16px -10px rgba(0,0,0,.45)}
@@ -356,3 +354,47 @@ html.lock #top,html.lock #nav,html.lock #bg{visibility:hidden}
 .qibla{display:flex;align-items:center;gap:14px;flex-wrap:wrap}
 .qibla .dial{width:72px!important;height:72px!important;flex:none;margin:0}
 .qibla>div:last-child{flex:1;min-width:150px}
+/* ===== خلفيات مصمَّمة لكل صفحة ===== */
+:root{--g1:color-mix(in srgb,var(--gold,#C8A24A) 38%,transparent);--g2:color-mix(in srgb,var(--gold,#C8A24A) 20%,transparent);--a1:color-mix(in srgb,var(--accent,#0F7A4C) 30%,transparent);--a2:color-mix(in srgb,var(--accent,#0F7A4C) 14%,transparent)}
+.bgpat{opacity:.22}
+body::before{transition:opacity .4s}
+/* الرئيسية: شروق + حلقات نور */
+html[data-tab="home"] body::before{background:radial-gradient(120% 60% at 50% -10%,var(--g1),transparent 62%),repeating-radial-gradient(circle at 50% -8%,transparent 0 38px,var(--g2) 39px 40px),radial-gradient(90% 40% at 50% 115%,var(--a1),transparent 70%)}
+/* التعلّم: أقواس محراب في الأسفل + توهّج أخضر */
+html[data-tab="learn"] body::before{background:radial-gradient(circle at 50% 100%,var(--a1) 0 17px,transparent 18px) 0 100%/38px 19px repeat-x,radial-gradient(110% 50% at 50% -8%,var(--a1),transparent 65%),radial-gradient(80% 40% at 100% 70%,var(--g2),transparent 70%)}
+/* الألعاب: شبكة معيّنات نابضة */
+html[data-tab="play"] body::before{background:repeating-linear-gradient(60deg,transparent 0 30px,var(--a2) 30px 31px),repeating-linear-gradient(-60deg,transparent 0 30px,var(--g2) 30px 31px),radial-gradient(100% 45% at 0 0,var(--a1),transparent 65%),radial-gradient(100% 45% at 100% 100%,var(--g1),transparent 65%)}
+/* القراءة: ورق مخطوط بسطور وإطار */
+html[data-tab="read"] body::before{background:repeating-linear-gradient(180deg,transparent 0 35px,var(--g2) 35px 36px),radial-gradient(140% 70% at 50% 0,var(--g2),transparent 70%),radial-gradient(120% 30% at 50% 100%,var(--g1),transparent 80%)}
+html[data-tab="read"] body::after{content:"";position:fixed;inset:8px;z-index:0;pointer-events:none;border:1.5px solid var(--g1);border-radius:18px;box-shadow:inset 0 0 0 5px transparent,inset 0 0 0 6px var(--g2)}
+/* الاستماع: موجات صوت */
+html[data-tab="listen"] body::before{background:repeating-radial-gradient(circle at 50% 78%,transparent 0 26px,var(--a2) 27px 28px),radial-gradient(100% 50% at 50% 0,var(--a1),transparent 65%),radial-gradient(80% 40% at 50% 100%,var(--g1),transparent 70%)}
+/* الإنجازات: أشعة ذهبية */
+html[data-tab="ach"] body::before{background:repeating-conic-gradient(from -90deg at 50% -4%,var(--g1) 0 5deg,transparent 5deg 15deg);-webkit-mask:linear-gradient(180deg,#000,transparent 70%);mask:linear-gradient(180deg,#000,transparent 70%)}
+html[data-tab="ach"] body::after{content:"";position:fixed;inset:0;z-index:0;pointer-events:none;background:radial-gradient(90% 45% at 50% 115%,var(--a1),transparent 70%)}
+/* المدرسية: ورق دفتر مربّعات */
+html[data-tab="school"] body::before{background:linear-gradient(var(--a2) 1px,transparent 1px) 0 0/26px 26px,linear-gradient(90deg,var(--a2) 1px,transparent 1px) 0 0/26px 26px,radial-gradient(120% 40% at 50% 0,var(--g2),transparent 70%)}
+/* المتجر: مظلّة سوق مخطّطة */
+html[data-tab="shop"] body::before{background:radial-gradient(circle at 50% 100%,var(--g1) 0 14px,transparent 15px) 0 70px/40px 20px repeat-x,repeating-linear-gradient(90deg,var(--g1) 0 20px,var(--a1) 20px 40px) 0 0/100% 70px no-repeat,radial-gradient(90% 40% at 50% 115%,var(--g1),transparent 70%)}
+/* زوايا مزخرفة على كل الصفحات */
+body .corner{display:none}
+html[data-tab] #page::before,html[data-tab] #page::after{content:"";position:fixed;z-index:0;pointer-events:none;width:120px;height:120px;border-radius:50%;background:repeating-radial-gradient(circle,transparent 0 9px,var(--g1) 10px 11px);-webkit-mask:radial-gradient(circle at 100% 100%,#000 0,transparent 70%);mask:radial-gradient(circle at 100% 100%,#000 0,transparent 70%)}
+html[data-tab] #page::before{top:56px;inset-inline-start:-60px}
+html[data-tab] #page::after{bottom:74px;inset-inline-end:-60px}
+/* v2: ألوان وهويّة مستقلة لكل صفحة */
+html[data-tab="home"]{--h:#E3B04B}html[data-tab="learn"]{--h:#2E9E6B}html[data-tab="play"]{--h:#1F8FA8}html[data-tab="read"]{--h:#C98F43}
+html[data-tab="listen"]{--h:#3F72B8}html[data-tab="ach"]{--h:#E0A92B}html[data-tab="school"]{--h:#5E7FBF}html[data-tab="shop"]{--h:#D9773A}
+html[data-tab] body::before{--t1:color-mix(in srgb,var(--h) 42%,transparent);--t2:color-mix(in srgb,var(--h) 22%,transparent);--t3:color-mix(in srgb,var(--h) 12%,transparent);background-blend-mode:normal}
+html[data-tab="home"] body::before{background:radial-gradient(circle at 50% 22%,var(--t1) 0,transparent 55%),repeating-radial-gradient(circle at 50% 22%,transparent 0 34px,var(--t2) 35px 37px),linear-gradient(180deg,var(--t2),var(--t3) 50%,var(--t2))}
+html[data-tab="learn"] body::before{background:radial-gradient(circle at 50% 100%,var(--t1) 0 18px,transparent 19px) 0 calc(100% - 78px)/40px 20px repeat-x,linear-gradient(90deg,var(--t3),transparent 25%,transparent 75%,var(--t3)),linear-gradient(180deg,var(--t1),var(--t3) 40%,var(--t2))}
+html[data-tab="play"] body::before{background:repeating-linear-gradient(60deg,transparent 0 28px,var(--t2) 28px 30px),repeating-linear-gradient(-60deg,transparent 0 28px,var(--t2) 28px 30px),linear-gradient(160deg,var(--t1),var(--t3) 45%,var(--t2))}
+html[data-tab="read"] body::before{background:repeating-linear-gradient(180deg,transparent 0 33px,var(--t2) 33px 34px),linear-gradient(90deg,var(--t1),transparent 12%,transparent 88%,var(--t1)),linear-gradient(180deg,var(--t2),var(--t3) 50%,var(--t2))}
+html[data-tab="listen"] body::before{background:repeating-radial-gradient(circle at 50% 30%,transparent 0 24px,var(--t2) 25px 27px),linear-gradient(180deg,var(--t1),var(--t3) 55%,var(--t2))}
+html[data-tab="ach"] body::before{background:repeating-conic-gradient(from -90deg at 50% -2%,var(--t1) 0 5deg,transparent 5deg 14deg),linear-gradient(180deg,var(--t2),var(--t3) 55%,var(--t2));-webkit-mask:none;mask:none}
+html[data-tab="ach"] body::after{display:none}
+html[data-tab="school"] body::before{background:linear-gradient(var(--t2) 1px,transparent 1px) 0 0/24px 24px,linear-gradient(90deg,var(--t2) 1px,transparent 1px) 0 0/24px 24px,linear-gradient(180deg,var(--t1),var(--t3) 45%,var(--t2))}
+html[data-tab="shop"] body::before{background:repeating-linear-gradient(90deg,var(--t1) 0 22px,transparent 22px 44px) 0 0/100% 64px no-repeat,radial-gradient(circle at 50% 0,var(--t1) 0 16px,transparent 17px) 0 62px/44px 22px repeat-x,linear-gradient(180deg,var(--t3),var(--t2))}
+html[data-tab] #page::before,html[data-tab] #page::after{background:repeating-radial-gradient(circle,transparent 0 9px,var(--t1,var(--g1)) 10px 12px);width:150px;height:150px}
+html[data-tab] #page::before,html[data-tab] #page::after{--t1:color-mix(in srgb,var(--h,#C8A24A) 45%,transparent)}
+.shi{background:var(--accent-soft,color-mix(in srgb,var(--gold,#C8A24A) 22%,var(--surface)))!important;color:var(--accent-d,var(--accent))}
+.shi svg{color:inherit}
