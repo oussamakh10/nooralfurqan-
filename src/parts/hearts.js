@@ -1,6 +1,6 @@
 /* ===== نظام القلوب: 5 كحد أقصى، قلب كل 15 دقيقة ===== */
 (function(){
-  const MAX=5,REGEN=15*60*1000,PRICE1=15,PRICEALL=100,AD_GAIN=2,AD_CAP=5;
+  const MAX=5,REGEN=15*60*1000,PRICE1=15,PRICEALL=70,AD_GAIN=2,AD_CAP=5;
   function init(){if(typeof S.hp!=='number'||isNaN(S.hp)){S.hp=MAX;S.hpt=Date.now()}}
   function tick(){
     init();
