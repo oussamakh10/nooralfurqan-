@@ -560,3 +560,19 @@ html[data-tab="play"] #page{background:radial-gradient(60% 40% at 50% 100%,color
 #hpm .bc-card{background:var(--surface);color:var(--fg);border-radius:22px;padding:20px;width:min(92vw,360px);box-shadow:0 20px 50px -15px rgba(0,0,0,.5);text-align:center}
 #hpm .bc-t{font:800 1.2rem var(--display);margin-bottom:6px}
 #hpm p{margin:0 0 12px;line-height:1.7}
+/* ===== مهمة اليوم، بحث، مواسم ===== */
+.mission{display:grid;gap:8px}
+.mlist{list-style:none;margin:0;padding:0;display:grid;gap:8px}
+.mlist li{display:grid;grid-template-columns:auto 1fr auto;gap:10px;align-items:center}
+.mck{width:24px;height:24px;border-radius:50%;border:2px solid color-mix(in srgb,var(--accent) 50%,transparent);display:grid;place-items:center;font-size:.8rem;font-weight:800;color:var(--on-accent,#fff)}
+.mlist li.ok .mck{background:var(--accent);border-color:var(--accent)}
+.mlist li.ok span:nth-child(2){opacity:.65;text-decoration:line-through}
+.mission.all{box-shadow:0 0 0 2px var(--accent) inset}
+.gsr{display:grid;gap:6px;margin-top:6px}
+.gsrow{display:flex;justify-content:space-between;align-items:center;padding:10px 12px;border-radius:12px;border:1.5px solid color-mix(in srgb,var(--accent) 25%,transparent);background:var(--surface);font:inherit;color:inherit;text-align:start}
+.gsrow small{opacity:.7}
+.seasonbar{display:grid;gap:2px;text-align:center;padding:10px 14px;margin:12px 0 0;border-radius:18px;background:linear-gradient(135deg,#C8A24A,#8A6A1C);color:#2A1D04;box-shadow:0 6px 16px -8px rgba(0,0,0,.4)}
+.seasonbar b{font:800 1.15rem var(--display)}.seasonbar span{font-size:.85rem}
+html[data-season="ramadan"] .bgpat{background-image:radial-gradient(60% 30% at 80% 0%,rgba(243,216,138,.35),transparent 70%),radial-gradient(40% 25% at 10% 5%,rgba(243,216,138,.2),transparent 70%)}
+html[data-season="eid"] .bgpat{background-image:radial-gradient(60% 35% at 50% 0%,rgba(255,170,90,.3),transparent 70%)}
+html[data-season="jumua"] .seasonbar{background:linear-gradient(135deg,var(--accent),var(--accent-d));color:var(--on-accent,#fff)}
