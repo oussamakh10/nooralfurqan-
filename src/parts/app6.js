@@ -30,7 +30,7 @@ function openUnitByTitle(title){
 /* ---------- الملف الشخصي والأسئلة الأولى ---------- */
 const OB=[
  {k:'name',t:'ما اسمك؟',type:'text',ph:'اكتب اسمك'},
- {k:'age',t:'ما فئتك العمرية؟',opts:[['kid','أقل من 12 سنة'],['teen','12 إلى 17'],['adult','18 إلى 39'],['senior','40 فأكثر']]},
+ {k:'age',t:'كم عمرك؟',type:'age',ph:'اكتب عمرك بالأرقام'},
  {k:'lvl',t:'كيف تقيّم معرفتك بالدين؟',opts:[['b','مبتدئ'],['m','متوسط'],['a','متقدم']]},
  {k:'goal',t:'ما هدفك الأول؟',opts:[['learn','تعلّم الأساسيات'],['khatma','ختم القرآن'],['hifz','حفظ القرآن'],['review','مراجعة ما أعرفه'],['all','كل ذلك']]},
  {k:'mins',t:'كم دقيقة يوميًا تريد أن تخصص؟',opts:[[5,'5 دقائق'],[10,'10 دقائق'],[20,'20 دقيقة'],[30,'30 دقيقة أو أكثر']]},
@@ -45,6 +45,7 @@ function renderOnboard(){
   let h='<div class="card" style="max-height:92vh;overflow:auto;text-align:start;justify-items:stretch"><div style="display:grid;place-items:center">'+hoopoe(OBI%2?'happy':'cheer',84)+'</div>'+
    '<div class="pbar gold"><i style="width:'+((OBI+1)/OB.length*100)+'%"></i></div><small class="muted" style="text-align:center">السؤال '+N(OBI+1)+' من '+N(OB.length)+'</small><h2 style="text-align:center">'+q.t+'</h2>';
   if(q.type==='text')h+='<input type="text" id="obin" maxlength="24" placeholder="'+q.ph+'" value="'+esc(OBD.name||'')+'" aria-label="'+q.t+'">';
+  else if(q.type==='age')h+='<input type="number" inputmode="numeric" min="3" max="99" id="obin" placeholder="'+q.ph+'" value="'+esc(OBD.age||'')+'" aria-label="'+q.t+'">';
   else if(q.type==='city')h+='<select id="obin">'+CITIES.map(function(x){return '<option'+(x[0]===(OBD.city||S.city||CITIES[0][0])?' selected':'')+'>'+x[0]+'</option>'}).join('')+'</select>';
   else if(q.type==='rec')h+='<select id="obin">'+REC.map(function(x){return '<option value="'+x.id+'"'+(x.id===(OBD.rec||S.rec)?' selected':'')+'>'+x.n+'</option>'}).join('')+'</select>';
   else if(q.type==='acct')h+='<p class="muted" style="font-size:.92rem">الربط يتم عبر حسابك في claude.ai الذي فتحتَ منه الصفحة (يظهر بريدك إن سمحت المنصة). لا أستطيع تسجيل الدخول بحساب جوجل مباشرة.</p><button class="btn gold" data-act="ob-link">اربط حسابي</button><p class="muted" id="obacct" style="font-size:.9rem;text-align:center">'+(ACCT&&ACCT.id?'تم الربط ✓':'')+'</p>';
@@ -56,8 +57,10 @@ function obCollect(){
   const q=OB[OBI],el=$('#obin');
   if(el&&q.k!=='acct')OBD[q.k]=el.value.trim();
 }
+function obAge(v){const t=String(v==null?'':v).replace(/[٠-٩]/g,function(d){return d.charCodeAt(0)-1632}).replace(/[۰-۹]/g,function(d){return d.charCodeAt(0)-1776});const n=parseInt(t,10);return (n>=3&&n<=99)?n:0}
 function obNext(){
   obCollect();
+  if(OB[OBI]&&OB[OBI].k==='age'){const a=obAge(OBD.age);if(!a){toast(g3(['اكتب عمرك بالأرقام (من 3 إلى 99)','Type your age in numbers (3 to 99)','Saisissez votre âge en chiffres (3 à 99)']));return}OBD.age=a}
   if(OBI<OB.length-1){OBI++;SND.nav();return renderOnboard()}
   obFinish();
 }
@@ -66,7 +69,10 @@ function obFinish(){
   S.prof={name:(p.name||'').slice(0,24),age:p.age||'',lvl:p.lvl||'',goal:p.goal||'',mins:p.mins||'',city:p.city||'',done:true};
   if(p.city&&CITIES.some(function(c){return c[0]===p.city}))S.city=p.city;
   if(p.rec)S.rec=p.rec;
-  if(p.age==='kid'){S.kids=true;applyTheme()}
+  {const a=obAge(p.age);
+   if(a){S.prof.age=a;S.kids=a<13;applyTheme()}
+   else if(p.age==='kid'){S.kids=true;applyTheme()}
+   else if(!/^(kid|teen|adult|senior)$/.test(String(S.prof.age)))S.prof.age=''}
   if(p.goal==='khatma'||p.goal==='all')S.khat.days=p.mins>=20?30:60;
   if(p.goal==='hifz')LTAB='hifz';
   save();pushNow();renderTop();
