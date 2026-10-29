@@ -89,7 +89,7 @@ function openSurah(i,jump){
     if(jump){const tg=document.getElementById('ay'+jump);if(tg){tg.classList.add('on');tg.scrollIntoView({block:'center'})}}
     else window.scrollTo(0,0);
   }).catch(function(){
-    el.innerHTML='<div class="card" style="margin-top:20px"><p>تعذّر تحميل نص المصحف. تأكد من اتصالك ثم أعد المحاولة.</p><button class="btn" style="margin-top:10px" data-act="rback">رجوع</button></div>';
+    el.innerHTML='<div class="card" style="margin-top:20px"><p>تعذّر تحميل نص المصحف. تأكد من اتصالك ثم أعد المحاولة.</p><div class="opts2" style="margin-top:10px"><button class="btn" data-act="rretry">إعادة المحاولة</button><button class="btn ghost" data-act="rback">رجوع</button></div></div>';
   });
 }
 function doRead(btn){

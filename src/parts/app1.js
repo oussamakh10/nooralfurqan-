@@ -36,7 +36,16 @@ function anchorSave(name,blob){
 }
 try{
   const r=localStorage.getItem(KEY);
-  if(r){const j=cleanData(JSON.parse(r));for(const k of Object.keys(j)){if(!(k in S)||typeof j[k]===typeof S[k]||S[k]===null||S[k]==='')S[k]=j[k]}}
+  if(r){
+    let j=null;
+    try{j=cleanData(JSON.parse(r))}
+    catch(e2){
+      try{localStorage.setItem(KEY+'-corrupt',r)}catch(e3){}
+      try{const bk=localStorage.getItem(KEY+'-bak');if(bk){j=cleanData(JSON.parse(bk));if(j)setTimeout(function(){try{toast('تعذّرت قراءة بياناتك، فاستُعيدت آخر نسخة احتياطية تلقائية')}catch(e){}},1800)}}catch(e4){}
+    }
+    if(j){for(const k of Object.keys(j)){if(!(k in S)||typeof j[k]===typeof S[k]||S[k]===null||S[k]==='')S[k]=j[k]}
+      try{const td=ymd(new Date());if(localStorage.getItem(KEY+'-bakd')!==td){localStorage.setItem(KEY+'-bak',r);localStorage.setItem(KEY+'-bakd',td)}}catch(e5){}}
+  }
   else{const o=localStorage.getItem('hudhud-v1');if(o){const j=JSON.parse(o);S.xp=j.xp||0;S.done=j.done||{};if(j.last)S.days[j.last]=1}}
 }catch(e){}
 (function(){const t=ymd(new Date());for(const k in S.ayd)if(S.ayd[k]!==t)delete S.ayd[k]})();

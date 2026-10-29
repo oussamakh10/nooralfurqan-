@@ -107,6 +107,10 @@
     let ref=hero;nodes.forEach(function(n){if(ref&&ref.after){ref.after(n);ref=n}else pg.insertBefore(n,pg.firstChild)});
   };
   document.addEventListener('click',function(e){
+    const rb=e.target.closest('[data-act="rretry"]');
+    if(rb){e.stopPropagation();try{Q=null;openSurah(RV.s||1)}catch(x){}return}
+  },true);
+  document.addEventListener('click',function(e){
     const b=e.target.closest('[data-f10]');if(!b)return;
     e.stopPropagation();
     const p=b.getAttribute('data-f10').split(':');
