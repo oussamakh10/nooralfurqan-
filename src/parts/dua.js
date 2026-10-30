@@ -1,7 +1,7 @@
 /* ===== دقيقة دعاء بعد الترحيب (مرة واحدة) ===== */
 (function(){
   let tm=null;
-  function close(always){clearInterval(tm);tm=null;const m=document.getElementById('duam');if(m)m.hidden=true;S.duaDone=1;S.duaAlways=always?1:0;save()}
+  function close(always){clearInterval(tm);tm=null;const m=document.getElementById('duam');if(m)m.hidden=true;S.duaV2=1;S.duaAlways=always?1:0;save()}
   let typer=0;
   function typeIn(el,text){
     clearInterval(typer);
@@ -33,11 +33,11 @@
   });
   const of=obFinish;
   obFinish=function(){
-    const first=!S.duaDone;
+    const first=!S.duaV2;
     const r=of.apply(this,arguments);
     if(first)setTimeout(show,350);
     return r;
   };
-  /* من أنهى الترحيب سابقًا: تظهر لمرة واحدة عند فتح التطبيق */
-  if((!S.duaDone||S.duaAlways)&&S.prof&&S.prof.done)setTimeout(show,1800);
+  /* تظهر لكل مستخدم عند الفتح (حتى لو تخطّى الترحيب) إلى أن يختار */
+  if(!S.duaV2||S.duaAlways)setTimeout(show,1800);
 })();
