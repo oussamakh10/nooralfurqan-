@@ -34,7 +34,7 @@ function pageHome(){
    '<li>التفسير الميسر (مجمع الملك فهد) وتفسير الجلالين، من مستودع tafsir_api. الترجمة الإنجليزية: بيكثال (ملك عام).</li>'+
    '<li>التلاوات مربوطة من موقعي EveryAyah وMP3Quran، ولا تُحفظ على هذا الموقع.</li>'+
    '<li>الدروس وبنك الأسئلة كتبها منشئ الموقع من مبادئ متفق عليها، وتُستحسن مراجعتها على يد أهل العلم.</li></ul></div></section>'+
-  '<section class="sec"><h2>المنشئ</h2><div class="card creator"><div class="mas">'+hoopoe('cheer',64)+'</div><div><div class="nm">خلوفي أسامة</div><p class="muted">منشئ موقع نور الفرقان</p><p class="muted" style="margin-top:6px;font-size:.85rem;font-weight:700;color:var(--ink,inherit)">'+esc(g3(['مساعدة في الحماية والأمان: مصعب شكري','Security & safety assistance: Mosaab Chokri','Aide en protection et sécurité : Mosaab Chokri']))+'</p></div></div></section>'+
+  '<section class="sec"><h2>المنشئ</h2><div class="card creator"><div class="mas">'+hoopoe('cheer',64)+'</div><div><div class="nm">خلوفي أسامة</div><p class="muted">منشئ موقع نور الفرقان</p><p class="muted" style="margin-top:6px;font-size:.85rem;font-weight:700;color:var(--ink,inherit)">'+esc(g3(['مساعدة في الحماية والأمان: مصعب شكري','Security & safety assistance: Mosaab Chokri','Aide en protection et sécurité : Mosaab Chokri']))+'</p><p class="muted" style="margin-top:2px;font-size:.85rem;font-weight:700;color:var(--ink,inherit)">'+esc(g3(['مساعدة في التصميم: أسيل','Design assistance: Aseel','Aide en design : Aseel']))+'</p></div></div></section>'+
   '<p class="fine">المحتوى للتعلّم والمراجعة. للفتوى والمسائل الخلافية راجع أهل العلم الموثوقين.</p>';
   loadVod();renderPrayer();
 }
