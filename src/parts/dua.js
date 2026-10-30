@@ -23,4 +23,6 @@
     if(first)setTimeout(show,350);
     return r;
   };
+  /* من أنهى الترحيب سابقًا: تظهر لمرة واحدة عند فتح التطبيق */
+  if(!S.duaDone&&S.prof&&S.prof.done)setTimeout(function(){if(!S.duaDone)show()},1800);
 })();
