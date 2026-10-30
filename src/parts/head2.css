@@ -576,3 +576,18 @@ html[data-tab="play"] #page{background:radial-gradient(60% 40% at 50% 100%,color
 html[data-season="ramadan"] .bgpat{background-image:radial-gradient(60% 30% at 80% 0%,rgba(243,216,138,.35),transparent 70%),radial-gradient(40% 25% at 10% 5%,rgba(243,216,138,.2),transparent 70%)}
 html[data-season="eid"] .bgpat{background-image:radial-gradient(60% 35% at 50% 0%,rgba(255,170,90,.3),transparent 70%)}
 html[data-season="jumua"] .seasonbar{background:linear-gradient(135deg,var(--accent),var(--accent-d));color:var(--on-accent,#fff)}
+/* ===== الموافقة والخصوصية ===== */
+#lgm{position:fixed;inset:0;z-index:98;background:rgba(0,0,0,.55);display:grid;place-items:center;padding:20px}
+#lgm[hidden]{display:none}
+#lgm .bc-card{background:var(--surface);color:var(--fg);border-radius:22px;padding:20px;width:min(92vw,380px);box-shadow:0 20px 50px -15px rgba(0,0,0,.5);text-align:center}
+#lgm .bc-t{font:800 1.2rem var(--display);margin-bottom:6px}
+#lgm p{margin:0 0 12px;line-height:1.7}
+/* ===== دقيقة الدعاء ===== */
+#duam{position:fixed;inset:0;z-index:99;background:rgba(0,0,0,.6);display:grid;place-items:center;padding:20px}
+#duam[hidden]{display:none}
+#duam .bc-card{background:var(--surface);color:var(--fg);border-radius:22px;padding:20px;width:min(92vw,400px);max-height:92vh;overflow:auto;box-shadow:0 20px 50px -15px rgba(0,0,0,.5);text-align:center}
+#duam .bc-t{font:800 1.2rem var(--display);margin:6px 0}
+#duam p{margin:0 0 12px;line-height:1.8}
+#duam .duamas{display:flex;justify-content:center}
+#duam .duat{font-family:'Amiri Quran','Amiri',serif;font-size:1.25rem;line-height:2.1}
+#duam .duac{font:800 2rem var(--display);color:var(--accent);margin:4px 0 10px}

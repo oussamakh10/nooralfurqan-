@@ -26,7 +26,7 @@
     oa();
     const m=document.querySelector('#lesson .lmain');if(!m)return;
     const c=document.createElement('div');c.className='card';c.style.cssText='display:flex;gap:8px;flex-wrap:wrap;justify-content:center';
-    c.innerHTML=[['privacy.html',['سياسة الخصوصية','Privacy policy','Confidentialité']],['terms.html',['شروط الاستخدام','Terms of use','Conditions']],['support.html',['الدعم','Support','Assistance']]].map(function(x){return '<a class="btn sm ghost" href="'+x[0]+'" target="_blank" rel="noopener">'+esc(g3(x[1]))+'</a>'}).join('');
+    c.innerHTML=[['privacy.html',['سياسة الخصوصية','Privacy policy','Confidentialité']],['sources.html',['المصادر والتراخيص','Sources & licences','Sources et licences']],['terms.html',['شروط الاستخدام','Terms of use','Conditions']],['support.html',['الدعم','Support','Assistance']]].map(function(x){return '<a class="btn sm ghost" href="'+x[0]+'" target="_blank" rel="noopener">'+esc(g3(x[1]))+'</a>'}).join('');
     m.appendChild(c);
   };
   /* خروج بضغطتين من الرئيسية */
