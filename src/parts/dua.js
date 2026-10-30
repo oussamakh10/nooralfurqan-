@@ -39,5 +39,5 @@
     return r;
   };
   /* تظهر لكل مستخدم عند الفتح (حتى لو تخطّى الترحيب) إلى أن يختار */
-  if(!S.duaV2||S.duaAlways)setTimeout(show,1800);
+  if(!S.duaV2||S.duaAlways)nfWhen(show,true);
 })();

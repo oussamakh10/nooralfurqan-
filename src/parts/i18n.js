@@ -122,7 +122,7 @@ function langBtns(){return '<span class="opts2">'+LANGS.map(function(x){return '
 function openLangPicker(){
   const c=$('#cele');
   c.innerHTML='<div class="card" style="text-align:center;justify-items:center;max-width:380px" dir="ltr"><div style="display:grid;place-items:center">'+hoopoe('cheer',96)+'</div>'+
-   '<h2 dir="auto">نور الفرقان</h2><p class="muted" style="margin:0">اختر لغتك · Choose your language · Choisissez votre langue</p>'+
+   '<h2 dir="auto">نور الفرقان</h2><p class="muted" style="margin:0">ما هي لغتك الأم؟ · What is your native language? · Quelle est votre langue maternelle ?</p>'+
    '<div class="opts" style="width:100%">'+LANGS.map(function(x){return '<button class="opt" data-lang="'+x[0]+'" data-first="1" lang="'+x[0]+'"><span>'+x[1]+'</span></button>'}).join('')+'</div></div>';
   c.hidden=false;
 }

@@ -51,5 +51,18 @@
       const w=document.createElement('div');w.className='lgrow';w.innerHTML=row();box.appendChild(w);
     }catch(e){}
   };
-  if(!S.consent)setTimeout(consent,1300);
+  /* ننتظر اختيار اللغة (أول شيء يراه المستخدم) ثم نعرض الباقي */
+  window.nfWhen=function(fn,needIdle){
+    let calm=0;
+    const t=setInterval(function(){
+      if(!S.lang)return;
+      if(needIdle){
+        const c=document.getElementById('cele'),l=document.getElementById('lgm'),sp=document.getElementById('splash');
+        if(sp||(c&&!c.hidden)||(l&&!l.hidden)){calm=0;return}
+        if(++calm<6)return;            /* ثلاث ثوانٍ هدوء متواصل */
+      }
+      clearInterval(t);setTimeout(fn,500);
+    },500);
+  };
+  if(!S.consent)nfWhen(function(){if(!S.consent)consent()},false);
 })();
