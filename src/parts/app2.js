@@ -14,7 +14,7 @@ function pageHome(){
   const due=srDue().length,nx=S.has.t;
   $('#page').innerHTML=
   '<section class="hero"><div class="arch"><div class="mas">'+hoopoe('happy',150)+'</div><h1>نور الفرقان</h1><p>رفيقك لتعلّم الدين خطوة خطوة</p></div>'+
-   '<p class="lead">'+(S.prof&&S.prof.name?'السلام عليكم يا '+esc(S.prof.name)+'. ':'')+'دروس قصيرة، ومصحف مفسَّر، وتلاوات، وتحديات وألعاب. كل شيء في مكان واحد.</p>'+
+   '<p class="lead">'+(S.prof&&S.prof.name?'السلام عليكم يا '+esc(S.prof.name)+'. ':'')+'دروس قصيرة تُنجزها في دقائق، ومصحف بتفسيره، وتلاوات تسمعها في طريقك.</p>'+
    '<div class="cta"><button class="btn" data-go="learn">ابدأ التعلّم</button><button class="btn gold" data-go="read">افتح المصحف</button></div></section>'+
   '<section class="sec"><h2>اليوم</h2>'+'<button class="card feat" style="text-align:start" data-act="guide-open"><b>'+g3(["جديد على الإسلام أو زائر؟ دليل المبتدئين","New here? Beginner’s guide","Nouveau ici ? Guide du débutant"])+'</b><span>'+g3(["أساسيات الإسلام والوضوء والصلاة ومصطلحات مفيدة وأسئلة شائعة.","Islam basics, wudu, prayer, useful terms and common questions.","Bases de l’islam, ablutions, prière, termes utiles et questions fréquentes."])+'</span></button>'+reminderBanner()+seasonHtml()+
    '<div class="card day"><span class="pill" style="justify-self:start">آية اليوم</span><div id="vod"><p class="muted">جارٍ التحميل…</p></div></div>'+
@@ -89,9 +89,9 @@ function pageLearn(){
 
 /* ================= محرّك الدرس ================= */
 let L=null,G=null;
-const PRAISE=['أحسنت!','ممتاز!','بارك الله فيك!','رائع!','ما شاء الله!'];
-const OKSAY=['ما شاء الله، إجابة صحيحة!','ممتاز، أنت تتقدم!','بارك الله فيك!','هكذا يكون العلم!'];
-const NOSAY=['لا بأس، نتعلّم من الخطأ.','قريبة! سنعيدها بعد قليل.','الخطأ أول خطوات التعلّم.'];
+const PRAISE=['أحسنت!','بارك الله فيك!','ما شاء الله!','صح!','هكذا تمامًا.','صحيحة.'];
+const OKSAY=['ما شاء الله، إجابة صحيحة!','بارك الله فيك!','هكذا يكون العلم!','صح، واصل.','جميل، كمّل.'];
+const NOSAY=['لا بأس، نتعلّم من الخطأ.','قريبة! سنعيدها بعد قليل.','الخطأ أول خطوات التعلّم.','ليست هذه، انتبه للتفصيل.'];
 function openOverlay(){$('#lesson').hidden=false;document.documentElement.classList.add('lock')}
 function closeOverlay(){
   if(G&&G.timer)clearInterval(G.timer);

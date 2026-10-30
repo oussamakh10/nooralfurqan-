@@ -55,7 +55,7 @@
   };
   /* ---------- الدخول الترحيبي ---------- */
   const SAY={
-   intro:['السلام عليكم ورحمة الله! أنا الهدهد، رفيقك في رحلة تعلّم القرآن والإسلام. هيا نتعارف في دقيقة واحدة.','Peace be upon you! I’m the Hoopoe, your companion on your journey with the Qur’an. Let’s get to know each other in one minute.','Que la paix soit sur vous ! Je suis la huppe, votre compagnon pour apprendre le Coran. Faisons connaissance en une minute.'],
+   intro:['السلام عليكم ورحمة الله. أنا الهدهد، أرافقك في تعلّم القرآن والإسلام. نتعارف في دقيقة؟','Peace be upon you! I’m the Hoopoe, your companion on your journey with the Qur’an. Let’s get to know each other in one minute.','Que la paix soit sur vous ! Je suis la huppe, votre compagnon pour apprendre le Coran. Faisons connaissance en une minute.'],
    name:['أولًا، ما اسمك؟','First, what’s your name?','D’abord, quel est votre prénom ?'],
    age:['تشرّفتُ بك{n}! كم عمرك تقريبًا؟','Nice to meet you{n}! About how old are you?','Enchanté{n} ! Quel âge avez-vous environ ?'],
    lvl:['وكيف تقيّم معرفتك بالدين؟ لا تقلق، سنبدأ من حيث تكون.','How would you rate your knowledge of the religion? No worries, we start where you are.','Comment évaluez-vous vos connaissances ? Pas de souci, nous partons de votre niveau.'],
@@ -90,7 +90,7 @@
     else if(q.type==='rec')h+='<select id="obin">'+REC.map(function(x){return '<option value="'+x.id+'"'+(x.id===(OBD.rec||S.rec)?' selected':'')+'>'+x.n+'</option>'}).join('')+'</select>';
     else if(q.type==='acct')h+=(onClaude()?'<p class="muted" style="font-size:.92rem;margin:0">الربط يتم عبر حسابك في claude.ai.</p>':'<p class="muted" style="font-size:.92rem;margin:0">'+esc(g3(['اضغط لربط حسابك بجوجل (اختياري).','Tap to link your Google account (optional).','Touchez pour lier votre compte Google (facultatif).']))+'</p>')+'<button class="btn gold" data-act="ob-link">'+(onClaude()?'':window.__GI||'')+esc(onClaude()?g3(['اربط حسابي','Link my account','Lier mon compte']):g3(['الدخول بجوجل','Sign in with Google','Connexion Google']))+'</button><p class="muted" id="obacct" style="font-size:.9rem;text-align:center;margin:0"></p>';
     else h+='<div class="opts">'+q.opts.map(function(o){return '<button class="opt'+(String(OBD[q.k])===String(o[0])?' sel':'')+'" data-ob="'+o[0]+'"><span>'+o[1]+'</span></button>'}).join('')+'</div>';
-    h+='</div><div class="obfoot"><button class="btn" data-act="ob-next">'+esc(intro?g3(['هيا نبدأ','Let’s go','C’est parti']):(last?g3(['ابدأ الرحلة','Start the journey','Commencer']):g3(['التالي','Next','Suivant'])))+'</button>'+
+    h+='</div><div class="obfoot"><button class="btn" data-act="ob-next">'+esc(intro?g3(['نبدأ','Let’s go','C’est parti']):(last?g3(['نبدأ','Let’s begin','Commencer']):g3(['التالي','Next','Suivant'])))+'</button>'+
       '<button class="btn ghost" data-act="'+(intro?'cclose':'ob-skip')+'">'+esc(intro?g3(['لاحقًا','Later','Plus tard']):(last?g3(['لاحقًا','Later','Plus tard']):g3(['تخطَّ هذا السؤال','Skip this question','Passer'])))+'</button></div></div>';
     c.innerHTML=h;c.hidden=false;
     typeInto($('#obsay'),line);

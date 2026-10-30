@@ -50,7 +50,7 @@ function renderOnboard(){
   else if(q.type==='rec')h+='<select id="obin">'+REC.map(function(x){return '<option value="'+x.id+'"'+(x.id===(OBD.rec||S.rec)?' selected':'')+'>'+x.n+'</option>'}).join('')+'</select>';
   else if(q.type==='acct')h+='<p class="muted" style="font-size:.92rem">الربط يتم عبر حسابك في claude.ai الذي فتحتَ منه الصفحة (يظهر بريدك إن سمحت المنصة). لا أستطيع تسجيل الدخول بحساب جوجل مباشرة.</p><button class="btn gold" data-act="ob-link">اربط حسابي</button><p class="muted" id="obacct" style="font-size:.9rem;text-align:center">'+(ACCT&&ACCT.id?'تم الربط ✓':'')+'</p>';
   else h+='<div class="opts">'+q.opts.map(function(o){return '<button class="opt'+(String(OBD[q.k])===String(o[0])?' sel':'')+'" data-ob="'+o[0]+'"><span>'+o[1]+'</span></button>'}).join('')+'</div>';
-  h+='<button class="btn" data-act="ob-next">'+(last?'ابدأ الرحلة':'التالي')+'</button><button class="btn ghost" data-act="ob-skip">'+(last?'لاحقًا':'تخطَّ هذا السؤال')+'</button></div>';
+  h+='<button class="btn" data-act="ob-next">'+(last?'نبدأ':'التالي')+'</button><button class="btn ghost" data-act="ob-skip">'+(last?'لاحقًا':'تخطَّ هذا السؤال')+'</button></div>';
   c.innerHTML=h;c.hidden=false;
 }
 function obCollect(){

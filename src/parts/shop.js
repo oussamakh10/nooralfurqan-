@@ -248,7 +248,7 @@
 function icoSvg(e){
   const P={
     '⚡':'<path d="M13 2 3 14h9l-1 8 10-12h-9z"/>',
-    '✦':'<path d="M12 3l2 6 6 2-6 2-2 6-2-6-6-2 6-2z"/>',
+    '✦':'<rect x="5" y="5" width="14" height="14" rx="1"/><rect x="5" y="5" width="14" height="14" rx="1" transform="rotate(45 12 12)"/>',
     '❄':'<path d="M12 2v20M4 6l16 12M20 6 4 18"/>',
     '🎓':'<path d="M2 9l10-5 10 5-10 5z"/><path d="M6 11v5c0 1.5 3 3 6 3s6-1.5 6-3v-5"/>',
     '📖':'<path d="M4 4h6a2 2 0 0 1 2 2v14a2 2 0 0 0-2-2H4zM20 4h-6a2 2 0 0 0-2 2v14a2 2 0 0 1 2-2h6z"/>',
