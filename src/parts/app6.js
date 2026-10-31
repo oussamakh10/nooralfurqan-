@@ -273,7 +273,7 @@ function shareCard(){
     x.fillStyle=g('--arch2')||'#0A4A30';x.fillRect(0,0,1080,1350);
     x.strokeStyle=g('--gold')||'#D9A21B';x.lineWidth=8;x.strokeRect(40,40,1000,1270);x.lineWidth=2;x.strokeRect(62,62,956,1226);
     x.textAlign='center';x.direction='rtl';
-    x.fillStyle='#F6EFCB';x.font='700 84px "Baloo Bhaijaan 2",Tahoma,sans-serif';x.fillText('نور الفرقان',540,190);
+    x.fillStyle='#F6EFCB';x.font='700 84px "Tajawal",Tahoma,sans-serif';x.fillText('نور الفرقان',540,190);
     if(im)x.drawImage(im,360,230,360,360);
     const nm=(S.prof&&S.prof.name)?S.prof.name:'';
     x.fillStyle=g('--gold')||'#F2C14A';x.font='700 60px Tahoma,sans-serif';x.fillText(nm?('إنجازات '+nm):'إنجازاتي',540,690);

@@ -56,7 +56,7 @@ function certCard(ui){
     x.strokeStyle='#0A5A37';x.lineWidth=18;x.strokeRect(36,36,1328,918);
     x.strokeStyle='#D9A21B';x.lineWidth=5;x.strokeRect(66,66,1268,858);
     x.textAlign='center';x.direction=LANG==='ar'?'rtl':'ltr';
-    x.fillStyle='#0A4A30';x.font='700 76px "Baloo Bhaijaan 2",Tahoma,sans-serif';x.fillText(g3(["شهادة إتمام","Certificate of Completion","Certificat de réussite"]),700,200);
+    x.fillStyle='#0A4A30';x.font='700 76px "Tajawal",Tahoma,sans-serif';x.fillText(g3(["شهادة إتمام","Certificate of Completion","Certificat de réussite"]),700,200);
     if(im)x.drawImage(im,550,230,300,300);
     x.fillStyle='#10241B';x.font='500 40px Tahoma,sans-serif';
     const nm=(S.prof&&S.prof.name)?S.prof.name:g3(["صديقي","Friend","Cher ami"]);
