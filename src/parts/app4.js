@@ -176,7 +176,7 @@ function renderGame(){
   const q=G.qs[G.i],cur=G.players[G.i%G.np],pct=Math.round(G.i/G.qs.length*100);
   let h='<div class="ltop"><button class="xbtn" data-act="gquit" aria-label="خروج من اللعبة">'+IC.x+'</button>'+
    '<div class="bar" role="progressbar" aria-valuenow="'+pct+'" aria-valuemin="0" aria-valuemax="100"><i style="width:'+pct+'%"></i></div>'+
-   '<div class="hearts" style="color:var(--gold-d)" aria-label="النقاط">'+IC.gem+'<span>'+N(G.players[G.i%G.np].score)+'</span></div></div>';
+   '<div class="hearts" style="color:var(--gold-t)" aria-label="النقاط">'+IC.gem+'<span>'+N(G.players[G.i%G.np].score)+'</span></div></div>';
   if(G.state==='ready'){
     h+='<div class="lmain"><div class="center"><div class="mas">'+hoopoe('happy',130)+'</div><h2>دور '+esc(cur.n)+'</h2><p class="muted">سلّم الجهاز إليه، ثم اضغط «ابدأ».</p>'+
      '<div class="score">'+G.players.map(function(p,i){return '<span class="'+(i===G.i%G.np?'me':'')+'">'+esc(p.n)+': '+N(p.score)+'</span>'}).join('')+'</div></div></div>'+
@@ -250,7 +250,7 @@ function runBlitz(){
 }
 function renderBlitz(){
   const q=G.qs[G.i%G.qs.length],p=G.players[0];
-  let h='<div class="ltop"><button class="xbtn" data-act="gquit" aria-label="خروج">'+IC.x+'</button><div class="bar tm"><i id="gtime" style="width:'+(G.left/60*100)+'%"></i></div><div class="hearts" style="color:var(--gold-d)">'+IC.gem+'<span>'+N(p.score)+'</span></div></div>'+
+  let h='<div class="ltop"><button class="xbtn" data-act="gquit" aria-label="خروج">'+IC.x+'</button><div class="bar tm"><i id="gtime" style="width:'+(G.left/60*100)+'%"></i></div><div class="hearts" style="color:var(--gold-t)">'+IC.gem+'<span>'+N(p.score)+'</span></div></div>'+
    '<div class="lmain"><div class="gmeta"><span class="pill"><span id="gsec">'+N(Math.ceil(G.left))+'</span> ثانية</span><span class="pill">'+N(p.right)+' صحيحة</span>'+(G.combo>=2?'<span class="combo">تتابع ×'+N(G.combo)+'</span>':'')+'</div>'+
    '<h2 class="qtext">'+q.q+'</h2><div class="say" style="margin:0"><div class="mas">'+hoopoe(G.mood,56)+'</div></div>'+optsHtml(q,G.state==='ans',G.sel,'data-bopt')+'</div>';
   if(G.confirm)h+=GMODAL;

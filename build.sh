@@ -6,7 +6,7 @@ echo '<div class="bgpat" id="bg"></div>
 <div class="wrap" id="page" dir="rtl" lang="ar"></div>
 <div id="mini" hidden dir="rtl"></div>
 <nav id="nav" aria-label="التنقل"></nav>
-<div id="lesson" dir="rtl" lang="ar" hidden></div>
+<div id="lesson" role="dialog" aria-modal="true" aria-label="درس" dir="rtl" lang="ar" hidden></div>
 <div id="cele" hidden dir="rtl" lang="ar"></div>
 <div id="toast" hidden role="status"></div>
 <script>'

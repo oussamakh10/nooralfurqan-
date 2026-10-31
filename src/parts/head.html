@@ -8,7 +8,7 @@
 :root{
   --bg:#E6D3A0; --surface:#F8EDC8; --fg:#0B1E15; --muted:#46563E; --line:#C4A964;
   --accent:#0F7A4C; --accent-d:#0A5A37; --accent-soft:#CDE2B4; --on-accent:#FFFFFF;
-  --gold:#D9A21B; --gold-d:#A87608; --flame:#E8661A;
+  --gold:#D9A21B; --gold-d:#A87608; --gold-t:#7A5504; --focus:#0B1E15; --flame:#E8661A;
   --ok-bg:#DCF2D8; --ok-fg:#0A5A37; --bad-bg:#FBE1DC; --bad-fg:#A92B2B; --bad:#D9443F; --bad-d:#A92E2A;
   --lock:#D8C88C; --lock-d:#BFAC6C;
   --pat:rgba(8,86,52,.34); --pat2:rgba(150,104,6,.52); --arch:#0A6A40; --arch2:#06382A;
@@ -22,7 +22,7 @@
 @media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
   --bg:#040B07; --surface:#0C1A12; --fg:#F3EBC6; --muted:#A3B49E; --line:#1D3727;
   --accent:#3BC88A; --accent-d:#1F8F5E; --accent-soft:#17382A; --on-accent:#06261A;
-  --gold:#F2C14A; --gold-d:#B98615; --flame:#FF8A3D;
+  --gold:#F2C14A; --gold-d:#B98615; --gold-t:#F2C14A; --focus:#F2C14A; --flame:#FF8A3D;
   --ok-bg:#173A2A; --ok-fg:#7DE0B0; --bad-bg:#40201F; --bad-fg:#FF9C98; --bad:#FF6B66; --bad-d:#B8423D;
   --lock:#1F3329; --lock-d:#2B4538;
   --pat:rgba(59,200,138,.24); --pat2:rgba(242,193,74,.34); --arch:#0F4A31; --arch2:#071F15;
@@ -31,7 +31,7 @@
 :root[data-theme="dark"]{
   --bg:#040B07; --surface:#0C1A12; --fg:#F3EBC6; --muted:#A3B49E; --line:#1D3727;
   --accent:#3BC88A; --accent-d:#1F8F5E; --accent-soft:#17382A; --on-accent:#06261A;
-  --gold:#F2C14A; --gold-d:#B98615; --flame:#FF8A3D;
+  --gold:#F2C14A; --gold-d:#B98615; --gold-t:#F2C14A; --focus:#F2C14A; --flame:#FF8A3D;
   --ok-bg:#173A2A; --ok-fg:#7DE0B0; --bad-bg:#40201F; --bad-fg:#FF9C98; --bad:#FF6B66; --bad-d:#B8423D;
   --lock:#1F3329; --lock-d:#2B4538;
   --pat:rgba(59,200,138,.24); --pat2:rgba(242,193,74,.34); --arch:#0F4A31; --arch2:#071F15;
@@ -44,7 +44,7 @@ body{background:var(--bg);color:var(--fg);font:400 16px/1.7 var(--text);
 html.lock,html.lock body{overflow:hidden}
 button,select,input{font-family:inherit;color:inherit}
 button{cursor:pointer}
-button:focus-visible,a:focus-visible,select:focus-visible,input:focus-visible{outline:3px solid var(--gold);outline-offset:2px}
+button:focus-visible,a:focus-visible,select:focus-visible,input:focus-visible{outline:3px solid var(--focus);outline-offset:2px}
 h1,h2,h3,h4,p{margin:0}
 h1,h2,h3,h4{font-family:var(--display);text-wrap:balance}
 a{color:var(--accent-d)}
@@ -176,7 +176,7 @@ select,input[type=text],input[type=search]{width:100%;background:var(--surface);
 .ay{background:var(--surface);border:2px solid var(--line);border-radius:18px;padding:12px 14px;margin-bottom:10px}
 .ay.on{border-color:var(--gold);box-shadow:0 0 0 3px color-mix(in srgb,var(--gold) 35%,transparent)}
 .ayt{font:400 1.75rem/2.3 var(--quran);text-align:justify;text-wrap:pretty}
-.no{padding:0;cursor:pointer;display:inline-grid;place-items:center;min-width:2.1rem;height:2.1rem;margin-inline:.35rem;font:700 .85rem var(--display);color:var(--gold-d);border:2px solid var(--gold);border-radius:50%;vertical-align:middle;background:transparent}
+.no{padding:0;cursor:pointer;display:inline-grid;place-items:center;min-width:2.1rem;height:2.1rem;margin-inline:.35rem;font:700 .85rem var(--display);color:var(--gold-t);border:2px solid var(--gold);border-radius:50%;vertical-align:middle;background:transparent}
 .acts{display:flex;flex-wrap:wrap;gap:8px;margin-top:8px}
 .acts button{background:var(--bg);border:2px solid var(--line);border-radius:12px;padding:0 12px;font:700 .88rem/2 var(--text)}
 .acts button[aria-pressed="true"]{background:var(--accent);border-color:var(--accent);color:var(--on-accent)}
@@ -208,7 +208,7 @@ select,input[type=text],input[type=search]{width:100%;background:var(--surface);
 .week i{width:32px;height:32px;border-radius:50%;border:2px solid var(--line);display:grid;place-items:center;color:transparent}
 .week i svg{width:18px;height:18px}
 .week .on i{background:var(--flame);border-color:var(--flame);color:#fff}
-.week .now i{outline:3px solid var(--gold);outline-offset:2px}
+.week .now i{outline:3px solid var(--focus);outline-offset:2px}
 .ch{display:grid;gap:6px}
 .ch .row{display:flex;justify-content:space-between;gap:10px;align-items:center}
 .ch b{font:700 1rem/1.4 var(--display)}

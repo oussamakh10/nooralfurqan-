@@ -149,3 +149,17 @@ document.addEventListener('keydown',function(e){
   if(!S.lang)setTimeout(openLangPicker,200);
   else if(!S.prof)setTimeout(function(){if(!S.prof&&$('#lesson').hidden)openOnboard()},700);
 })();
+
+/* ---------- وصول: Escape وتركيز الحوارات ---------- */
+document.addEventListener('keydown',function(e){
+  if(e.key!=='Escape')return;
+  const m=document.querySelector('#hpm:not([hidden]),#buyconf:not([hidden])');if(!m)return;
+  const b=m.querySelector('[data-hp="close"],[data-bc="no"]');if(b){e.preventDefault();b.click()}
+});
+(function(){
+  if(!window.MutationObserver)return;
+  new MutationObserver(function(ms){ms.forEach(function(r){const t=r.target;
+    if(t.getAttribute&&t.getAttribute('role')==='dialog'&&!t.hidden&&!t.contains(document.activeElement)){
+      const b=t.querySelector('button,[href],input');if(b)setTimeout(function(){try{b.focus()}catch(x){}},30)}})})
+  .observe(document.body,{subtree:true,attributes:true,attributeFilter:['hidden']});
+})();
