@@ -632,3 +632,9 @@ button.chip{min-height:44px}
 .rgrid>*{flex:0 0 auto;min-width:150px;scroll-snap-align:start}
 #rsearch{padding-inline-start:40px;background:var(--surface) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23888' stroke-width='2.2' stroke-linecap='round'%3E%3Ccircle cx='11' cy='11' r='7'/%3E%3Cpath d='m20 20-3.5-3.5'/%3E%3C/svg%3E") no-repeat right 12px center/20px;position:sticky;top:70px;z-index:5}
 .rc i{display:none}.rc{min-height:44px}
+
+/* هدهد المنشئ (صور) */
+.hpa{display:inline-block;position:relative;vertical-align:bottom}
+.hpa img{position:absolute;left:50%;bottom:0;transform:translateX(-50%);max-width:none;user-select:none;-webkit-user-drag:none;filter:drop-shadow(0 4px 6px rgba(0,0,0,.22))}
+.hpa.hpc{border-radius:50%;background:radial-gradient(circle at 50% 40%,#2A8C92,#0B3F4A 75%);border:3px solid var(--gold);box-sizing:border-box;overflow:hidden}
+.hpa.hpc img{height:92%!important;width:auto!important;bottom:2%}

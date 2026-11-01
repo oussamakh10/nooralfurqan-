@@ -4,7 +4,7 @@ function hoopoeNew(mood,size){
   var uid='h'+Math.floor(Math.random()*1e6);
   /* crest: 7 feathers fanned from the crown */
   var fan=[[-68,28],[-46,37],[-23,45],[0,50],[23,45],[46,37],[68,28]];
-  var lift=mood==='wow'?1.12:(mood==='sad'?.7:1), spread=mood==='sad'?.7:1;
+  var lift=mood==='wow'?1.12:(mood==='sad'?.7:(mood==='sleep'?.82:(mood==='focus'||mood==='joy'?1.06:1))), spread=mood==='sad'?.7:1;
   var crest='',cdefs='';
   fan.map(function(f,i){return [f[0],f[1],i]}).sort(function(a,b){return Math.abs(b[0])-Math.abs(a[0])}).forEach(function(f){
     var L=f[1]*lift,a=f[0]*spread,w=7.6,cx=60,cy=47,top=cy-L,i=f[2];
@@ -17,18 +17,27 @@ function hoopoeNew(mood,size){
   });
   /* eyes */
   var eyes;
-  if(mood==='cheer'){
+  var extra='';
+  if(mood==='calm'||mood==='sleep'){
+    eyes='<path d="M36 55 Q46 63 56 55" fill="none" stroke="var(--hp-dark)" stroke-width="4.2" stroke-linecap="round"/><path d="M64 55 Q74 63 84 55" fill="none" stroke="var(--hp-dark)" stroke-width="4.2" stroke-linecap="round"/>';
+    if(mood==='sleep')extra='<g fill="none" stroke="var(--hp-dark)" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M92 30 h9 l-9 10 h9"/><path d="M104 14 h6 l-6 7 h6"/></g>';
+  }else if(mood==='cheer'){
     eyes='<path d="M36 56 Q46 44 56 56" fill="none" stroke="var(--hp-dark)" stroke-width="4.6" stroke-linecap="round"/><path d="M64 56 Q74 44 84 56" fill="none" stroke="var(--hp-dark)" stroke-width="4.6" stroke-linecap="round"/>';
   }else{
-    var pr=mood==='wow'?4.4:6.4;
+    var pr=mood==='wow'?4.4:(mood==='focus'?5.2:6.4);
     eyes='<circle cx="46" cy="55" r="10.5" fill="#fff" stroke="var(--hp-line)" stroke-width="1.4"/><circle cx="74" cy="55" r="10.5" fill="#fff" stroke="var(--hp-line)" stroke-width="1.4"/>'+
      '<circle cx="47" cy="56.5" r="'+pr+'" fill="var(--hp-dark)"/><circle cx="73" cy="56.5" r="'+pr+'" fill="var(--hp-dark)"/>'+
      '<circle cx="49.600" cy="53.500" r="2.500" fill="#fff"/><circle cx="75.600" cy="53.500" r="2.500" fill="#fff"/><circle cx="45" cy="59.500" r="1.200" fill="#fff" opacity=".85"/><circle cx="71" cy="59.500" r="1.200" fill="#fff" opacity=".85"/>';
     if(mood==='wow')eyes+='<path d="M35 41 Q46 33 56 41" fill="none" stroke="var(--hp-dark)" stroke-width="3.200" stroke-linecap="round"/><path d="M64 41 Q74 33 85 41" fill="none" stroke="var(--hp-dark)" stroke-width="3.200" stroke-linecap="round"/>';
+    if(mood==='joy')eyes+='<g fill="#fff"><path d="M46 51 l1.8 4 4 1.8 -4 1.8 -1.8 4 -1.8 -4 -4 -1.8 4 -1.8z"/><path d="M74 51 l1.8 4 4 1.8 -4 1.8 -1.8 4 -1.8 -4 -4 -1.8 4 -1.8z"/></g><ellipse cx="33" cy="70" rx="7" ry="4.6" fill="#F27A8C" opacity=".6"/><ellipse cx="87" cy="70" rx="7" ry="4.6" fill="#F27A8C" opacity=".6"/><path d="M35 43 Q46 36 56 43 M64 43 Q74 36 85 43" fill="none" stroke="var(--hp-dark)" stroke-width="3" stroke-linecap="round"/>';
+    if(mood==='focus')eyes+='<path d="M34 42 L56 50" stroke="var(--hp-dark)" stroke-width="4" stroke-linecap="round"/><path d="M86 42 L64 50" stroke="var(--hp-dark)" stroke-width="4" stroke-linecap="round"/>';
+    if(mood==='think')eyes+='<path d="M35 44 Q46 38 56 44" fill="none" stroke="var(--hp-dark)" stroke-width="3" stroke-linecap="round"/><path d="M64 38 Q74 31 85 38" fill="none" stroke="var(--hp-dark)" stroke-width="3" stroke-linecap="round"/>';
+    if(mood==='think')extra='<g fill="#fff" stroke="var(--hp-line)" stroke-width="1.4"><circle cx="96" cy="34" r="3"/><circle cx="104" cy="22" r="5"/><ellipse cx="112" cy="6" rx="9" ry="8"/></g><text x="112" y="11" text-anchor="middle" font-size="12" font-weight="800" fill="var(--hp-dark)" font-family="Tajawal,sans-serif">?</text>';
     if(mood==='sad')eyes+='<path d="M34 46 L55 40" stroke="var(--hp-dark)" stroke-width="3.600" stroke-linecap="round"/><path d="M86 46 L65 40" stroke="var(--hp-dark)" stroke-width="3.600" stroke-linecap="round"/><path d="M37 68 q-4 6.500 0 9.500 q4 -3 0 -9.500z" fill="#6EC1F0"/>';
   }
   var wr=mood==='cheer'?'rotate(40 36 84)':(mood==='sad'?'rotate(-6 36 84)':'rotate(0)');
-  var spark=mood==='cheer'?'<g fill="var(--gold)" stroke="#fff" stroke-width="1"><path d="M10 34 l2.500 6 6 2.500 -6 2.500 -2.500 6 -2.500 -6 -6 -2.500 6 -2.500z"/><path d="M110 26 l2 4.500 4.500 2 -4.500 2 -2 4.500 -2 -4.500 -4.500 -2 4.500 -2z"/><path d="M106 70 l1.500 3.500 3.500 1.500 -3.500 1.500 -1.500 3.500 -1.500 -3.500 -3.500 -1.500 3.500 -1.500z"/></g>':'';
+  var spark0=mood==='cheer'?'<g fill="var(--gold)" stroke="#fff" stroke-width="1"><path d="M10 34 l2.500 6 6 2.500 -6 2.500 -2.500 6 -2.500 -6 -6 -2.500 6 -2.500z"/><path d="M110 26 l2 4.500 4.500 2 -4.500 2 -2 4.500 -2 -4.500 -4.500 -2 4.500 -2z"/><path d="M106 70 l1.500 3.500 3.500 1.500 -3.500 1.500 -1.500 3.500 -1.500 -3.500 -3.500 -1.500 3.500 -1.500z"/></g>':'';
+  var spark=spark0+extra;
   /* zebra wing */
   var wingP='M36 77 C26 80 21 96 27 110 C33 114 42 107 44 92 C45 84 42 78 36 77Z';
   var wing='<path d="M36 77 C26 80 21 96 27 110 C33 114 42 107 44 92 C45 84 42 78 36 77Z" fill="var(--hp-dark)" stroke="var(--hp-dark)" stroke-width="1.200" stroke-linejoin="round"/>'+
@@ -106,4 +115,10 @@ function hoopoeOld(mood,size){
     '<path d="M59.500 67 Q59.800 80 60.200 92" stroke="#fff" stroke-opacity=".28" stroke-width="1.600" stroke-linecap="round" fill="none"/><path d="M58.200 67 l1.200 -.6 M61.800 67 l-1.200 -.6" stroke="#fff" stroke-opacity=".35" stroke-width="1" stroke-linecap="round"/>'+spark+'</svg>';
 }
 
-function hoopoe(mood,size){var old=false;try{old=S.hpv==='old'}catch(e){}return (old?hoopoeOld:hoopoeNew)(mood,size)}
+function hoopoe(mood,size){var f='art';try{f=S.hpv||'art'}catch(e){}
+  if(f==='art'&&typeof HPART!=='undefined'){
+    var k=({happy:'calm',cheer:'joy',wow:'joy',sad:'sad',focus:'focus'})[mood]||'calm',a=HPART[k],badge=size>=60;
+    var ih=Math.round(size*(badge?.96:1));
+    return '<span class="hp hpa'+(badge?' hpc':'')+'" style="width:'+size+'px;height:'+size+'px" aria-hidden="true"><img src="'+a[1]+'" alt="" draggable="false" style="height:'+ih+'px;width:'+Math.round(ih*a[0])+'px"></span>';
+  }
+  return (f==='old'?hoopoeOld:hoopoeNew)(mood,size)}
