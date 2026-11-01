@@ -43,8 +43,8 @@ function genAyat(level,n,surahs){
 function range(a,b){const r=[];for(let i=a;i<=b;i++)r.push(i);return r}
 
 /* ================= الحفظ ================= */
-const HS=[1].concat(range(78,114).reverse(),range(2,77).reverse());
 const HG=[['الفاتحة',[1]],['جزء عمّ',range(78,114).reverse()],['جزء تبارك',range(67,77).reverse()],['جزء قد سمع',range(58,66).reverse()],['من الحديد إلى البقرة',range(2,57).reverse()]];
+const HS=[].concat.apply([],HG.map(function(g){return g[1]}));
 function hCount(s){return (S.hifz[s]||[]).length}
 let HV=0;
 function learnHifz(){
