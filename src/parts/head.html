@@ -152,8 +152,9 @@ select,input[type=text],input[type=search]{width:100%;background:var(--surface);
 .node:active{transform:translateY(4px);border-bottom-width:3px}
 .node svg{width:34px;height:34px}
 .node.lock{background:var(--lock);border-bottom-color:var(--lock-d);color:var(--muted);cursor:not-allowed}
-.node.cur{animation:pulse 1.8s ease-in-out infinite;box-shadow:0 0 0 8px color-mix(in srgb,var(--uc) 25%,transparent)}
-@keyframes pulse{50%{box-shadow:0 0 0 14px color-mix(in srgb,var(--uc) 10%,transparent)}}
+.node.cur{position:relative;box-shadow:0 0 0 8px color-mix(in srgb,var(--uc) 25%,transparent)}
+.node.cur::after{content:"";position:absolute;inset:0;border-radius:50%;box-shadow:0 0 0 8px color-mix(in srgb,var(--uc) 25%,transparent);animation:pulse 1.8s ease-in-out infinite;pointer-events:none;will-change:transform,opacity}
+@keyframes pulse{50%{transform:scale(1.16);opacity:.25}}
 .nlabel{font:700 .95rem/1.3 var(--display);text-align:center;max-width:150px}
 .start{position:absolute;top:-34px;font:800 .9rem var(--display);background:var(--surface);color:var(--uc);border:2px solid var(--line);border-radius:12px;padding:0 12px;white-space:nowrap}
 .fine{margin-top:30px;color:var(--muted);font-size:.88rem;text-align:center}
