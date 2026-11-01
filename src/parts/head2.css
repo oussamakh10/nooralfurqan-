@@ -598,3 +598,14 @@ html[data-season="jumua"] .seasonbar{background:linear-gradient(135deg,var(--acc
 .mggrid .mgcard:nth-child(even){border-radius:8px 24px 8px 24px;margin-top:8px}
 .mggrid .mgcard:nth-child(even):last-child{margin-bottom:-8px}
 .tag{letter-spacing:0}
+
+/* وصول: أهداف لمس 44px وتباين النص الصغير */
+.iconbtn.sm{min-width:44px;min-height:44px}
+button.chip{min-height:44px}
+.tag{min-height:44px}
+.uh .un{font-size:1.17rem}
+#nav button[aria-current="page"]{color:var(--accent-t)}
+.hgh{margin:16px 4px 6px;font:800 1rem var(--display);color:var(--gold-t)}
+.top .iconbtn,.top .sharebtn,.top button.chip{position:relative}
+.top .iconbtn::after,.top .sharebtn::after,.top button.chip::after{content:"";position:absolute;inset:-7px}
+.seg button{min-height:44px}

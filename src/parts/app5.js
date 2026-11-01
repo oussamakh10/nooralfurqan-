@@ -43,17 +43,18 @@ function genAyat(level,n,surahs){
 function range(a,b){const r=[];for(let i=a;i<=b;i++)r.push(i);return r}
 
 /* ================= الحفظ ================= */
-const HS=[1].concat(range(78,114).reverse());
+const HS=[1].concat(range(78,114).reverse(),range(2,77).reverse());
+const HG=[['الفاتحة',[1]],['جزء عمّ',range(78,114).reverse()],['جزء تبارك',range(67,77).reverse()],['جزء قد سمع',range(58,66).reverse()],['من الحديد إلى البقرة',range(2,57).reverse()]];
 function hCount(s){return (S.hifz[s]||[]).length}
 let HV=0;
 function learnHifz(){
   const box=$('#hifzbox');if(!box)return;
   if(HV)return hifzSurah(HV);
   let tot=0,done=0;HS.forEach(function(s){tot+=AYC[s-1];done+=hCount(s)});
-  box.innerHTML='<div class="say"><div class="mas">'+hoopoe('happy',88)+'</div><div class="bubble"><p>مسار الحفظ يبدأ بالفاتحة ثم قصار السور من الناس صعودًا. استمع إلى الآية، كرّرها، ثم اختبر نفسك.</p></div></div>'+
+  box.innerHTML='<div class="say"><div class="mas">'+hoopoe('happy',88)+'</div><div class="bubble"><p>مسار الحفظ يشمل كل سور القرآن: يبدأ بالفاتحة ثم قصار السور من الناس صعودًا حتى البقرة. استمع إلى الآية، كرّرها، ثم اختبر نفسك.</p></div></div>'+
    '<div class="card" style="margin-bottom:10px"><div class="row" style="display:flex;justify-content:space-between"><b>تقدّمك في الحفظ</b><small class="muted">'+N(done)+' من '+N(tot)+' آية</small></div><div class="pbar gold" style="margin-top:6px"><i style="width:'+(done/tot*100)+'%"></i></div></div>'+
-   '<div class="hifz">'+HS.map(function(s){const c=hCount(s),t=AYC[s-1];return '<button class="hrow" data-hs="'+s+'"><b>'+SN[s-1]+'</b><div class="pbar"><i style="width:'+(c/t*100)+'%"></i></div><small class="muted">'+N(c)+'/'+N(t)+'</small></button>'}).join('')+'</div>'+
-   '<p class="fine">اختيار السور للمبتدئ. مراجعة الحفظ على شيخ متقن تبقى الأصل.</p>';
+   HG.map(function(g){return '<h3 class="hgh">'+g[0]+'</h3><div class="hifz">'+g[1].map(function(s){const c=hCount(s),t=AYC[s-1];return '<button class="hrow" data-hs="'+s+'"><b>'+SN[s-1]+'</b><div class="pbar"><i style="width:'+(c/t*100)+'%"></i></div><small class="muted">'+N(c)+'/'+N(t)+'</small></button>'}).join('')+'</div>'}).join('')+
+   '<p class="fine">كل سور المصحف مرتبة للحفظ: الفاتحة، ثم من الناس صعودًا إلى البقرة. مراجعة الحفظ على شيخ متقن تبقى الأصل.</p>';
 }
 function hifzSurah(s){
   const box=$('#hifzbox');
