@@ -123,7 +123,7 @@ const NAVI={
 /* ---------- الشريط العلوي والتنقل ---------- */
 function renderTop(){
   $('#top').innerHTML='<div class="brand">'+hoopoe('happy',38)+'<span>نور الفرقان</span></div>'+
-   '<div class="chips"><button class="sharebtn" data-act="shareapp" aria-label="مشاركة"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path d="M8.6 10.5l6.8-4M8.6 13.5l6.8 4"/></svg></button><div class="chip" title="أيام متتالية">'+IC.flame+'<span>'+N(streak())+'</span></div>'+
+   '<div class="chips"><button class="sharebtn" data-act="shareapp" aria-label="مشاركة" title="مشاركة"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path d="M8.6 10.5l6.8-4M8.6 13.5l6.8 4"/></svg></button><div class="chip" title="أيام متتالية">'+IC.flame+'<span>'+N(streak())+'</span></div>'+
    '<div class="chip" title="الحسنات">'+IC.has+'<span>'+cnum(S.has.t)+'</span></div>'+
    '<div class="chip" title="نقاط">'+IC.gem+'<span>'+cnum(S.xp)+'</span></div>'+
    '<button class="iconbtn sm" data-act="settings" aria-label="الإعدادات"><svg viewBox="0 0 24 24" aria-hidden="true" style="fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round">'+IC.gear.replace(/<svg[^>]*>|<\/svg>/g,'')+'</svg></button></div>';

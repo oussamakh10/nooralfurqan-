@@ -293,7 +293,7 @@ function accountSec(){
   const p=S.prof||{},L={b:'مبتدئ',m:'متوسط',a:'متقدم'},G={learn:'تعلّم الأساسيات',khatma:'ختم القرآن',hifz:'حفظ القرآن',review:'مراجعة ما أعرفه',all:'كل ذلك'};
   const linked=!!(S.acct&&S.acct.linked);
   const acc=linked?((typeof ACCT!=='undefined'&&ACCT&&ACCT.email)?ACCT.email:'مرتبط'):'غير مرتبط';
-  const row=function(k,v){return '<div class="arow"><span>'+k+'</span><b>'+v+'</b></div>'};
+  const row=function(k,v){if(v==='—'||v==='–')return '';return '<div class="arow"><span>'+k+'</span><b>'+v+'</b></div>'};
   return '<section class="sec" style="margin-top:16px"><h2>حسابي</h2><div class="card acard">'+
    '<div class="ahead"><div class="aav" aria-hidden="true">'+esc((p.name||'?').trim().charAt(0))+'</div><div><b class="aname">'+esc(p.name||'بدون اسم')+'</b><small class="muted">'+esc(L[p.lvl]||'لم يُحدَّد المستوى')+'</small></div></div>'+
    row('العمر',p.age?(typeof p.age==='number'?N(p.age):({kid:'أقل من 12',teen:'12 إلى 17',adult:'18 إلى 39',senior:'40 فأكثر'}[p.age]||'—')):'—')+row('الهدف',esc(G[p.goal]||'—'))+row('المدينة',esc(p.city||'—'))+row('الحساب',esc(acc))+

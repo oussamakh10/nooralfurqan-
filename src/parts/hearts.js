@@ -48,9 +48,9 @@
     const full=S.hp>=MAX,t=left();
     return '<div class="hprow" aria-label="القلوب">'+row()+'</div>'+
       '<p class="hpinfo">'+(full?'قلوبك ممتلئة':N(S.hp)+' من '+N(MAX)+' · القلب التالي بعد <b id="hptimer">'+mmss(t)+'</b>')+'</p>'+
-      '<div class="hpbtns"><button class="btn sm" data-hp="b1"'+(full?' disabled':'')+'>قلب واحد · '+N(PRICE1)+' نقطة</button>'+
-      '<button class="btn sm" data-hp="ball"'+(full?' disabled':'')+'>املأ الكل · '+N(PRICEALL)+' نقطة</button>'+
-      '<button class="btn sm gold" data-hp="ad"'+(full?' disabled':'')+'>شاهد إعلانًا · +'+N(AD_GAIN)+' قلب</button></div>';
+      (full?'':'<div class="hpbtns"><button class="btn sm" data-hp="b1"'+(full?' disabled':'')+'>قلب واحد · '+N(PRICE1)+' نقطة</button>'+
+      '<button class="btn sm" data-hp="ball">املأ الكل · '+N(PRICEALL)+' نقطة</button>'+
+      '<button class="btn sm ghost" data-hp="ad">شاهد إعلانًا · +'+N(AD_GAIN)+' قلب</button></div>');
   }
   function refresh(){
     const c=document.getElementById('hpcard');if(c)c.innerHTML=inner();
