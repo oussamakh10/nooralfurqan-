@@ -275,7 +275,7 @@ select,input[type=text],input[type=search]{width:100%;background:var(--surface);
 .rank div{display:flex;align-items:center;gap:10px;border:2px solid var(--line);border-radius:14px;padding:6px 12px;background:var(--surface);font-weight:700}
 .rank div:first-child{border-color:var(--gold);background:color-mix(in srgb,var(--gold) 20%,var(--surface))}
 .rank span:last-child{margin-inline-start:auto;font-variant-numeric:tabular-nums}
-@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}.conf{display:none}}
+@media (prefers-reduced-motion:reduce){.conf{display:none}}
 </style>
 <style>
 /* ---- الهدهد: ألوان إضافية وحركات ---- */
@@ -377,7 +377,7 @@ html:not([lang="ar"]) body{font-family:var(--text)}
 @media (prefers-color-scheme:dark){:root.hc:not([data-theme="light"]){--fg:#fff;--muted:#e8efe3;--line:#7dbf99;--surface:#0B1810}}
 :root.hc .tag,:root.hc .card,:root.hc .opt{border-width:3px}
 .rm *,.rm *::before,.rm *::after{animation:none!important;transition:none!important}
-@media (prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}}
+
 #splash{position:fixed;inset:0;z-index:9999;display:grid;place-items:center;text-align:center;color:#fff;overflow:hidden;background:radial-gradient(130% 95% at 50% 36%,#1d6a5e 0%,#12463f 38%,#0b2d2b 72%,#06191a 100%);transition:opacity 1s ease,transform 1s cubic-bezier(.4,0,.2,1)}
 #splash.out{opacity:0;transform:scale(1.06);pointer-events:none}
 #splash .spst i{position:absolute;border-radius:50%;background:#f6e4ae;opacity:0;animation:spt 4.2s ease-in-out infinite}
@@ -556,7 +556,7 @@ html.rm *,html.rm *::before,html.rm *::after{animation-duration:.01ms!important;
 .ptimes div,.hrow,.lb div,.uh{box-shadow:0 2px 0 color-mix(in srgb,var(--line) 80%,transparent)}
 .btn,button.big{transition:transform .12s ease,box-shadow .15s ease}
 .btn:active,button.big:active{transform:translateY(2px);box-shadow:0 0 0 transparent}
-@media (prefers-reduced-motion:reduce){*{transition:none!important;animation-duration:.001ms!important}}
+
 /* lesson stage: separate immersive backdrop, hides app chrome behind questions */
 #lesson{z-index:50;isolation:isolate;background:
  radial-gradient(circle at 50% 0,color-mix(in srgb,var(--gold,#C8A24A) 22%,transparent),transparent 60%),
@@ -889,6 +889,14 @@ button.chip{min-height:44px}
 .top .iconbtn,.top .sharebtn,.top button.chip{position:relative}
 .top .iconbtn::after,.top .sharebtn::after,.top button.chip::after{content:"";position:absolute;inset:-7px}
 .seg button{min-height:44px}
+
+/* حركة مخفّضة بالتدرّج (WCAG 2.3.3): نُنهي الحركة الكبيرة والمتكررة، ونُبقي التلاشي وتغيّر اللون والتركيز ومؤشر التحميل */
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation-duration:.01ms!important;animation-delay:0s!important;animation-iteration-count:1!important;transition-duration:.01ms!important;scroll-behavior:auto!important}
+  .btn,.opt,.tag,.hrow,.card,#nav button,.iconbtn,.chip{transition:background-color .15s ease,color .15s ease,border-color .15s ease,opacity .15s ease!important}
+  .btn:active,.opt:active,.card:active,#nav button:active{transform:none!important}
+  .ldr-bar i{animation-duration:1.4s!important;animation-iteration-count:infinite!important}
+}
 </style>
 <div class="bgpat" id="bg"></div>
 <header class="top" id="top"></header>
