@@ -632,3 +632,4 @@ button.chip{min-height:44px}
 .rgrid>*{flex:0 0 auto;min-width:150px;scroll-snap-align:start}
 #rsearch{padding-inline-start:40px;background:var(--surface) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23888' stroke-width='2.2' stroke-linecap='round'%3E%3Ccircle cx='11' cy='11' r='7'/%3E%3Cpath d='m20 20-3.5-3.5'/%3E%3C/svg%3E") no-repeat right 12px center/20px;position:sticky;top:70px;z-index:5}
 .rc i{display:none}.rc{min-height:44px}
+.rgch{margin:8px 0;flex-wrap:nowrap;overflow-x:auto;padding-bottom:4px}.rgch .tag{flex:0 0 auto}

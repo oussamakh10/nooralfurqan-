@@ -2,8 +2,8 @@
 # يولّد صفحات: privacy / terms / sources (ثلاث لغات) إلى pwa/ و public/
 # قبل الإطلاق: ضع بريد التواصل الحقيقي في CONTACT ثم شغّل: python3 tools/mklegal.py
 import json,re,os
-CONTACT=os.environ.get('NF_CONTACT','')  # مثال: NF_CONTACT=contact@yourdomain.com
-UPDATED='2026-10-29'
+CONTACT=os.environ.get('NF_CONTACT','okheloufi30@gmail.com')  # مثال: NF_CONTACT=contact@yourdomain.com
+UPDATED='2026-11-01'
 root=os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 src=open(os.path.join(root,'pwa/privacy.html'),encoding='utf8').read()
 head=src[:src.index('<div class="dr"')]           # الترويسة والتنسيق والتنقل
@@ -31,9 +31,9 @@ S(["الأطفال","Children","Enfants"],
  "We ask for age at the start. Under-13s use kids mode, and under-13s do not get cloud features (sign-in, weekly leaderboard, live duels): we collect no personal data from them on our servers and show them no personalised ads. We encourage parents to accompany children. If you believe a child sent data without parental permission, contact us and we will delete it promptly. We follow Algerian data law 18-07, GDPR (Art. 8), French law (age 15) and the UK Age Appropriate Design Code.",
  "Nous demandons l’âge au départ. Les moins de 13 ans utilisent le mode enfant et les moins de 13 ans n’ont pas accès aux fonctions cloud (connexion, classement hebdomadaire, duels en direct) : nous ne collectons aucune donnée personnelle les concernant sur nos serveurs et n’affichons aucune publicité personnalisée. Nous encourageons l’accompagnement par un parent. Si un enfant a transmis des données sans accord parental, contactez-nous et nous les supprimerons rapidement. Nous suivons la loi algérienne 18-07, le RGPD (art. 8), la loi française (15 ans) et l’Age Appropriate Design Code britannique."),
 S(["خدمات الأطراف الثالثة","Third-party services","Services tiers"],
- "عند استعمالك للميزات التالية يرى مزوّد الخدمة عنوان IP وبيانات الجهاز التقنية: (1) التلاوات من EveryAyah وMP3Quran. (2) ترجمة فرنسية للآيات من api.alquran.cloud عند طلبها. (3) خطوط Google Fonts عند فتح الموقع. (4) خدمة ntfy.sh لبدء التحدي المباشر بين جهازين (رمز مؤقت فقط، وهي معطّلة لمن هم دون 13). (5) Firebase إن سجّلت الدخول. لا نشارك معهم اسمك أو تقدّمك إلا ما ذُكر في (5). راجع سياساتهم الخاصة.",
- "When you use these features the provider sees your IP address and technical device data: (1) recitations from EveryAyah and MP3Quran; (2) French verse translation from api.alquran.cloud when requested; (3) Google Fonts when the site opens; (4) ntfy.sh to start a live duel between two devices (temporary code only; disabled for under-13s); (5) Firebase if you sign in. We share nothing else with them beyond (5). See their own policies.",
- "Lorsque vous utilisez ces fonctions, le prestataire voit votre adresse IP et des données techniques de l’appareil : (1) récitations d’EveryAyah et MP3Quran ; (2) traduction française des versets via api.alquran.cloud sur demande ; (3) Google Fonts à l’ouverture du site ; (4) ntfy.sh pour lancer un duel en direct entre deux appareils (code temporaire uniquement, désactivé pour les moins de 13 ans) ; (5) Firebase si vous vous connectez. Nous ne partageons rien d’autre avec eux, hormis (5). Voir leurs politiques."),
+ "عند استعمالك للميزات التالية يرى مزوّد الخدمة عنوان IP وبيانات الجهاز التقنية: (1) التلاوات من EveryAyah وMP3Quran. (2) ترجمة فرنسية للآيات من api.alquran.cloud عند طلبها. (3) خدمة ntfy.sh لبدء التحدي المباشر بين جهازين (رمز مؤقت فقط، وهي معطّلة لمن هم دون 13). (4) Firebase إن سجّلت الدخول. لا نشارك معهم اسمك أو تقدّمك إلا ما ذُكر في (4). الخطوط تُقدَّم من خادمنا نفسه ولا تُرسل طلبات إلى Google Fonts. راجع سياساتهم الخاصة.",
+ "When you use these features the provider sees your IP address and technical device data: (1) recitations from EveryAyah and MP3Quran; (2) French verse translation from api.alquran.cloud when requested; (3) ntfy.sh to start a live duel between two devices (temporary code only; disabled for under-13s); (4) Firebase if you sign in. We share nothing else with them beyond (4). Fonts are served from our own server; no requests go to Google Fonts. See their own policies.",
+ "Lorsque vous utilisez ces fonctions, le prestataire voit votre adresse IP et des données techniques de l’appareil : (1) récitations d’EveryAyah et MP3Quran ; (2) traduction française des versets via api.alquran.cloud sur demande ; (3) ntfy.sh pour lancer un duel en direct entre deux appareils (code temporaire uniquement, désactivé pour les moins de 13 ans) ; (4) Firebase si vous vous connectez. Nous ne partageons rien d’autre avec eux, hormis (4). Les polices sont servies depuis notre propre serveur ; aucune requête n’est envoyée à Google Fonts. Voir leurs politiques."),
 S(["الموقع والإشعارات والإعلانات","Location, notifications, ads","Localisation, notifications, publicités"],
  "الموقع التقريبي يُستعمل داخل جهازك فقط لأوقات الصلاة والقبلة بعد إذنك، ولا نخزّنه. الإشعارات اختيارية ويمكن إيقافها من الجهاز. لا توجد إعلانات حاليًا؛ وإن أضفنا إعلانات مكافِئة اختيارية فستكون غير مخصّصة ومعالَجة كموجّهة للأطفال حيث يلزم، وتُحدَّث هذه السياسة قبل ذلك.",
  "Approximate location is used on your device only, after your permission, for prayer times and qibla; we do not store it. Notifications are optional and can be turned off in your device. There are currently no ads; if we add optional rewarded ads they will be non-personalised and treated as child-directed where required, and this policy will be updated first.",
@@ -95,9 +95,9 @@ S(["الدروس والأسئلة","Lessons and questions","Leçons et questions
  "Written by the app’s creator from agreed fundamentals and general curricula, and under scholarly review. References: the Quran, authentic Sunnah and well-known works of scholars.",
  "Rédigées par le créateur à partir de principes consensuels et de programmes généraux, et en cours de relecture par des savants. Références : le Coran, la Sunna authentique et des ouvrages savants reconnus."),
 S(["الخطوط والمكتبات","Fonts and libraries","Polices et bibliothèques"],
- "خطوط Amiri Quran وBaloo Bhaijaan 2 وReem Kufi وTajawal من Google Fonts (رخصة SIL OFL). Firebase JS SDK (رخصة Apache 2.0). لا نستعمل صورًا لأشخاص حقيقيين.",
- "Fonts Amiri Quran, Baloo Bhaijaan 2, Reem Kufi and Tajawal from Google Fonts (SIL OFL). Firebase JS SDK (Apache 2.0). We use no photos of real people.",
- "Polices Amiri Quran, Baloo Bhaijaan 2, Reem Kufi et Tajawal de Google Fonts (SIL OFL). SDK JS Firebase (Apache 2.0). Nous n’utilisons aucune photo de personnes réelles."),
+ "خطا Tajawal وAmiri Quran (رخصة SIL OFL)، يُقدَّمان من خادمنا نفسه. Firebase JS SDK (رخصة Apache 2.0). لا نستعمل صورًا لأشخاص حقيقيين.",
+ "Fonts Tajawal and Amiri Quran (SIL OFL), served from our own server. Firebase JS SDK (Apache 2.0). We use no photos of real people.",
+ "Polices Tajawal et Amiri Quran (SIL OFL), servies depuis notre propre serveur. SDK JS Firebase (Apache 2.0). Nous n’utilisons aucune photo de personnes réelles."),
 ])
 def build(name,D):
     D=json.loads(json.dumps(D).replace('{MAIL}',CONTACT or '[contact email]'))

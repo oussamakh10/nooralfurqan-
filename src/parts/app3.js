@@ -13,10 +13,12 @@ function fillList(){
   const q=normAr(RV.q.trim());let h='';
   SN.forEach(function(n,i){
     if(q&&!(normAr(n).includes(q)||String(i+1)===q))return;
+    if(RV.g>=0&&typeof HG!=='undefined'&&HG[RV.g]&&HG[RV.g][1].indexOf(i+1)<0)return;
     h+='<button class="srow" data-surah="'+(i+1)+'"><span class="num">'+N(i+1)+'</span><span><b>'+n+'</b><small>'+N(AYC[i])+' آية</small></span></button>';
   });
   $('#rlist').innerHTML=h||emptyBox('sad','لا توجد سورة بهذا الاسم','جرّب رقم السورة مثل 2، أو جزءًا من اسمها.');
 }
+document.addEventListener('click',function(e){const b=e.target.closest&&e.target.closest('[data-rg]');if(!b)return;RV.g=+b.dataset.rg;pageRead()});
 let EN=null;
 function loadEN(){
   if(EN)return Promise.resolve(EN);
@@ -60,7 +62,7 @@ function pageRead(){
   if(RV.s){openSurah(RV.s);return}
   let h='<section class="sec" style="margin-top:16px"><h2>القراءة</h2>'+wirdCard();
   if(S.last)h+='<button class="card feat" style="text-align:start" data-surah="'+S.last.s+'" data-jump="'+S.last.a+'"><b>تابع من حيث توقفت</b><span>سورة '+SN[S.last.s-1]+'، آية '+N(S.last.a)+'</span></button>';
-  h+='<input type="search" id="rsearch" placeholder="ابحث عن سورة بالاسم أو الرقم" aria-label="بحث عن سورة" value="'+esc(RV.q)+'"><div id="rlist" class="slist"></div></section>';
+  h+='<div class="opts2 rgch" role="group" aria-label="الأجزاء">'+['الكل'].concat(typeof HG!=='undefined'?HG.map(function(g){return g[0]}):[]).map(function(t,k){return '<button class="tag" data-rg="'+(k-1)+'" aria-pressed="'+((RV.g===undefined?-1:RV.g)===k-1)+'">'+t+'</button>'}).join('')+'</div><input type="search" id="rsearch" placeholder="ابحث عن سورة بالاسم أو الرقم" aria-label="بحث عن سورة" value="'+esc(RV.q)+'"><div id="rlist" class="slist"></div></section>';
   $('#page').innerHTML=h;fillList();
 }
 function openSurah(i,jump){
