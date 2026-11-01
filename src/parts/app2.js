@@ -63,8 +63,8 @@ function pageLearn(){
   if(!UO){UO={};if(cur)UO[cur.unit]=1}
   h+='<div class="say"><div class="mas">'+hoopoe(mood,88)+'</div><div class="bubble"><p>'+msg+'</p><p class="muted" style="font-size:.9rem">أتممت '+N(dn)+' من '+N(ALL.length)+' درسًا في '+N(DATA.length)+' وحدة</p></div></div>'+
    '<div class="pbar gold" style="margin-bottom:10px"><i style="width:'+(dn/ALL.length*100)+'%"></i></div>'+
-   '<div class="opts2" style="margin-bottom:6px">'+(cur?'<button class="btn sm" data-lesson="'+cur.id+'">تابع: '+cur.title+'</button>':'')+'<button class="btn sm ghost" data-act="place">اختبار تحديد المستوى</button></div>'+
-   '<div class="opts2" style="margin:6px 0"><button class="btn sm ghost" data-act="mixed">🎲 تمارين متنوعة</button><button class="btn sm ghost" data-act="cards">🃏 بطاقات</button><button class="btn sm ghost" data-tm="1" aria-pressed="'+(!!S.tmode)+'">⏱ تحدي الوقت: '+(S.tmode?'يعمل':'متوقف')+'</button></div>'+
+   '<div class="lgrid">'+(cur?'<button class="btn sm wide" data-lesson="'+cur.id+'">تابع: '+cur.title+'</button>':'')+'<button class="btn sm ghost wide" data-act="place">اختبار تحديد المستوى</button></div>'+
+   '<div class="lgrid"><button class="btn sm ghost" data-act="mixed">تمارين متنوعة</button><button class="btn sm ghost" data-act="cards">بطاقات</button><button class="btn sm ghost wide" data-tm="1" aria-pressed="'+(!!S.tmode)+'">تحدي الوقت: '+(S.tmode?'يعمل':'متوقف')+'</button></div>'+
    '<div class="seg lvseg" role="group" aria-label="المستوى">'+[[0,'كل المستويات'],[1,'أساسي'],[2,'متقدّم 🎓']].map(function(x){return '<button data-lvf="'+x[0]+'" aria-pressed="'+(lvf()===x[0])+'">'+x[1]+'</button>'}).join('')+'</div>';
   DATA.forEach(function(u,ui){
     if((lvf()===1&&u.lv==='a')||(lvf()===2&&u.lv!=='a'))return;

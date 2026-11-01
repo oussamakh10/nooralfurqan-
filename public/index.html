@@ -901,6 +901,18 @@ button.chip{min-height:44px}
 
 #nav button{font-size:.76rem;font-weight:700;letter-spacing:0}
 #nav button svg{width:24px;height:24px}
+
+/* مراجعة النقد: تنظيم الشاشات */
+.lgrid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:6px 0}
+.lgrid .btn{width:100%;justify-content:center;text-align:center}.lgrid .wide{grid-column:1/-1}
+.mggrid .mgcard:nth-child(odd),.mggrid .mgcard:nth-child(even){border-radius:20px;margin-top:0;margin-bottom:0}
+.mggrid .mgcard:nth-child(even):last-child{margin-bottom:0}
+.arch{padding:22px 16px 16px}.arch h1{font-size:2.5rem}.arch .mas svg{width:112px;height:auto}
+.hero .lead{font-size:.98rem;line-height:1.8}
+.rgrid{display:flex;gap:8px;overflow-x:auto;scroll-snap-type:x proximity;padding-bottom:6px;-webkit-overflow-scrolling:touch}
+.rgrid>*{flex:0 0 auto;min-width:150px;scroll-snap-align:start}
+#rsearch{padding-inline-start:40px;background:var(--surface) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23888' stroke-width='2.2' stroke-linecap='round'%3E%3Ccircle cx='11' cy='11' r='7'/%3E%3Cpath d='m20 20-3.5-3.5'/%3E%3C/svg%3E") no-repeat right 12px center/20px;position:sticky;top:70px;z-index:5}
+.rc i{display:none}.rc{min-height:44px}
 </style>
 <div class="bgpat" id="bg"></div>
 <header class="top" id="top"></header>
@@ -3692,8 +3704,8 @@ function pageLearn(){
   if(!UO){UO={};if(cur)UO[cur.unit]=1}
   h+='<div class="say"><div class="mas">'+hoopoe(mood,88)+'</div><div class="bubble"><p>'+msg+'</p><p class="muted" style="font-size:.9rem">أتممت '+N(dn)+' من '+N(ALL.length)+' درسًا في '+N(DATA.length)+' وحدة</p></div></div>'+
    '<div class="pbar gold" style="margin-bottom:10px"><i style="width:'+(dn/ALL.length*100)+'%"></i></div>'+
-   '<div class="opts2" style="margin-bottom:6px">'+(cur?'<button class="btn sm" data-lesson="'+cur.id+'">تابع: '+cur.title+'</button>':'')+'<button class="btn sm ghost" data-act="place">اختبار تحديد المستوى</button></div>'+
-   '<div class="opts2" style="margin:6px 0"><button class="btn sm ghost" data-act="mixed">🎲 تمارين متنوعة</button><button class="btn sm ghost" data-act="cards">🃏 بطاقات</button><button class="btn sm ghost" data-tm="1" aria-pressed="'+(!!S.tmode)+'">⏱ تحدي الوقت: '+(S.tmode?'يعمل':'متوقف')+'</button></div>'+
+   '<div class="lgrid">'+(cur?'<button class="btn sm wide" data-lesson="'+cur.id+'">تابع: '+cur.title+'</button>':'')+'<button class="btn sm ghost wide" data-act="place">اختبار تحديد المستوى</button></div>'+
+   '<div class="lgrid"><button class="btn sm ghost" data-act="mixed">تمارين متنوعة</button><button class="btn sm ghost" data-act="cards">بطاقات</button><button class="btn sm ghost wide" data-tm="1" aria-pressed="'+(!!S.tmode)+'">تحدي الوقت: '+(S.tmode?'يعمل':'متوقف')+'</button></div>'+
    '<div class="seg lvseg" role="group" aria-label="المستوى">'+[[0,'كل المستويات'],[1,'أساسي'],[2,'متقدّم 🎓']].map(function(x){return '<button data-lvf="'+x[0]+'" aria-pressed="'+(lvf()===x[0])+'">'+x[1]+'</button>'}).join('')+'</div>';
   DATA.forEach(function(u,ui){
     if((lvf()===1&&u.lv==='a')||(lvf()===2&&u.lv!=='a'))return;
@@ -8340,7 +8352,7 @@ function icoSvg(e){
     _pp();
     const pg=$('#page');if(!pg)return;
     const sec=document.createElement('section');sec.className='sec';sec.style.marginTop='20px';
-    sec.innerHTML='<h2>ألعاب مصغّرة</h2><div class="mggrid">'+MG_LIST.map(function(g){
+    sec.innerHTML='<h2>ألعاب سريعة</h2><div class="mggrid">'+MG_LIST.map(function(g){
       return '<button class="mgcard" data-mg="open:'+g[0]+'"><b>'+g[1]+'</b><small>'+g[2]+'</small></button>'}).join('')+'</div>';
     pg.insertBefore(sec,pg.firstChild);
   };
