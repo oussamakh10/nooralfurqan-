@@ -10,7 +10,7 @@
   --gold:#D9A21B; --gold-d:#A87608; --gold-t:#7A5504; --accent-t:#0A5A37; --focus:#0B1E15; --flame:#E8661A;
   --ok-bg:#DCF2D8; --ok-fg:#0A5A37; --bad-bg:#FBE1DC; --bad-fg:#A92B2B; --bad:#D9443F; --bad-d:#A92E2A;
   --lock:#D8C88C; --lock-d:#BFAC6C;
-  --pat:rgba(8,86,52,.34); --pat2:rgba(150,104,6,.52); --arch:#0A6A40; --arch2:#06382A;
+  --pat:rgba(8,86,52,.13); --pat2:rgba(150,104,6,.20); --arch:#0A6A40; --arch2:#06382A;
   --c1:#0F7A4C; --c1d:#0A5A37; --c2:#1C7E9E; --c2d:#12607A; --c3:#B87310; --c3d:#8C5508; --c4:#6F52C4; --c4d:#523C99;
   --hp-body:#D8702A; --hp-belly:#F7DDAE; --hp-dark:#17110F; --hp-beak:#3A2B25; --hp-feet:#C4601C;
   --display:'Tajawal','Segoe UI',Tahoma,sans-serif;
@@ -24,7 +24,7 @@
   --gold:#F2C14A; --gold-d:#B98615; --gold-t:#F2C14A; --accent-t:#3BC88A; --focus:#F2C14A; --flame:#FF8A3D;
   --ok-bg:#173A2A; --ok-fg:#7DE0B0; --bad-bg:#40201F; --bad-fg:#FF9C98; --bad:#FF6B66; --bad-d:#B8423D;
   --lock:#1F3329; --lock-d:#2B4538;
-  --pat:rgba(59,200,138,.24); --pat2:rgba(242,193,74,.34); --arch:#0F4A31; --arch2:#071F15;
+  --pat:rgba(59,200,138,.09); --pat2:rgba(242,193,74,.13); --arch:#0F4A31; --arch2:#071F15;
   --c1:#3BC88A; --c1d:#1F8F5E; --c2:#4DB8D8; --c2d:#2A86A3; --c3:#F0A93E; --c3d:#B97C1F; --c4:#A18BF0; --c4d:#7560C4;
   color-scheme:dark}}
 :root[data-theme="dark"]{
@@ -33,7 +33,7 @@
   --gold:#F2C14A; --gold-d:#B98615; --gold-t:#F2C14A; --accent-t:#3BC88A; --focus:#F2C14A; --flame:#FF8A3D;
   --ok-bg:#173A2A; --ok-fg:#7DE0B0; --bad-bg:#40201F; --bad-fg:#FF9C98; --bad:#FF6B66; --bad-d:#B8423D;
   --lock:#1F3329; --lock-d:#2B4538;
-  --pat:rgba(59,200,138,.24); --pat2:rgba(242,193,74,.34); --arch:#0F4A31; --arch2:#071F15;
+  --pat:rgba(59,200,138,.09); --pat2:rgba(242,193,74,.13); --arch:#0F4A31; --arch2:#071F15;
   --c1:#3BC88A; --c1d:#1F8F5E; --c2:#4DB8D8; --c2d:#2A86A3; --c3:#F0A93E; --c3d:#B97C1F; --c4:#A18BF0; --c4d:#7560C4;
   color-scheme:dark}
 
@@ -914,6 +914,13 @@ button.chip{min-height:44px}
 #rsearch{padding-inline-start:40px;background:var(--surface) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23888' stroke-width='2.2' stroke-linecap='round'%3E%3Ccircle cx='11' cy='11' r='7'/%3E%3Cpath d='m20 20-3.5-3.5'/%3E%3C/svg%3E") no-repeat right 12px center/20px;position:sticky;top:70px;z-index:5}
 .rc i{display:none}.rc{min-height:44px}
 .rgch{margin:8px 0;flex-wrap:nowrap;overflow-x:auto;padding-bottom:4px}.rgch .tag{flex:0 0 auto}
+
+/* هوية الأزرار: قوس المحراب للزر الرئيسي، وسطوح مستوية هادئة لما سواه */
+.btn:not(.sm):not(.ghost){border-radius:30px 30px 14px 14px/28px 28px 14px 14px}
+.btn.ghost:not(.sm){border-radius:14px}
+.btn.sm{border-radius:10px}
+.card{border-radius:14px}
+.card.feat,.card.mission{border-radius:22px 22px 14px 14px}
 </style>
 <div class="bgpat" id="bg"></div>
 <header class="top" id="top"></header>
