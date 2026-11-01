@@ -28,7 +28,9 @@ service cloud.firestore {
       allow read: if false;
       allow delete: if request.auth != null && request.auth.uid == uid;
       allow create, update: if request.auth != null && request.auth.uid == uid
-        && request.resource.data.items.size() <= 50;
+        && request.resource.data.keys().hasOnly(['items','upd'])
+        && request.resource.data.items is list && request.resource.data.items.size() <= 50
+        && request.resource.data.upd is number;
     }
 
     match /{document=**} { allow read, write: if false; }
