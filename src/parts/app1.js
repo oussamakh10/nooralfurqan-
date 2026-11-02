@@ -134,6 +134,7 @@ function renderNav(){
   $('#nav').innerHTML=TABS.map(function(t){
     return '<button data-go="'+t[0]+'" '+(t[0]===TAB?'aria-current="page"':'')+'><svg viewBox="0 0 24 24" aria-hidden="true">'+NAVI[t[0]]+'</svg><span>'+t[1]+'</span></button>';
   }).join('');
+  try{const c=$('#nav [aria-current]');if(c&&c.scrollIntoView)c.scrollIntoView({block:'nearest',inline:'center'})}catch(e){}
 }
 let pageTimer=0;
 function go(t){
