@@ -664,3 +664,7 @@ body[data-tab=ach]{--tabtint:#D9A21B}
 #splash.quick *,#splash.quick *::before,#splash.quick *::after{animation-delay:0s!important;animation-duration:.7s!important;animation-iteration-count:1!important}
 #splash.quick .spbar b,#splash.quick .dbbar b{animation-duration:1.6s!important}
 #splash.out{transition:opacity .5s ease}
+
+/* دخول البطاقات الأولى: صعود قصير بدل الظهور المفاجئ */
+@keyframes sheetin{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:none}}
+#lgm:not([hidden]) .bc-card,#cele:not([hidden])>.card,#cele:not([hidden])>.obx{animation:sheetin .32s cubic-bezier(.2,.8,.2,1) both}
