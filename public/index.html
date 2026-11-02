@@ -3700,8 +3700,8 @@ function pageHome(){
      return '<button class="card feat" style="text-align:start" data-go="'+x[0]+'"><b>'+x[1]+'</b><span>'+x[2]+'</span></button>'}).join('')+'</div></section>'+
   '<section class="sec"><h2>المميزات</h2><div class="grid2">'+feats.map(function(f){return '<div class="card feat">'+ficon(f[0])+'<b>'+f[1]+'</b><span>'+f[2]+'</span></div>'}).join('')+'</div></section>'+
   '<section class="sec"><h2>مصادر المحتوى</h2><div class="card"><ul class="src">'+
-   '<li>نص المصحف بالرسم العثماني من مشروع تنزيل (Tanzil)، عبر مستودع quran-json.</li>'+
-   '<li>التفسير الميسر (مجمع الملك فهد) وتفسير الجلالين، من مستودع tafsir_api. الترجمة الإنجليزية: بيكثال (ملك عام).</li>'+
+   '<li>نص المصحف بالرسم العثماني من مشروع تنزيل (tanzil.net) عبر مستودع quran-json، ويُعرض دون تعديل وفق رخصة تنزيل.</li>'+
+   '<li>التفسير الميسر (مجمع الملك فهد) وتفسير الجلالين، من مستودع tafsir_api. الترجمة الإنجليزية: بيكثال (يُتحقق من وضعها القانوني).</li>'+
    '<li>التلاوات مربوطة من موقعي EveryAyah وMP3Quran، ولا تُحفظ على هذا الموقع.</li>'+
    '<li>الدروس وبنك الأسئلة كتبها منشئ الموقع من مبادئ متفق عليها، وتُستحسن مراجعتها على يد أهل العلم.</li></ul></div></section>'+
   '<section class="sec"><h2>المنشئ</h2><div class="card creator"><div class="mas">'+hoopoe('cheer',64)+'</div><div><div class="nm">خلوفي أسامة</div><p class="muted">منشئ موقع نور الفرقان</p><p class="muted" style="margin-top:6px;font-size:.85rem;font-weight:700;color:var(--ink,inherit)">'+esc(g3(['مساعدة في الحماية والأمان: مصعب شكري','Security & safety assistance: Mosaab Chokri','Aide en protection et sécurité : Mosaab Chokri']))+'</p><p class="muted" style="margin-top:2px;font-size:.85rem;font-weight:700;color:var(--ink,inherit)">'+esc(g3(['مساعدة في التصميم: أسيل','Design assistance: Aseel','Aide en design : Aseel']))+'</p></div></div></section>'+
@@ -3911,7 +3911,8 @@ function loadFR(n){
   return fetch('https://api.alquran.cloud/v1/surah/'+n+'/fr.hamidullah').then(function(r){if(!r.ok)throw 0;return r.json()}).then(function(j){
     const arr=j.data.ayahs.map(function(x){return x.text});if(!arr.length)throw 0;FRC[n]=arr;try{localStorage.setItem('nf-fr-'+n,JSON.stringify(arr))}catch(e){}return arr});
 }
-function loadTR(n){return trLang()==='fr'?loadFR(n):loadEN()}
+/* الترجمة الفرنسية (Hamidullah عبر alquran.cloud) معطّلة مؤقتًا حتى يُتحقق من ترخيصها */
+function loadTR(n){return trLang()==='fr'?Promise.resolve(null):loadEN()}
 function trAyah(i,k){if(trLang()==='fr')return FRC[i]&&FRC[i][k];return EN&&EN[i-1]&&EN[i-1][k]}
 /* ---------- الحسنات والورد ---------- */
 function rdKey(s,a){return s+':'+a}
@@ -3953,7 +3954,7 @@ function openSurah(i,jump){
     let h='<div class="rhead"><button class="iconbtn" data-act="rback" aria-label="رجوع إلى قائمة السور">'+IC.back+'</button><h2>سورة '+c[0]+'</h2>'+
       '<button class="iconbtn" data-listen="'+i+'" aria-label="استمع إلى السورة"><svg viewBox="0 0 24 24" aria-hidden="true">'+NAVI.listen+'</svg></button></div>'+
       '<p class="muted" style="text-align:center;margin-bottom:6px">'+(c[1]==='م'?'مكية':'مدنية')+' · '+N(c[2])+' آية</p>'+
-      '<div class="opts2" style="justify-content:center;margin-bottom:8px"><button class="tag" data-act="trtoggle" aria-pressed="'+(S.tr==='en')+'">'+(trLang()==='fr'?'ترجمة فرنسية':'ترجمة إنجليزية')+'</button></div>'+wirdCard();
+      (trLang()==='fr'?'':'<div class="opts2" style="justify-content:center;margin-bottom:8px"><button class="tag" data-act="trtoggle" aria-pressed="'+(S.tr==='en')+'">ترجمة إنجليزية</button></div>')+wirdCard();
     if(i!==1&&i!==9)h+='<p class="bsm">بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ</p>';
     vs.forEach(function(tx,k){
       const a=k+1,got=S.ayd[rdKey(i,a)]===t,hs=countLetters(tx)*10;
@@ -4465,7 +4466,7 @@ function syncBoard(){
   if(!DBH||!UID)return;
   clearTimeout(syncBoard.t);
   syncBoard.t=setTimeout(function(){
-    try{DBH.collection('board').doc(UID).set({wk:weekKey(),xp:weekSum(S.xpd),has:weekSum(S.has.d),upd:Date.now(),circle:S.circle||'',kh:S.khat.read,kn:S.khat.n,nm:((S.prof&&S.prof.name)||'').slice(0,24)||'مستخدم'}).catch(function(){})}catch(e){}
+    try{DBH.collection('board').doc(UID).set({wk:weekKey(),xp:weekSum(S.xpd),has:weekSum(S.has.d),upd:Date.now(),circle:S.circle||'',kh:S.khat.read,kn:S.khat.n,nm:cleanName((S.prof&&S.prof.name)||'')}).catch(function(){})}catch(e){}
   },2500);
 }
 function initBoard(){
@@ -4496,14 +4497,17 @@ function initBoard(){
 function fillBoard(){
   const el=$('#board');if(!el)return;
   if(!DBH){el.innerHTML='<p class="muted" style="font-size:.9rem">اللوحة الأسبوعية تعمل عندما تفتح الصفحة من حسابك في claude.ai، وبصلاحية المشاركة (Contributor) لتُسجَّل نقاطك.</p>'}
-  else el.innerHTML=BOARD.length?'<div class="lb">'+BOARD.map(function(x,i){return '<div'+(x.id===UID?' class="me"':'')+'><span>'+N(i+1)+'</span><span>'+esc(x.name||'…')+(x.id===UID?' (أنت)':'')+'</span><span>'+N(x.xp)+' نقطة</span></div>'}).join('')+'</div>':emptyBox('happy','لا نتائج بعد','اجمع نقاطًا هذا الأسبوع لتظهر في لوحة المتصدرين.');
+  else el.innerHTML=BOARD.length?'<div class="lb">'+BOARD.map(function(x,i){return '<div'+(x.id===UID?' class="me"':'')+'><span>'+N(i+1)+'</span><span>'+esc(cleanName(x.name)||'…')+(x.id===UID?' (أنت)':'<button class="tag repbtn" data-act="report-name" data-nm="'+esc(cleanName(x.name))+'" aria-label="إبلاغ عن اسم">إبلاغ</button>')+'</span><span>'+N(x.xp)+' نقطة</span></div>'}).join('')+'</div>':emptyBox('happy','لا نتائج بعد','اجمع نقاطًا هذا الأسبوع لتظهر في لوحة المتصدرين.');
   const ce=$('#circ');if(ce){
     if(!S.circle)ce.innerHTML='<p class="muted" style="font-size:.9rem">أنشئ دائرة عائلية أو انضم إلى واحدة برمز مشترك، فتتابعون ختماتكم معًا.</p><div class="opts2"><button class="btn sm gold" data-act="circ-new">إنشاء دائرة</button><button class="btn sm ghost" data-act="circ-join">انضمام برمز</button></div>';
     else ce.innerHTML='<p class="muted" style="font-size:.9rem">رمز الدائرة: <b dir="ltr">'+esc(S.circle)+'</b> · شاركه مع أهلك وأصدقائك</p>'+
-      (DBH?(CIRC.length?'<div class="lb">'+CIRC.map(function(x){return '<div'+(x.id===UID?' class="me"':'')+'><span>'+esc(x.name||'…')+(x.id===UID?' (أنت)':'')+'</span><span>'+N(x.kn)+' ختمة · '+N(Math.round(x.kh/6236*100))+'%</span></div>'}).join('')+'</div>':'<p class="muted" style="font-size:.9rem">لا أعضاء ظاهرون بعد.</p>'):'<p class="muted" style="font-size:.9rem">متابعة الأعضاء تحتاج فتح الصفحة من حسابك في claude.ai.</p>')+
+      (DBH?(CIRC.length?'<div class="lb">'+CIRC.map(function(x){return '<div'+(x.id===UID?' class="me"':'')+'><span>'+esc(cleanName(x.name)||'…')+(x.id===UID?' (أنت)':'')+'</span><span>'+N(x.kn)+' ختمة · '+N(Math.round(x.kh/6236*100))+'%</span></div>'}).join('')+'</div>':'<p class="muted" style="font-size:.9rem">لا أعضاء ظاهرون بعد.</p>'):'<p class="muted" style="font-size:.9rem">متابعة الأعضاء تحتاج فتح الصفحة من حسابك في claude.ai.</p>')+
       '<button class="btn sm ghost" data-act="circ-leave">مغادرة الدائرة</button>';
   }
 }
+/* تنظيف أسماء اللوحة: روابط، بريد، أرقام طويلة، ألفاظ مسيئة (قائمة قصيرة؛ البلاغ هو الحل الأساس) */
+const BADN=['كلب','حمار','قحب','شرموط','عاهر','زب','كس','نيك','منيوك','ولد الحرام','fuck','shit','bitch','putain','merde','salope','connard','nique','pute','dick','cunt'];
+function cleanName(n){n=String(n||'').replace(/https?:\/\/\S+|www\.\S+|\S+@\S+|[0-9]{6,}/gi,'').replace(/\s+/g,' ').trim().slice(0,24);const k=' '+(typeof normAr==='function'?normAr(n):n).toLowerCase()+' ';if(!n||BADN.some(function(w){return k.indexOf(' '+w+' ')>=0}))return 'مستخدم';return n}
 function newCircle(){const a='abcdefghjkmnpqrstuvwxyz23456789';let c='';for(let i=0;i<6;i++)c+=a[Math.floor(Math.random()*a.length)];S.circle=c;save();syncBoard();pageAch()}
 function joinCircle(){
   const v=(prompt(T('اكتب رمز الدائرة'))||'').trim().toLowerCase().replace(/[^a-z0-9]/g,'').slice(0,8);
@@ -4922,6 +4926,7 @@ document.addEventListener('click',function(e){
   if(a==='speak'){speakQuestion();return}
   if(a==='report-q'){const q=L&&L.queue&&L.queue[0];openReport({kind:'q',q:q?(q.q||''):'',lid:L&&L.lesson?L.lesson.id:''});return}
   if(a==='report-gen'){openReport({kind:'general'});return}
+  if(a==='report-name'){openReport({kind:'name',q:d.nm||''});return}
   if(a==='rep-send'){sendReport();return}
   if(a==='rep-close'){$('#cele').hidden=true;return}
   if(a==='guide-open2'){$('#cele').hidden=true;openGuide();return}

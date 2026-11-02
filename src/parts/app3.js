@@ -33,7 +33,8 @@ function loadFR(n){
   return fetch('https://api.alquran.cloud/v1/surah/'+n+'/fr.hamidullah').then(function(r){if(!r.ok)throw 0;return r.json()}).then(function(j){
     const arr=j.data.ayahs.map(function(x){return x.text});if(!arr.length)throw 0;FRC[n]=arr;try{localStorage.setItem('nf-fr-'+n,JSON.stringify(arr))}catch(e){}return arr});
 }
-function loadTR(n){return trLang()==='fr'?loadFR(n):loadEN()}
+/* الترجمة الفرنسية (Hamidullah عبر alquran.cloud) معطّلة مؤقتًا حتى يُتحقق من ترخيصها */
+function loadTR(n){return trLang()==='fr'?Promise.resolve(null):loadEN()}
 function trAyah(i,k){if(trLang()==='fr')return FRC[i]&&FRC[i][k];return EN&&EN[i-1]&&EN[i-1][k]}
 /* ---------- الحسنات والورد ---------- */
 function rdKey(s,a){return s+':'+a}
@@ -75,7 +76,7 @@ function openSurah(i,jump){
     let h='<div class="rhead"><button class="iconbtn" data-act="rback" aria-label="رجوع إلى قائمة السور">'+IC.back+'</button><h2>سورة '+c[0]+'</h2>'+
       '<button class="iconbtn" data-listen="'+i+'" aria-label="استمع إلى السورة"><svg viewBox="0 0 24 24" aria-hidden="true">'+NAVI.listen+'</svg></button></div>'+
       '<p class="muted" style="text-align:center;margin-bottom:6px">'+(c[1]==='م'?'مكية':'مدنية')+' · '+N(c[2])+' آية</p>'+
-      '<div class="opts2" style="justify-content:center;margin-bottom:8px"><button class="tag" data-act="trtoggle" aria-pressed="'+(S.tr==='en')+'">'+(trLang()==='fr'?'ترجمة فرنسية':'ترجمة إنجليزية')+'</button></div>'+wirdCard();
+      (trLang()==='fr'?'':'<div class="opts2" style="justify-content:center;margin-bottom:8px"><button class="tag" data-act="trtoggle" aria-pressed="'+(S.tr==='en')+'">ترجمة إنجليزية</button></div>')+wirdCard();
     if(i!==1&&i!==9)h+='<p class="bsm">بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ</p>';
     vs.forEach(function(tx,k){
       const a=k+1,got=S.ayd[rdKey(i,a)]===t,hs=countLetters(tx)*10;

@@ -17,8 +17,11 @@ service cloud.firestore {
       allow create, update: if request.auth != null && request.auth.uid == uid
         && request.resource.data.keys().hasOnly(['wk','xp','has','upd','circle','kh','kn','nm'])
         && request.resource.data.xp is number && request.resource.data.xp >= 0 && request.resource.data.xp <= 20000
-        && request.resource.data.has is number && request.resource.data.has >= 0
-        && request.resource.data.kh is number && request.resource.data.kn is number
+        && request.resource.data.has is number && request.resource.data.has >= 0 && request.resource.data.has <= 100000
+        && request.resource.data.kh is number && request.resource.data.kh >= 0 && request.resource.data.kh <= 6236
+        && request.resource.data.kn is number && request.resource.data.kn >= 0 && request.resource.data.kn <= 1000
+        && request.resource.data.wk is string && request.resource.data.wk.size() <= 12
+        && request.resource.data.upd is number
         && request.resource.data.nm is string && request.resource.data.nm.size() <= 24
         && request.resource.data.circle is string && request.resource.data.circle.size() <= 8;
     }

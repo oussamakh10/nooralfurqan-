@@ -30,8 +30,8 @@ function pageHome(){
      return '<button class="card feat" style="text-align:start" data-go="'+x[0]+'"><b>'+x[1]+'</b><span>'+x[2]+'</span></button>'}).join('')+'</div></section>'+
   '<section class="sec"><h2>المميزات</h2><div class="grid2">'+feats.map(function(f){return '<div class="card feat">'+ficon(f[0])+'<b>'+f[1]+'</b><span>'+f[2]+'</span></div>'}).join('')+'</div></section>'+
   '<section class="sec"><h2>مصادر المحتوى</h2><div class="card"><ul class="src">'+
-   '<li>نص المصحف بالرسم العثماني من مشروع تنزيل (Tanzil)، عبر مستودع quran-json.</li>'+
-   '<li>التفسير الميسر (مجمع الملك فهد) وتفسير الجلالين، من مستودع tafsir_api. الترجمة الإنجليزية: بيكثال (ملك عام).</li>'+
+   '<li>نص المصحف بالرسم العثماني من مشروع تنزيل (tanzil.net) عبر مستودع quran-json، ويُعرض دون تعديل وفق رخصة تنزيل.</li>'+
+   '<li>التفسير الميسر (مجمع الملك فهد) وتفسير الجلالين، من مستودع tafsir_api. الترجمة الإنجليزية: بيكثال (يُتحقق من وضعها القانوني).</li>'+
    '<li>التلاوات مربوطة من موقعي EveryAyah وMP3Quran، ولا تُحفظ على هذا الموقع.</li>'+
    '<li>الدروس وبنك الأسئلة كتبها منشئ الموقع من مبادئ متفق عليها، وتُستحسن مراجعتها على يد أهل العلم.</li></ul></div></section>'+
   '<section class="sec"><h2>المنشئ</h2><div class="card creator"><div class="mas">'+hoopoe('cheer',64)+'</div><div><div class="nm">خلوفي أسامة</div><p class="muted">منشئ موقع نور الفرقان</p><p class="muted" style="margin-top:6px;font-size:.85rem;font-weight:700;color:var(--ink,inherit)">'+esc(g3(['مساعدة في الحماية والأمان: مصعب شكري','Security & safety assistance: Mosaab Chokri','Aide en protection et sécurité : Mosaab Chokri']))+'</p><p class="muted" style="margin-top:2px;font-size:.85rem;font-weight:700;color:var(--ink,inherit)">'+esc(g3(['مساعدة في التصميم: أسيل','Design assistance: Aseel','Aide en design : Aseel']))+'</p></div></div></section>'+

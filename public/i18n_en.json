@@ -9755,5 +9755,10 @@
 "ألعاب سريعة": "Quick games",
 "رسم المنشئ": "Creator's art",
 "تابع التعلّم": "Continue learning",
-"بعد المغرب": "After Maghrib"
+"بعد المغرب": "After Maghrib",
+"نص المصحف بالرسم العثماني من مشروع تنزيل (tanzil.net) عبر مستودع quran-json، ويُعرض دون تعديل وفق رخصة تنزيل.": "Quran text in Uthmani script from the Tanzil project (tanzil.net) via the quran-json repository, shown unchanged under the Tanzil licence.",
+"الترجمة الإنجليزية: بيكثال (يُتحقق من وضعها القانوني).": "English translation: Pickthall (legal status being verified).",
+"إبلاغ": "Report",
+"إبلاغ عن اسم": "Report a name",
+"التفسير الميسر (مجمع الملك فهد) وتفسير الجلالين، من مستودع tafsir_api. الترجمة الإنجليزية: بيكثال (يُتحقق من وضعها القانوني).": "Al-Muyassar tafsir (King Fahd Complex) and Tafsir Al-Jalalayn, from the tafsir_api repository. English translation: Pickthall (legal status being verified)."
 }

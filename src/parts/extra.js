@@ -101,6 +101,7 @@ document.addEventListener('click',function(e){
   if(a==='speak'){speakQuestion();return}
   if(a==='report-q'){const q=L&&L.queue&&L.queue[0];openReport({kind:'q',q:q?(q.q||''):'',lid:L&&L.lesson?L.lesson.id:''});return}
   if(a==='report-gen'){openReport({kind:'general'});return}
+  if(a==='report-name'){openReport({kind:'name',q:d.nm||''});return}
   if(a==='rep-send'){sendReport();return}
   if(a==='rep-close'){$('#cele').hidden=true;return}
   if(a==='guide-open2'){$('#cele').hidden=true;openGuide();return}

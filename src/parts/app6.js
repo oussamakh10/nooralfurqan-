@@ -143,7 +143,7 @@ function syncBoard(){
   if(!DBH||!UID)return;
   clearTimeout(syncBoard.t);
   syncBoard.t=setTimeout(function(){
-    try{DBH.collection('board').doc(UID).set({wk:weekKey(),xp:weekSum(S.xpd),has:weekSum(S.has.d),upd:Date.now(),circle:S.circle||'',kh:S.khat.read,kn:S.khat.n,nm:((S.prof&&S.prof.name)||'').slice(0,24)||'مستخدم'}).catch(function(){})}catch(e){}
+    try{DBH.collection('board').doc(UID).set({wk:weekKey(),xp:weekSum(S.xpd),has:weekSum(S.has.d),upd:Date.now(),circle:S.circle||'',kh:S.khat.read,kn:S.khat.n,nm:cleanName((S.prof&&S.prof.name)||'')}).catch(function(){})}catch(e){}
   },2500);
 }
 function initBoard(){
@@ -174,14 +174,17 @@ function initBoard(){
 function fillBoard(){
   const el=$('#board');if(!el)return;
   if(!DBH){el.innerHTML='<p class="muted" style="font-size:.9rem">اللوحة الأسبوعية تعمل عندما تفتح الصفحة من حسابك في claude.ai، وبصلاحية المشاركة (Contributor) لتُسجَّل نقاطك.</p>'}
-  else el.innerHTML=BOARD.length?'<div class="lb">'+BOARD.map(function(x,i){return '<div'+(x.id===UID?' class="me"':'')+'><span>'+N(i+1)+'</span><span>'+esc(x.name||'…')+(x.id===UID?' (أنت)':'')+'</span><span>'+N(x.xp)+' نقطة</span></div>'}).join('')+'</div>':emptyBox('happy','لا نتائج بعد','اجمع نقاطًا هذا الأسبوع لتظهر في لوحة المتصدرين.');
+  else el.innerHTML=BOARD.length?'<div class="lb">'+BOARD.map(function(x,i){return '<div'+(x.id===UID?' class="me"':'')+'><span>'+N(i+1)+'</span><span>'+esc(cleanName(x.name)||'…')+(x.id===UID?' (أنت)':'<button class="tag repbtn" data-act="report-name" data-nm="'+esc(cleanName(x.name))+'" aria-label="إبلاغ عن اسم">إبلاغ</button>')+'</span><span>'+N(x.xp)+' نقطة</span></div>'}).join('')+'</div>':emptyBox('happy','لا نتائج بعد','اجمع نقاطًا هذا الأسبوع لتظهر في لوحة المتصدرين.');
   const ce=$('#circ');if(ce){
     if(!S.circle)ce.innerHTML='<p class="muted" style="font-size:.9rem">أنشئ دائرة عائلية أو انضم إلى واحدة برمز مشترك، فتتابعون ختماتكم معًا.</p><div class="opts2"><button class="btn sm gold" data-act="circ-new">إنشاء دائرة</button><button class="btn sm ghost" data-act="circ-join">انضمام برمز</button></div>';
     else ce.innerHTML='<p class="muted" style="font-size:.9rem">رمز الدائرة: <b dir="ltr">'+esc(S.circle)+'</b> · شاركه مع أهلك وأصدقائك</p>'+
-      (DBH?(CIRC.length?'<div class="lb">'+CIRC.map(function(x){return '<div'+(x.id===UID?' class="me"':'')+'><span>'+esc(x.name||'…')+(x.id===UID?' (أنت)':'')+'</span><span>'+N(x.kn)+' ختمة · '+N(Math.round(x.kh/6236*100))+'%</span></div>'}).join('')+'</div>':'<p class="muted" style="font-size:.9rem">لا أعضاء ظاهرون بعد.</p>'):'<p class="muted" style="font-size:.9rem">متابعة الأعضاء تحتاج فتح الصفحة من حسابك في claude.ai.</p>')+
+      (DBH?(CIRC.length?'<div class="lb">'+CIRC.map(function(x){return '<div'+(x.id===UID?' class="me"':'')+'><span>'+esc(cleanName(x.name)||'…')+(x.id===UID?' (أنت)':'')+'</span><span>'+N(x.kn)+' ختمة · '+N(Math.round(x.kh/6236*100))+'%</span></div>'}).join('')+'</div>':'<p class="muted" style="font-size:.9rem">لا أعضاء ظاهرون بعد.</p>'):'<p class="muted" style="font-size:.9rem">متابعة الأعضاء تحتاج فتح الصفحة من حسابك في claude.ai.</p>')+
       '<button class="btn sm ghost" data-act="circ-leave">مغادرة الدائرة</button>';
   }
 }
+/* تنظيف أسماء اللوحة: روابط، بريد، أرقام طويلة، ألفاظ مسيئة (قائمة قصيرة؛ البلاغ هو الحل الأساس) */
+const BADN=['كلب','حمار','قحب','شرموط','عاهر','زب','كس','نيك','منيوك','ولد الحرام','fuck','shit','bitch','putain','merde','salope','connard','nique','pute','dick','cunt'];
+function cleanName(n){n=String(n||'').replace(/https?:\/\/\S+|www\.\S+|\S+@\S+|[0-9]{6,}/gi,'').replace(/\s+/g,' ').trim().slice(0,24);const k=' '+(typeof normAr==='function'?normAr(n):n).toLowerCase()+' ';if(!n||BADN.some(function(w){return k.indexOf(' '+w+' ')>=0}))return 'مستخدم';return n}
 function newCircle(){const a='abcdefghjkmnpqrstuvwxyz23456789';let c='';for(let i=0;i<6;i++)c+=a[Math.floor(Math.random()*a.length)];S.circle=c;save();syncBoard();pageAch()}
 function joinCircle(){
   const v=(prompt(T('اكتب رمز الدائرة'))||'').trim().toLowerCase().replace(/[^a-z0-9]/g,'').slice(0,8);
