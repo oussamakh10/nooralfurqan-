@@ -144,5 +144,6 @@ function go(t){
 }
 function renderPage(){
   if(pageTimer){clearInterval(pageTimer);pageTimer=0}
+  try{document.body.dataset.tab=TAB}catch(e){}
   ({home:pageHome,learn:pageLearn,read:pageRead,listen:pageListen,ach:pageAch,play:pagePlay})[TAB]();
 }

@@ -39,7 +39,7 @@
     const pr=mProg(),done=pr.filter(function(x){return x.n>=x.max}).length,all=done===pr.length;
     return '<section class="sec" id="mission"><h2>مهمة اليوم</h2><div class="card mission'+(all?' all':'')+'">'+
       '<ul class="mlist">'+pr.map(function(x){return '<li class="'+(x.n>=x.max?'ok':'')+'"><span class="mck" aria-hidden="true">'+(x.n>=x.max?'✓':'')+'</span><span>'+x.t+'</span><small>'+N(x.n)+'/'+N(x.max)+'</small></li>'}).join('')+'</ul>'+
-      '<div class="bar" role="progressbar" aria-valuenow="'+Math.round(done/pr.length*100)+'"><i style="width:'+Math.round(done/pr.length*100)+'%"></i></div>'+
+      (function(){const p=done/pr.length,mp='M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z';return '<div class="cres" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="'+Math.round(p*100)+'" aria-label="تقدّم مهمة اليوم"><svg viewBox="0 0 24 24" width="46" height="46" aria-hidden="true"><defs><clipPath id="mcc"><rect x="'+(24*(1-p))+'" y="0" width="'+(24*p)+'" height="24"/></clipPath></defs><path d="'+mp+'" fill="color-mix(in srgb,var(--gold) 14%,transparent)" stroke="var(--gold-d)" stroke-width="1.4" stroke-linejoin="round"/><path d="'+mp+'" fill="var(--gold)" clip-path="url(#mcc)"/></svg><b>'+N(done)+'/'+N(pr.length)+'</b></div>'})()+
       '<p class="muted" style="margin:6px 0 0;font-size:.85rem">'+(all?'أتممت مهمة اليوم، تقبّل الله منك.':'أتمم الثلاث لتحصل على 10 نقاط إضافية.')+'</p>'+
       '<button class="btn sm ghost" data-f10="share" style="margin-top:8px">شارك إنجازك</button></div></section>';
   }

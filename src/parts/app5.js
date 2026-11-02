@@ -180,7 +180,9 @@ function adkTap(i){
 /* ================= الإعدادات ================= */
 function applyTheme(){
   const r=document.documentElement;
-  if(S.theme==='dark'||S.theme==='light')r.setAttribute('data-theme',S.theme);else r.removeAttribute('data-theme');
+  var th=S.theme;
+  if(th==='night'){try{const c=cityObj(),tz=-new Date().getTimezoneOffset()/60,n=new Date(),t=prayerTimes(c[1],c[2],n,tz,S.method),h=n.getHours()+n.getMinutes()/60;th=(h>=t.maghrib||h<t.fajr)?'dark':'light'}catch(e){th='light'}}
+  if(th==='dark'||th==='light')r.setAttribute('data-theme',th);else r.removeAttribute('data-theme');
   if(S.pal&&S.pal!=='green')r.setAttribute('data-pal',S.pal);else r.removeAttribute('data-pal');
   document.body.classList.toggle('kids',!!S.kids);r.style.setProperty('--qs',S.qs||1);
 }
@@ -189,7 +191,7 @@ function openSettings(){
   c.innerHTML='<div class="card" style="max-height:90vh;overflow:auto;text-align:start;justify-items:stretch"><h2>الإعدادات</h2>'+
    '<div class="setrow"><span>الأصوات</span><button class="tag" data-set="mute" aria-pressed="'+(!S.mute)+'">'+(S.mute?'مُغلقة':'مُفعّلة')+'</button></div>'+
    '<div class="setrow"><span>وضع الأطفال (خط أكبر وقلوب بلا نفاد)</span><button class="tag" data-set="kids" aria-pressed="'+(!!S.kids)+'">'+(S.kids?'مُفعّل':'مُغلق')+'</button></div>'+
-   '<div class="setrow"><span>المظهر</span><span class="opts2">'+[['','تلقائي'],['light','فاتح'],['dark','داكن']].map(function(x){return '<button class="tag" data-theme="'+x[0]+'" aria-pressed="'+((S.theme||'')===x[0])+'">'+x[1]+'</button>'}).join('')+'</span></div>'+
+   '<div class="setrow"><span>المظهر</span><span class="opts2">'+[['','تلقائي'],['night','بعد المغرب'],['light','فاتح'],['dark','داكن']].map(function(x){return '<button class="tag" data-theme="'+x[0]+'" aria-pressed="'+((S.theme||'')===x[0])+'">'+x[1]+'</button>'}).join('')+'</span></div>'+
    '<div class="setrow"><span>حجم خط المصحف</span><span class="opts2">'+[[0.85,'صغير'],[1,'متوسط'],[1.2,'كبير'],[1.45,'أكبر']].map(function(x){return '<button class="tag" data-qs="'+x[0]+'" aria-pressed="'+(S.qs===x[0])+'">'+x[1]+'</button>'}).join('')+'</span></div>'+
    '<div class="setrow"><span>شكل الهدهد</span><span class="opts2"><button class="tag" data-hpv="new" aria-pressed="'+(S.hpv!=='old')+'">الجديد</button><button class="tag" data-hpv="old" aria-pressed="'+(S.hpv==='old')+'">السابق</button></span></div>'+
    '<div class="field"><label for="methsel">طريقة حساب المواقيت</label><select id="methsel">'+Object.keys(METH).map(function(k){return '<option value="'+k+'"'+(S.method===k?' selected':'')+'>'+METH[k][0]+'</option>'}).join('')+'</select></div>'+
@@ -209,3 +211,5 @@ function openSettings(){
 function weekKey(){const d=new Date();d.setDate(d.getDate()-((d.getDay()+1)%7));return ymd(d)}/* يبدأ الأسبوع يوم السبت */
 function weekSum(map){const k=weekKey();let t=0;const d=new Date();for(let i=0;i<7;i++){const y=ymd(d);if(y>=k)t+=map[y]||0;d.setDate(d.getDate()-1)}return t}
 const WK_TARGET=300;
+
+setInterval(function(){if(S.theme==='night')applyTheme()},300000);

@@ -649,3 +649,13 @@ button.chip{min-height:44px}
 #nav::-webkit-scrollbar{display:none}
 #nav button{flex:0 0 18.2%;min-width:66px;scroll-snap-align:center}
 @media (min-width:560px){#nav button{flex:1 0 0}}
+
+/* لون هادئ لكل تبويب (طبقة خفيفة فوق الخلفية، تعمل في الفاتح والداكن) */
+body::before{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;background:var(--tabtint,transparent);opacity:.2;transition:opacity .3s ease,background-color .3s ease}
+body[data-tab=learn]{--tabtint:#1F9D63}
+body[data-tab=read]{--tabtint:#C8963A}
+body[data-tab=listen]{--tabtint:#1C8EA6}
+body[data-tab=play]{--tabtint:#6F52C4}
+body[data-tab=ach]{--tabtint:#D9A21B}
+.cres{display:flex;align-items:center;gap:10px;margin-top:6px}
+.cres b{font:800 1.05rem var(--display);color:var(--gold-t)}
