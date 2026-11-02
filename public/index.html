@@ -940,6 +940,11 @@ body[data-tab=play]{--tabtint:#6F52C4}
 body[data-tab=ach]{--tabtint:#D9A21B}
 .cres{display:flex;align-items:center;gap:10px;margin-top:6px}
 .cres b{font:800 1.05rem var(--display);color:var(--gold-t)}
+
+/* شاشة الدخول القصيرة للزائر العائد: كل العناصر تظهر فورًا بحركة قصيرة */
+#splash.quick *,#splash.quick *::before,#splash.quick *::after{animation-delay:0s!important;animation-duration:.7s!important;animation-iteration-count:1!important}
+#splash.quick .spbar b,#splash.quick .dbbar b{animation-duration:1.6s!important}
+#splash.out{transition:opacity .5s ease}
 </style>
 <div class="bgpat" id="bg"></div>
 <header class="top" id="top"></header>
@@ -3496,7 +3501,8 @@ function renderPage(){
 const LANGS=[['ar','العربية'],['en','English'],['fr','Français']];
 let LANG='ar',I18=null;
 const LST=new WeakMap();
-function detectLang(){let l='';try{l=(navigator.language||'').slice(0,2).toLowerCase()}catch(e){}return l==='ar'?'ar':(l==='fr'?'fr':'en')}
+/* العربية هي اللغة الافتراضية عند الدخول؛ تُغيَّر من الإعدادات */
+function detectLang(){return 'ar'}
 (function(){
   if(S.lang)LANG=S.lang;
   else{const used=S.prof||S.xp>0||Object.keys(S.done||{}).length;if(used){S.lang='ar'}else LANG=detectLang()}
@@ -7344,9 +7350,13 @@ document.addEventListener('click',function(e){
     try{
       const old=document.getElementById('splash');if(old)old.remove();
       const d=document.createElement('div');d.id='splash';
-      const ms=(kind==='a'?buildA:kind==='c'?buildC:buildB)(d);
+      let ms=(kind==='a'?buildA:kind==='c'?buildC:buildB)(d);
+      /* الزائر العائد أو من يفضّل تقليل الحركة: شاشة قصيرة */
+      let seen=false,reduce=false;try{seen=!!localStorage.getItem('nf-seen');localStorage.setItem('nf-seen','1')}catch(e){}
+      try{reduce=window.matchMedia('(prefers-reduced-motion: reduce)').matches}catch(e){}
+      if(seen||reduce){d.classList.add('quick');ms=reduce?700:1900}
       document.body.appendChild(d);
-      const end=function(){if(!d.isConnected||d.classList.contains('out'))return;d.classList.add('out');setTimeout(function(){d.remove()},1000)};
+      const end=function(){if(!d.isConnected||d.classList.contains('out'))return;d.classList.add('out');setTimeout(function(){d.remove()},d.classList.contains('quick')?550:1000)};
       d.addEventListener('click',end);setTimeout(end,ms);
     }catch(e){}
   };
@@ -7571,7 +7581,7 @@ document.addEventListener('keydown',function(e){
   let h='';try{h=location.hash.slice(1)}catch(e){}
   if(TABS.some(function(t){return t[0]===h}))TAB=h;
   applyTheme();applyFreeze();dayState();renderTop();renderNav();renderMini();renderPage();initBoard();
-  if(!S.lang)setTimeout(openLangPicker,200);
+  if(!S.lang){S.lang='ar';S.langAuto=1;save();setTimeout(function(){if(!S.prof&&$('#lesson').hidden)openOnboard()},300)}
   else if(!S.prof)setTimeout(function(){if(!S.prof&&$('#lesson').hidden)openOnboard()},700);
 })();
 

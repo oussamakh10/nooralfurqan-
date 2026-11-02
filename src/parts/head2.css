@@ -659,3 +659,8 @@ body[data-tab=play]{--tabtint:#6F52C4}
 body[data-tab=ach]{--tabtint:#D9A21B}
 .cres{display:flex;align-items:center;gap:10px;margin-top:6px}
 .cres b{font:800 1.05rem var(--display);color:var(--gold-t)}
+
+/* شاشة الدخول القصيرة للزائر العائد: كل العناصر تظهر فورًا بحركة قصيرة */
+#splash.quick *,#splash.quick *::before,#splash.quick *::after{animation-delay:0s!important;animation-duration:.7s!important;animation-iteration-count:1!important}
+#splash.quick .spbar b,#splash.quick .dbbar b{animation-duration:1.6s!important}
+#splash.out{transition:opacity .5s ease}

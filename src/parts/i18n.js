@@ -3,7 +3,8 @@
 const LANGS=[['ar','العربية'],['en','English'],['fr','Français']];
 let LANG='ar',I18=null;
 const LST=new WeakMap();
-function detectLang(){let l='';try{l=(navigator.language||'').slice(0,2).toLowerCase()}catch(e){}return l==='ar'?'ar':(l==='fr'?'fr':'en')}
+/* العربية هي اللغة الافتراضية عند الدخول؛ تُغيَّر من الإعدادات */
+function detectLang(){return 'ar'}
 (function(){
   if(S.lang)LANG=S.lang;
   else{const used=S.prof||S.xp>0||Object.keys(S.done||{}).length;if(used){S.lang='ar'}else LANG=detectLang()}
