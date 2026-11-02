@@ -640,3 +640,6 @@ button.chip{min-height:44px}
 .btn.sm{border-radius:10px}
 .card{border-radius:14px}
 .card.feat,.card.mission{border-radius:22px 22px 14px 14px}
+
+/* إزالة نقاط الزينة من زوايا البطاقات لتقليل الازدحام */
+.card::after{display:none}

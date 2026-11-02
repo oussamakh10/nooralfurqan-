@@ -15,7 +15,7 @@ function pageHome(){
   $('#page').innerHTML=
   '<section class="hero"><div class="arch"><div class="mas">'+hoopoe('happy',150)+'</div><h1>نور الفرقان</h1><p>رفيقك لتعلّم الدين خطوة خطوة</p></div>'+
    '<p class="lead">'+(S.prof&&S.prof.name?'السلام عليكم يا '+esc(S.prof.name)+'. ':'')+'دروس قصيرة تُنجزها في دقائق، ومصحف بتفسيره، وتلاوات تسمعها في طريقك.</p>'+
-   '<div class="cta"><button class="btn" data-go="learn">ابدأ التعلّم</button><button class="btn gold" data-go="read">افتح المصحف</button></div></section>'+
+   '<div class="cta"><button class="btn" data-go="learn">'+(typeof doneN==='function'&&doneN()?'تابع التعلّم':'ابدأ التعلّم')+'</button><button class="btn gold" data-go="read">افتح المصحف</button></div></section>'+
   '<section class="sec"><h2>اليوم</h2>'+'<button class="card feat" style="text-align:start" data-act="guide-open"><b>'+g3(["جديد على الإسلام أو زائر؟ دليل المبتدئين","New here? Beginner’s guide","Nouveau ici ? Guide du débutant"])+'</b><span>'+g3(["أساسيات الإسلام والوضوء والصلاة ومصطلحات مفيدة وأسئلة شائعة.","Islam basics, wudu, prayer, useful terms and common questions.","Bases de l’islam, ablutions, prière, termes utiles et questions fréquentes."])+'</span></button>'+reminderBanner()+seasonHtml()+
    '<div class="card day"><span class="pill" style="justify-self:start">آية اليوم</span><div id="vod"><p class="muted">جارٍ التحميل…</p></div></div>'+
    '<div class="card day"><span class="pill" style="justify-self:start">حديث اليوم</span><p class="q" style="font:400 1.2rem/2 var(--quran)">'+HAD[dayNo()%HAD.length].t+'</p><small class="muted">'+HAD[dayNo()%HAD.length].r+'</small></div>'+
