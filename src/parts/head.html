@@ -40,6 +40,8 @@ body{background:var(--bg);color:var(--fg);font:400 16px/1.7 var(--text);
   padding-block:0;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
 html.lock,html.lock body{overflow:hidden}
 button,select,input{font-family:inherit;color:inherit}
+body{-webkit-user-select:none;user-select:none;-webkit-touch-callout:none}
+input,textarea,select{-webkit-user-select:text;user-select:text}
 button{cursor:pointer}
 button:focus-visible,a:focus-visible,select:focus-visible,input:focus-visible{outline:3px solid var(--focus);outline-offset:2px}
 h1,h2,h3,h4,p{margin:0}
