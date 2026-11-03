@@ -3579,6 +3579,7 @@ const TATTR=['aria-label','title','placeholder','alt'];
 function xText(n){
   const cur=n.nodeValue;if(LST.get(n)===cur)return;
   const p=n.parentNode;if(p&&(p.nodeName==='SCRIPT'||p.nodeName==='STYLE'))return;
+  if(p&&p.closest&&p.closest('#mission'))return;
   const v=tr(cur);
   if(v!=null&&v!==cur){
     if(p&&p.nodeName==='OPTION'&&!p.hasAttribute('value'))p.setAttribute('value',cur.trim());
@@ -3588,6 +3589,7 @@ function xText(n){
   }
 }
 function xEl(e){
+  if(e.closest&&e.closest('#mission'))return;
   if(e.nodeName==='OPTION'&&!e.hasAttribute('value')&&LANG!=='ar')e.setAttribute('value',e.textContent.trim());
   for(let i=0;i<TATTR.length;i++){const a=TATTR[i];if(e.hasAttribute(a)){const cur=e.getAttribute(a);if(e.__tr&&e.__tr[a]===cur)continue;const v=tr(cur);if(v!=null){(e.__tr=e.__tr||{})[a]=v;e.setAttribute(a,v)}}}
 }
