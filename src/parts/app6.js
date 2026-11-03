@@ -31,6 +31,7 @@ function openUnitByTitle(title){
 const OB=[
  {k:'name',t:'ما اسمك؟',type:'text',ph:'اكتب اسمك'},
  {k:'age',t:'كم عمرك؟',type:'age',ph:'اكتب عمرك بالأرقام'},
+ {k:'cc',t:'في أي منطقة تعيش؟ (لتحديد حد السن للميزات السحابية)',opts:[['eu','أوروبا'],['dz','الجزائر'],['ar','دولة عربية أخرى'],['o','منطقة أخرى']]},
  {k:'lvl',t:'كيف تقيّم معرفتك بالدين؟',opts:[['b','مبتدئ'],['m','متوسط'],['a','متقدم']]},
  {k:'goal',t:'ما هدفك الأول؟',opts:[['learn','تعلّم الأساسيات'],['khatma','ختم القرآن'],['hifz','حفظ القرآن'],['review','مراجعة ما أعرفه'],['all','كل ذلك']]},
  {k:'mins',t:'كم دقيقة يوميًا تريد أن تخصص؟',opts:[[5,'5 دقائق'],[10,'10 دقائق'],[20,'20 دقيقة'],[30,'30 دقيقة أو أكثر']]},
@@ -66,7 +67,7 @@ function obNext(){
 }
 function obFinish(){
   const p=OBD;
-  S.prof={name:(p.name||'').slice(0,24),age:p.age||'',lvl:p.lvl||'',goal:p.goal||'',mins:p.mins||'',city:p.city||'',done:true};
+  S.prof={name:(p.name||'').slice(0,24),age:p.age||'',cc:p.cc||'',lvl:p.lvl||'',goal:p.goal||'',mins:p.mins||'',city:p.city||'',done:true};
   if(p.city&&CITIES.some(function(c){return c[0]===p.city}))S.city=p.city;
   if(p.rec)S.rec=p.rec;
   {const a=obAge(p.age);

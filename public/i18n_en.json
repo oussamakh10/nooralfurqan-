@@ -362,7 +362,7 @@
 "هذه السورة قصيرة جدًا للاختبار. جرّب سورة أطول.": "This Surah is too short for a test. Try a longer Surah.",
 "اختبار حفظ:": "Memorization test:",
 "مواقيت الصلاة والقبلة ================= */": "Prayer times and Qibla ================= */",
-"الجزائر": "Algiers",
+"الجزائر": "Algeria",
 "وهران": "Oran",
 "قسنطينة": "Constantine",
 "عنابة": "Annaba",
@@ -9760,5 +9760,10 @@
 "الترجمة الإنجليزية: بيكثال (يُتحقق من وضعها القانوني).": "English translation: Pickthall (legal status being verified).",
 "إبلاغ": "Report",
 "إبلاغ عن اسم": "Report a name",
-"التفسير الميسر (مجمع الملك فهد) وتفسير الجلالين، من مستودع tafsir_api. الترجمة الإنجليزية: بيكثال (يُتحقق من وضعها القانوني).": "Al-Muyassar tafsir (King Fahd Complex) and Tafsir Al-Jalalayn, from the tafsir_api repository. English translation: Pickthall (legal status being verified)."
+"التفسير الميسر (مجمع الملك فهد) وتفسير الجلالين، من مستودع tafsir_api. الترجمة الإنجليزية: بيكثال (يُتحقق من وضعها القانوني).": "Al-Muyassar tafsir (King Fahd Complex) and Tafsir Al-Jalalayn, from the tafsir_api repository. English translation: Pickthall (legal status being verified).",
+"في أي منطقة تعيش؟ (لتحديد حد السن للميزات السحابية)": "Where do you live? (this sets the age limit for cloud features)",
+"أوروبا": "Europe",
+"دولة عربية أخرى": "Another Arab country",
+"منطقة أخرى": "Another region",
+"من أين تتابع معنا؟ هذا يحدد سن الميزات السحابية حسب قوانين بلدك.": "Where are you based? This sets the age for cloud features under your local rules."
 }

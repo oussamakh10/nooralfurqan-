@@ -1,7 +1,7 @@
 /* ===== الامتثال القانوني: موافقة أولى، تقييد السحابة بالعمر، روابط الوثائق ===== */
 (function(){
   /* سن الميزات السحابية: 15 في أوروبا (مقتضى RGPD ومعظم دولها)، و13 في باقي المناطق (العالم العربي وغيره) */
-  function regionOf(){try{const z=Intl.DateTimeFormat().resolvedOptions().timeZone||'';if(/^Europe\//.test(z))return 'eu'}catch(e){}return 'other'}
+  function regionOf(){const cc=S.prof&&S.prof.cc;if(cc)return cc==='eu'?'eu':'other';try{const z=Intl.DateTimeFormat().resolvedOptions().timeZone||'';if(/^Europe\//.test(z))return 'eu'}catch(e){}return 'other'}
   window.cloudAge=function(){return regionOf()==='eu'?15:13};
   function ageNum(){const a=S.prof&&S.prof.age;if(typeof a==='number')return a;if(a==='adult'||a==='senior')return 99;return 0}
   window.cloudOK=function(){return !S.kids&&ageNum()>=cloudAge()&&!!S.consent};

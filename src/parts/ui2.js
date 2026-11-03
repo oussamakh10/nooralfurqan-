@@ -57,6 +57,7 @@
   const SAY={
    intro:['السلام عليكم ورحمة الله. أنا الهدهد، أرافقك في تعلّم القرآن والإسلام. نتعارف في دقيقة؟','Peace be upon you! I’m the Hoopoe, your companion on your journey with the Qur’an. Let’s get to know each other in one minute.','Que la paix soit sur vous ! Je suis la huppe, votre compagnon pour apprendre le Coran. Faisons connaissance en une minute.'],
    name:['أولًا، ما اسمك؟','First, what’s your name?','D’abord, quel est votre prénom ?'],
+   cc:['من أين تتابع معنا؟ هذا يحدد سن الميزات السحابية حسب قوانين بلدك.','Where are you based? This sets the age for cloud features under your local rules.','Où êtes-vous ? Cela fixe l’âge des fonctions cloud selon vos règles locales.'],
    age:['تشرّفتُ بك{n}! كم عمرك تقريبًا؟','Nice to meet you{n}! About how old are you?','Enchanté{n} ! Quel âge avez-vous environ ?'],
    lvl:['وكيف تقيّم معرفتك بالدين؟ لا تقلق، سنبدأ من حيث تكون.','How would you rate your knowledge of the religion? No worries, we start where you are.','Comment évaluez-vous vos connaissances ? Pas de souci, nous partons de votre niveau.'],
    goal:['ما الذي تتمنى أن تحققه معي؟','What would you like to achieve with me?','Que souhaitez-vous accomplir avec moi ?'],

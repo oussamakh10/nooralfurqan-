@@ -4364,6 +4364,7 @@ function openUnitByTitle(title){
 const OB=[
  {k:'name',t:'ما اسمك؟',type:'text',ph:'اكتب اسمك'},
  {k:'age',t:'كم عمرك؟',type:'age',ph:'اكتب عمرك بالأرقام'},
+ {k:'cc',t:'في أي منطقة تعيش؟ (لتحديد حد السن للميزات السحابية)',opts:[['eu','أوروبا'],['dz','الجزائر'],['ar','دولة عربية أخرى'],['o','منطقة أخرى']]},
  {k:'lvl',t:'كيف تقيّم معرفتك بالدين؟',opts:[['b','مبتدئ'],['m','متوسط'],['a','متقدم']]},
  {k:'goal',t:'ما هدفك الأول؟',opts:[['learn','تعلّم الأساسيات'],['khatma','ختم القرآن'],['hifz','حفظ القرآن'],['review','مراجعة ما أعرفه'],['all','كل ذلك']]},
  {k:'mins',t:'كم دقيقة يوميًا تريد أن تخصص؟',opts:[[5,'5 دقائق'],[10,'10 دقائق'],[20,'20 دقيقة'],[30,'30 دقيقة أو أكثر']]},
@@ -4399,7 +4400,7 @@ function obNext(){
 }
 function obFinish(){
   const p=OBD;
-  S.prof={name:(p.name||'').slice(0,24),age:p.age||'',lvl:p.lvl||'',goal:p.goal||'',mins:p.mins||'',city:p.city||'',done:true};
+  S.prof={name:(p.name||'').slice(0,24),age:p.age||'',cc:p.cc||'',lvl:p.lvl||'',goal:p.goal||'',mins:p.mins||'',city:p.city||'',done:true};
   if(p.city&&CITIES.some(function(c){return c[0]===p.city}))S.city=p.city;
   if(p.rec)S.rec=p.rec;
   {const a=obAge(p.age);
@@ -6561,6 +6562,7 @@ S25:{sit:['تُذكر خطبة الوداع في المناهج لما تضمن�
   const SAY={
    intro:['السلام عليكم ورحمة الله. أنا الهدهد، أرافقك في تعلّم القرآن والإسلام. نتعارف في دقيقة؟','Peace be upon you! I’m the Hoopoe, your companion on your journey with the Qur’an. Let’s get to know each other in one minute.','Que la paix soit sur vous ! Je suis la huppe, votre compagnon pour apprendre le Coran. Faisons connaissance en une minute.'],
    name:['أولًا، ما اسمك؟','First, what’s your name?','D’abord, quel est votre prénom ?'],
+   cc:['من أين تتابع معنا؟ هذا يحدد سن الميزات السحابية حسب قوانين بلدك.','Where are you based? This sets the age for cloud features under your local rules.','Où êtes-vous ? Cela fixe l’âge des fonctions cloud selon vos règles locales.'],
    age:['تشرّفتُ بك{n}! كم عمرك تقريبًا؟','Nice to meet you{n}! About how old are you?','Enchanté{n} ! Quel âge avez-vous environ ?'],
    lvl:['وكيف تقيّم معرفتك بالدين؟ لا تقلق، سنبدأ من حيث تكون.','How would you rate your knowledge of the religion? No worries, we start where you are.','Comment évaluez-vous vos connaissances ? Pas de souci, nous partons de votre niveau.'],
    goal:['ما الذي تتمنى أن تحققه معي؟','What would you like to achieve with me?','Que souhaitez-vous accomplir avec moi ?'],
@@ -8642,7 +8644,7 @@ function icoSvg(e){
 /* ===== الامتثال القانوني: موافقة أولى، تقييد السحابة بالعمر، روابط الوثائق ===== */
 (function(){
   /* سن الميزات السحابية: 15 في أوروبا (مقتضى RGPD ومعظم دولها)، و13 في باقي المناطق (العالم العربي وغيره) */
-  function regionOf(){try{const z=Intl.DateTimeFormat().resolvedOptions().timeZone||'';if(/^Europe\//.test(z))return 'eu'}catch(e){}return 'other'}
+  function regionOf(){const cc=S.prof&&S.prof.cc;if(cc)return cc==='eu'?'eu':'other';try{const z=Intl.DateTimeFormat().resolvedOptions().timeZone||'';if(/^Europe\//.test(z))return 'eu'}catch(e){}return 'other'}
   window.cloudAge=function(){return regionOf()==='eu'?15:13};
   function ageNum(){const a=S.prof&&S.prof.age;if(typeof a==='number')return a;if(a==='adult'||a==='senior')return 99;return 0}
   window.cloudOK=function(){return !S.kids&&ageNum()>=cloudAge()&&!!S.consent};
