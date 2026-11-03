@@ -4332,7 +4332,7 @@ function openSettings(){
    extraSettings()+
    '<div class="setrow"><span>ملفي الشخصي'+(S.prof&&S.prof.name?': '+esc(S.prof.name):'')+'</span><button class="btn sm ghost" data-act="prof-edit">تعديل</button></div>'+
    '<div class="setrow"><span>الحساب: '+(S.acct&&S.acct.linked?(ACCT&&ACCT.email?esc(ACCT.email):'مرتبط'):'غير مرتبط')+'</span><button class="btn sm ghost" data-act="acct-link">'+(S.acct&&S.acct.linked?'مزامنة الآن':'ربط الحساب')+'</button></div>'+
-   '<p class="muted" style="font-size:.85rem">الربط عبر حسابك (وليس تسجيل دخول جوجل مباشرًا). يحفظ تقدّمك في مساحتك الخاصة لتفتحه من أي جهاز.</p>'+
+   '<p class="muted" style="font-size:.85rem">الربط عبر حسابك في التطبيق (وليس تسجيل دخول جوجل مباشرًا). يحفظ تقدّمك في مساحتك الخاصة لتفتحه من أي جهاز.</p>'+
    '<div class="setrow"><span>اللغة · Language · Langue</span>'+langBtns()+'</div>'+
    '<button class="btn ghost" data-act="reset" style="margin-top:6px">مسح كل تقدّمي</button>'+
    '<button class="btn" data-act="cclose">تم</button></div>';
@@ -4398,7 +4398,7 @@ function renderOnboard(){
   else if(q.type==='age')h+='<input type="number" inputmode="numeric" min="3" max="99" id="obin" placeholder="'+q.ph+'" value="'+esc(OBD.age||'')+'" aria-label="'+q.t+'">';
   else if(q.type==='city')h+='<select id="obin">'+CITIES.map(function(x){return '<option'+(x[0]===(OBD.city||S.city||CITIES[0][0])?' selected':'')+'>'+x[0]+'</option>'}).join('')+'</select>';
   else if(q.type==='rec')h+='<select id="obin">'+REC.map(function(x){return '<option value="'+x.id+'"'+(x.id===(OBD.rec||S.rec)?' selected':'')+'>'+x.n+'</option>'}).join('')+'</select>';
-  else if(q.type==='acct')h+='<p class="muted" style="font-size:.92rem">الربط يتم عبر حسابك الذي فتحتَ به التطبيق (يظهر بريدك إن سمحت المنصة). لا أستطيع تسجيل الدخول بحساب جوجل مباشرة.</p><button class="btn gold" data-act="ob-link">اربط حسابي</button><p class="muted" id="obacct" style="font-size:.9rem;text-align:center">'+(ACCT&&ACCT.id?'تم الربط ✓':'')+'</p>';
+  else if(q.type==='acct')h+='<p class="muted" style="font-size:.92rem">الربط يتم عبر حسابك الذي فتحتَ منه الصفحة (يظهر بريدك إن سمحت المنصة). لا أستطيع تسجيل الدخول بحساب جوجل مباشرة.</p><button class="btn gold" data-act="ob-link">اربط حسابي</button><p class="muted" id="obacct" style="font-size:.9rem;text-align:center">'+(ACCT&&ACCT.id?'تم الربط ✓':'')+'</p>';
   else h+='<div class="opts">'+q.opts.map(function(o){return '<button class="opt'+(String(OBD[q.k])===String(o[0])?' sel':'')+'" data-ob="'+o[0]+'"><span>'+o[1]+'</span></button>'}).join('')+'</div>';
   h+='<button class="btn" data-act="ob-next">'+(last?'نبدأ':'التالي')+'</button><button class="btn ghost" data-act="ob-skip">'+(last?'لاحقًا':'تخطَّ هذا السؤال')+'</button></div>';
   c.innerHTML=h;c.hidden=false;
@@ -4475,9 +4475,9 @@ function pullState(){
   }).catch(function(){});
 }
 function linkAccount(){
-  if(!window.claude||!claude.use){toast('الربط غير متاح في هذا العرض');return Promise.resolve(false)}
+  if(!window.claude||!claude.use){toast('الربط يعمل عند فتح الصفحة من حسابك');return Promise.resolve(false)}
   return Promise.all([claude.use('user'),claude.use('db')]).then(function(r){
-    const U=r[0];DBH=r[1];if(!U||!DBH){toast('تعذّر الربط من هذا العرض. جرّب من الموقع المنشور.');return false}
+    const U=r[0];DBH=r[1];if(!U||!DBH){toast('تعذّر الربط من هذا العرض. افتح الصفحة من حسابك.');return false}
     return U.me().then(function(me){
       if(!me||!me.id){toast('لا توجد هوية لحسابك في هذا العرض.');return false}
       UID=me.id;ACCT={id:me.id,name:me.name||'',email:me.email||''};
@@ -4523,12 +4523,12 @@ function initBoard(){
 }
 function fillBoard(){
   const el=$('#board');if(!el)return;
-  if(!DBH){el.innerHTML='<p class="muted" style="font-size:.9rem">اللوحة الأسبوعية تعمل عند تسجيل الدخول بحسابك، وبصلاحية المشاركة (Contributor) لتُسجَّل نقاطك.</p>'}
+  if(!DBH){el.innerHTML='<p class="muted" style="font-size:.9rem">اللوحة الأسبوعية تعمل عندما تفتح الصفحة من حسابك، وبصلاحية المشاركة (Contributor) لتُسجَّل نقاطك.</p>'}
   else el.innerHTML=BOARD.length?'<div class="lb">'+BOARD.map(function(x,i){return '<div'+(x.id===UID?' class="me"':'')+'><span>'+N(i+1)+'</span><span>'+esc(cleanName(x.name)||'…')+(x.id===UID?' (أنت)':'<button class="tag repbtn" data-act="report-name" data-nm="'+esc(cleanName(x.name))+'" aria-label="إبلاغ عن اسم">إبلاغ</button>')+'</span><span>'+N(x.xp)+' نقطة</span></div>'}).join('')+'</div>':emptyBox('happy','لا نتائج بعد','اجمع نقاطًا هذا الأسبوع لتظهر في لوحة المتصدرين.');
   const ce=$('#circ');if(ce){
     if(!S.circle)ce.innerHTML='<p class="muted" style="font-size:.9rem">أنشئ دائرة عائلية أو انضم إلى واحدة برمز مشترك، فتتابعون ختماتكم معًا.</p><div class="opts2"><button class="btn sm gold" data-act="circ-new">إنشاء دائرة</button><button class="btn sm ghost" data-act="circ-join">انضمام برمز</button></div>';
     else ce.innerHTML='<p class="muted" style="font-size:.9rem">رمز الدائرة: <b dir="ltr">'+esc(S.circle)+'</b> · شاركه مع أهلك وأصدقائك</p>'+
-      (DBH?(CIRC.length?'<div class="lb">'+CIRC.map(function(x){return '<div'+(x.id===UID?' class="me"':'')+'><span>'+esc(cleanName(x.name)||'…')+(x.id===UID?' (أنت)':'')+'</span><span>'+N(x.kn)+' ختمة · '+N(Math.round(x.kh/6236*100))+'%</span></div>'}).join('')+'</div>':'<p class="muted" style="font-size:.9rem">لا أعضاء ظاهرون بعد.</p>'):'<p class="muted" style="font-size:.9rem">متابعة الأعضاء تحتاج تسجيل الدخول بحسابك.</p>')+
+      (DBH?(CIRC.length?'<div class="lb">'+CIRC.map(function(x){return '<div'+(x.id===UID?' class="me"':'')+'><span>'+esc(cleanName(x.name)||'…')+(x.id===UID?' (أنت)':'')+'</span><span>'+N(x.kn)+' ختمة · '+N(Math.round(x.kh/6236*100))+'%</span></div>'}).join('')+'</div>':'<p class="muted" style="font-size:.9rem">لا أعضاء ظاهرون بعد.</p>'):'<p class="muted" style="font-size:.9rem">متابعة الأعضاء تحتاج فتح الصفحة من حسابك.</p>')+
       '<button class="btn sm ghost" data-act="circ-leave">مغادرة الدائرة</button>';
   }
 }
@@ -6560,7 +6560,7 @@ S25:{sit:['تُذكر خطبة الوداع في المناهج لما تضمن�
       });
       const GI=window.__GI;
       buckets.me.forEach(function(e){
-        if(e.tagName==='P'&&/الربط عبر حسابك/.test(e.textContent)){e.textContent=g3(['يحفظ تقدّمك في حسابك على جوجل لتفتحه من أي جهاز. لا نطلب كلمة مرور ولا نصل إلى بياناتك الأخرى.','Your progress is saved to your Google account so you can open it on any device. No password is requested and no other data is accessed.','Votre progression est enregistrée dans votre compte Google, accessible depuis tout appareil. Aucun mot de passe n’est demandé.']);e.className='muted';e.style.cssText='font-size:.85rem;margin:6px 0 0'}
+        if(e.tagName==='P'&&/الربط عبر حسابك/.test(e.textContent)){e.textContent=onClaude()?g3(['هنا يُحفظ تقدّمك تلقائيًا في حسابك. أما الدخول بجوجل فيعمل في الموقع المنشور.','Here your progress is saved automatically to your account. Google sign-in works on the published site.','Ici votre progression est enregistrée dans votre compte. La connexion Google fonctionne sur le site publié.']):g3(['يحفظ تقدّمك في حسابك على جوجل لتفتحه من أي جهاز. لا نطلب كلمة مرور ولا نصل إلى بياناتك الأخرى.','Your progress is saved to your Google account so you can open it on any device. No password is requested and no other data is accessed.','Votre progression est enregistrée dans votre compte Google, accessible depuis tout appareil. Aucun mot de passe n’est demandé.']);e.className='muted';e.style.cssText='font-size:.85rem;margin:6px 0 0'}
         const ab=e.querySelector&&e.querySelector('[data-act="acct-link"]');
         if(ab&&!onClaude()&&!(S.acct&&S.acct.linked))ab.innerHTML=GI+esc(g3(['الدخول بجوجل','Sign in with Google','Connexion Google']));
       });
@@ -6620,7 +6620,7 @@ S25:{sit:['تُذكر خطبة الوداع في المناهج لما تضمن�
     else if(q.type==='age')h+='<input type="number" inputmode="numeric" min="3" max="99" id="obin" autocomplete="off" placeholder="'+esc(g3(['اكتب عمرك بالأرقام','Type your age in numbers','Saisissez votre âge']))+'" value="'+esc((OBD&&OBD.age)||'')+'" aria-label="'+esc(q.t)+'">';
     else if(q.type==='city')h+='<select id="obin">'+CITIES.map(function(x){return '<option'+(x[0]===(OBD.city||S.city||CITIES[0][0])?' selected':'')+'>'+x[0]+'</option>'}).join('')+'</select>';
     else if(q.type==='rec')h+='<select id="obin">'+REC.map(function(x){return '<option value="'+x.id+'"'+(x.id===(OBD.rec||S.rec)?' selected':'')+'>'+x.n+'</option>'}).join('')+'</select>';
-    else if(q.type==='acct')h+=('<p class="muted" style="font-size:.92rem;margin:0">'+esc(g3(['اضغط لربط حسابك بجوجل (اختياري).','Tap to link your Google account (optional).','Touchez pour lier votre compte Google (facultatif).']))+'</p>')+'<button class="btn gold" data-act="ob-link">'+(onClaude()?'':window.__GI||'')+esc(onClaude()?g3(['اربط حسابي','Link my account','Lier mon compte']):g3(['الدخول بجوجل','Sign in with Google','Connexion Google']))+'</button><p class="muted" id="obacct" style="font-size:.9rem;text-align:center;margin:0"></p>';
+    else if(q.type==='acct')h+=(onClaude()?'<p class="muted" style="font-size:.92rem;margin:0">الربط يتم عبر حسابك.</p>':'<p class="muted" style="font-size:.92rem;margin:0">'+esc(g3(['اضغط لربط حسابك بجوجل (اختياري).','Tap to link your Google account (optional).','Touchez pour lier votre compte Google (facultatif).']))+'</p>')+'<button class="btn gold" data-act="ob-link">'+(onClaude()?'':window.__GI||'')+esc(onClaude()?g3(['اربط حسابي','Link my account','Lier mon compte']):g3(['الدخول بجوجل','Sign in with Google','Connexion Google']))+'</button><p class="muted" id="obacct" style="font-size:.9rem;text-align:center;margin:0"></p>';
     else h+='<div class="opts">'+q.opts.map(function(o){return '<button class="opt'+(String(OBD[q.k])===String(o[0])?' sel':'')+'" data-ob="'+o[0]+'"><span>'+o[1]+'</span></button>'}).join('')+'</div>';
     h+='</div><div class="obfoot"><button class="btn" data-act="ob-next">'+esc(intro?g3(['نبدأ','Let’s go','C’est parti']):(last?g3(['نبدأ','Let’s begin','Commencer']):g3(['التالي','Next','Suivant'])))+'</button>'+
       '<button class="btn ghost" data-act="'+(intro?'cclose':'ob-skip')+'">'+esc(intro?g3(['لاحقًا','Later','Plus tard']):(last?g3(['لاحقًا','Later','Plus tard']):g3(['تخطَّ هذا السؤال','Skip this question','Passer'])))+'</button></div></div>';

@@ -49,7 +49,7 @@ function renderOnboard(){
   else if(q.type==='age')h+='<input type="number" inputmode="numeric" min="3" max="99" id="obin" placeholder="'+q.ph+'" value="'+esc(OBD.age||'')+'" aria-label="'+q.t+'">';
   else if(q.type==='city')h+='<select id="obin">'+CITIES.map(function(x){return '<option'+(x[0]===(OBD.city||S.city||CITIES[0][0])?' selected':'')+'>'+x[0]+'</option>'}).join('')+'</select>';
   else if(q.type==='rec')h+='<select id="obin">'+REC.map(function(x){return '<option value="'+x.id+'"'+(x.id===(OBD.rec||S.rec)?' selected':'')+'>'+x.n+'</option>'}).join('')+'</select>';
-  else if(q.type==='acct')h+='<p class="muted" style="font-size:.92rem">الربط يتم عبر حسابك الذي فتحتَ به التطبيق (يظهر بريدك إن سمحت المنصة). لا أستطيع تسجيل الدخول بحساب جوجل مباشرة.</p><button class="btn gold" data-act="ob-link">اربط حسابي</button><p class="muted" id="obacct" style="font-size:.9rem;text-align:center">'+(ACCT&&ACCT.id?'تم الربط ✓':'')+'</p>';
+  else if(q.type==='acct')h+='<p class="muted" style="font-size:.92rem">الربط يتم عبر حسابك الذي فتحتَ منه الصفحة (يظهر بريدك إن سمحت المنصة). لا أستطيع تسجيل الدخول بحساب جوجل مباشرة.</p><button class="btn gold" data-act="ob-link">اربط حسابي</button><p class="muted" id="obacct" style="font-size:.9rem;text-align:center">'+(ACCT&&ACCT.id?'تم الربط ✓':'')+'</p>';
   else h+='<div class="opts">'+q.opts.map(function(o){return '<button class="opt'+(String(OBD[q.k])===String(o[0])?' sel':'')+'" data-ob="'+o[0]+'"><span>'+o[1]+'</span></button>'}).join('')+'</div>';
   h+='<button class="btn" data-act="ob-next">'+(last?'نبدأ':'التالي')+'</button><button class="btn ghost" data-act="ob-skip">'+(last?'لاحقًا':'تخطَّ هذا السؤال')+'</button></div>';
   c.innerHTML=h;c.hidden=false;
@@ -126,9 +126,9 @@ function pullState(){
   }).catch(function(){});
 }
 function linkAccount(){
-  if(!window.claude||!claude.use){toast('الربط غير متاح في هذا العرض');return Promise.resolve(false)}
+  if(!window.claude||!claude.use){toast('الربط يعمل عند فتح الصفحة من حسابك');return Promise.resolve(false)}
   return Promise.all([claude.use('user'),claude.use('db')]).then(function(r){
-    const U=r[0];DBH=r[1];if(!U||!DBH){toast('تعذّر الربط من هذا العرض. جرّب من الموقع المنشور.');return false}
+    const U=r[0];DBH=r[1];if(!U||!DBH){toast('تعذّر الربط من هذا العرض. افتح الصفحة من حسابك.');return false}
     return U.me().then(function(me){
       if(!me||!me.id){toast('لا توجد هوية لحسابك في هذا العرض.');return false}
       UID=me.id;ACCT={id:me.id,name:me.name||'',email:me.email||''};
@@ -174,12 +174,12 @@ function initBoard(){
 }
 function fillBoard(){
   const el=$('#board');if(!el)return;
-  if(!DBH){el.innerHTML='<p class="muted" style="font-size:.9rem">اللوحة الأسبوعية تعمل عند تسجيل الدخول بحسابك، وبصلاحية المشاركة (Contributor) لتُسجَّل نقاطك.</p>'}
+  if(!DBH){el.innerHTML='<p class="muted" style="font-size:.9rem">اللوحة الأسبوعية تعمل عندما تفتح الصفحة من حسابك، وبصلاحية المشاركة (Contributor) لتُسجَّل نقاطك.</p>'}
   else el.innerHTML=BOARD.length?'<div class="lb">'+BOARD.map(function(x,i){return '<div'+(x.id===UID?' class="me"':'')+'><span>'+N(i+1)+'</span><span>'+esc(cleanName(x.name)||'…')+(x.id===UID?' (أنت)':'<button class="tag repbtn" data-act="report-name" data-nm="'+esc(cleanName(x.name))+'" aria-label="إبلاغ عن اسم">إبلاغ</button>')+'</span><span>'+N(x.xp)+' نقطة</span></div>'}).join('')+'</div>':emptyBox('happy','لا نتائج بعد','اجمع نقاطًا هذا الأسبوع لتظهر في لوحة المتصدرين.');
   const ce=$('#circ');if(ce){
     if(!S.circle)ce.innerHTML='<p class="muted" style="font-size:.9rem">أنشئ دائرة عائلية أو انضم إلى واحدة برمز مشترك، فتتابعون ختماتكم معًا.</p><div class="opts2"><button class="btn sm gold" data-act="circ-new">إنشاء دائرة</button><button class="btn sm ghost" data-act="circ-join">انضمام برمز</button></div>';
     else ce.innerHTML='<p class="muted" style="font-size:.9rem">رمز الدائرة: <b dir="ltr">'+esc(S.circle)+'</b> · شاركه مع أهلك وأصدقائك</p>'+
-      (DBH?(CIRC.length?'<div class="lb">'+CIRC.map(function(x){return '<div'+(x.id===UID?' class="me"':'')+'><span>'+esc(cleanName(x.name)||'…')+(x.id===UID?' (أنت)':'')+'</span><span>'+N(x.kn)+' ختمة · '+N(Math.round(x.kh/6236*100))+'%</span></div>'}).join('')+'</div>':'<p class="muted" style="font-size:.9rem">لا أعضاء ظاهرون بعد.</p>'):'<p class="muted" style="font-size:.9rem">متابعة الأعضاء تحتاج تسجيل الدخول بحسابك.</p>')+
+      (DBH?(CIRC.length?'<div class="lb">'+CIRC.map(function(x){return '<div'+(x.id===UID?' class="me"':'')+'><span>'+esc(cleanName(x.name)||'…')+(x.id===UID?' (أنت)':'')+'</span><span>'+N(x.kn)+' ختمة · '+N(Math.round(x.kh/6236*100))+'%</span></div>'}).join('')+'</div>':'<p class="muted" style="font-size:.9rem">لا أعضاء ظاهرون بعد.</p>'):'<p class="muted" style="font-size:.9rem">متابعة الأعضاء تحتاج فتح الصفحة من حسابك.</p>')+
       '<button class="btn sm ghost" data-act="circ-leave">مغادرة الدائرة</button>';
   }
 }

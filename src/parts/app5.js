@@ -199,7 +199,7 @@ function openSettings(){
    extraSettings()+
    '<div class="setrow"><span>ملفي الشخصي'+(S.prof&&S.prof.name?': '+esc(S.prof.name):'')+'</span><button class="btn sm ghost" data-act="prof-edit">تعديل</button></div>'+
    '<div class="setrow"><span>الحساب: '+(S.acct&&S.acct.linked?(ACCT&&ACCT.email?esc(ACCT.email):'مرتبط'):'غير مرتبط')+'</span><button class="btn sm ghost" data-act="acct-link">'+(S.acct&&S.acct.linked?'مزامنة الآن':'ربط الحساب')+'</button></div>'+
-   '<p class="muted" style="font-size:.85rem">الربط عبر حسابك (وليس تسجيل دخول جوجل مباشرًا). يحفظ تقدّمك في مساحتك الخاصة لتفتحه من أي جهاز.</p>'+
+   '<p class="muted" style="font-size:.85rem">الربط عبر حسابك في التطبيق (وليس تسجيل دخول جوجل مباشرًا). يحفظ تقدّمك في مساحتك الخاصة لتفتحه من أي جهاز.</p>'+
    '<div class="setrow"><span>اللغة · Language · Langue</span>'+langBtns()+'</div>'+
    '<button class="btn ghost" data-act="reset" style="margin-top:6px">مسح كل تقدّمي</button>'+
    '<button class="btn" data-act="cclose">تم</button></div>';
