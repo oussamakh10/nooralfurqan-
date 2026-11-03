@@ -120,6 +120,8 @@
     const rb=e.target.closest('[data-act="rretry"]');
     if(rb){e.stopPropagation();try{Q=null;openSurah(RV.s||1)}catch(x){}return}
   },true);
+  /* إعادة رسم الرئيسية بعد تحميل كل الإضافات حتى تظهر مهمة اليوم من أول فتح */
+  try{if(typeof TAB!=='undefined'&&TAB==='home')renderPage()}catch(e){}
   document.addEventListener('click',function(e){
     const b=e.target.closest('[data-f10]');if(!b)return;
     e.stopPropagation();
