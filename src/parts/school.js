@@ -7,6 +7,7 @@ const SCHTRI=[
 ];
 function g3x(a){return a}
 function sg(a){return g3(a)}
+function trs(s){return T(s)}
 let SCHTAB='les',SX=null;
 function schS(){if(!S.sch||typeof S.sch!=='object')S.sch={};return S.sch}
 function schLes(id){return SCH.find(function(l){return l.id===id})}
@@ -34,7 +35,7 @@ function pageSchool(){
       h+='<section class="sec"><h2>'+esc(sg(T.t))+' <small class="muted" style="font-size:.8rem">'+schReadN(T.n)+'/'+ls.length+'</small></h2><div style="display:grid;gap:8px">'+
        ls.map(function(l,i){
          const r=s['r:'+l.id];
-         return '<button class="card sch-it" data-sc="open:'+l.id+'"><span class="sch-n'+(r?' on':'')+'">'+(r?'✓':(i+1))+'</span><span class="sch-t">'+esc(l.t)+'</span></button>'}).join('')+'</div></section>';
+         return '<button class="card sch-it" data-sc="open:'+l.id+'"><span class="sch-n'+(r?' on':'')+'">'+(r?'✓':(i+1))+'</span><span class="sch-t">'+esc(trs(l.t))+'</span></button>'}).join('')+'</div></section>';
     });
   }else{
     h+='<section class="sec"><h2>'+esc(sg(['الاختبار الشامل للسنة','Final exam of the year','Examen final de l’année']))+'</h2>'+
@@ -49,7 +50,7 @@ function pageSchool(){
        '<button class="btn" data-sc="ex:t'+T.n+'">'+esc(sg(['ابدأ اختبار الفصل','Start term exam','Commencer l’examen']))+'</button></div>'+
        '<div style="display:grid;gap:8px;margin-top:8px">'+ls.map(function(l){
          const b=s['b:'+l.id];
-         return '<button class="card sch-it" data-sc="ex:'+l.id+'"><span class="sch-n'+(b!==undefined&&b>=10?' on':'')+'">'+(b!==undefined?schFmt(b):'؟')+'</span><span class="sch-t">'+esc(l.t)+'</span></button>'}).join('')+'</div></section>';
+         return '<button class="card sch-it" data-sc="ex:'+l.id+'"><span class="sch-n'+(b!==undefined&&b>=10?' on':'')+'">'+(b!==undefined?schFmt(b):'؟')+'</span><span class="sch-t">'+esc(trs(l.t))+'</span></button>'}).join('')+'</div></section>';
     });
   }
   $('#page').innerHTML=h;
@@ -60,20 +61,20 @@ function openSchLesson(id){openOverlay();renderSchLesson(id)}
 function renderSchLesson(id){
   const l=schLes(id);if(!l)return;
   const s=schS(),r=s['r:'+id],i=SCH.indexOf(l),nx=SCH[i+1];
-  let h='<div class="ltop"><button class="xbtn" data-act="leave" aria-label="'+esc(sg(['إغلاق','Close','Fermer']))+'">'+IC.x+'</button><h2 style="flex:1;font-size:1.05rem">'+esc(l.t)+'</h2></div><div class="lmain" id="schmain">'+
-   '<small class="muted">'+esc(SCHTRI[l.tri-1].t[0])+'</small>';
+  let h='<div class="ltop"><button class="xbtn" data-act="leave" aria-label="'+esc(sg(['إغلاق','Close','Fermer']))+'">'+IC.x+'</button><h2 style="flex:1;font-size:1.05rem">'+esc(trs(l.t))+'</h2></div><div class="lmain" id="schmain">'+
+   '<small class="muted">'+esc(sg(SCHTRI[l.tri-1].t))+'</small>';
   l.sec.forEach(function(x){
-    h+='<div class="card sch-sec"><h3>'+esc(x[0])+'</h3><ul>'+x[1].map(function(p){return '<li>'+esc(p)+'</li>'}).join('')+'</ul></div>';
+    h+='<div class="card sch-sec"><h3>'+esc(trs(x[0]))+'</h3><ul>'+x[1].map(function(p){return '<li>'+esc(trs(p))+'</li>'}).join('')+'</ul></div>';
   });
   if(l.ev&&l.ev.length)h+='<div class="card sch-sec"><h3>'+esc(sg(['الأدلة والشواهد','Evidence','Preuves']))+'</h3>'+
-    l.ev.map(function(e){return '<p class="sch-ev '+(e[0]==='q'?'q':'h')+'">'+esc(e[1])+' <small class="muted">['+esc(e[2])+']</small></p>'}).join('')+'</div>';
-  h+='<details class="card sch-sec"><summary><b>'+esc(sg(['سؤال مقالي للتدرب','Practice essay question','Question rédactionnelle']))+'</b></summary><p><b>'+esc(l.es[0])+'</b></p>'+
-   '<details><summary>'+esc(sg(['أظهر الإجابة النموذجية','Show model answer','Voir la réponse modèle']))+'</summary><p>'+esc(l.es[1])+'</p></details></details>'+
+    l.ev.map(function(e){return '<p class="sch-ev '+(e[0]==='q'?'q':'h')+'">'+esc(trs(e[1]))+' <small class="muted">['+esc(trs(e[2]))+']</small></p>'}).join('')+'</div>';
+  h+='<details class="card sch-sec"><summary><b>'+esc(sg(['سؤال مقالي للتدرب','Practice essay question','Question rédactionnelle']))+'</b></summary><p><b>'+esc(trs(l.es[0]))+'</b></p>'+
+   '<details><summary>'+esc(sg(['أظهر الإجابة النموذجية','Show model answer','Voir la réponse modèle']))+'</summary><p>'+esc(trs(l.es[1]))+'</p></details></details>'+
    '<p class="muted" style="font-size:.8rem;text-align:center">'+esc(sg(['هذا ملخص للمراجعة؛ ارجع إلى كتابك المدرسي ومعلمك للتفصيل.','A revision summary; refer to your textbook and teacher for details.','Résumé de révision ; reportez-vous au manuel et à votre enseignant.']))+'</p>'+
    '<div style="display:grid;gap:8px;margin:12px 0 90px">'+
    '<button class="btn'+(r?' ghost':'')+'" data-sc="read:'+id+'">'+(r?'✓ '+esc(sg(['تمت قراءته','Marked as read','Lu'])):esc(sg(['علّمه كمقروء','Mark as read','Marquer comme lu'])))+'</button>'+
    '<button class="btn" data-sc="ex:'+id+'">'+esc(sg(['اختبر نفسك في هذا الدرس','Test yourself on this lesson','Testez-vous sur cette leçon']))+'</button>'+
-   (nx?'<button class="btn ghost" data-sc="open:'+nx.id+'">'+esc(sg(['الدرس التالي','Next lesson','Leçon suivante']))+': '+esc(nx.t)+'</button>':'')+'</div></div>';
+   (nx?'<button class="btn ghost" data-sc="open:'+nx.id+'">'+esc(sg(['الدرس التالي','Next lesson','Leçon suivante']))+': '+esc(trs(nx.t))+'</button>':'')+'</div></div>';
   $('#lesson').innerHTML=h;$('#lesson').scrollTop=0;
 }
 
@@ -83,7 +84,7 @@ function schStart(kind){
   if(kind==='f'){
     qs=shuffle([].concat.apply([],SCH.map(schQs))).slice(0,40);limit=45*60;title=sg(['الاختبار الشامل للسنة','Final exam of the year','Examen final']);
   }else if(/^t[123]$/.test(kind)){
-    const n=+kind[1];qs=shuffle([].concat.apply([],schOf(n).map(schQs))).slice(0,20);limit=20*60;title=sg(['اختبار','Exam','Examen'])+' — '+SCHTRI[n-1].t[0];
+    const n=+kind[1];qs=shuffle([].concat.apply([],schOf(n).map(schQs))).slice(0,20);limit=20*60;title=sg(['اختبار','Exam','Examen'])+' — '+sg(SCHTRI[n-1].t);
   }else if(kind==='rv'){
     qs=schReview();if(!qs.length){toast(sg(['لا أخطاء مسجلة بعد، ابدأ باختبار أولًا.','No mistakes recorded yet.','Aucune erreur enregistrée.']));return}title=sg(['مراجعة أخطائي','My mistakes review','Révision de mes erreurs']);
   }else{
@@ -103,11 +104,11 @@ function renderSchQ(){
   let h='<div class="ltop"><button class="xbtn" data-sc="quit" aria-label="'+esc(sg(['خروج','Exit','Quitter']))+'">'+IC.x+'</button>'+
    '<div class="bar" role="progressbar" aria-valuenow="'+pct+'"><i style="width:'+pct+'%"></i></div>'+
    (x.limit?'<div class="chip" style="min-width:64px;justify-content:center"><span id="sxclock">'+schClock(x.left)+'</span></div>':'<div class="chip"><span>'+(x.i+1)+'/'+x.qs.length+'</span></div>')+'</div>'+
-   '<div class="lmain"><small class="muted">'+esc(x.title)+' — '+(x.i+1)+'/'+x.qs.length+'</small><h2 class="qtext">'+esc(q.q)+'</h2><div class="opts">'+
+   '<div class="lmain"><small class="muted">'+esc(trs(x.title))+' — '+(x.i+1)+'/'+x.qs.length+'</small><h2 class="qtext">'+esc(trs(q.q))+'</h2><div class="opts">'+
    q.opts.map(function(o,i){
      let c='';
      if(x.checked){if(o===q.c)c=' right';else if(i===x.sel)c=' wrong'}else if(i===x.sel)c=' sel';
-     return '<button class="opt'+c+'" data-sc="opt:'+i+'" '+(x.checked?'disabled':'')+'><span class="k">'+(i+1)+'</span><span>'+esc(o)+'</span></button>'}).join('')+'</div></div>';
+     return '<button class="opt'+c+'" data-sc="opt:'+i+'" '+(x.checked?'disabled':'')+'><span class="k">'+(i+1)+'</span><span>'+esc(trs(o))+'</span></button>'}).join('')+'</div></div>';
   if(!x.checked)h+='<div class="lfoot"><div class="in"><button class="btn" data-sc="check" '+(x.sel===null?'disabled':'')+'>'+esc(sg(['تحقق','Check','Vérifier']))+'</button></div></div>';
   else{
     const ok=q.opts[x.sel]===q.c;
@@ -129,16 +130,16 @@ function schFinish(){
   const wl={};x.wrong.forEach(function(w){wl[w.l]=1});
   let es=[];
   if(x.kind==='f')es=shuffle(SCH).slice(0,4);else if(/^t[123]$/.test(x.kind))es=shuffle(schOf(+x.kind[1])).slice(0,3);else{const l=schLes(x.kind);if(l)es=[l]}
-  let h='<div class="ltop"><button class="xbtn" data-act="leave" aria-label="'+esc(sg(['إغلاق','Close','Fermer']))+'">'+IC.x+'</button><h2 style="flex:1;font-size:1.1rem">'+esc(x.title)+'</h2></div><div class="lmain">'+
+  let h='<div class="ltop"><button class="xbtn" data-act="leave" aria-label="'+esc(sg(['إغلاق','Close','Fermer']))+'">'+IC.x+'</button><h2 style="flex:1;font-size:1.1rem">'+esc(trs(x.title))+'</h2></div><div class="lmain">'+
    '<div class="card" style="text-align:center;display:grid;gap:6px"><div style="display:grid;place-items:center">'+hoopoe(mood,84)+'</div>'+
    '<div class="bigs">'+schFmt(sc)+' / 20</div><b>'+esc(lab)+'</b><small class="muted">'+esc(sg(['إجابات صحيحة','Correct answers','Bonnes réponses']))+': '+x.ok+' / '+tot+(answered<tot?' ('+esc(sg(['لم تُجب عن الباقي','unanswered left blank','sans réponse']))+')':'')+'</small></div>';
   if(x.wrong.length){
     h+='<section class="sec"><h2>'+esc(sg(['أخطاؤك','Your mistakes','Vos erreurs']))+'</h2>'+x.wrong.map(function(w){
-      return '<div class="card sch-sec"><p><b>'+esc(w.q)+'</b></p><p class="sch-bad">✗ '+esc(w.a)+'</p><p class="sch-good">✓ '+esc(w.c)+'</p>'+(w.n?'<p class="muted">'+esc(w.n)+'</p>':'')+'</div>'}).join('')+
-     '<h3 style="margin:10px 0 4px">'+esc(sg(['راجع هذه الدروس','Review these lessons','Révisez ces leçons']))+'</h3><div style="display:grid;gap:8px">'+Object.keys(wl).map(function(id){const l=schLes(id);return '<button class="card sch-it" data-sc="open:'+id+'"><span class="sch-n">↺</span><span class="sch-t">'+esc(l.t)+'</span></button>'}).join('')+'</div></section>';
+      return '<div class="card sch-sec"><p><b>'+esc(trs(w.q))+'</b></p><p class="sch-bad">✗ '+esc(trs(w.a))+'</p><p class="sch-good">✓ '+esc(trs(w.c))+'</p>'+(w.n?'<p class="muted">'+esc(trs(w.n))+'</p>':'')+'</div>'}).join('')+
+     '<h3 style="margin:10px 0 4px">'+esc(sg(['راجع هذه الدروس','Review these lessons','Révisez ces leçons']))+'</h3><div style="display:grid;gap:8px">'+Object.keys(wl).map(function(id){const l=schLes(id);return '<button class="card sch-it" data-sc="open:'+id+'"><span class="sch-n">↺</span><span class="sch-t">'+esc(trs(l.t))+'</span></button>'}).join('')+'</div></section>';
   }
   if(es.length)h+='<section class="sec"><h2>'+esc(sg(['أسئلة مقالية للتدرب','Essay practice','Questions rédactionnelles']))+'</h2>'+es.map(function(l){
-    return '<details class="card sch-sec"><summary><b>'+esc(l.es[0])+'</b></summary><p>'+esc(l.es[1])+'</p></details>'}).join('')+'</section>';
+    return '<details class="card sch-sec"><summary><b>'+esc(trs(l.es[0]))+'</b></summary><p>'+esc(trs(l.es[1]))+'</p></details>'}).join('')+'</section>';
   h+='<div style="display:grid;gap:8px;margin:12px 0 90px"><button class="btn" data-sc="again">'+esc(sg(['أعد الاختبار','Retake','Recommencer']))+'</button><button class="btn ghost" data-act="leave">'+esc(sg(['العودة إلى المدرسية','Back to School','Retour']))+'</button></div></div>';
   $('#lesson').innerHTML=h;
 }

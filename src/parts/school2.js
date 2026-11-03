@@ -56,10 +56,10 @@
     }else{
       const s=schS();let h='<section class="sec"><h2>'+esc(sg(['مراجعة الأخطاء','Mistakes review','Révision des erreurs']))+'</h2><div class="card" style="display:grid;gap:8px"><p class="muted" style="margin:0">'+esc(sg(['10 أسئلة من التي أخطأت فيها أكثر.','10 questions you missed the most.','10 questions où vous avez le plus échoué.']))+'</p><button class="btn" data-sc="ex:rv">'+esc(sg(['ابدأ المراجعة السريعة','Start quick review','Commencer']))+'</button></div></section>';
       const cs=[];
-      [1,2,3].forEach(function(n){if(s['bt'+n]>=10)cs.push(['t'+n,SCHTRI[n-1].t[0]])});
+      [1,2,3].forEach(function(n){if(s['bt'+n]>=10)cs.push(['t'+n,sg(SCHTRI[n-1].t)])});
       if(s.bf>=10)cs.push(['f','السنة الدراسية كاملة']);
       h+='<section class="sec"><h2>'+esc(sg(['الشهادات','Certificates','Certificats']))+'</h2><div class="card" style="display:grid;gap:8px">'+(cs.length?cs.map(function(c){return '<button class="btn ghost" data-sc2="cert:'+c[0]+'">🎓 '+esc(sg(['شهادة','Certificate','Certificat']))+' — '+esc(c[1])+'</button>'}).join(''):'<p class="muted" style="margin:0">'+esc(sg(['انجح (10/20 فأكثر) في اختبار فصل أو في الاختبار الشامل لتحصل على شهادة.','Score 10/20 or more in a term or the final exam to earn a certificate.','Obtenez 10/20 ou plus à un examen de trimestre ou final pour un certificat.']))+'</p>')+'</div></section>';
-      if(!onClaude()){h+='<section class="sec"><h2>'+esc(sg(['ملخصات PDF','PDF summaries','Résumés PDF']))+'</h2><div class="card" style="display:grid;gap:8px">'+[1,2,3].map(function(n){return '<a class="btn ghost" style="text-align:center;text-decoration:none" href="pdf/school-t'+n+'.pdf" target="_blank" rel="noopener">'+esc(SCHTRI[n-1].t[0])+' — PDF</a>'}).join('')+'</div></section>'}
+      if(!onClaude()){h+='<section class="sec"><h2>'+esc(sg(['ملخصات PDF','PDF summaries','Résumés PDF']))+'</h2><div class="card" style="display:grid;gap:8px">'+[1,2,3].map(function(n){return '<a class="btn ghost" style="text-align:center;text-decoration:none" href="pdf/school-t'+n+'.pdf" target="_blank" rel="noopener">'+esc(sg(SCHTRI[n-1].t))+' — PDF</a>'}).join('')+'</div></section>'}
       root.insertAdjacentHTML('beforeend',h);
     }
   };
@@ -75,7 +75,7 @@
       (l.ev||[]).forEach(function(x){if(!sn&&norm(x[1]).indexOf(q)>=0)sn=x[1]});
       if(sn)hits.push([l,sn]);
     });
-    r.innerHTML=hits.length?hits.map(function(h){return '<button class="card sch-it" data-sc="open:'+h[0].id+'"><span class="sch-n">'+h[0].id.slice(1)+'</span><span class="sch-t">'+esc(h[0].t)+'<br><small class="muted" style="font-weight:400">'+esc(h[1].slice(0,90))+'</small></span></button>'}).join(''):'<p class="muted">'+esc(sg(['لا نتائج.','No results.','Aucun résultat.']))+'</p>';
+    r.innerHTML=hits.length?hits.map(function(h){return '<button class="card sch-it" data-sc="open:'+h[0].id+'"><span class="sch-n">'+h[0].id.slice(1)+'</span><span class="sch-t">'+esc(trs(h[0].t))+'<br><small class="muted" style="font-weight:400">'+esc(h[1].slice(0,90))+'</small></span></button>'}).join(''):'<p class="muted">'+esc(sg(['لا نتائج.','No results.','Aucun résultat.']))+'</p>';
   });
   /* احتفال */
   const _fin=schFinish;
@@ -90,7 +90,7 @@
     x.strokeStyle='#0e7a53';x.lineWidth=14;x.strokeRect(30,30,1340,930);x.strokeStyle='#c8a24a';x.lineWidth=4;x.strokeRect(58,58,1284,874);
     x.textAlign='center';x.direction='rtl';
     const s=schS(),nm=(S.prof&&S.prof.name)||'الطالب',n=kind==='f'?null:+kind[1];
-    const sc=kind==='f'?s.bf:s['bt'+n],what=kind==='f'?'السنة الدراسية كاملة':SCHTRI[n-1].t[0];
+    const sc=kind==='f'?s.bf:s['bt'+n],what=kind==='f'?'السنة الدراسية كاملة':sg(SCHTRI[n-1].t);
     x.fillStyle='#0e7a53';x.font='700 70px serif';x.fillText('شهادة إتمام',700,190);
     x.fillStyle='#5a4a1c';x.font='36px serif';x.fillText('تشهد منصة «نور الفرقان» بأن',700,290);
     x.fillStyle='#0b3d2e';x.font='700 88px serif';x.fillText(nm,700,420);
