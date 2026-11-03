@@ -552,8 +552,10 @@ button.sch-it{display:flex;align-items:center;gap:12px;width:100%;text-align:sta
 /* دخول الصفحات والشاشات */
 @keyframes pgin{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
 @keyframes ovin{from{opacity:0;transform:translateY(22px) scale(.985)}to{opacity:1;transform:none}}
-#page.pgin>*{animation:pgin .38s cubic-bezier(.2,.7,.2,1) both}
-#page.pgin>*:nth-child(2){animation-delay:.04s}#page.pgin>*:nth-child(3){animation-delay:.08s}#page.pgin>*:nth-child(4){animation-delay:.12s}#page.pgin>*:nth-child(n+5){animation-delay:.16s}
+#page.pgin>*{animation:pgin .26s cubic-bezier(.2,.7,.2,1) both}
+#page.pgin>*:nth-child(2){animation-delay:.02s}#page.pgin>*:nth-child(3){animation-delay:.04s}#page.pgin>*:nth-child(n+4){animation-delay:.06s}
+#page>.sec{content-visibility:auto;contain-intrinsic-size:auto 320px}
+#page>.card{contain:layout paint}
 #lesson:not([hidden]){animation:ovin .3s cubic-bezier(.2,.7,.2,1)}
 html.rm *,html.rm *::before,html.rm *::after{animation-duration:.01ms!important;animation-delay:0ms!important;transition-duration:.01ms!important;scroll-behavior:auto!important}
 @media (prefers-reduced-motion:reduce){#page.pgin>*,#lesson:not([hidden]){animation:none}html{scroll-behavior:auto}}
