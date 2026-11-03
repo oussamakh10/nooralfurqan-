@@ -1,7 +1,22 @@
 <!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><link rel="manifest" href="manifest.json"><meta name="theme-color" content="#0f3b3a"><link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png"><link rel="apple-touch-icon" href="apple-touch-icon.png"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="mobile-web-app-capable" content="yes"><script>window.__dip=null;addEventListener("beforeinstallprompt",function(e){e.preventDefault();window.__dip=e});</script></head><body>
 <title>نور الفرقان</title>
 <meta name="claude:viewport-fit-sides" content="cover">
-<link rel="preload" href="fonts/tajawal-400.woff" as="font" type="font/woff" crossorigin><link rel="preload" href="fonts/tajawal-700.woff" as="font" type="font/woff" crossorigin><style>@font-face{font-family:'Tajawal';font-style:normal;font-weight:400;font-display:swap;src:url(fonts/tajawal-400.woff) format('woff')}@font-face{font-family:'Tajawal';font-style:normal;font-weight:500;font-display:swap;src:url(fonts/tajawal-500.woff) format('woff')}@font-face{font-family:'Tajawal';font-style:normal;font-weight:700;font-display:swap;src:url(fonts/tajawal-700.woff) format('woff')}@font-face{font-family:'Tajawal';font-style:normal;font-weight:800;font-display:swap;src:url(fonts/tajawal-800.woff) format('woff')}@font-face{font-family:'Amiri Quran';font-style:normal;font-weight:400;font-display:swap;src:url(fonts/amiriquran-400.woff) format('woff')}</style>
+<link rel="preload" href="fonts/tajawal-400.woff" as="font" type="font/woff" crossorigin><link rel="preload" href="fonts/tajawal-700.woff" as="font" type="font/woff" crossorigin><style>@font-face{font-family:'Tajawal';font-style:normal;font-weight:400;font-display:swap;src:url(fonts/tajawal-400.woff) format('woff')}@font-face{font-family:'Tajawal';font-style:normal;font-weight:500;font-display:swap;src:url(fonts/tajawal-500.woff) format('woff')}@font-face{font-family:'Tajawal';font-style:normal;font-weight:700;font-display:swap;src:url(fonts/tajawal-700.woff) format('woff')}@font-face{font-family:'Tajawal';font-style:normal;font-weight:800;font-display:swap;src:url(fonts/tajawal-800.woff) format('woff')}@font-face{font-family:'Amiri Quran';font-style:normal;font-weight:400;font-display:swap;src:url(fonts/amiriquran-400.woff) format('woff')}/* شاشة التعريف (داخل #cele): تخطيط عمودي متوازن، ومسافات واضحة بين الأزرار، والهدهد في المنتصف */
+#cele .obx{width:min(100%,420px);display:grid;gap:14px;justify-items:center;text-align:center;margin-inline:auto}
+#cele .obtop{display:grid;justify-items:center;gap:10px}
+#cele .obowl{display:grid;place-items:center;min-height:96px}
+#cele .obdots{display:flex;gap:6px;justify-content:center}
+#cele .obdots i{width:8px;height:8px;border-radius:50%;background:var(--line);opacity:.6}
+#cele .obdots i.on{background:var(--accent);opacity:1}
+#cele .obbub{line-height:1.9;text-align:center;min-height:0;width:100%}
+#cele .obbody{width:100%;display:grid;gap:12px;justify-items:stretch}
+#cele .obbody .opts{width:100%}
+#cele .obbody .muted{margin:0}
+#cele .obfoot{display:grid;gap:14px;width:100%;margin-top:4px}
+#cele .obfoot .btn{min-height:52px;margin:0}
+#cele .obfoot .btn.ghost{min-height:48px}
+
+</style>
 <style>
 /* Layout: sticky top bar + one scrolling page + fixed bottom tab bar (6 tabs) + mini audio player; lessons and games open as full-screen overlays. Background: fixed khatam (8-point star) lattice in green, black and pale gold. */
 :root{

@@ -668,3 +668,18 @@ body[data-tab=ach]{--tabtint:#D9A21B}
 /* دخول البطاقات الأولى: صعود قصير بدل الظهور المفاجئ */
 @keyframes sheetin{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:none}}
 #lgm:not([hidden]) .bc-card,#cele:not([hidden])>.card,#cele:not([hidden])>.obx{animation:sheetin .32s cubic-bezier(.2,.8,.2,1) both}
+
+/* شاشة التعريف (داخل #cele): تخطيط عمودي متوازن، ومسافات واضحة بين الأزرار، والهدهد في المنتصف */
+#cele .obx{width:min(100%,420px);display:grid;gap:14px;justify-items:center;text-align:center;margin-inline:auto}
+#cele .obtop{display:grid;justify-items:center;gap:10px}
+#cele .obowl{display:grid;place-items:center;min-height:96px}
+#cele .obdots{display:flex;gap:6px;justify-content:center}
+#cele .obdots i{width:8px;height:8px;border-radius:50%;background:var(--line);opacity:.6}
+#cele .obdots i.on{background:var(--accent);opacity:1}
+#cele .obbub{line-height:1.9;text-align:center;min-height:0;width:100%}
+#cele .obbody{width:100%;display:grid;gap:12px;justify-items:stretch}
+#cele .obbody .opts{width:100%}
+#cele .obbody .muted{margin:0}
+#cele .obfoot{display:grid;gap:14px;width:100%;margin-top:4px}
+#cele .obfoot .btn{min-height:52px;margin:0}
+#cele .obfoot .btn.ghost{min-height:48px}
