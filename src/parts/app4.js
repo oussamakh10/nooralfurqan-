@@ -37,7 +37,7 @@ const BADGES=[
 ];
 function hasSum(n){return sumDays(S.has.d,n)}
 function pageAch(){
-  if(!doneN()){$('#page').innerHTML='<div class="wrap-pad">'+emptyBox('happy','إنجازاتك تبدأ من هنا','أكمل أول مرحلة في التعلّم لتبدأ سلسلتك ويُسجَّل أول إنجاز. كل خطوة تُحسب.','<button class="btn gold sm" data-go="learn">ابدأ التعلّم</button>')+'</div>'+accountSec().replace('style="margin-top:16px"','');return}
+  if(!doneN()){$('#page').innerHTML='<div class="wrap-pad">'+emptyBox('art:mushaf','إنجازاتك تبدأ من هنا','أكمل أول مرحلة في التعلّم لتبدأ سلسلتك ويُسجَّل أول إنجاز. كل خطوة تُحسب.','<button class="btn gold sm" data-go="learn">ابدأ التعلّم</button>')+'</div>'+accountSec().replace('style="margin-top:16px"','');return}
   const ds=dayState(),acc=S.q?Math.round(S.qc/S.q*100):0;
   const AR=['ح','ن','ث','ر','خ','ج','س'];
   let wk='',bars='',mx=1;const vals=[];
@@ -300,7 +300,12 @@ function accountSec(){
    '<div class="aact"><button class="btn sm ghost" data-act="prof-edit">تعديل المعلومات</button><button class="btn sm ghost" data-act="acct-link">'+(linked?'مزامنة الآن':'ربط الحساب')+'</button></div></div></section>';
 }
 
-/* حالة فارغة مصمّمة مع الهدهد */
+function sceneArt(n){
+  const g='fill="none" stroke="var(--gold)" stroke-width="3" stroke-linejoin="round" stroke-linecap="round"';
+  if(n==='book')return '<svg width="96" height="96" viewBox="0 0 120 120" aria-hidden="true"><path d="M20 42Q40 33 60 44Q80 33 100 42V90Q80 81 60 92Q40 81 20 90Z" '+g+'/><path d="M60 44V92" '+g+'/></svg>';
+  return '<svg width="96" height="96" viewBox="0 0 120 120" aria-hidden="true"><path d="M24 26H58Q62 26 62 30V100Q62 96 58 96H24Z" '+g+'/><path d="M96 26H62Q58 26 58 30V100Q58 96 62 96H96Z" '+g+'/><circle cx="92" cy="20" r="11" fill="var(--gold)"/><circle cx="97" cy="17" r="9" fill="var(--surface,#0d2a1f)"/></svg>';
+}
+/* حالة فارغة مصمّمة مع الهدهد أو رسم */
 function emptyBox(mood,title,text,action){
-  return '<div class="emptybox" role="status"><div class="emp-ico">'+hoopoe(mood||'happy',96)+'</div><b>'+esc(title)+'</b><p>'+esc(text)+'</p>'+(action||'')+'</div>';
+  return '<div class="emptybox" role="status"><div class="emp-ico">'+(String(mood||'').indexOf('art:')===0?sceneArt(mood.slice(4)):hoopoe(mood||'happy',96))+'</div><b>'+esc(title)+'</b><p>'+esc(text)+'</p>'+(action||'')+'</div>';
 }

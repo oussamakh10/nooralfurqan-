@@ -16,7 +16,7 @@ function fillList(){
     if(RV.g>=0&&typeof HG!=='undefined'&&HG[RV.g]&&HG[RV.g][1].indexOf(i+1)<0)return;
     h+='<button class="srow" data-surah="'+(i+1)+'"><span class="num">'+N(i+1)+'</span><span><b>'+n+'</b><small>'+N(AYC[i])+' آية</small></span></button>';
   });
-  $('#rlist').innerHTML=h||emptyBox('sad','لا توجد سورة بهذا الاسم','جرّب رقم السورة مثل 2، أو جزءًا من اسمها.');
+  $('#rlist').innerHTML=h||emptyBox('art:book','لا توجد سورة بهذا الاسم','جرّب رقم السورة مثل 2، أو جزءًا من اسمها.');
 }
 document.addEventListener('click',function(e){const b=e.target.closest&&e.target.closest('[data-rg]');if(!b)return;RV.g=+b.dataset.rg;pageRead()});
 let EN=null;
