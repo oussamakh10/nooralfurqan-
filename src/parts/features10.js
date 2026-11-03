@@ -122,6 +122,9 @@
   },true);
   /* إعادة رسم الرئيسية بعد تحميل كل الإضافات حتى تظهر مهمة اليوم من أول فتح */
   try{if(typeof TAB!=='undefined'&&TAB==='home')renderPage()}catch(e){}
+  /* تذكير يومي بإشعار المتصفح إن سمح المستخدم، ولا يُرسل إن كان قد تعلّم اليوم */
+  function remCheck(){try{if(!S.rem||!('Notification' in window)||Notification.permission!=='granted')return;const p=S.rem.split(':'),t=new Date();t.setHours(+p[0],+p[1]||0,0,0);const d=dayState().p;if(new Date()>=t&&S.remd!==today()&&!(d.lesson||d.q||d.ayah)){S.remd=today();save();const o={body:'وردك اليوم بانتظارك، درس قصير أو 10 أسئلة تكفي',icon:'icon-192.png',tag:'daily'};if(navigator.serviceWorker&&navigator.serviceWorker.ready){navigator.serviceWorker.ready.then(function(r){return r.showNotification('نور الفرقان',o)}).catch(function(){try{new Notification('نور الفرقان',o)}catch(e){}})}else{new Notification('نور الفرقان',o)}}}catch(e){}}
+  remCheck();setInterval(remCheck,60000);
   document.addEventListener('click',function(e){
     const b=e.target.closest('[data-f10]');if(!b)return;
     e.stopPropagation();

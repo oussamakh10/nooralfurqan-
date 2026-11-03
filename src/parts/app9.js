@@ -64,7 +64,7 @@ document.addEventListener('click',function(e){
   if(a==='ob-link'){return linkAccount().then(function(ok){const e=$('#obacct');if(e)e.textContent=ok?'تم الربط ✓':'لم يتم الربط'})}
   if(a==='prof-edit'){return openOnboard()}
   if(a==='acct-link'){return linkAccount().then(function(){openSettings()})}
-  if(a==='rem-save'){const v=$('#remtime').value;if(v){S.rem=v;save();toast('سيظهر تنبيه في الرئيسية بعد '+toAr(v)+' إن لم تسجّل نشاطًا')}return}
+  if(a==='rem-save'){const v=$('#remtime').value;if(v){S.rem=v;S.remd=null;save();const hasN='Notification' in window;if(hasN&&Notification.permission==='granted'){toast('تم تفعيل التذكير اليومي عند '+toAr(v))}else if(hasN&&Notification.permission==='default'){Notification.requestPermission().then(function(r){toast(r==='granted'?'تم تفعيل التذكير اليومي عند '+toAr(v):'سيظهر تنبيه في الرئيسية بعد '+toAr(v)+' إن لم تسجّل نشاطًا')}).catch(function(){})}else{toast('سيظهر تنبيه في الرئيسية بعد '+toAr(v)+' إن لم تسجّل نشاطًا')}}return}
   if(a==='rem-ics'){const v=($('#remtime').value||'20:00');S.rem=v;save();return dlSave('noor-alfurqan-reminder.ics',reminderICS(v),'text/calendar')}
   if(a==='guide-open')return openGuide();
   if(a==='shareapp')return shareApp();

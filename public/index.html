@@ -7652,7 +7652,7 @@ document.addEventListener('click',function(e){
   if(a==='ob-link'){return linkAccount().then(function(ok){const e=$('#obacct');if(e)e.textContent=ok?'تم الربط ✓':'لم يتم الربط'})}
   if(a==='prof-edit'){return openOnboard()}
   if(a==='acct-link'){return linkAccount().then(function(){openSettings()})}
-  if(a==='rem-save'){const v=$('#remtime').value;if(v){S.rem=v;save();toast('سيظهر تنبيه في الرئيسية بعد '+toAr(v)+' إن لم تسجّل نشاطًا')}return}
+  if(a==='rem-save'){const v=$('#remtime').value;if(v){S.rem=v;S.remd=null;save();const hasN='Notification' in window;if(hasN&&Notification.permission==='granted'){toast('تم تفعيل التذكير اليومي عند '+toAr(v))}else if(hasN&&Notification.permission==='default'){Notification.requestPermission().then(function(r){toast(r==='granted'?'تم تفعيل التذكير اليومي عند '+toAr(v):'سيظهر تنبيه في الرئيسية بعد '+toAr(v)+' إن لم تسجّل نشاطًا')}).catch(function(){})}else{toast('سيظهر تنبيه في الرئيسية بعد '+toAr(v)+' إن لم تسجّل نشاطًا')}}return}
   if(a==='rem-ics'){const v=($('#remtime').value||'20:00');S.rem=v;save();return dlSave('noor-alfurqan-reminder.ics',reminderICS(v),'text/calendar')}
   if(a==='guide-open')return openGuide();
   if(a==='shareapp')return shareApp();
@@ -8787,6 +8787,9 @@ function icoSvg(e){
   },true);
   /* إعادة رسم الرئيسية بعد تحميل كل الإضافات حتى تظهر مهمة اليوم من أول فتح */
   try{if(typeof TAB!=='undefined'&&TAB==='home')renderPage()}catch(e){}
+  /* تذكير يومي بإشعار المتصفح إن سمح المستخدم، ولا يُرسل إن كان قد تعلّم اليوم */
+  function remCheck(){try{if(!S.rem||!('Notification' in window)||Notification.permission!=='granted')return;const p=S.rem.split(':'),t=new Date();t.setHours(+p[0],+p[1]||0,0,0);const d=dayState().p;if(new Date()>=t&&S.remd!==today()&&!(d.lesson||d.q||d.ayah)){S.remd=today();save();const o={body:'وردك اليوم بانتظارك، درس قصير أو 10 أسئلة تكفي',icon:'icon-192.png',tag:'daily'};if(navigator.serviceWorker&&navigator.serviceWorker.ready){navigator.serviceWorker.ready.then(function(r){return r.showNotification('نور الفرقان',o)}).catch(function(){try{new Notification('نور الفرقان',o)}catch(e){}})}else{new Notification('نور الفرقان',o)}}}catch(e){}}
+  remCheck();setInterval(remCheck,60000);
   document.addEventListener('click',function(e){
     const b=e.target.closest('[data-f10]');if(!b)return;
     e.stopPropagation();
