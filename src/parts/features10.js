@@ -40,7 +40,7 @@
   function mDone(){return mProg().every(function(x){return x.n>=x.max})}
   function checkMission(){
     try{
-      if(S.mdone!==today()&&mDone()){S.mdone=today();save();addXP(20);try{SND.win()}catch(e){}toast('أتممت مهمة اليوم: +20 نقاط');}
+      if(S.mdone!==today()&&mDone()){S.mdone=today();save();addXP(20);try{SND.win()}catch(e){}try{navigator.vibrate&&navigator.vibrate([20,40,20])}catch(e){}toast('أتممت مهمة اليوم: +20 نقاط');}
     }catch(e){}
   }
   const _act=act;
