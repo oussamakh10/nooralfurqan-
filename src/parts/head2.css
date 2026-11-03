@@ -22,7 +22,7 @@
 @media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .plus{color:var(--accent)}}
 .plus svg{display:block}
 @keyframes plus{0%{opacity:0;transform:translateY(20px) scale(.8)}15%{opacity:1;transform:translateY(0) scale(1.05)}80%{opacity:1}100%{opacity:0;transform:translateY(-70px)}}
-#cele{position:fixed;inset:0;z-index:70;background:color-mix(in srgb,var(--bg) 72%,transparent);backdrop-filter:blur(4px);display:grid;place-items:center;padding:16px}
+#cele{position:fixed;inset:0;z-index:70;background:color-mix(in srgb,var(--bg) 90%,transparent);display:grid;place-items:center;padding:16px}
 #cele[hidden]{display:none}
 #cele .card{max-width:380px;width:100%;display:grid;gap:10px;text-align:center;border-color:var(--gold)}
 .iconbtn.sm{padding:4px 8px}
@@ -238,13 +238,13 @@ button.card:active,a.card:active{transform:scale(.985)}
 .tag{min-height:40px}
 .chip{min-height:38px}
 .iconbtn,.sharebtn{min-width:42px;min-height:42px}
-.top{backdrop-filter:blur(14px) saturate(1.25);-webkit-backdrop-filter:blur(14px) saturate(1.25)}
-#nav{background:color-mix(in srgb,var(--surface) 90%,transparent);backdrop-filter:blur(16px) saturate(1.3);-webkit-backdrop-filter:blur(16px) saturate(1.3);box-shadow:0 -10px 24px -14px rgba(0,0,0,.4);border-radius:22px 22px 0 0}
+.top{}
+#nav{background:color-mix(in srgb,var(--surface) 97%,transparent);box-shadow:0 -10px 24px -14px rgba(0,0,0,.4);border-radius:22px 22px 0 0}
 #nav button{min-height:54px;justify-content:center;transition:background-color .2s,color .2s,transform .15s;font-size:.7rem}
 #nav button svg{transition:transform .2s}
 #nav button[aria-current="page"] svg{transform:translateY(-1px) scale(1.12)}
 #nav button:active{transform:scale(.92)}
-.mini{box-shadow:0 12px 28px -12px rgba(0,0,0,.6);backdrop-filter:blur(8px)}
+.mini{box-shadow:0 12px 28px -12px rgba(0,0,0,.6)}
 /* قائمة المدرسية وتمارين الباك */
 button.sch-it{display:flex;align-items:center;gap:12px;width:100%;text-align:start;padding:10px 14px;font:inherit;color:inherit}
 .sch-n{flex:none;width:38px;height:38px;border-radius:12px;display:grid;place-items:center;font-weight:800;background:var(--accent-soft);color:var(--accent);border:2px solid var(--line)}
@@ -261,7 +261,7 @@ html.rm *,html.rm *::before,html.rm *::after{animation-duration:.01ms!important;
 .dgt{display:grid;gap:2px}.dgt b,.dgt small{display:block}
 .opts2{gap:8px}
 #lesson{background:radial-gradient(110% 40% at 50% 0,color-mix(in srgb,var(--accent,#0F7A4C) 16%,transparent),transparent 70%),var(--bg)}
-.lfoot{backdrop-filter:blur(12px);background:color-mix(in srgb,var(--bg) 88%,transparent)}
+.lfoot{background:color-mix(in srgb,var(--bg) 97%,transparent)}
 .ltop .bar{height:16px;border-radius:10px;overflow:hidden}.ltop .bar i{transition:width .5s cubic-bezier(.2,.7,.2,1)}
 .shi svg{width:48px;height:48px}.shi:has(svg){background:transparent}
 /* polish v6 */
@@ -405,7 +405,7 @@ html[data-tab] #page::before,html[data-tab] #page::after{--t1:color-mix(in srgb,
 .top>*{position:relative;z-index:1}
 .brand{color:#FFE9A0;text-shadow:0 2px 8px rgba(0,0,0,.35);letter-spacing:.3px}
 .brand span{background:linear-gradient(100deg,#FFE9A0,#F6C95E 60%,#FFE9A0);-webkit-background-clip:text;background-clip:text;color:transparent}
-.top .chip{background:rgba(255,255,255,.09);border:1px solid rgba(230,196,115,.38);color:#FFF1C2;box-shadow:inset 0 1px 0 rgba(255,255,255,.12);backdrop-filter:blur(6px);min-height:36px}
+.top .chip{background:rgba(255,255,255,.09);border:1px solid rgba(230,196,115,.38);color:#FFF1C2;box-shadow:inset 0 1px 0 rgba(255,255,255,.12);min-height:36px}
 .top .chip:has(svg+span){font-weight:800}
 .top .shopchip{background:linear-gradient(135deg,rgba(230,196,115,.28),rgba(230,196,115,.12));border-color:rgba(230,196,115,.65)}
 .top .shopchip svg{color:#FFE9A0}
@@ -583,7 +583,7 @@ html[data-season="jumua"] .seasonbar{background:linear-gradient(135deg,var(--acc
 #lgm .bc-t{font:800 1.2rem var(--display);margin-bottom:6px}
 #lgm p{margin:0 0 12px;line-height:1.7}
 /* ===== رسالة الدعاء (نفس هيكل شاشة الترحيب) ===== */
-#duam{position:fixed;inset:0;z-index:99;background:color-mix(in srgb,var(--bg) 72%,transparent);backdrop-filter:blur(4px);display:grid;place-items:center;padding:16px;overflow:auto}
+#duam{position:fixed;inset:0;z-index:99;background:color-mix(in srgb,var(--bg) 90%,transparent);display:grid;place-items:center;padding:16px;overflow:auto}
 #duam[hidden]{display:none}
 #duam .obx{width:min(100%,420px);display:grid;gap:12px}
 #duam .obbub{line-height:1.95;min-height:9em}
