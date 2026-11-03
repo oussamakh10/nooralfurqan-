@@ -1,10 +1,12 @@
 /* ===== الامتثال القانوني: موافقة أولى، تقييد السحابة بالعمر، روابط الوثائق ===== */
 (function(){
-  const CLOUD_AGE=13;
+  /* سن الميزات السحابية: 15 في أوروبا (مقتضى RGPD ومعظم دولها)، و13 في باقي المناطق (العالم العربي وغيره) */
+  function regionOf(){try{const z=Intl.DateTimeFormat().resolvedOptions().timeZone||'';if(/^Europe\//.test(z))return 'eu'}catch(e){}return 'other'}
+  window.cloudAge=function(){return regionOf()==='eu'?15:13};
   function ageNum(){const a=S.prof&&S.prof.age;if(typeof a==='number')return a;if(a==='adult'||a==='senior')return 99;return 0}
-  window.cloudOK=function(){return !S.kids&&ageNum()>=CLOUD_AGE&&!!S.consent};
+  window.cloudOK=function(){return !S.kids&&ageNum()>=cloudAge()&&!!S.consent};
   function why(){
-    if(S.kids||(ageNum()&&ageNum()<CLOUD_AGE))return g3(['هذه الميزة لمن بلغ 13 سنة فأكثر حفاظًا على خصوصية الصغار.','This feature is for ages 13+ to protect children’s privacy.','Cette fonction est réservée aux 13 ans et plus pour protéger la vie privée des enfants.']);
+    if(S.kids||(ageNum()&&ageNum()<cloudAge()))return g3(['هذه الميزة لمن بلغ '+cloudAge()+' سنة فأكثر حفاظًا على خصوصية الصغار.','This feature is for ages '+cloudAge()+'+ to protect children’s privacy.','Cette fonction est réservée aux 13 ans et plus pour protéger la vie privée des enfants.']);
     if(!S.consent)return g3(['وافق أولًا على سياسة الخصوصية من الإعدادات.','Please accept the privacy policy in Settings first.','Acceptez d’abord la politique de confidentialité dans les Réglages.']);
     return g3(['أدخل عمرك من «حسابي وبياناتي» لتفعيل هذه الميزة.','Enter your age under “My account & data” to enable this.','Indiquez votre âge dans « Mon compte et mes données » pour activer cela.']);
   }
@@ -21,7 +23,7 @@
     let m=document.getElementById('lgm');
     if(!m){m=document.createElement('div');m.id='lgm';m.setAttribute('role','dialog');m.setAttribute('aria-modal','true');document.body.appendChild(m)}
     m.innerHTML='<div class="bc-card"><div class="bc-t">'+esc(g3(['خصوصيتك أولًا','Your privacy first','Votre vie privée d’abord']))+'</div>'+
-      '<p>'+esc(g3(['تقدّمك يُحفظ على جهازك فقط، بلا تتبّع ولا إعلانات مخصّصة. الدخول بجوجل والمتصدرون اختياريان لمن بلغ 13 سنة. الأطفال دون 13 سنة يستعملون وضع الأطفال دون أي بيانات سحابية. بالمتابعة تقرّ بقراءة الوثائق التالية:','Your progress stays on your device only, with no tracking or personalised ads. Google sign-in and leaderboards are optional for ages 13+. Under-13s use kids mode with no cloud data. By continuing you confirm you have read:','Votre progression reste sur votre appareil, sans pistage ni publicité personnalisée. La connexion Google et les classements sont facultatifs dès 13 ans. Les moins de 13 ans utilisent le mode enfant sans données cloud. En continuant, vous confirmez avoir lu :']))+'</p>'+
+      '<p>'+esc(g3(['تقدّمك يُحفظ على جهازك فقط، بلا تتبّع ولا إعلانات مخصّصة. الدخول بجوجل والمتصدرون اختياريان: 13 سنة فأكثر (15 في أوروبا). الأطفال دون 13 سنة يستعملون وضع الأطفال دون أي بيانات سحابية. بالمتابعة تقرّ بقراءة الوثائق التالية:','Your progress stays on your device only, with no tracking or personalised ads. Google sign-in and leaderboards are optional: age 13+ (15+ in Europe). Under-13s use kids mode with no cloud data. By continuing you confirm you have read:','Votre progression reste sur votre appareil, sans pistage ni publicité personnalisée. La connexion Google et les classements sont facultatifs dès 13 ans. Les moins de 13 ans utilisent le mode enfant sans données cloud. En continuant, vous confirmez avoir lu :']))+'</p>'+
       '<p style="font-size:.9rem">'+links()+'</p>'+
       '<div class="hpbtns"><button class="btn" data-lg="ok">'+esc(g3(['أوافق وأتابع','I agree and continue','J’accepte et je continue']))+'</button></div></div>';
     m.hidden=false;
