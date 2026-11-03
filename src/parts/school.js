@@ -20,7 +20,15 @@ function schMk(q){return{q:q.q,opts:q.o?q.o.slice():shuffle([q.c].concat(q.w)),c
 function schScore(ok,tot){return tot?Math.round(ok/tot*40)/2:0}
 function schFmt(x){return String(x).replace(/\.0$/,'')}
 
+/* المدرسية وتمارين الباك موجّهة للطلبة الجزائريين؛ غيرهم يرى تنبيهًا ويضغط «موافق» ليطّلع */
+function schDZ(){const cc=S.prof&&S.prof.cc;if(cc)return cc==='dz';return /Algiers/.test((Intl.DateTimeFormat().resolvedOptions().timeZone)||'')}
+function schNotice(){
+  return '<section class="sec" style="margin-top:16px"><div class="card" style="display:grid;gap:12px;text-align:center"><b>'+esc(sg(['تنبيه','Notice','Remarque']))+'</b>'+
+   '<p class="muted" style="margin:0;line-height:1.8">'+esc(sg(['هذا القسم (المدرسية وتمارين الباك) موجّه أساسًا للطلبة الجزائريين وفق برنامجهم الدراسي. إن كنت من خارج الجزائر فيمكنك الاطلاع عليه بالضغط على «موافق».','This section (school lessons and Bac practice) is designed mainly for Algerian students following their national curriculum. If you are outside Algeria, you can view it by pressing OK.','Cette section (leçons scolaires et exercices du bac) est destinée principalement aux élèves algériens selon leur programme. Si vous êtes hors d’Algérie, vous pouvez la consulter en appuyant sur « D’accord ».']))+'</p>'+
+   '<button class="btn" data-sc="ack">'+esc(sg(['موافق','OK','D’accord']))+'</button></div></section>';
+}
 function pageSchool(){
+  if(!schDZ()&&!(S.schAck)){$('#page').innerHTML=schNotice();return}
   const s=schS(),tot=SCH.length,rd=SCH.filter(function(l){return s['r:'+l.id]}).length;
   let h='<section class="sec" style="margin-top:16px"><h2>'+esc(sg(['المدرسية','School','Section scolaire']))+'</h2>'+
    '<div class="card" style="display:grid;gap:6px"><b>'+esc(sg(['السنة الثالثة ثانوي — العلوم الإسلامية (جميع الشعب)','3rd year secondary — Islamic sciences (all streams)','3e année secondaire — Sciences islamiques (toutes filières)']))+'</b>'+
@@ -156,6 +164,7 @@ function schFinish(){
     const b=e.target.closest('[data-sc]');if(!b||b.disabled)return;
     const v=b.dataset.sc,k=v.split(':'),a=k[0],p=k.slice(1).join(':');
     if(a==='tab'){SCHTAB=p;return pageSchool()}
+    if(a==='ack'){S.schAck=true;save();return pageSchool()}
     if(a==='open'){if($('#lesson').hidden)openOverlay();SX=null;return renderSchLesson(p)}
     if(a==='read'){const s=schS();if(s['r:'+p])delete s['r:'+p];else s['r:'+p]=1;save();return renderSchLesson(p)}
     if(a==='ex'){if(SX&&SX.timer)clearInterval(SX.timer);return schStart(p)}
