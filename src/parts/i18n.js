@@ -106,6 +106,7 @@ function applyLang(){
 function loadPack(){
   if(LANG==='ar'){I18=null;return Promise.resolve()}
   const want=LANG;
+  if(window.__I18&&window.__I18[want]){I18=window.__I18[want];return Promise.resolve()}
   return fetch('i18n_'+want+'.json').then(function(r){if(!r.ok)throw 0;return r.json()}).then(function(j){if(LANG===want)I18=j}).catch(function(){I18=null});
 }
 function rerenderAll(){
