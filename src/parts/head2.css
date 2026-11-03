@@ -567,6 +567,15 @@ html[data-tab="play"] #page{background:radial-gradient(60% 40% at 50% 100%,color
 .mck{width:24px;height:24px;border-radius:50%;border:2px solid color-mix(in srgb,var(--accent) 50%,transparent);display:grid;place-items:center;font-size:.8rem;font-weight:800;color:var(--on-accent,#fff)}
 .mlist li.ok .mck{background:var(--accent);border-color:var(--accent)}
 .mlist li.ok span:nth-child(2){opacity:.65;text-decoration:line-through}
+#mission h2{display:flex;align-items:center;gap:12px}
+#mission h2::after{content:"";flex:1;height:0;border-top:2px dashed color-mix(in srgb,var(--gold) 65%,transparent);order:1;margin-inline-start:4px}
+#mission .card.mission{padding:18px 18px 16px;border:2px solid color-mix(in srgb,var(--accent) 22%,transparent);border-radius:24px}
+#mission .mck{width:34px;height:34px;border-width:3px}
+.mlist li{direction:ltr;grid-template-columns:auto 1fr auto;gap:14px}
+.mlist li>span:nth-child(2){direction:rtl;text-align:right;font-size:1.05rem}
+.mlist li small{font-size:.95rem}
+#mission .cres{direction:ltr;justify-content:flex-start}
+#mission .btn.ghost{width:100%;border:2px solid color-mix(in srgb,var(--gold) 45%,transparent);border-radius:18px;background:transparent}
 .mission.all{box-shadow:0 0 0 2px var(--accent) inset}
 .gsr{display:grid;gap:6px;margin-top:6px}
 .gsrow{display:flex;justify-content:space-between;align-items:center;padding:10px 12px;border-radius:12px;border:1.5px solid color-mix(in srgb,var(--accent) 25%,transparent);background:var(--surface);font:inherit;color:inherit;text-align:start}
