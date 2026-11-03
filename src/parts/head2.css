@@ -597,6 +597,15 @@ html[data-tab="play"] #page{background:radial-gradient(60% 40% at 50% 100%,color
 #mission .cres b{font-size:1.05rem}
 #mission .card.mission>p.muted{font-size:.8rem!important}
 #mission .btn.ghost{margin-top:10px;padding:8px 14px;font-size:.92rem}
+/* ===== تفاعل اللمس والحركة الدقيقة (نفس توقيتات micro-interactions) ===== */
+button:not(:disabled),a,[data-go],[data-act],[data-f10]{-webkit-tap-highlight-color:transparent;touch-action:manipulation}
+button:not(:disabled),[data-go],[data-act]{transition:transform .1s ease-out,box-shadow .15s ease-out,background-color .15s ease-out}
+button:not(:disabled):active,[data-go]:active,[data-act]:active{transform:scale(.97)}
+.card[data-go]:active,.card[data-act]:active{transform:scale(.985)}
+@media (pointer:coarse){.btn{min-height:44px}}
+.mlist li.ok .mck{animation:mpop .25s cubic-bezier(.34,1.56,.64,1)}
+@keyframes mpop{0%{transform:scale(.8)}60%{transform:scale(1.12)}100%{transform:scale(1)}}
+@media (prefers-reduced-motion:reduce){button:active,[data-go]:active,[data-act]:active,.card[data-go]:active,.card[data-act]:active,.mlist li.ok .mck{transform:none!important;animation:none!important}}
 .mission.all{box-shadow:0 0 0 2px var(--accent) inset}
 .gsr{display:grid;gap:6px;margin-top:6px}
 .gsrow{display:flex;justify-content:space-between;align-items:center;padding:10px 12px;border-radius:12px;border:1.5px solid color-mix(in srgb,var(--accent) 25%,transparent);background:var(--surface);font:inherit;color:inherit;text-align:start}
