@@ -1,6 +1,6 @@
 <!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><link rel="manifest" href="manifest.json"><meta name="theme-color" content="#0f3b3a"><link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png"><link rel="apple-touch-icon" href="apple-touch-icon.png"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="mobile-web-app-capable" content="yes"><script>window.__dip=null;addEventListener("beforeinstallprompt",function(e){e.preventDefault();window.__dip=e});</script></head><body>
 <title>نور الفرقان</title>
-<meta name="claude:viewport-fit-sides" content="cover">
+
 <link rel="preload" href="fonts/tajawal-400.woff" as="font" type="font/woff" crossorigin><link rel="preload" href="fonts/tajawal-700.woff" as="font" type="font/woff" crossorigin><style>@font-face{font-family:'Tajawal';font-style:normal;font-weight:400;font-display:swap;src:url(fonts/tajawal-400.woff) format('woff')}@font-face{font-family:'Tajawal';font-style:normal;font-weight:500;font-display:swap;src:url(fonts/tajawal-500.woff) format('woff')}@font-face{font-family:'Tajawal';font-style:normal;font-weight:700;font-display:swap;src:url(fonts/tajawal-700.woff) format('woff')}@font-face{font-family:'Tajawal';font-style:normal;font-weight:800;font-display:swap;src:url(fonts/tajawal-800.woff) format('woff')}@font-face{font-family:'Amiri Quran';font-style:normal;font-weight:400;font-display:swap;src:url(fonts/amiriquran-400.woff) format('woff')}/* شاشة التعريف (داخل #cele): تخطيط عمودي متوازن، ومسافات واضحة بين الأزرار، والهدهد في المنتصف */
 #cele .obx{width:min(100%,420px);display:grid;gap:14px;justify-items:center;text-align:center;margin-inline:auto}
 #cele .obtop{display:grid;justify-items:center;gap:10px}
@@ -4332,14 +4332,14 @@ function openSettings(){
    extraSettings()+
    '<div class="setrow"><span>ملفي الشخصي'+(S.prof&&S.prof.name?': '+esc(S.prof.name):'')+'</span><button class="btn sm ghost" data-act="prof-edit">تعديل</button></div>'+
    '<div class="setrow"><span>الحساب: '+(S.acct&&S.acct.linked?(ACCT&&ACCT.email?esc(ACCT.email):'مرتبط'):'غير مرتبط')+'</span><button class="btn sm ghost" data-act="acct-link">'+(S.acct&&S.acct.linked?'مزامنة الآن':'ربط الحساب')+'</button></div>'+
-   '<p class="muted" style="font-size:.85rem">الربط عبر حسابك في claude.ai (وليس تسجيل دخول جوجل مباشرًا). يحفظ تقدّمك في مساحتك الخاصة لتفتحه من أي جهاز.</p>'+
+   '<p class="muted" style="font-size:.85rem">الربط عبر حسابك (وليس تسجيل دخول جوجل مباشرًا). يحفظ تقدّمك في مساحتك الخاصة لتفتحه من أي جهاز.</p>'+
    '<div class="setrow"><span>اللغة · Language · Langue</span>'+langBtns()+'</div>'+
    '<button class="btn ghost" data-act="reset" style="margin-top:6px">مسح كل تقدّمي</button>'+
    '<button class="btn" data-act="cclose">تم</button></div>';
   c.hidden=false;
 }
 
-/* ================= الأسبوع واللوحة (يتطلب حساب claude.ai) ================= */
+/* ================= الأسبوع واللوحة (يتطلب حسابًا) ================= */
 
 function weekKey(){const d=new Date();d.setDate(d.getDate()-((d.getDay()+1)%7));return ymd(d)}/* يبدأ الأسبوع يوم السبت */
 function weekSum(map){const k=weekKey();let t=0;const d=new Date();for(let i=0;i<7;i++){const y=ymd(d);if(y>=k)t+=map[y]||0;d.setDate(d.getDate()-1)}return t}
@@ -4398,7 +4398,7 @@ function renderOnboard(){
   else if(q.type==='age')h+='<input type="number" inputmode="numeric" min="3" max="99" id="obin" placeholder="'+q.ph+'" value="'+esc(OBD.age||'')+'" aria-label="'+q.t+'">';
   else if(q.type==='city')h+='<select id="obin">'+CITIES.map(function(x){return '<option'+(x[0]===(OBD.city||S.city||CITIES[0][0])?' selected':'')+'>'+x[0]+'</option>'}).join('')+'</select>';
   else if(q.type==='rec')h+='<select id="obin">'+REC.map(function(x){return '<option value="'+x.id+'"'+(x.id===(OBD.rec||S.rec)?' selected':'')+'>'+x.n+'</option>'}).join('')+'</select>';
-  else if(q.type==='acct')h+='<p class="muted" style="font-size:.92rem">الربط يتم عبر حسابك في claude.ai الذي فتحتَ منه الصفحة (يظهر بريدك إن سمحت المنصة). لا أستطيع تسجيل الدخول بحساب جوجل مباشرة.</p><button class="btn gold" data-act="ob-link">اربط حسابي</button><p class="muted" id="obacct" style="font-size:.9rem;text-align:center">'+(ACCT&&ACCT.id?'تم الربط ✓':'')+'</p>';
+  else if(q.type==='acct')h+='<p class="muted" style="font-size:.92rem">الربط يتم عبر حسابك الذي فتحتَ به التطبيق (يظهر بريدك إن سمحت المنصة). لا أستطيع تسجيل الدخول بحساب جوجل مباشرة.</p><button class="btn gold" data-act="ob-link">اربط حسابي</button><p class="muted" id="obacct" style="font-size:.9rem;text-align:center">'+(ACCT&&ACCT.id?'تم الربط ✓':'')+'</p>';
   else h+='<div class="opts">'+q.opts.map(function(o){return '<button class="opt'+(String(OBD[q.k])===String(o[0])?' sel':'')+'" data-ob="'+o[0]+'"><span>'+o[1]+'</span></button>'}).join('')+'</div>';
   h+='<button class="btn" data-act="ob-next">'+(last?'نبدأ':'التالي')+'</button><button class="btn ghost" data-act="ob-skip">'+(last?'لاحقًا':'تخطَّ هذا السؤال')+'</button></div>';
   c.innerHTML=h;c.hidden=false;
@@ -4475,9 +4475,9 @@ function pullState(){
   }).catch(function(){});
 }
 function linkAccount(){
-  if(!window.claude||!claude.use){toast('الربط يعمل عند فتح الصفحة من claude.ai');return Promise.resolve(false)}
+  if(!window.claude||!claude.use){toast('الربط غير متاح في هذا العرض');return Promise.resolve(false)}
   return Promise.all([claude.use('user'),claude.use('db')]).then(function(r){
-    const U=r[0];DBH=r[1];if(!U||!DBH){toast('تعذّر الربط من هذا العرض. افتح الصفحة من حسابك في claude.ai.');return false}
+    const U=r[0];DBH=r[1];if(!U||!DBH){toast('تعذّر الربط من هذا العرض. جرّب من الموقع المنشور.');return false}
     return U.me().then(function(me){
       if(!me||!me.id){toast('لا توجد هوية لحسابك في هذا العرض.');return false}
       UID=me.id;ACCT={id:me.id,name:me.name||'',email:me.email||''};
@@ -4523,12 +4523,12 @@ function initBoard(){
 }
 function fillBoard(){
   const el=$('#board');if(!el)return;
-  if(!DBH){el.innerHTML='<p class="muted" style="font-size:.9rem">اللوحة الأسبوعية تعمل عندما تفتح الصفحة من حسابك في claude.ai، وبصلاحية المشاركة (Contributor) لتُسجَّل نقاطك.</p>'}
+  if(!DBH){el.innerHTML='<p class="muted" style="font-size:.9rem">اللوحة الأسبوعية تعمل عند تسجيل الدخول بحسابك، وبصلاحية المشاركة (Contributor) لتُسجَّل نقاطك.</p>'}
   else el.innerHTML=BOARD.length?'<div class="lb">'+BOARD.map(function(x,i){return '<div'+(x.id===UID?' class="me"':'')+'><span>'+N(i+1)+'</span><span>'+esc(cleanName(x.name)||'…')+(x.id===UID?' (أنت)':'<button class="tag repbtn" data-act="report-name" data-nm="'+esc(cleanName(x.name))+'" aria-label="إبلاغ عن اسم">إبلاغ</button>')+'</span><span>'+N(x.xp)+' نقطة</span></div>'}).join('')+'</div>':emptyBox('happy','لا نتائج بعد','اجمع نقاطًا هذا الأسبوع لتظهر في لوحة المتصدرين.');
   const ce=$('#circ');if(ce){
     if(!S.circle)ce.innerHTML='<p class="muted" style="font-size:.9rem">أنشئ دائرة عائلية أو انضم إلى واحدة برمز مشترك، فتتابعون ختماتكم معًا.</p><div class="opts2"><button class="btn sm gold" data-act="circ-new">إنشاء دائرة</button><button class="btn sm ghost" data-act="circ-join">انضمام برمز</button></div>';
     else ce.innerHTML='<p class="muted" style="font-size:.9rem">رمز الدائرة: <b dir="ltr">'+esc(S.circle)+'</b> · شاركه مع أهلك وأصدقائك</p>'+
-      (DBH?(CIRC.length?'<div class="lb">'+CIRC.map(function(x){return '<div'+(x.id===UID?' class="me"':'')+'><span>'+esc(cleanName(x.name)||'…')+(x.id===UID?' (أنت)':'')+'</span><span>'+N(x.kn)+' ختمة · '+N(Math.round(x.kh/6236*100))+'%</span></div>'}).join('')+'</div>':'<p class="muted" style="font-size:.9rem">لا أعضاء ظاهرون بعد.</p>'):'<p class="muted" style="font-size:.9rem">متابعة الأعضاء تحتاج فتح الصفحة من حسابك في claude.ai.</p>')+
+      (DBH?(CIRC.length?'<div class="lb">'+CIRC.map(function(x){return '<div'+(x.id===UID?' class="me"':'')+'><span>'+esc(cleanName(x.name)||'…')+(x.id===UID?' (أنت)':'')+'</span><span>'+N(x.kn)+' ختمة · '+N(Math.round(x.kh/6236*100))+'%</span></div>'}).join('')+'</div>':'<p class="muted" style="font-size:.9rem">لا أعضاء ظاهرون بعد.</p>'):'<p class="muted" style="font-size:.9rem">متابعة الأعضاء تحتاج تسجيل الدخول بحسابك.</p>')+
       '<button class="btn sm ghost" data-act="circ-leave">مغادرة الدائرة</button>';
   }
 }
@@ -6560,7 +6560,7 @@ S25:{sit:['تُذكر خطبة الوداع في المناهج لما تضمن�
       });
       const GI=window.__GI;
       buckets.me.forEach(function(e){
-        if(e.tagName==='P'&&/claude\.ai/.test(e.textContent)){e.textContent=onClaude()?g3(['هنا يُحفظ تقدّمك تلقائيًا في حسابك على claude.ai. أما الدخول بجوجل فيعمل في الموقع المنشور.','Here your progress is saved automatically to your claude.ai account. Google sign-in works on the published site.','Ici votre progression est enregistrée dans votre compte claude.ai. La connexion Google fonctionne sur le site publié.']):g3(['يحفظ تقدّمك في حسابك على جوجل لتفتحه من أي جهاز. لا نطلب كلمة مرور ولا نصل إلى بياناتك الأخرى.','Your progress is saved to your Google account so you can open it on any device. No password is requested and no other data is accessed.','Votre progression est enregistrée dans votre compte Google, accessible depuis tout appareil. Aucun mot de passe n’est demandé.']);e.className='muted';e.style.cssText='font-size:.85rem;margin:6px 0 0'}
+        if(e.tagName==='P'&&/الربط عبر حسابك/.test(e.textContent)){e.textContent=g3(['يحفظ تقدّمك في حسابك على جوجل لتفتحه من أي جهاز. لا نطلب كلمة مرور ولا نصل إلى بياناتك الأخرى.','Your progress is saved to your Google account so you can open it on any device. No password is requested and no other data is accessed.','Votre progression est enregistrée dans votre compte Google, accessible depuis tout appareil. Aucun mot de passe n’est demandé.']);e.className='muted';e.style.cssText='font-size:.85rem;margin:6px 0 0'}
         const ab=e.querySelector&&e.querySelector('[data-act="acct-link"]');
         if(ab&&!onClaude()&&!(S.acct&&S.acct.linked))ab.innerHTML=GI+esc(g3(['الدخول بجوجل','Sign in with Google','Connexion Google']));
       });
@@ -6620,7 +6620,7 @@ S25:{sit:['تُذكر خطبة الوداع في المناهج لما تضمن�
     else if(q.type==='age')h+='<input type="number" inputmode="numeric" min="3" max="99" id="obin" autocomplete="off" placeholder="'+esc(g3(['اكتب عمرك بالأرقام','Type your age in numbers','Saisissez votre âge']))+'" value="'+esc((OBD&&OBD.age)||'')+'" aria-label="'+esc(q.t)+'">';
     else if(q.type==='city')h+='<select id="obin">'+CITIES.map(function(x){return '<option'+(x[0]===(OBD.city||S.city||CITIES[0][0])?' selected':'')+'>'+x[0]+'</option>'}).join('')+'</select>';
     else if(q.type==='rec')h+='<select id="obin">'+REC.map(function(x){return '<option value="'+x.id+'"'+(x.id===(OBD.rec||S.rec)?' selected':'')+'>'+x.n+'</option>'}).join('')+'</select>';
-    else if(q.type==='acct')h+=(onClaude()?'<p class="muted" style="font-size:.92rem;margin:0">الربط يتم عبر حسابك في claude.ai.</p>':'<p class="muted" style="font-size:.92rem;margin:0">'+esc(g3(['اضغط لربط حسابك بجوجل (اختياري).','Tap to link your Google account (optional).','Touchez pour lier votre compte Google (facultatif).']))+'</p>')+'<button class="btn gold" data-act="ob-link">'+(onClaude()?'':window.__GI||'')+esc(onClaude()?g3(['اربط حسابي','Link my account','Lier mon compte']):g3(['الدخول بجوجل','Sign in with Google','Connexion Google']))+'</button><p class="muted" id="obacct" style="font-size:.9rem;text-align:center;margin:0"></p>';
+    else if(q.type==='acct')h+=('<p class="muted" style="font-size:.92rem;margin:0">'+esc(g3(['اضغط لربط حسابك بجوجل (اختياري).','Tap to link your Google account (optional).','Touchez pour lier votre compte Google (facultatif).']))+'</p>')+'<button class="btn gold" data-act="ob-link">'+(onClaude()?'':window.__GI||'')+esc(onClaude()?g3(['اربط حسابي','Link my account','Lier mon compte']):g3(['الدخول بجوجل','Sign in with Google','Connexion Google']))+'</button><p class="muted" id="obacct" style="font-size:.9rem;text-align:center;margin:0"></p>';
     else h+='<div class="opts">'+q.opts.map(function(o){return '<button class="opt'+(String(OBD[q.k])===String(o[0])?' sel':'')+'" data-ob="'+o[0]+'"><span>'+o[1]+'</span></button>'}).join('')+'</div>';
     h+='</div><div class="obfoot"><button class="btn" data-act="ob-next">'+esc(intro?g3(['نبدأ','Let’s go','C’est parti']):(last?g3(['نبدأ','Let’s begin','Commencer']):g3(['التالي','Next','Suivant'])))+'</button>'+
       '<button class="btn ghost" data-act="'+(intro?'cclose':'ob-skip')+'">'+esc(intro?g3(['لاحقًا','Later','Plus tard']):(last?g3(['لاحقًا','Later','Plus tard']):g3(['تخطَّ هذا السؤال','Skip this question','Passer'])))+'</button></div></div>';
@@ -7151,7 +7151,7 @@ document.addEventListener('keydown',function(e){if(e.key==='Enter'&&e.target&&e.
     const e=env();
     if(isStandalone()){shell(g3(['التطبيق مثبّت','Already installed','Déjà installée']),'<div class="card"><p>'+esc(g3(['أنت تستخدم التطبيق المثبّت الآن. بارك الله فيك!','You are using the installed app. Great!','Vous utilisez déjà l’application installée.']))+'</p></div>');return}
     if(!HOSTED){
-      shell(g3(['التثبيت من الموقع','Install from the website','Installer depuis le site']),'<div class="card"><p>'+esc(g3(['أنت تتصفح النسخة المدمجة داخل Claude، ولا يمكن تثبيتها. افتح رابط الموقع نفسه في متصفح هاتفك ثم ثبّت من هناك.','You are viewing the preview inside Claude, which cannot be installed. Open the website link in your phone browser and install from there.','Vous voyez l’aperçu dans Claude, qui ne peut pas être installé. Ouvrez le lien du site dans le navigateur de votre téléphone.']))+'</p><div class="muted" dir="ltr">'+esc(SITE)+'</div></div>','<button class="btn gold" data-act="inst-copy" data-u="'+esc(SITE)+'">'+esc(g3(['نسخ رابط الموقع','Copy site link','Copier le lien']))+'</button>');
+      shell(g3(['التثبيت من الموقع','Install from the website','Installer depuis le site']),'<div class="card"><p>'+esc(g3(['أنت تتصفح نسخة المعاينة داخل نافذة، ولا يمكن تثبيتها. افتح رابط الموقع نفسه في متصفح هاتفك ثم ثبّت من هناك.','You are viewing the preview inside a window, which cannot be installed. Open the website link in your phone browser and install from there.','Vous voyez l’aperçu dans une fenêtre, qui ne peut pas être installée. Ouvrez le lien du site dans le navigateur de votre téléphone.']))+'</p><div class="muted" dir="ltr">'+esc(SITE)+'</div></div>','<button class="btn gold" data-act="inst-copy" data-u="'+esc(SITE)+'">'+esc(g3(['نسخ رابط الموقع','Copy site link','Copier le lien']))+'</button>');
       return;
     }
     if(e.ios){openIosGuide();return}

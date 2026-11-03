@@ -199,14 +199,14 @@ function openSettings(){
    extraSettings()+
    '<div class="setrow"><span>ملفي الشخصي'+(S.prof&&S.prof.name?': '+esc(S.prof.name):'')+'</span><button class="btn sm ghost" data-act="prof-edit">تعديل</button></div>'+
    '<div class="setrow"><span>الحساب: '+(S.acct&&S.acct.linked?(ACCT&&ACCT.email?esc(ACCT.email):'مرتبط'):'غير مرتبط')+'</span><button class="btn sm ghost" data-act="acct-link">'+(S.acct&&S.acct.linked?'مزامنة الآن':'ربط الحساب')+'</button></div>'+
-   '<p class="muted" style="font-size:.85rem">الربط عبر حسابك في claude.ai (وليس تسجيل دخول جوجل مباشرًا). يحفظ تقدّمك في مساحتك الخاصة لتفتحه من أي جهاز.</p>'+
+   '<p class="muted" style="font-size:.85rem">الربط عبر حسابك (وليس تسجيل دخول جوجل مباشرًا). يحفظ تقدّمك في مساحتك الخاصة لتفتحه من أي جهاز.</p>'+
    '<div class="setrow"><span>اللغة · Language · Langue</span>'+langBtns()+'</div>'+
    '<button class="btn ghost" data-act="reset" style="margin-top:6px">مسح كل تقدّمي</button>'+
    '<button class="btn" data-act="cclose">تم</button></div>';
   c.hidden=false;
 }
 
-/* ================= الأسبوع واللوحة (يتطلب حساب claude.ai) ================= */
+/* ================= الأسبوع واللوحة (يتطلب حسابًا) ================= */
 
 function weekKey(){const d=new Date();d.setDate(d.getDate()-((d.getDay()+1)%7));return ymd(d)}/* يبدأ الأسبوع يوم السبت */
 function weekSum(map){const k=weekKey();let t=0;const d=new Date();for(let i=0;i<7;i++){const y=ymd(d);if(y>=k)t+=map[y]||0;d.setDate(d.getDate()-1)}return t}
