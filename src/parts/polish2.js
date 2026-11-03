@@ -3,13 +3,6 @@
   const _ph=pageHome;
   pageHome=function(){
     _ph();
-    try{
-      const sec=document.querySelector('#page section.sec');if(!sec||sec.querySelector('.dg'))return;
-      const g=S.dg||10,n=Math.min(g,dayState().p.q||0),pc=Math.round(n/g*100),done=n>=g;
-      const h=document.createElement('div');h.className='card dg';
-      h.innerHTML='<div class="ring" style="--p:'+pc+'%"><b>'+N(n)+'/'+N(g)+'</b></div><div class="dgt"><b>'+esc(g3(['هدفك اليومي','Daily goal','Objectif du jour']))+(done?' ✓':'')+'</b><small class="muted">'+esc(done?g3(['ما شاء الله! أنجزت هدف اليوم','Done for today!','Objectif atteint !']):g3(['أجب عن '+N(g)+' سؤالًا اليوم','Answer '+g+' questions today','Répondez à '+g+' questions aujourd’hui']))+'</small><span class="opts2">'+[5,10,20].map(function(x){return '<button class="tag" data-dg="'+x+'" aria-pressed="'+(g===x)+'">'+N(x)+'</button>'}).join('')+'</span></div>';
-      const h2=sec.querySelector('h2');if(h2)h2.after(h);else sec.prepend(h);
-    }catch(e){}
   };
   const _act=act;
   act=function(kind,n){

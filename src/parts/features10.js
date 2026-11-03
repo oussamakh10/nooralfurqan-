@@ -25,12 +25,22 @@
   applySeason();
 
   /* ---- مهمة اليوم ---- */
-  const MISSION=[['lesson','أتمم درسًا',1],['q','أجب عن 10 أسئلة',10],['game','العب لعبة واحدة',1]];
-  function mProg(){const p=dayState().p;return MISSION.map(function(m){return {t:m[1],n:Math.min(m[2],p[m[0]]||0),max:m[2]}})}
+  const POOL=[['lesson','أتمم درسًا',1],['q','أجب عن 10 أسئلة',10],['game','العب لعبة واحدة',1],['ayah','اقرأ 10 آيات',10],['listen','استمع إلى 3 آيات',3],['adhkar','أتمم الأذكار',1],['tafsir','اقرأ تفسير آية',1],['read','اقرأ سورة',1]];
+  function todayMission(){
+    const d=today();
+    if(!S.dm||S.dm.d!==d){
+      let h=0;for(let i=0;i<d.length;i++)h=(h*31+d.charCodeAt(i))|0;
+      const idx=POOL.map(function(_,i){return i});
+      for(let i=idx.length-1;i>0;i--){h=(h*1103515245+12345)&0x7fffffff;const j=h%(i+1);const t=idx[i];idx[i]=idx[j];idx[j]=t}
+      S.dm={d:d,t:idx.slice(0,3)};save();
+    }
+    return S.dm.t.map(function(i){return POOL[i]});
+  }
+  function mProg(){const p=dayState().p;return todayMission().map(function(m){return {t:m[1],n:Math.min(m[2],p[m[0]]||0),max:m[2]}})}
   function mDone(){return mProg().every(function(x){return x.n>=x.max})}
   function checkMission(){
     try{
-      if(S.mdone!==today()&&mDone()){S.mdone=today();save();addXP(10);try{SND.win()}catch(e){}toast('أتممت مهمة اليوم: +10 نقاط');}
+      if(S.mdone!==today()&&mDone()){S.mdone=today();save();addXP(20);try{SND.win()}catch(e){}toast('أتممت مهمة اليوم: +20 نقاط');}
     }catch(e){}
   }
   const _act=act;
@@ -40,7 +50,7 @@
     return '<section class="sec" id="mission"><h2>مهمة اليوم</h2><div class="card mission'+(all?' all':'')+'">'+
       '<ul class="mlist">'+pr.map(function(x){return '<li class="'+(x.n>=x.max?'ok':'')+'"><span class="mck" aria-hidden="true">'+(x.n>=x.max?'✓':'')+'</span><span>'+x.t+'</span><small>'+N(x.n)+'/'+N(x.max)+'</small></li>'}).join('')+'</ul>'+
       (function(){const p=done/pr.length,mp='M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z';return '<div class="cres" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="'+Math.round(p*100)+'" aria-label="تقدّم مهمة اليوم"><svg viewBox="0 0 24 24" width="46" height="46" aria-hidden="true"><defs><clipPath id="mcc"><rect x="'+(24*(1-p))+'" y="0" width="'+(24*p)+'" height="24"/></clipPath></defs><path d="'+mp+'" fill="color-mix(in srgb,var(--gold) 14%,transparent)" stroke="var(--gold-d)" stroke-width="1.4" stroke-linejoin="round"/><path d="'+mp+'" fill="var(--gold)" clip-path="url(#mcc)"/></svg><b>'+N(done)+'/'+N(pr.length)+'</b></div>'})()+
-      '<p class="muted" style="margin:6px 0 0;font-size:.85rem">'+(all?'أتممت مهمة اليوم، تقبّل الله منك.':'أتمم الثلاث لتحصل على 10 نقاط إضافية.')+'</p>'+
+      '<p class="muted" style="margin:6px 0 0;font-size:.85rem">'+(all?'أتممت المهام الثلاث، تقبّل الله منك.':'أتمم المهام الثلاث لتحصل على 20 نقطة إضافية.')+'</p>'+
       '<button class="btn sm ghost" data-f10="share" style="margin-top:8px">شارك إنجازك</button></div></section>';
   }
 
