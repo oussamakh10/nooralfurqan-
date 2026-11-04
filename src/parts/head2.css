@@ -729,3 +729,4 @@ body[data-tab=ach]{--tabtint:#D9A21B}
 #cele .obfoot{display:grid;gap:14px;width:100%;margin-top:4px}
 #cele .obfoot .btn{min-height:52px;margin:0}
 #cele .obfoot .btn.ghost{min-height:48px}
+*{touch-action:pan-x pan-y!important}

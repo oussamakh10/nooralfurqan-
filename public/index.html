@@ -1,5 +1,7 @@
-<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><link rel="manifest" href="manifest.json"><meta name="theme-color" content="#0f3b3a"><link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png"><link rel="apple-touch-icon" href="apple-touch-icon.png"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="mobile-web-app-capable" content="yes"><script>window.__dip=null;addEventListener("beforeinstallprompt",function(e){e.preventDefault();window.__dip=e});</script></head><body>
+<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover"><link rel="manifest" href="manifest.json"><meta name="theme-color" content="#0f3b3a"><link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png"><link rel="apple-touch-icon" href="apple-touch-icon.png"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="mobile-web-app-capable" content="yes"><script>window.__dip=null;addEventListener("beforeinstallprompt",function(e){e.preventDefault();window.__dip=e});</script></head><body>
 <title>نور الفرقان</title>
+<script>(function(){function f(){var m=document.querySelector('meta[name=viewport]');if(m)m.setAttribute('content','width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover')}f();['gesturestart','gesturechange','gestureend'].forEach(function(n){document.addEventListener(n,function(e){e.preventDefault()},{passive:false})});document.addEventListener('touchmove',function(e){if(e.touches&&e.touches.length>1)e.preventDefault()},{passive:false});document.addEventListener('wheel',function(e){if(e.ctrlKey)e.preventDefault()},{passive:false});document.addEventListener('keydown',function(e){if((e.ctrlKey||e.metaKey)&&(e.key==='+'||e.key==='-'||e.key==='='||e.key==='0'))e.preventDefault()});document.addEventListener('DOMContentLoaded',f)})()</script>
+
 
 <link rel="preload" href="fonts/tajawal-400.woff" as="font" type="font/woff" crossorigin><link rel="preload" href="fonts/tajawal-700.woff" as="font" type="font/woff" crossorigin><style>@font-face{font-family:'Tajawal';font-style:normal;font-weight:400;font-display:swap;src:url(fonts/tajawal-400.woff) format('woff')}@font-face{font-family:'Tajawal';font-style:normal;font-weight:500;font-display:swap;src:url(fonts/tajawal-500.woff) format('woff')}@font-face{font-family:'Tajawal';font-style:normal;font-weight:700;font-display:swap;src:url(fonts/tajawal-700.woff) format('woff')}@font-face{font-family:'Tajawal';font-style:normal;font-weight:800;font-display:swap;src:url(fonts/tajawal-800.woff) format('woff')}@font-face{font-family:'Amiri Quran';font-style:normal;font-weight:400;font-display:swap;src:url(fonts/amiriquran-400.woff) format('woff')}/* شاشة التعريف (داخل #cele): تخطيط عمودي متوازن، ومسافات واضحة بين الأزرار، والهدهد في المنتصف */
 #cele .obx{width:min(100%,420px);display:grid;gap:14px;justify-items:center;text-align:center;margin-inline:auto}
@@ -1013,6 +1015,8 @@ body[data-tab=ach]{--tabtint:#D9A21B}
 /* دخول البطاقات الأولى: صعود قصير بدل الظهور المفاجئ */
 @keyframes sheetin{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:none}}
 #lgm:not([hidden]) .bc-card,#cele:not([hidden])>.card,#cele:not([hidden])>.obx{animation:sheetin .32s cubic-bezier(.2,.8,.2,1) both}
+
+*{touch-action:pan-x pan-y!important}
 </style>
 <div class="bgpat" id="bg"></div>
 <header class="top" id="top"></header>
