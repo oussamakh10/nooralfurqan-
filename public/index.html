@@ -3888,6 +3888,8 @@ function loadVod(){
 let LTAB='path',UO=null;
 function lvf(){return S.lvf||0}
 function unitDone(u){let d=0;u.lessons.forEach(function(l){if(S.done[l.id])d++});return d}
+/* الوحدة مغلقة حتى تُكمل السابقة لها في المسار نفسه (أساسي أو متقدّم) */
+function unitLocked(ui){const u=DATA[ui];if(!u)return false;let p=ui-1;while(p>=0&&!!DATA[p].lv!==!!u.lv)p--;return p>=0&&unitDone(DATA[p])<DATA[p].lessons.length}
 function pageLearn(){
   const due=srDue().length;
   let h='<div class="seg" style="margin-top:16px" role="group" aria-label="أقسام التعلّم">'+[['path','المسار'],['review','مراجعة'+(due?' ('+N(due)+')':'')],['hifz','حفظ']].map(function(x){return '<button data-ltab="'+x[0]+'" aria-pressed="'+(LTAB===x[0])+'">'+x[1]+'</button>'}).join('')+'</div>';
@@ -3906,8 +3908,8 @@ function pageLearn(){
    '<div class="seg lvseg" role="group" aria-label="المستوى">'+[[0,'كل المستويات'],[1,'أساسي'],[2,'متقدّم 🎓']].map(function(x){return '<button data-lvf="'+x[0]+'" aria-pressed="'+(lvf()===x[0])+'">'+x[1]+'</button>'}).join('')+'</div>';
   DATA.forEach(function(u,ui){
     if((lvf()===1&&u.lv==='a')||(lvf()===2&&u.lv!=='a'))return;
-    const dd=unitDone(u),open=!!UO[ui];
-    h+='<section class="unit u'+((ui%4)+1)+'"><button class="uh" data-unit="'+ui+'" aria-expanded="'+open+'"><span class="un">'+N(ui+1)+'</span><span class="ut"><b>'+u.title+(u.lv==='a'?' <span class="advtag">متقدّم</span>':'')+'</b><small>'+u.sub+'</small></span><span class="pill">'+N(dd)+'/'+N(u.lessons.length)+'</span><i class="chev'+(open?' up':'')+'" aria-hidden="true"></i></button>';
+    const dd=unitDone(u),ulk=unitLocked(ui),open=!ulk&&!!UO[ui];
+    h+='<section class="unit u'+((ui%4)+1)+'"><button class="uh"'+(ulk?' disabled aria-label="'+u.title+' (مغلقة: أكمل الوحدة السابقة)"':'')+' data-unit="'+ui+'" aria-expanded="'+open+'"><span class="un">'+N(ui+1)+'</span><span class="ut"><b>'+u.title+(u.lv==='a'?' <span class="advtag">متقدّم</span>':'')+'</b><small>'+u.sub+'</small></span><span class="pill">'+N(dd)+'/'+N(u.lessons.length)+'</span>'+(ulk?IC.lock:'<i class="chev'+(open?' up':'')+'" aria-hidden="true"></i>')+'</button>';
     if(open){
       h+='<div class="path">';
       u.lessons.forEach(function(l,li){
@@ -3940,6 +3942,7 @@ function closeOverlay(){
 function mkQ(q){return Object.assign({},q,{missed:false,opts:null,pool:null,st:null,hid:null,dl:null})}
 function startLesson(id){
   const lesson=ALL.find(function(l){return l.id===id});
+  if(lesson&&unitLocked(lesson.unit)){toast('أكمل الوحدة السابقة أولًا');return}
   L={lesson:lesson,queue:lesson.qs.map(mkQ),total:lesson.qs.length,solved:0,hearts:S.kids?99:5,gain:0,wrongs:0,state:'ask',sel:null,ans:[],ok:false,confirm:false,mood:'happy',say:'',combo:0,best:0};
   openOverlay();renderLesson();
 }
