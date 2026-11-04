@@ -72,6 +72,11 @@
 .uh .ut{flex:1;display:grid;min-width:0}
 .uh .ut b{font:700 1.05rem var(--display)}
 .uh .ut small{color:var(--muted);font-size:.8rem}
+.uh .ulk{flex:none;width:30px;height:30px;display:grid;place-items:center;border-radius:50%;background:color-mix(in srgb,var(--gold) 14%,transparent);border:1.5px solid color-mix(in srgb,var(--gold) 45%,transparent);color:var(--gold)}
+.uh .ulk svg{width:15px;height:15px}
+.uh.lk{opacity:.66;border-style:dashed;cursor:default}
+.uh.lk .un{filter:grayscale(.55)}
+.uh .pill{flex:none}
 .chev{width:10px;height:10px;border-inline-end:3px solid var(--muted);border-bottom:3px solid var(--muted);transform:rotate(45deg);margin-inline-start:4px;transition:transform .2s}
 .chev.up{transform:rotate(-135deg)}
 section.unit{margin-top:0}

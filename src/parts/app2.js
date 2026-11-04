@@ -71,7 +71,7 @@ function pageLearn(){
   DATA.forEach(function(u,ui){
     if((lvf()===1&&u.lv==='a')||(lvf()===2&&u.lv!=='a'))return;
     const dd=unitDone(u),ulk=unitLocked(ui),open=!ulk&&!!UO[ui];
-    h+='<section class="unit u'+((ui%4)+1)+'"><button class="uh"'+(ulk?' disabled aria-label="'+u.title+' (مغلقة: أكمل الوحدة السابقة)"':'')+' data-unit="'+ui+'" aria-expanded="'+open+'"><span class="un">'+N(ui+1)+'</span><span class="ut"><b>'+u.title+(u.lv==='a'?' <span class="advtag">متقدّم</span>':'')+'</b><small>'+u.sub+'</small></span><span class="pill">'+N(dd)+'/'+N(u.lessons.length)+'</span>'+(ulk?IC.lock:'<i class="chev'+(open?' up':'')+'" aria-hidden="true"></i>')+'</button>';
+    h+='<section class="unit u'+((ui%4)+1)+'"><button class="uh'+(ulk?' lk':'')+'"'+(ulk?' disabled aria-label="'+u.title+' (مغلقة: أكمل الوحدة السابقة)"':'')+' data-unit="'+ui+'" aria-expanded="'+open+'"><span class="un">'+N(ui+1)+'</span><span class="ut"><b>'+u.title+(u.lv==='a'?' <span class="advtag">متقدّم</span>':'')+'</b><small>'+u.sub+'</small></span><span class="pill">'+N(dd)+'/'+N(u.lessons.length)+'</span>'+(ulk?'<span class="ulk" aria-hidden="true">'+IC.lock+'</span>':'<i class="chev'+(open?' up':'')+'" aria-hidden="true"></i>')+'</button>';
     if(open){
       h+='<div class="path">';
       u.lessons.forEach(function(l,li){
