@@ -181,7 +181,7 @@ function askSend(txt){
   askLocal(q).then(function(r){
     const done=function(h,t){AS.push({r:'a',t:t,h:h});renderAssistant();try{SND.coin()}catch(e){}};
     const lh=localHtml(r),lt=r.used?r.ctx.join('\n'):'لم أجد جوابًا في محتوى التطبيق.';
-    if(window.claude&&claude.use){
+    if(!S.kids&&window.claude&&claude.use){
       return claude.use('sample').then(function(sm){
         if(!sm)return done(lh,lt);
         return sm(aiPrompt(q,r),{cache:false,modelTier:'default',onText:function(u){out.innerHTML='<div class="card"><p style="white-space:pre-wrap">'+esc(u.text)+'</p></div>'}}).then(function(a){

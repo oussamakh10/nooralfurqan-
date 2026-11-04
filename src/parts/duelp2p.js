@@ -7,8 +7,9 @@
   const MAXP=4;
   function rid(){return Math.random().toString(36).slice(2,10)}
   function topicOf(code){return 'nfduel-'+code+'-v1'}
-  function post(topic,obj){return fetch(SIG+topic,{method:'POST',body:JSON.stringify(obj)}).then(function(r){if(!r.ok)throw new Error('sig')})}
+  function post(topic,obj){if(S.kids)return Promise.reject(new Error('kids'));return fetch(SIG+topic,{method:'POST',body:JSON.stringify(obj)}).then(function(r){if(!r.ok)throw new Error('sig')})}
   function listen(topic,onmsg){
+    if(S.kids)return Promise.reject(new Error('kids'));
     return new Promise(function(res,rej){
       let es;try{es=new EventSource(SIG+topic+'/sse')}catch(e){rej(e);return}
       let ok=false;
