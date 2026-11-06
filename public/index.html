@@ -7311,7 +7311,7 @@ function quoteSearch(nq,qt){
   return res.slice(0,3);
 }
 const RULING=/حكم|يجوز|حلال|حرام|فتو|يبطل|يصح|هل يحق|ما حكم|جائز|مكروه|كفاره/;
-function askLocal(q){
+function askLocal(q,more){
   const nq=aNorm(q).replace(/[^ء-ي0-9: ]+/g,' ').replace(/\s+/g,' ').trim(),qt=aTok(q);
   return loadQ().then(function(){return Promise.all([loadTF('muy').catch(function(){return null}),loadTF('jal').catch(function(){return null})])}).then(function(){
     kbBuild();
@@ -7330,12 +7330,12 @@ function askLocal(q){
     }
     /* 3) محتوى التطبيق */
     let res=qt.length?kbScore(KB.docs,KB.df,KB.avg,qt,nq):[];
-    const lim=shortS?0:(used?2:3);
+    const lim=shortS?0:more?5:(used?2:3);const pv=more?(AS.filter(function(m){return m.r==='a'}).slice(-1)[0]||{t:''}).t:'';
     const TH=qt.length>=2?.5:.34;
     if(res.length&&res[0].cov>=TH){
       const seen={};let n=0;
       for(let i=0;i<res.length&&n<lim;i++){
-        const r=res[i];if(r.cov<TH)break;const key=r.x.s+'|'+r.x.d.slice(0,30);if(seen[key])continue;seen[key]=1;
+        const r=res[i];if(r.cov<TH)break;if(more&&pv.indexOf(r.x.d.slice(0,40))>=0)continue;const key=r.x.s+'|'+r.x.d.slice(0,30);if(seen[key])continue;seen[key]=1;
         parts.push({h:'<p>'+esc(clip(r.x.d,420))+'</p><div class="muted">'+esc(r.x.s)+'</div>',c:r.x.d+' ['+r.x.s+']'});ctx.push(r.x.d+' ['+r.x.s+']');n++;used=true;
       }
     }
@@ -7388,21 +7388,47 @@ function renderAssistant(){
    '<div class="lfoot"><div class="in" style="display:grid;gap:8px"><input type="text" id="asq" placeholder="'+esc(g3(['اكتب سؤالك','Type your question','Écrivez votre question']))+'" maxlength="300" aria-label="'+esc(g3(['سؤالك','Your question','Votre question']))+'"><button class="btn" data-act="ask-send">'+esc(g3(['أرسل','Send','Envoyer']))+'</button></div></div>';
   const l=$('#aslog');if(l){const us=l.querySelectorAll('[data-u]');if(us.length)us[us.length-1].scrollIntoView({block:'start'});else l.scrollTop=0}
 }
+const SMALL=[
+ {re:/^(السلام عليكم|سلام|مرحبا|مرحبًا|اهلا|أهلا|أهلًا|هلا|صباح الخير|مساء الخير)/,a:['وعليكم السلام ورحمة الله! أنا هدهد. اسألني عن آية أو حكم أو سيرة، أو اطلب مني الشرح.','أهلًا بك! ما الذي تريد أن تتعلمه اليوم؟']},
+ {re:/(شكرا|شكرًا|جزاك الله|بارك الله|جزاك)/,a:['وإياك، بارك الله فيك! اسألني متى شئت.','العفو! يسعدني أن أنفعك.']},
+ {re:/(من انت|من أنت|ما اسمك|ما هو اسمك|عرف بنفسك|ماذا تفعل|ماذا تستطيع)/,a:['أنا هدهد، رفيقك في «نور الفرقان». أبحث لك في دروس التطبيق وأحكامه وتفسير الميسر والجلالين، وأشرح لك بتبسيط. لست مفتيًا، فللفتوى اسأل عالمًا موثوقًا.']}
+];
+const FU=/^(و?(ماذا|لماذا|كيف|اشرح|زد|زدني|اكثر|أكثر|مثال|فسر|فسّر|فصل|فصّل|وضح|وضّح|دليل|ما الدليل|اعد|أعد)\b|.*\b(اكثر|أكثر|بالتفصيل|دليله|مثالا|مثالًا)\s*$)/;
+function askPrev(){for(let i=AS.length-2;i>=0;i--){if(AS[i].r==='u'&&!AS[i].fu)return AS[i].t}return ''}
+function askReveal(){
+  const ps=document.querySelectorAll('#aslog .card:not([data-u]):last-of-type .ak-part,#aslog .ak-part');
+  const last=Array.from(ps).slice(-12);if(last.length<2)return;
+  const card=last[0].closest('.card');const mine=card?Array.from(card.querySelectorAll('.ak-part')):[];
+  if(mine.length<2)return;mine.slice(1).forEach(function(p){p.style.opacity='0';p.style.transition='opacity .5s'});
+  mine.slice(1).forEach(function(p,i){setTimeout(function(){p.style.opacity='1'},500*(i+1))});
+}
 function askSend(txt){
   const inp=$('#asq'),q=(typeof txt==='string'?txt:(inp&&inp.value)||'').trim();if(!q)return;
-  if(inp)inp.value='';AS.push({r:'u',t:q});
+  if(inp)inp.value='';
+  const nq0=aNorm(q).replace(/[^ء-ي ]+/g,' ').replace(/\s+/g,' ').trim();
+  const prev=askPrev(),fu=!!prev&&(FU.test(nq0)||aTok(q).length<=1&&nq0.length<12);
+  AS.push({r:'u',t:q,fu:fu});
   const gd=askGuard(q);if(gd){AS.push({r:'a',t:gd.k,h:gd.h});renderAssistant();return}
+  const sm=SMALL.find(function(x){return x.re.test(nq0)&&nq0.split(' ').length<=6});
+  if(sm){const t=sm.a[Math.floor(Math.random()*sm.a.length)];AS.push({r:'a',t:t,h:'<p>'+esc(t)+'</p>'});renderAssistant();return}
   renderAssistant();
   const out=$('#asa');out.innerHTML='<div class="card" aria-label="'+esc(g3(['جارٍ البحث…','Searching…','Recherche…']))+'"><div class="sk" style="width:85%"></div><div class="sk"></div><div class="sk" style="width:60%"></div></div>';
-  askLocal(q).then(function(r){
-    const done=function(h,t){AS.push({r:'a',t:t,h:h});renderAssistant();try{SND.coin()}catch(e){}};
-    const lh=localHtml(r),lt=r.used?r.ctx.join('\n'):'لم أجد جوابًا في محتوى التطبيق.';
+  const qq=fu?prev+' '+q:q;
+  askLocal(qq,fu).then(function(r){
+    const chips=function(){
+      if(!r.used)return '';
+      const c=[['اشرح أكثر','اشرح أكثر'],['ما الدليل على ذلك؟','ما الدليل']];
+      return '<div class="chips" style="display:flex;flex-wrap:wrap;gap:6px;margin-top:8px">'+c.map(function(x){return '<button class="bchip" data-act="ask-chip" data-q="'+esc(x[1])+'">'+esc(x[0])+'</button>'}).join('')+'</div>';
+    };
+    const done=function(h,t){AS.push({r:'a',t:t,h:h});renderAssistant();try{SND.coin()}catch(e){}setTimeout(askReveal,30)};
+    const intro=r.used?'<p style="margin:0 0 6px"><b>'+esc(fu?'تتمةً لسؤالك:':['وجدتُ لك هذا:','إليك ما وجدته:','هذا ما عندي في الأمر:'][Math.floor(Math.random()*3)])+'</b></p>':'';
+    const lh=intro+localHtml(r)+chips(),lt=r.used?r.ctx.join('\n'):'لم أجد جوابًا في محتوى التطبيق.';
     if(!S.kids&&window.claude&&claude.use){
       return claude.use('sample').then(function(sm){
         if(!sm)return done(lh,lt);
-        return sm(aiPrompt(q,r),{cache:false,modelTier:'default',onText:function(u){out.innerHTML='<div class="card"><p style="white-space:pre-wrap">'+esc(u.text)+'</p></div>'}}).then(function(a){
+        return sm(aiPrompt(qq,r),{cache:false,modelTier:'default',onText:function(u){out.innerHTML='<div class="card"><p style="white-space:pre-wrap">'+esc(u.text)+'</p></div>'}}).then(function(a){
           const src=r.used?'<div class="muted" style="margin-top:6px">استندتُ إلى: '+esc(r.parts.length)+' مقاطع من محتوى التطبيق</div>':'';
-          done('<p style="white-space:pre-wrap">'+esc(a.text)+'</p>'+src+(r.ruling?'<p class="muted">هذا ليس فتوى؛ اسأل عالمًا موثوقًا في حالتك الخاصة.</p>':''),a.text);
+          done('<p style="white-space:pre-wrap">'+esc(a.text)+'</p>'+src+(r.ruling?'<p class="muted">هذا ليس فتوى؛ اسأل عالمًا موثوقًا في حالتك الخاصة.</p>':'')+chips(),a.text);
         });
       }).catch(function(){done(lh,lt)});
     }
