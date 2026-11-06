@@ -286,7 +286,7 @@
     const pg=$('#page');if(!pg)return;
     const sec=document.createElement('section');sec.className='sec';sec.style.marginTop='20px';
     sec.innerHTML='<h2>ألعاب سريعة</h2><div class="mggrid">'+MG_LIST.map(function(g){
-      return '<button class="mgcard" data-mg="open:'+g[0]+'"><b>'+g[1]+'</b><small>'+g[2]+'</small></button>'}).join('')+'</div>';
+      return '<button class="mgcard" data-mg="open:'+g[0]+'"><b>'+g[1]+'</b><small>'+g[2]+'</small></button>'}).join('')+'<button class="mgcard" data-act="duel-open"><b>ضد الحاسوب</b><small>بمستويات، دون إنترنت</small></button><button class="mgcard" data-act="duel-open"><b>تحدٍّ مع صديق</b><small>غرفة برمز</small></button></div>';
     pg.insertBefore(sec,pg.firstChild);
   };
 })();
