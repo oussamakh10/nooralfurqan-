@@ -54,6 +54,7 @@
   ];
   let M=null,QQ=null;
   window.MGS=function(){return M};
+  window.MGTFB=TFB;
   function rnd(n){return Math.floor(Math.random()*n)}
   function words(v){return String(v).split(' ').filter(Boolean)}
   /* فهرس الآيات المتفرّدة (لتفادي آيات مكرّرة بين سور) */

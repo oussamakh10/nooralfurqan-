@@ -75,6 +75,9 @@ document.addEventListener('click',function(e){
   if(a==='ask-send')return askSend();
   if(a==='duel-open')return openDuel();
   if(a==='duel-close')return duelClose();
+  if(a&&a.indexOf('bot-t:')===0&&DU){DU.bs.t=a.slice(6);return renderDuel()}
+  if(a&&a.indexOf('bot-l:')===0&&DU){DU.bs.l=a.slice(6);return renderDuel()}
+  if(a==='bot-go'&&DU)return duelBot();
   if(a==='duel-new'){const al='abcdefghjkmnpqrstuvwxyz23456789';let c='';for(let i=0;i<5;i++)c+=al[Math.floor(Math.random()*al.length)];return duelJoin(c,true)}
   if(a==='duel-join'){const v=($('#ducode').value||'').trim().toLowerCase().replace(/[^a-z0-9]/g,'');if(v.length>=4)duelJoin(v,false);return}
   if(a==='duel-go')return duelHostStart();
@@ -96,6 +99,8 @@ document.addEventListener('click',function(e){
   if(a==='hquiz')return hifzQuiz(+d.hs2);
   if(a==='rback'){RV.s=0;pageRead();window.scrollTo(0,0);return}
   if(a==='play-surah')return playSurah(LS.s);
+  if(a==='dl-surah')return dlSurah();
+  if(a==='dl-del')return dlDel();
   if(a==='toggle'){if(AU.paused)AU.play().catch(function(){audioErr()});else AU.pause();return}
   if(a==='mclose')return stopAudio();
   if(a==='pa-prev'){if(AP&&AP.a>1)playAyah(AP.s,AP.a-1);return}

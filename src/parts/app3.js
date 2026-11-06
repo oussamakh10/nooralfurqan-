@@ -130,9 +130,29 @@ let AP=null,LS={mode:'surah',s:1,a:1},SP=-1;
 function recById(id){return REC.find(function(r){return r.id===id})||REC[0]}
 function surahUrl(r,s){return r.s+pad(s,3)+'.mp3'}
 function ayahUrl(r,s,a){if(!r.e)r=REC[0];return 'https://everyayah.com/data/'+r.e+'/'+pad(s,3)+pad(a,3)+'.mp3'}
+let AUB=null;
+function dlBox(){const el=document.getElementById('dlbox');if(!el||!window.caches)return;const u=surahUrl(recById(S.rec),LS.s);
+  caches.open('nf-audio').then(function(c){return c.match(u)}).then(function(m){const e=document.getElementById('dlbox');if(!e)return;
+    e.innerHTML=m?'<p class="muted" style="font-size:.88rem">✓ السورة محفوظة على جهازك وتُشغَّل دون إنترنت.</p><button class="btn ghost" data-act="dl-del">حذف التنزيل</button>':'<button class="btn ghost" data-act="dl-surah">تنزيل السورة للاستماع دون إنترنت</button>'}).catch(function(){})}
+function dlSurah(){
+  const u=surahUrl(recById(S.rec),LS.s),el=document.getElementById('dlbox');if(!window.caches||!window.fetch){toast('التنزيل غير مدعوم في هذا المتصفح');return}
+  if(!navigator.onLine){toast('يلزم اتصال بالإنترنت للتنزيل');return}
+  const say=function(t){const e=document.getElementById('dlbox');if(e)e.innerHTML='<p class="muted" style="font-size:.88rem">'+t+'</p>'};
+  say('جارٍ التنزيل… 0%');try{navigator.storage&&navigator.storage.persist&&navigator.storage.persist()}catch(e){}
+  fetch(u,{mode:'cors'}).then(function(r){
+    if(!r.ok)throw 0;const tot=+r.headers.get('content-length')||0,rd=r.body&&r.body.getReader?r.body.getReader():null,ch=[];let got=0;
+    if(!rd)return r.blob();
+    const pump=function(){return rd.read().then(function(x){if(x.done)return new Blob(ch,{type:'audio/mpeg'});ch.push(x.value);got+=x.value.length;if(tot)say('جارٍ التنزيل… '+Math.round(got*100/tot)+'%');return pump()})};
+    return pump();
+  }).then(function(b){return caches.open('nf-audio').then(function(c){return c.put(u,new Response(b,{headers:{'Content-Type':'audio/mpeg'}}))})}).then(function(){toast('تم تنزيل السورة');dlBox()})
+  .catch(function(){say('تعذّر التنزيل (قد يمنعه الموقع المصدر).');setTimeout(dlBox,3000)});
+}
+function dlDel(){caches.open('nf-audio').then(function(c){return c.delete(surahUrl(recById(S.rec),LS.s))}).then(function(){dlBox()}).catch(function(){})}
 function startAudio(url){
-  AU.src=url;
-  const p=AU.play();if(p&&p.catch)p.catch(function(){audioErr()});
+  if(AUB){try{URL.revokeObjectURL(AUB)}catch(e){}AUB=null}
+  const go=function(src){AU.src=src;const p=AU.play();if(p&&p.catch)p.catch(function(){audioErr()})};
+  if(window.caches&&url.indexOf('http')===0){caches.open('nf-audio').then(function(c){return c.match(url)}).then(function(m){return m?m.blob():null}).then(function(b){if(b){AUB=URL.createObjectURL(b);go(AUB)}else go(url)}).catch(function(){go(url)})}
+  else go(url);
 }
 function playSurah(s){
   const r=recById(S.rec);AP={mode:'surah',r:r,s:s,a:0,err:false,url:surahUrl(r,s)};
@@ -195,7 +215,7 @@ function pageListen(){
      '<div class="field"><label for="lsurah">السورة</label><select id="lsurah">'+SN.map(function(n,i){return '<option value="'+(i+1)+'"'+((i+1)===LS.s?' selected':'')+'>'+N(i+1)+'. '+n+'</option>'}).join('')+'</select></div>';
     if(LS.mode==='surah'){
       h+='<button class="btn" data-act="play-surah">استمع إلى سورة '+SN[LS.s-1]+' بصوت '+r.n+'</button>'+
-         '<p class="muted" style="font-size:.88rem">يُشغَّل الملف من موقع MP3Quran. إن لم يعمل داخل الصفحة فسيظهر رابط لفتحه في تبويب جديد.</p>';
+         '<div id="dlbox" style="margin:8px 0"></div><p class="muted" style="font-size:.88rem">يُشغَّل الملف من موقع MP3Quran. إن لم يعمل داخل الصفحة فسيظهر رابط لفتحه في تبويب جديد.</p>';setTimeout(dlBox,0);
     }else{
       h+='<p class="muted" style="font-size:.9rem">اضغط على أي آية لتبدأ منها، وتنتقل التلاوة تلقائيًا إلى الآية التالية.</p><div class="lv" id="lv"><p class="muted">جارٍ تحميل النص…</p></div>';
     }

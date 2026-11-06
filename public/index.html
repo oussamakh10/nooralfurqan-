@@ -4188,9 +4188,29 @@ let AP=null,LS={mode:'surah',s:1,a:1},SP=-1;
 function recById(id){return REC.find(function(r){return r.id===id})||REC[0]}
 function surahUrl(r,s){return r.s+pad(s,3)+'.mp3'}
 function ayahUrl(r,s,a){if(!r.e)r=REC[0];return 'https://everyayah.com/data/'+r.e+'/'+pad(s,3)+pad(a,3)+'.mp3'}
+let AUB=null;
+function dlBox(){const el=document.getElementById('dlbox');if(!el||!window.caches)return;const u=surahUrl(recById(S.rec),LS.s);
+  caches.open('nf-audio').then(function(c){return c.match(u)}).then(function(m){const e=document.getElementById('dlbox');if(!e)return;
+    e.innerHTML=m?'<p class="muted" style="font-size:.88rem">✓ السورة محفوظة على جهازك وتُشغَّل دون إنترنت.</p><button class="btn ghost" data-act="dl-del">حذف التنزيل</button>':'<button class="btn ghost" data-act="dl-surah">تنزيل السورة للاستماع دون إنترنت</button>'}).catch(function(){})}
+function dlSurah(){
+  const u=surahUrl(recById(S.rec),LS.s),el=document.getElementById('dlbox');if(!window.caches||!window.fetch){toast('التنزيل غير مدعوم في هذا المتصفح');return}
+  if(!navigator.onLine){toast('يلزم اتصال بالإنترنت للتنزيل');return}
+  const say=function(t){const e=document.getElementById('dlbox');if(e)e.innerHTML='<p class="muted" style="font-size:.88rem">'+t+'</p>'};
+  say('جارٍ التنزيل… 0%');try{navigator.storage&&navigator.storage.persist&&navigator.storage.persist()}catch(e){}
+  fetch(u,{mode:'cors'}).then(function(r){
+    if(!r.ok)throw 0;const tot=+r.headers.get('content-length')||0,rd=r.body&&r.body.getReader?r.body.getReader():null,ch=[];let got=0;
+    if(!rd)return r.blob();
+    const pump=function(){return rd.read().then(function(x){if(x.done)return new Blob(ch,{type:'audio/mpeg'});ch.push(x.value);got+=x.value.length;if(tot)say('جارٍ التنزيل… '+Math.round(got*100/tot)+'%');return pump()})};
+    return pump();
+  }).then(function(b){return caches.open('nf-audio').then(function(c){return c.put(u,new Response(b,{headers:{'Content-Type':'audio/mpeg'}}))})}).then(function(){toast('تم تنزيل السورة');dlBox()})
+  .catch(function(){say('تعذّر التنزيل (قد يمنعه الموقع المصدر).');setTimeout(dlBox,3000)});
+}
+function dlDel(){caches.open('nf-audio').then(function(c){return c.delete(surahUrl(recById(S.rec),LS.s))}).then(function(){dlBox()}).catch(function(){})}
 function startAudio(url){
-  AU.src=url;
-  const p=AU.play();if(p&&p.catch)p.catch(function(){audioErr()});
+  if(AUB){try{URL.revokeObjectURL(AUB)}catch(e){}AUB=null}
+  const go=function(src){AU.src=src;const p=AU.play();if(p&&p.catch)p.catch(function(){audioErr()})};
+  if(window.caches&&url.indexOf('http')===0){caches.open('nf-audio').then(function(c){return c.match(url)}).then(function(m){return m?m.blob():null}).then(function(b){if(b){AUB=URL.createObjectURL(b);go(AUB)}else go(url)}).catch(function(){go(url)})}
+  else go(url);
 }
 function playSurah(s){
   const r=recById(S.rec);AP={mode:'surah',r:r,s:s,a:0,err:false,url:surahUrl(r,s)};
@@ -4253,7 +4273,7 @@ function pageListen(){
      '<div class="field"><label for="lsurah">السورة</label><select id="lsurah">'+SN.map(function(n,i){return '<option value="'+(i+1)+'"'+((i+1)===LS.s?' selected':'')+'>'+N(i+1)+'. '+n+'</option>'}).join('')+'</select></div>';
     if(LS.mode==='surah'){
       h+='<button class="btn" data-act="play-surah">استمع إلى سورة '+SN[LS.s-1]+' بصوت '+r.n+'</button>'+
-         '<p class="muted" style="font-size:.88rem">يُشغَّل الملف من موقع MP3Quran. إن لم يعمل داخل الصفحة فسيظهر رابط لفتحه في تبويب جديد.</p>';
+         '<div id="dlbox" style="margin:8px 0"></div><p class="muted" style="font-size:.88rem">يُشغَّل الملف من موقع MP3Quran. إن لم يعمل داخل الصفحة فسيظهر رابط لفتحه في تبويب جديد.</p>';setTimeout(dlBox,0);
     }else{
       h+='<p class="muted" style="font-size:.9rem">اضغط على أي آية لتبدأ منها، وتنتقل التلاوة تلقائيًا إلى الآية التالية.</p><div class="lv" id="lv"><p class="muted">جارٍ تحميل النص…</p></div>';
     }
@@ -4888,7 +4908,7 @@ function askSend(){
 /* ---------- تحدٍّ مباشر بين جهازين ---------- */
 let DU=null;
 function duelName(){return (S.prof&&S.prof.name)||(ACCT&&ACCT.name)||'لاعب'}
-function openDuel(){DU={room:null,code:'',qs:null,i:0,sc:0,state:'lobby',host:false,offs:[],sel:null};openOverlay();renderDuel()}
+function openDuel(){DU={room:null,code:'',qs:null,i:0,sc:0,state:'lobby',host:false,offs:[],sel:null,bs:(DU&&DU.bs)||{t:'mix',l:'m'}};openOverlay();renderDuel()}
 function duelClose(){if(DU){DU.offs.forEach(function(f){try{f()}catch(e){}});if(DU.room)DU.room.leave().catch(function(){});DU=null}closeOverlay()}
 function duelJoin(code,host){
   if(!window.claude||!claude.use){toast('التحدي المباشر غير متاح في هذا العرض');return}
@@ -4928,8 +4948,8 @@ function renderDuel(){
   if(!DU)return;
   let h='<div class="ltop"><button class="xbtn" data-act="duel-close" aria-label="إغلاق">'+IC.x+'</button><h2 style="flex:1;font-size:1.2rem">تحدٍّ مباشر</h2></div><div class="lmain">';
   if(DU.state==='lobby'){
-    h+='<div class="say"><div class="mas">'+hoopoe('happy',80)+'</div><div class="bubble"><p>تنافس مع صديق على جهاز آخر في اللحظة نفسها: أنشئ غرفة وأعطِه الرمز، أو انضم برمزه. يلزم اتصال بالإنترنت.</p></div></div>'+
-     '<button class="btn" data-act="duel-new">إنشاء غرفة</button><div class="field"><label for="ducode">أو انضم برمز</label><input type="text" id="ducode" maxlength="8" dir="ltr" placeholder="الرمز"><button class="btn ghost" data-act="duel-join">انضم</button></div>';
+    h+='<div class="say"><div class="mas">'+hoopoe('happy',80)+'</div><div class="bubble"><p>تنافس مع صديق على جهاز آخر في اللحظة نفسها: أنشئ غرفة وأعطِه الرمز، أو انضم برمزه (يلزم إنترنت). أو العب ضد الحاسوب بلا إنترنت.</p></div></div>'+
+     '<button class="btn" data-act="duel-new">إنشاء غرفة</button><div class="field"><label for="ducode">أو انضم برمز</label><input type="text" id="ducode" maxlength="8" dir="ltr" placeholder="الرمز"><button class="btn ghost" data-act="duel-join">انضم</button></div>'+botLobbyHTML();
   }else if(DU.state==='wait'){
     const rk=duelRank();
     h+='<div class="center"><h2>رمز الغرفة</h2><div class="bigs" dir="ltr">'+esc(DU.code)+'</div><p class="muted">أعطِ الرمز لصديقك. اللاعبون الآن:</p><div class="lb" style="width:100%">'+rk.map(function(p){return '<div'+(p.me?' class="me"':'')+'><span>'+esc(p.n)+(p.me?' (أنت)':'')+'</span></div>'}).join('')+'</div>'+
@@ -4941,7 +4961,7 @@ function renderDuel(){
     h+='<div class="lb" style="margin-top:12px">'+duelRank().map(function(p){return '<div'+(p.me?' class="me"':'')+'><span>'+esc(p.n)+'</span><span>'+N(p.sc)+'</span></div>'}).join('')+'</div>';
   }else{
     const rk=duelRank();
-    h+='<div class="center"><div class="mas">'+hoopoe(rk[0]&&rk[0].me?'cheer':'happy',120)+'</div><h2>'+(rk[0]&&rk[0].me?'فزت!':'انتهى التحدي')+'</h2><div class="rank" style="width:100%">'+rk.map(function(p,i){return '<div><span>'+N(i+1)+'</span><span>'+esc(p.n)+(p.me?' (أنت)':'')+(p.dn?'':' …')+'</span><span>'+N(p.sc)+' نقطة</span></div>'}).join('')+'</div><button class="btn ghost" data-act="duel-close">إغلاق</button></div>';
+    h+='<div class="center"><div class="mas">'+hoopoe(rk[0]&&rk[0].me?'cheer':'happy',120)+'</div><h2>'+(rk[0]&&rk[0].me?'فزت!':'انتهى التحدي')+'</h2><div class="rank" style="width:100%">'+rk.map(function(p,i){return '<div><span>'+N(i+1)+'</span><span>'+esc(p.n)+(p.me?' (أنت)':'')+(p.dn?'':' …')+'</span><span>'+N(p.sc)+' نقطة</span></div>'}).join('')+'</div>'+(DU.bot?'<button class="btn" data-act="bot-go">العب مجددًا</button>':'')+'<button class="btn ghost" data-act="duel-close">إغلاق</button></div>';
   }
   h+='</div>';$('#lesson').innerHTML=h;
 }
@@ -7757,6 +7777,9 @@ document.addEventListener('click',function(e){
   if(a==='ask-send')return askSend();
   if(a==='duel-open')return openDuel();
   if(a==='duel-close')return duelClose();
+  if(a&&a.indexOf('bot-t:')===0&&DU){DU.bs.t=a.slice(6);return renderDuel()}
+  if(a&&a.indexOf('bot-l:')===0&&DU){DU.bs.l=a.slice(6);return renderDuel()}
+  if(a==='bot-go'&&DU)return duelBot();
   if(a==='duel-new'){const al='abcdefghjkmnpqrstuvwxyz23456789';let c='';for(let i=0;i<5;i++)c+=al[Math.floor(Math.random()*al.length)];return duelJoin(c,true)}
   if(a==='duel-join'){const v=($('#ducode').value||'').trim().toLowerCase().replace(/[^a-z0-9]/g,'');if(v.length>=4)duelJoin(v,false);return}
   if(a==='duel-go')return duelHostStart();
@@ -7778,6 +7801,8 @@ document.addEventListener('click',function(e){
   if(a==='hquiz')return hifzQuiz(+d.hs2);
   if(a==='rback'){RV.s=0;pageRead();window.scrollTo(0,0);return}
   if(a==='play-surah')return playSurah(LS.s);
+  if(a==='dl-surah')return dlSurah();
+  if(a==='dl-del')return dlDel();
   if(a==='toggle'){if(AU.paused)AU.play().catch(function(){audioErr()});else AU.pause();return}
   if(a==='mclose')return stopAudio();
   if(a==='pa-prev'){if(AP&&AP.a>1)playAyah(AP.s,AP.a-1);return}
@@ -8365,6 +8390,58 @@ function icoSvg(e){
   };
 })();
 
+/* اللعب ضد الحاسوب — يعمل دون إنترنت */
+const BOT_LV={e:{n:'سهل',p:.45,a:6000,b:5000},m:{n:'متوسط',p:.7,a:4000,b:4000},h:{n:'صعب',p:.9,a:2000,b:3000}};
+function botTypes(){const t=[['mix','منوّع'],['tf','صح أو خطأ']];F.forEach(function(f){if(f.id!=='order'&&f.id!=='ayat')t.push([f.id,f.n])});return t}
+function BotRoom(lv){
+  const cfg=BOT_LV[lv]||BOT_LV.m;let me={n:duelName(),sc:0,dn:0},bot={n:'الحاسوب',sc:0,dn:0},bi=0,due=0,cbs=[],tm=null;
+  function fire(){cbs.slice().forEach(function(f){try{f()}catch(e){}})}
+  function step(){
+    if(!DU||DU.room!==rm||!DU.qs){return}
+    const n=DU.qs.length;let ch=false;
+    if(DU.state==='end'){while(bi<n){bi++;if(Math.random()<cfg.p)bot.sc+=10;ch=true}if(!bot.dn){bot.dn=1;ch=true}}
+    else if(DU.state==='play'){
+      while(bi<DU.i){bi++;if(Math.random()<cfg.p)bot.sc+=10;ch=true}
+      if(bi===DU.i&&bi<n){
+        if(!due)due=Date.now()+cfg.a*(.6+Math.random()*.8)*(.7+.3*(1))+Math.random()*cfg.b*.3;
+        if(Date.now()>=due){bi++;due=0;if(Math.random()<cfg.p)bot.sc+=10;ch=true;if(bi>=n)bot.dn=1}
+      }
+    }
+    if(ch)fire();
+  }
+  const rm={
+    presence:function(p){me=p;return Promise.resolve()},
+    emit:function(){return Promise.resolve()},
+    on:function(){return function(){}},
+    onPeers:function(f){cbs.push(f);return function(){cbs=cbs.filter(function(x){return x!==f})}},
+    peers:function(){return [{id:'me',presence:me,isMe:true},{id:'bot',presence:bot,isMe:false}]},
+    leave:function(){clearInterval(tm);cbs=[];return Promise.resolve()}
+  };
+  tm=setInterval(step,250);
+  return rm;
+}
+function botQs(t,lv){
+  const mk=function(x){return {q:x[0],c:x[1],o:shuffle(x.slice(1,5))}};
+  const cat=function(id){const b=(B[id]||{});let a=(b[lv]||[]).slice();['m','e','h'].forEach(function(l){if(a.length<8&&l!==lv)a=a.concat(b[l]||[])});return a.map(mk)};
+  let pool=[];
+  if(t==='tf'){pool=(window.MGTFB||[]).map(function(x){return {q:x[0],c:x[1]?'صح':'خطأ',o:['صح','خطأ']}})}
+  else if(t==='mix'){F.forEach(function(f){if(f.id==='order'||f.id==='ayat')return;pool=pool.concat(shuffle(cat(f.id)).slice(0,3))})}
+  else pool=cat(t);
+  return shuffle(pool).slice(0,8);
+}
+function duelBot(){
+  const s=DU.bs,qs=botQs(s.t,s.l);
+  if(qs.length<3){toast('لا أسئلة كافية لهذا النوع');return}
+  if(DU.room)DU.room.leave().catch(function(){});
+  DU.room=BotRoom(s.l);DU.code='bot';DU.host=true;DU.bot=true;
+  duelStart(qs);
+}
+function botLobbyHTML(){
+  const s=DU.bs;
+  const b=function(act,on,txt){return '<button class="btn'+(on?'':' ghost')+'" style="padding:6px 12px;min-height:0;width:auto;margin:3px" aria-pressed="'+on+'" data-act="'+act+'">'+esc(txt)+'</button>'};
+  return '<div class="field" style="margin-top:14px"><label>العب ضد الحاسوب (دون إنترنت)</label><div>'+botTypes().map(function(t){return b('bot-t:'+t[0],s.t===t[0],t[1])}).join('')+'</div><div>'+Object.keys(BOT_LV).map(function(k){return b('bot-l:'+k,s.l===k,BOT_LV[k].n)}).join('')+'</div><button class="btn" data-act="bot-go">ابدأ ضد الحاسوب</button></div>';
+}
+
 /* ===== ألعاب مصغّرة: 6 ألعاب تعليمية ===== */
 (function(){
   const MG_LIST=[
@@ -8421,6 +8498,7 @@ function icoSvg(e){
   ];
   let M=null,QQ=null;
   window.MGS=function(){return M};
+  window.MGTFB=TFB;
   function rnd(n){return Math.floor(Math.random()*n)}
   function words(v){return String(v).split(' ').filter(Boolean)}
   /* فهرس الآيات المتفرّدة (لتفادي آيات مكرّرة بين سور) */

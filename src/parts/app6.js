@@ -323,7 +323,7 @@ function askSend(){
 /* ---------- تحدٍّ مباشر بين جهازين ---------- */
 let DU=null;
 function duelName(){return (S.prof&&S.prof.name)||(ACCT&&ACCT.name)||'لاعب'}
-function openDuel(){DU={room:null,code:'',qs:null,i:0,sc:0,state:'lobby',host:false,offs:[],sel:null};openOverlay();renderDuel()}
+function openDuel(){DU={room:null,code:'',qs:null,i:0,sc:0,state:'lobby',host:false,offs:[],sel:null,bs:(DU&&DU.bs)||{t:'mix',l:'m'}};openOverlay();renderDuel()}
 function duelClose(){if(DU){DU.offs.forEach(function(f){try{f()}catch(e){}});if(DU.room)DU.room.leave().catch(function(){});DU=null}closeOverlay()}
 function duelJoin(code,host){
   if(!window.claude||!claude.use){toast('التحدي المباشر غير متاح في هذا العرض');return}
@@ -363,8 +363,8 @@ function renderDuel(){
   if(!DU)return;
   let h='<div class="ltop"><button class="xbtn" data-act="duel-close" aria-label="إغلاق">'+IC.x+'</button><h2 style="flex:1;font-size:1.2rem">تحدٍّ مباشر</h2></div><div class="lmain">';
   if(DU.state==='lobby'){
-    h+='<div class="say"><div class="mas">'+hoopoe('happy',80)+'</div><div class="bubble"><p>تنافس مع صديق على جهاز آخر في اللحظة نفسها: أنشئ غرفة وأعطِه الرمز، أو انضم برمزه. يلزم اتصال بالإنترنت.</p></div></div>'+
-     '<button class="btn" data-act="duel-new">إنشاء غرفة</button><div class="field"><label for="ducode">أو انضم برمز</label><input type="text" id="ducode" maxlength="8" dir="ltr" placeholder="الرمز"><button class="btn ghost" data-act="duel-join">انضم</button></div>';
+    h+='<div class="say"><div class="mas">'+hoopoe('happy',80)+'</div><div class="bubble"><p>تنافس مع صديق على جهاز آخر في اللحظة نفسها: أنشئ غرفة وأعطِه الرمز، أو انضم برمزه (يلزم إنترنت). أو العب ضد الحاسوب بلا إنترنت.</p></div></div>'+
+     '<button class="btn" data-act="duel-new">إنشاء غرفة</button><div class="field"><label for="ducode">أو انضم برمز</label><input type="text" id="ducode" maxlength="8" dir="ltr" placeholder="الرمز"><button class="btn ghost" data-act="duel-join">انضم</button></div>'+botLobbyHTML();
   }else if(DU.state==='wait'){
     const rk=duelRank();
     h+='<div class="center"><h2>رمز الغرفة</h2><div class="bigs" dir="ltr">'+esc(DU.code)+'</div><p class="muted">أعطِ الرمز لصديقك. اللاعبون الآن:</p><div class="lb" style="width:100%">'+rk.map(function(p){return '<div'+(p.me?' class="me"':'')+'><span>'+esc(p.n)+(p.me?' (أنت)':'')+'</span></div>'}).join('')+'</div>'+
@@ -376,7 +376,7 @@ function renderDuel(){
     h+='<div class="lb" style="margin-top:12px">'+duelRank().map(function(p){return '<div'+(p.me?' class="me"':'')+'><span>'+esc(p.n)+'</span><span>'+N(p.sc)+'</span></div>'}).join('')+'</div>';
   }else{
     const rk=duelRank();
-    h+='<div class="center"><div class="mas">'+hoopoe(rk[0]&&rk[0].me?'cheer':'happy',120)+'</div><h2>'+(rk[0]&&rk[0].me?'فزت!':'انتهى التحدي')+'</h2><div class="rank" style="width:100%">'+rk.map(function(p,i){return '<div><span>'+N(i+1)+'</span><span>'+esc(p.n)+(p.me?' (أنت)':'')+(p.dn?'':' …')+'</span><span>'+N(p.sc)+' نقطة</span></div>'}).join('')+'</div><button class="btn ghost" data-act="duel-close">إغلاق</button></div>';
+    h+='<div class="center"><div class="mas">'+hoopoe(rk[0]&&rk[0].me?'cheer':'happy',120)+'</div><h2>'+(rk[0]&&rk[0].me?'فزت!':'انتهى التحدي')+'</h2><div class="rank" style="width:100%">'+rk.map(function(p,i){return '<div><span>'+N(i+1)+'</span><span>'+esc(p.n)+(p.me?' (أنت)':'')+(p.dn?'':' …')+'</span><span>'+N(p.sc)+' نقطة</span></div>'}).join('')+'</div>'+(DU.bot?'<button class="btn" data-act="bot-go">العب مجددًا</button>':'')+'<button class="btn ghost" data-act="duel-close">إغلاق</button></div>';
   }
   h+='</div>';$('#lesson').innerHTML=h;
 }
