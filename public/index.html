@@ -4948,7 +4948,7 @@ function renderDuel(){
   if(!DU)return;
   let h='<div class="ltop"><button class="xbtn" data-act="duel-close" aria-label="إغلاق">'+IC.x+'</button><h2 style="flex:1;font-size:1.2rem">تحدٍّ مباشر</h2></div><div class="lmain">';
   if(DU.state==='lobby'){
-    h+='<div class="say"><div class="mas">'+hoopoe('happy',80)+'</div><div class="bubble"><p>تنافس مع صديق على جهاز آخر في اللحظة نفسها: أنشئ غرفة وأعطِه الرمز، أو انضم برمزه (يلزم إنترنت). أو العب ضد الحاسوب بلا إنترنت.</p></div></div>'+
+    h+='<div class="say"><div class="mas">'+hoopoe('happy',80)+'</div><div class="bubble"><p>تنافس مع صديق على جهاز آخر في اللحظة نفسها: أنشئ غرفة وأعطِه الرمز، أو انضم برمزه (يلزم إنترنت). أو العب ضد الهدهد بلا إنترنت.</p></div></div>'+
      '<button class="btn" data-act="duel-new">إنشاء غرفة</button><div class="field"><label for="ducode">أو انضم برمز</label><input type="text" id="ducode" maxlength="8" dir="ltr" placeholder="الرمز"><button class="btn ghost" data-act="duel-join">انضم</button></div>'+botLobbyHTML();
   }else if(DU.state==='wait'){
     const rk=duelRank();
@@ -8394,17 +8394,17 @@ function icoSvg(e){
 const BOT_LV={e:{n:'سهل',p:.45,a:6000,b:5000},m:{n:'متوسط',p:.7,a:4000,b:4000},h:{n:'صعب',p:.9,a:2000,b:3000}};
 function botTypes(){const t=[['mix','منوّع'],['tf','صح أو خطأ']];F.forEach(function(f){if(f.id!=='order'&&f.id!=='ayat')t.push([f.id,f.n])});return t}
 function BotRoom(lv){
-  const cfg=BOT_LV[lv]||BOT_LV.m;let me={n:duelName(),sc:0,dn:0},bot={n:'الحاسوب',sc:0,dn:0},bi=0,due=0,cbs=[],tm=null;
+  const cfg=BOT_LV[lv]||BOT_LV.m;let me={n:duelName(),sc:0,dn:0},form=(Math.random()-.5)*.36,bot={n:'الهدهد',sc:0,dn:0},bi=0,due=0,cbs=[],tm=null;
   function fire(){cbs.slice().forEach(function(f){try{f()}catch(e){}})}
   function step(){
     if(!DU||DU.room!==rm||!DU.qs){return}
     const n=DU.qs.length;let ch=false;
-    if(DU.state==='end'){while(bi<n){bi++;if(Math.random()<cfg.p)bot.sc+=10;ch=true}if(!bot.dn){bot.dn=1;ch=true}}
+    if(DU.state==='end'){while(bi<n){bi++;if(Math.random()<Math.max(.1,Math.min(.97,cfg.p+form+(Math.random()-.5)*.2)))bot.sc+=10;ch=true}if(!bot.dn){bot.dn=1;ch=true}}
     else if(DU.state==='play'){
-      while(bi<DU.i){bi++;if(Math.random()<cfg.p)bot.sc+=10;ch=true}
+      while(bi<DU.i){bi++;if(Math.random()<Math.max(.1,Math.min(.97,cfg.p+form+(Math.random()-.5)*.2)))bot.sc+=10;ch=true}
       if(bi===DU.i&&bi<n){
         if(!due)due=Date.now()+cfg.a*(.6+Math.random()*.8)*(.7+.3*(1))+Math.random()*cfg.b*.3;
-        if(Date.now()>=due){bi++;due=0;if(Math.random()<cfg.p)bot.sc+=10;ch=true;if(bi>=n)bot.dn=1}
+        if(Date.now()>=due){bi++;due=0;if(Math.random()<Math.max(.1,Math.min(.97,cfg.p+form+(Math.random()-.5)*.2)))bot.sc+=10;ch=true;if(bi>=n)bot.dn=1}
       }
     }
     if(ch)fire();
@@ -8439,7 +8439,7 @@ function duelBot(){
 function botLobbyHTML(){
   const s=DU.bs;
   const b=function(act,on,txt){return '<button class="btn'+(on?'':' ghost')+'" style="padding:6px 12px;min-height:0;width:auto;margin:3px" aria-pressed="'+on+'" data-act="'+act+'">'+esc(txt)+'</button>'};
-  return '<div class="field" style="margin-top:14px"><label>العب ضد الحاسوب (دون إنترنت)</label><div>'+botTypes().map(function(t){return b('bot-t:'+t[0],s.t===t[0],t[1])}).join('')+'</div><div>'+Object.keys(BOT_LV).map(function(k){return b('bot-l:'+k,s.l===k,BOT_LV[k].n)}).join('')+'</div><button class="btn" data-act="bot-go">ابدأ ضد الحاسوب</button></div>';
+  return '<div class="field" style="margin-top:14px"><label>العب ضد الهدهد (دون إنترنت)</label><div>'+botTypes().map(function(t){return b('bot-t:'+t[0],s.t===t[0],t[1])}).join('')+'</div><div>'+Object.keys(BOT_LV).map(function(k){return b('bot-l:'+k,s.l===k,BOT_LV[k].n)}).join('')+'</div><button class="btn" data-act="bot-go">ابدأ ضد الهدهد</button></div>';
 }
 
 /* ===== ألعاب مصغّرة: 6 ألعاب تعليمية ===== */
@@ -8730,7 +8730,7 @@ function botLobbyHTML(){
     const pg=$('#page');if(!pg)return;
     const sec=document.createElement('section');sec.className='sec';sec.style.marginTop='20px';
     sec.innerHTML='<h2>ألعاب سريعة</h2><div class="mggrid">'+MG_LIST.map(function(g){
-      return '<button class="mgcard" data-mg="open:'+g[0]+'"><b>'+g[1]+'</b><small>'+g[2]+'</small></button>'}).join('')+'<button class="mgcard" data-act="duel-open"><b>ضد الحاسوب</b><small>بمستويات، دون إنترنت</small></button><button class="mgcard" data-act="duel-open"><b>تحدٍّ مع صديق</b><small>غرفة برمز</small></button></div>';
+      return '<button class="mgcard" data-mg="open:'+g[0]+'"><b>'+g[1]+'</b><small>'+g[2]+'</small></button>'}).join('')+'<button class="mgcard" data-act="duel-open"><b>ضد الهدهد</b><small>بمستويات، دون إنترنت</small></button><button class="mgcard" data-act="duel-open"><b>تحدٍّ مع صديق</b><small>غرفة برمز</small></button></div>';
     pg.insertBefore(sec,pg.firstChild);
   };
 })();
