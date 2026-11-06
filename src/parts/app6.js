@@ -363,8 +363,8 @@ function renderDuel(){
   if(!DU)return;
   let h='<div class="ltop"><button class="xbtn" data-act="duel-close" aria-label="إغلاق">'+IC.x+'</button><h2 style="flex:1;font-size:1.2rem">تحدٍّ مباشر</h2></div><div class="lmain">';
   if(DU.state==='lobby'){
-    h+='<div class="say"><div class="mas">'+hoopoe('happy',80)+'</div><div class="bubble"><p>تنافس مع صديق على جهاز آخر في اللحظة نفسها: أنشئ غرفة وأعطِه الرمز، أو انضم برمزه (يلزم إنترنت). أو العب ضد الحاسوب بلا إنترنت.</p></div></div>'+
-     '<button class="btn" data-act="duel-new">إنشاء غرفة</button><div class="field"><label for="ducode">أو انضم برمز</label><input type="text" id="ducode" maxlength="8" dir="ltr" placeholder="الرمز"><button class="btn ghost" data-act="duel-join">انضم</button></div>'+botLobbyHTML();
+    h+='<div class="say"><div class="mas">'+hoopoe('happy',80)+'</div><div class="bubble"><p>تنافس مع صديق على جهاز آخر في اللحظة نفسها: أنشئ غرفة وأعطِه الرمز، العب ضد الهدهد بلا إنترنت، أو تحدَّ صديقًا على جهاز آخر.</p></div></div>'+
+     botLobbyHTML()+'<div class="orn" aria-hidden="true"><i></i><b>۞</b><i></i></div><h3 class="gh3">مع صديق (يلزم إنترنت)</h3><button class="btn" data-act="duel-new">إنشاء غرفة</button><div class="field"><label for="ducode">أو انضم برمز</label><input type="text" id="ducode" maxlength="8" dir="ltr" placeholder="الرمز"><button class="btn ghost" data-act="duel-join">انضم</button></div>';
   }else if(DU.state==='wait'){
     const rk=duelRank();
     h+='<div class="center"><h2>رمز الغرفة</h2><div class="bigs" dir="ltr">'+esc(DU.code)+'</div><p class="muted">أعطِ الرمز لصديقك. اللاعبون الآن:</p><div class="lb" style="width:100%">'+rk.map(function(p){return '<div'+(p.me?' class="me"':'')+'><span>'+esc(p.n)+(p.me?' (أنت)':'')+'</span></div>'}).join('')+'</div>'+

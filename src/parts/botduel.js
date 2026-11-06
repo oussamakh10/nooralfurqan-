@@ -49,8 +49,8 @@ function duelBot(){
 }
 function botLobbyHTML(){
   const s=DU.bs;
-  const b=function(act,on,txt){return '<button class="btn'+(on?'':' ghost')+'" style="padding:6px 12px;min-height:0;width:auto;margin:3px" aria-pressed="'+on+'" data-act="'+act+'">'+esc(txt)+'</button>'};
-  return '<div class="field" style="margin-top:14px"><label>العب ضد الهدهد (دون إنترنت)</label><div>'+botTypes().map(function(t){return b('bot-t:'+t[0],s.t===t[0],t[1])}).join('')+'</div><div>'+Object.keys(BOT_LV).map(function(k){return b('bot-l:'+k,s.l===k,BOT_LV[k].n)}).join('')+'</div><button class="btn" data-act="bot-go">ابدأ ضد الهدهد</button></div>';
+  const b=function(act,on,txt){return '<button class="bchip" aria-pressed="'+on+'" data-act="'+act+'">'+esc(txt)+'</button>'};
+  return '<h3 class="gh3">تحدَّ الهدهد <small class="muted">(دون إنترنت)</small></h3><div class="bsec"><span class="lbl">نوع الأسئلة</span><div class="bchips">'+botTypes().map(function(t){return b('bot-t:'+t[0],s.t===t[0],t[1])}).join('')+'</div></div><div class="bsec"><span class="lbl">مستوى الهدهد</span><div class="bchips lv">'+Object.keys(BOT_LV).map(function(k){return b('bot-l:'+k,s.l===k,BOT_LV[k].n)}).join('')+'</div></div><button class="btn" data-act="bot-go">ابدأ ضد الهدهد</button>';
 }
 
 (function(){

@@ -845,6 +845,12 @@ html[data-tab="play"] #page{background:radial-gradient(60% 40% at 50% 100%,color
 .gbig:active{transform:translateY(3px);box-shadow:none}.gbt{display:grid;gap:4px}.gbt b{font:800 1.25rem var(--display)}.gbt small{opacity:.9;font-size:.85rem}.gbi{flex:none}
 .gsm{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin-top:10px}.gsm button{display:grid;gap:3px;padding:12px 6px;text-align:center;border-radius:18px;border:2px solid color-mix(in srgb,var(--accent) 30%,transparent);background:linear-gradient(160deg,var(--surface),var(--accent-soft))}.gsm b{font:800 .98rem var(--display)}.gsm small{opacity:.75;font-size:.74rem}.gsm button:active{transform:translateY(2px)}
 .gh3{margin:0 0 8px;font:800 1.05rem var(--display)}.gcu{width:100%}
+.bsec{display:grid;gap:6px;margin:10px 0}.bsec .lbl{font-weight:700;font-size:.92rem;opacity:.85}
+.bchips{display:flex;flex-wrap:wrap;gap:8px}.bchips.lv{display:grid;grid-template-columns:repeat(3,1fr)}
+.bchip{padding:8px 14px;border-radius:999px;border:2px solid color-mix(in srgb,var(--accent) 35%,transparent);background:var(--surface);font:700 .92rem var(--display);text-align:center}
+.bchip[aria-pressed="true"]{background:var(--accent);color:#fff;border-color:var(--accent)}
+.bchips.lv .bchip{padding:8px 0;min-height:0;height:auto;display:flex;align-items:center;justify-content:center}
+
 
 .mgmain{display:grid;gap:12px;align-content:start}
 .mgcols{display:grid;grid-template-columns:1fr 1fr;gap:10px}
@@ -4975,8 +4981,8 @@ function renderDuel(){
   if(!DU)return;
   let h='<div class="ltop"><button class="xbtn" data-act="duel-close" aria-label="إغلاق">'+IC.x+'</button><h2 style="flex:1;font-size:1.2rem">تحدٍّ مباشر</h2></div><div class="lmain">';
   if(DU.state==='lobby'){
-    h+='<div class="say"><div class="mas">'+hoopoe('happy',80)+'</div><div class="bubble"><p>تنافس مع صديق على جهاز آخر في اللحظة نفسها: أنشئ غرفة وأعطِه الرمز، أو انضم برمزه (يلزم إنترنت). أو العب ضد الهدهد بلا إنترنت.</p></div></div>'+
-     '<button class="btn" data-act="duel-new">إنشاء غرفة</button><div class="field"><label for="ducode">أو انضم برمز</label><input type="text" id="ducode" maxlength="8" dir="ltr" placeholder="الرمز"><button class="btn ghost" data-act="duel-join">انضم</button></div>'+botLobbyHTML();
+    h+='<div class="say"><div class="mas">'+hoopoe('happy',80)+'</div><div class="bubble"><p>تنافس مع صديق على جهاز آخر في اللحظة نفسها: أنشئ غرفة وأعطِه الرمز، العب ضد الهدهد بلا إنترنت، أو تحدَّ صديقًا على جهاز آخر.</p></div></div>'+
+     botLobbyHTML()+'<div class="orn" aria-hidden="true"><i></i><b>۞</b><i></i></div><h3 class="gh3">مع صديق (يلزم إنترنت)</h3><button class="btn" data-act="duel-new">إنشاء غرفة</button><div class="field"><label for="ducode">أو انضم برمز</label><input type="text" id="ducode" maxlength="8" dir="ltr" placeholder="الرمز"><button class="btn ghost" data-act="duel-join">انضم</button></div>';
   }else if(DU.state==='wait'){
     const rk=duelRank();
     h+='<div class="center"><h2>رمز الغرفة</h2><div class="bigs" dir="ltr">'+esc(DU.code)+'</div><p class="muted">أعطِ الرمز لصديقك. اللاعبون الآن:</p><div class="lb" style="width:100%">'+rk.map(function(p){return '<div'+(p.me?' class="me"':'')+'><span>'+esc(p.n)+(p.me?' (أنت)':'')+'</span></div>'}).join('')+'</div>'+
@@ -8476,8 +8482,8 @@ function duelBot(){
 }
 function botLobbyHTML(){
   const s=DU.bs;
-  const b=function(act,on,txt){return '<button class="btn'+(on?'':' ghost')+'" style="padding:6px 12px;min-height:0;width:auto;margin:3px" aria-pressed="'+on+'" data-act="'+act+'">'+esc(txt)+'</button>'};
-  return '<div class="field" style="margin-top:14px"><label>العب ضد الهدهد (دون إنترنت)</label><div>'+botTypes().map(function(t){return b('bot-t:'+t[0],s.t===t[0],t[1])}).join('')+'</div><div>'+Object.keys(BOT_LV).map(function(k){return b('bot-l:'+k,s.l===k,BOT_LV[k].n)}).join('')+'</div><button class="btn" data-act="bot-go">ابدأ ضد الهدهد</button></div>';
+  const b=function(act,on,txt){return '<button class="bchip" aria-pressed="'+on+'" data-act="'+act+'">'+esc(txt)+'</button>'};
+  return '<h3 class="gh3">تحدَّ الهدهد <small class="muted">(دون إنترنت)</small></h3><div class="bsec"><span class="lbl">نوع الأسئلة</span><div class="bchips">'+botTypes().map(function(t){return b('bot-t:'+t[0],s.t===t[0],t[1])}).join('')+'</div></div><div class="bsec"><span class="lbl">مستوى الهدهد</span><div class="bchips lv">'+Object.keys(BOT_LV).map(function(k){return b('bot-l:'+k,s.l===k,BOT_LV[k].n)}).join('')+'</div></div><button class="btn" data-act="bot-go">ابدأ ضد الهدهد</button>';
 }
 
 (function(){
