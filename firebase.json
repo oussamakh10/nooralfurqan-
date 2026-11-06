@@ -1,2 +1,24 @@
-{ "hosting": { "public": "public", "ignore": ["firebase.json","**/.*"],
-  "headers": [{ "source": "**/*.json", "headers": [{"key":"Cache-Control","value":"public,max-age=86400"}] }] } }
+{
+ "hosting": {
+  "public": "public",
+  "ignore": [
+   "firebase.json",
+   "**/.*"
+  ],
+  "headers": [
+   {
+    "source": "**/*.json",
+    "headers": [
+     {
+      "key": "Cache-Control",
+      "value": "public,max-age=86400"
+     }
+    ]
+   }
+  ]
+ },
+ "firestore": {
+  "rules": "firestore.rules",
+  "indexes": "firestore.indexes.json"
+ }
+}

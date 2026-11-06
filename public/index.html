@@ -5338,11 +5338,13 @@ function fbSetUser(u){
 function fbBoard(){
   if(!DBH)return;
   try{
-    DBH.collection('board').onSnapshot(function(snap){
-      const rows=[];
-      snap.docs.forEach(function(d){const v=d.data();if(v)rows.push({id:d.id,wk:v.wk,xp:+v.xp||0,has:+v.has||0,circle:v.circle||'',kh:+v.kh||0,kn:+v.kn||0,name:String(v.nm||'مستخدم').slice(0,24)})});
-      BOARD=rows.filter(function(x){return x.wk===weekKey()}).sort(function(a,b){return b.xp-a.xp}).slice(0,10);
-      CIRC=S.circle?rows.filter(function(x){return x.circle===S.circle}).sort(function(a,b){return (b.kn*6236+b.kh)-(a.kn*6236+a.kh)}).slice(0,12):[];
+    const mp=function(d){const v=d.data();return v?{id:d.id,wk:v.wk,xp:+v.xp||0,has:+v.has||0,circle:v.circle||'',kh:+v.kh||0,kn:+v.kn||0,name:String(v.nm||'مستخدم').slice(0,24)}:null};
+    DBH.collection('board').where('wk','==',weekKey()).orderBy('xp','desc').limit(50).onSnapshot(function(snap){
+      BOARD=snap.docs.map(mp).filter(Boolean).sort(function(a,b){return b.xp-a.xp||(a.id<b.id?-1:1)}).slice(0,10);
+      if(typeof TAB!=='undefined'&&TAB==='ach')fillBoard();
+    },function(){});
+    if(S.circle)DBH.collection('board').where('circle','==',S.circle).limit(50).onSnapshot(function(snap){
+      CIRC=snap.docs.map(mp).filter(Boolean).sort(function(a,b){return (b.kn*6236+b.kh)-(a.kn*6236+a.kh)||(a.id<b.id?-1:1)}).slice(0,12);
       if(typeof TAB!=='undefined'&&TAB==='ach')fillBoard();
     },function(){});
     syncBoard();

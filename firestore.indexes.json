@@ -1,0 +1,1 @@
+{"indexes":[{"collectionGroup":"board","queryScope":"COLLECTION","fields":[{"fieldPath":"wk","order":"ASCENDING"},{"fieldPath":"xp","order":"DESCENDING"}]}],"fieldOverrides":[]}
