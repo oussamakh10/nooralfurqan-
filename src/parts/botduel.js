@@ -73,6 +73,6 @@ function botLobbyHTML(){
     const q=DU&&DU.qs&&DU.qs[DU.i];const was=DU&&DU.sel;_a(i);
     if(DU&&DU.bot&&q&&was===null&&DU.sel!==null){const ok=q.o[i]===q.c;BM=ok?{m:'wow',t:pk(['أحسنت! إجابة صحيحة','ما شاء الله، أصبت','سريع البديهة!'])}:{m:'cheer',t:pk(['هذه المرة لي!','الجواب غير هذا','لا بأس، حاول في التالي'])};renderDuel()}
   };
-  duelNext=function(){BM={m:'happy',t:'الهدهد يفكّر…'};_n()};
+  duelNext=function(){BM={m:'happy',t:'الهدهد يفكّر…'};_n();if(DU&&DU.bot&&DU.state==='end'){const r=duelRank(),me=r.filter(function(p){return p.me})[0],b=r.filter(function(p){return !p.me})[0];if(me&&b&&me.sc>b.sc){S.hwin=(S.hwin||0)+1;save();toast('وسام جديد: غلبتُ الهدهد')}}};
   const _db=duelBot;duelBot=function(){BM={m:'happy',t:'هيا نتنافس!'};_db()};
 })();

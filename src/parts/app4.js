@@ -33,7 +33,9 @@ const BADGES=[
  {t:'ألف حسنة',d:'اجمع 1000 حسنة',ok:function(){return S.has.t>=1000}},
  {t:'حافظ صغير',d:'احفظ 10 آيات',ok:function(){let n=0;for(const k in S.hifz)n+=S.hifz[k].length;return n>=10}},
  {t:'مراجع',d:'أتمم 5 جلسات مراجعة',ok:function(){return (S.rev||0)>=5}},
- {t:'سريع',d:'اجمع 100 نقطة في جولة 60 ثانية',ok:function(){return (S.bestB||0)>=100}}
+ {t:'سريع',d:'اجمع 100 نقطة في جولة 60 ثانية',ok:function(){return (S.bestB||0)>=100}},
+ {t:'غلبتُ الهدهد',d:'فُز على الهدهد في تحدٍّ',ok:function(){return (S.hwin||0)>=1}},
+ {t:'مئة في كل مستوى',d:'اجمع 100 نقطة في لعبة بكل مستوى: سهل ومتوسط وصعب',ok:function(){const v=S.lvb||{};return (v.e||0)>=100&&(v.m||0)>=100&&(v.h||0)>=100}}
 ];
 function hasSum(n){return sumDays(S.has.d,n)}
 function pageAch(){
@@ -274,6 +276,7 @@ function finishGame(){
     const p=G.players[0],xp=G.blitz?Math.round(p.score/5):p.right*2;
     addXP(xp);
     if(G.blitz){if(p.score>(S.bestB||0))S.bestB=p.score}else if(p.score>S.best)S.best=p.score;
+    if(GS.levels&&GS.levels.length===1){S.lvb=S.lvb||{};const lk=GS.levels[0];if(p.score>(S.lvb[lk]||0)){S.lvb[lk]=p.score;if(S.lvb.e>=100&&S.lvb.m>=100&&S.lvb.h>=100)toast('وسام جديد: مئة في كل مستوى')}}
     save();
     const good=p.n_q?p.right/p.n_q>=.5:false;
     h+='<div class="mas">'+hoopoe(good?'cheer':'sad',140)+'</div><h2>'+(G.blitz?'انتهى الوقت!':'انتهت الجولة!')+'</h2><div class="statr"><div class="stat"><b>'+N(p.score)+'</b><span>نقطة</span></div><div class="stat"><b>'+N(p.right)+'/'+N(p.n_q)+'</b><span>إجابات صحيحة</span></div><div class="stat"><b>+'+N(xp)+'</b><span>نقاط الحساب</span></div></div>';
