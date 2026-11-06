@@ -28,6 +28,7 @@
   function watch(){
     tick();
     if(S.hp>=MAX){toast('قلوبك ممتلئة');return}
+    if(S.kids){toast('الإعلانات غير متاحة في وضع الأطفال');return}
     if(adsLeft()<=0){toast('بلغتَ حدّ إعلانات اليوم');return}
     const ads=window.NF_ADS;
     if(!ads||typeof ads.show!=='function'){toast('الإعلانات غير متاحة حاليًا');return}

@@ -3489,8 +3489,10 @@ function hoopoeNew(mood,size){
    (size>=48&&S.hat==='fez'?'<g><path d="M47 34 L73 34 L69.500 15 L50.500 15Z" fill="#B3261E" stroke="#5E0F0B" stroke-width="1.500" stroke-linejoin="round"/><path d="M48 31 L72 31" stroke="#E8B923" stroke-width="2.200"/><path d="M60 15 Q73 11 75 25" stroke="#1b1b1b" stroke-width="1.600" fill="none" stroke-linecap="round"/><circle cx="75" cy="26" r="2.200" fill="#1b1b1b"/></g>':'')+
    (size>=48&&S.hat==='cap'?'<g><path d="M60 13 L86 23.500 L60 34 L34 23.500Z" fill="#222" stroke="#000" stroke-width="1.200" stroke-linejoin="round"/><path d="M47 29.500 L47 38 Q60 43 73 38 L73 29.500" fill="#333" stroke="#000" stroke-width="1"/><path d="M86 23.500 L86 37" stroke="#E8B923" stroke-width="1.800"/><circle cx="86" cy="38" r="2.400" fill="#E8B923"/></g>':'')+
    (size>=48&&S.hat==='turban'?'<g><ellipse cx="60" cy="27" rx="24" ry="13" fill="#F4F0E6" stroke="#9B8F72" stroke-width="1.400"/><path d="M38 30 Q60 40 82 30 M41 24 Q60 33 79 24 M46 18 Q60 25 74 18" stroke="#B9AE92" stroke-width="1.400" fill="none"/><circle cx="60" cy="24" r="3.200" fill="#C8A24A" stroke="#7A5A12" stroke-width=".8"/></g>':'')+
+   (size>=48&&S.hat==='kufi'?'<g><path d="M43 34 Q60 6 77 34Z" fill="#F4F0E6" stroke="#9B8F72" stroke-width="1.500" stroke-linejoin="round"/><path d="M46 29 Q60 18 74 29" fill="none" stroke="#9B8F72" stroke-width="1.200"/></g>':'')+
    (size>=48&&S.hat==='crown'?'<g><path d="M40 34 L42 14 L51 24 L60 10 L69 24 L78 14 L80 34Z" fill="#E8B923" stroke="#7A5A12" stroke-width="1.500" stroke-linejoin="round"/><path d="M40 30 L80 30" stroke="#7A5A12" stroke-width="1.200"/><circle cx="60" cy="22" r="2.600" fill="#B3261E"/><circle cx="48" cy="26" r="1.800" fill="#2A8C92"/><circle cx="72" cy="26" r="1.800" fill="#2A8C92"/></g>':'')+
    '<ellipse cx="60" cy="67" rx="21" ry="13" fill="var(--hp-belly)" opacity=".95"/>'+
+   (size>=48&&S.neck==='bow'?'<g><path d="M60 86 L45 77 L45 95Z M60 86 L75 77 L75 95Z" fill="#B3261E" stroke="#5E0F0B" stroke-width="1.400" stroke-linejoin="round"/><circle cx="60" cy="86" r="4.500" fill="#E8B923" stroke="#7A5A12" stroke-width="1"/></g>':'')+
    (size>=48&&S.neck==='scarf'?'<g><path d="M33 80 Q60 98 87 80 L85 90 Q60 108 35 90Z" fill="#0F7A4C" stroke="#07422a" stroke-width="1.400" stroke-linejoin="round"/><path d="M42 86 L40 95 M52 91 L51 100 M64 92 L65 101 M75 89 L77 97" stroke="#E8B923" stroke-width="2" stroke-linecap="round"/></g>':'')+
    '<circle cx="34" cy="66" r="'+(mood==='cheer'?6.5:5)+'" fill="var(--hp-blush)" opacity=".6"/><circle cx="86" cy="66" r="'+(mood==='cheer'?6.5:5)+'" fill="var(--hp-blush)" opacity=".6"/>'+
    '<path d="M38 41 Q45 34 53 34" stroke="#fff" stroke-opacity=".4" stroke-width="3" stroke-linecap="round" fill="none"/>'+
@@ -7992,6 +7994,8 @@ document.addEventListener('keydown',function(e){
     {id:'hat:cap',sec:'الهدهد',t:'قبعة التخرج',d:'غطاء رأس للهدهد',p:300,k:'own',ic:'🎓',eq:'hat',v:'cap'},
     {id:'hat:crown',sec:'الهدهد',t:'تاج',d:'غطاء رأس للهدهد',p:400,k:'own',ic:'👑',eq:'hat',v:'crown'},
     {id:'face:glasses',sec:'الهدهد',t:'نظارة',d:'للوجه، تُلبس مع أي غطاء رأس',p:200,k:'own',ic:'👓',eq:'face',v:'glasses'},
+    {id:'hat:kufi',sec:'الهدهد',t:'طاقية',d:'طاقية بيضاء للهدهد',p:120,k:'own',ic:'🧢',eq:'hat',v:'kufi'},
+    {id:'neck:bow',sec:'الهدهد',t:'ربطة عنق',d:'للعنق، تُلبس مع الباقي',p:130,k:'own',ic:'🎀',eq:'neck',v:'bow'},
     {id:'neck:scarf',sec:'الهدهد',t:'وشاح أخضر',d:'للعنق، يُلبس مع الباقي',p:150,k:'own',ic:'🧣',eq:'neck',v:'scarf'},
     {id:'pal:gold',sec:'ألوان التطبيق',t:'ذهبي',d:'لون التطبيق',p:120,k:'own',col:'#A8730A',eq:'pal',v:'gold'},
     {id:'pal:ocean',sec:'ألوان التطبيق',t:'أزرق',d:'لون التطبيق',p:120,k:'own',col:'#1C7E9E',eq:'pal',v:'ocean'},
@@ -8026,6 +8030,7 @@ document.addEventListener('keydown',function(e){
     if(window.NF_ADS&&typeof window.NF_ADS.show==='function'){try{return window.NF_ADS.ready?!!window.NF_ADS.ready(ADS_CFG.place):true}catch(e){return false}}
     return adTest();
   }
+  function adOK(){return !S.kids&&adReady()}
   function adWait(){const a=adS();return Math.max(0,((a.t||0)+ADS_CFG.cooldown*1000-Date.now())/1000)}
   function runAd(){
     if(window.NF_ADS&&typeof window.NF_ADS.show==='function')return window.NF_ADS.show(ADS_CFG.place);
@@ -8035,13 +8040,20 @@ document.addEventListener('keydown',function(e){
       const iv=setInterval(function(){s--;const e=document.getElementById('adsn');if(e)e.textContent=s;if(s<=0){clearInterval(iv);o.remove();res({rewarded:true})}},1000);
     });
   }
-  function watchAd(){
+  function watchAd(kind){
     const a=adS();
+    if(S.kids){toast('الإعلانات غير متاحة في وضع الأطفال');return}
     if(!adReady()){toast('الإعلانات غير متاحة حاليًا');return}
+    if(kind==='freeze'){if(a.fz){toast('أخذتَ تجميد اليوم');return}if((S.freeze||0)>=3){toast('لديك الحد الأقصى: 3');return}}
+    if(kind==='boost'&&a.bs){toast('أخذتَ مضاعف اليوم');return}
     if(a.n>=ADS_CFG.dailyCap){toast('بلغتَ حدّ اليوم من الإعلانات');return}
     if(adWait()>0){toast('انتظر قليلًا قبل الإعلان التالي');return}
     Promise.resolve().then(runAd).then(function(r){
-      if(r&&r.rewarded){const x=adS();x.n++;x.t=Date.now();S.xp+=ADS_CFG.reward;save();try{SND.coin()}catch(e){}renderTop();toast('+'+ADS_CFG.reward+' نقطة، شكرًا لك');renderShop()}
+      if(r&&r.rewarded){const x=adS();x.n++;x.t=Date.now();let m;
+        if(kind==='freeze'){x.fz=1;S.freeze=(S.freeze||0)+1;m='حصلتَ على تجميد سلسلة مجاني'}
+        else if(kind==='boost'){x.bs=1;S.boost=Math.max(Date.now(),S.boost||0)+1800*1000;m='مضاعف ×2 لمدة 30 دقيقة'}
+        else{S.xp+=ADS_CFG.reward;m='+'+ADS_CFG.reward+' نقطة، شكرًا لك'}
+        save();try{SND.coin()}catch(e){}renderTop();toast(m);renderShop()}
       else toast('لم تُكمل الإعلان، لا مكافأة');
     }).catch(function(){toast('تعذّر عرض الإعلان')});
   }
@@ -8141,7 +8153,7 @@ document.addEventListener('keydown',function(e){
   }
   function pageShop(){
     migrate();
-    const a=adS(),ready=adReady(),left=ADS_CFG.dailyCap-a.n,deal=dealItem();
+    const a=adS(),ready=adOK(),left=ADS_CFG.dailyCap-a.n,deal=dealItem();
     const tryIt=TRY&&ITEMS.find(function(x){return x.id===TRY});
     let h='<section class="sec" style="margin-top:16px"><div class="card fitroom"><div class="fr-art"><div class="fr-glow"></div>'+outfitSvg(150)+'</div>'+
       '<div class="fr-info"><div class="fr-bal">'+IC.gem+'<b>'+N(S.xp)+'</b><span>نقطة</span></div>'+
@@ -8153,7 +8165,8 @@ document.addEventListener('keydown',function(e){
     }
     if(SHOPTAB==='all'||SHOPTAB==='boost'){
       h+='<section class="sec"><h2>اكسب نقاطًا</h2><div style="display:grid;gap:10px"><div class="card shopit"><div class="shi">▶</div><div class="shd"><b>شاهد إعلانًا قصيرًا</b><small>+'+ADS_CFG.reward+' نقطة'+(ready?' · المتبقي اليوم: '+N(Math.max(0,left))+'':'')+'</small></div>'+
-        (ready?'<button class="btn sm gold" data-shop="ad">شاهد</button>':'<button class="btn sm ghost" disabled>قريبًا</button>')+'</div>'+
+        (ready?'<button class="btn sm gold" data-shop="ad">شاهد</button>':'<button class="btn sm ghost" disabled>'+(S.kids?'للكبار':'قريبًا')+'</button>')+'</div>'+
+        (ready?'<div class="card shopit"><div class="shi">❄</div><div class="shd"><b>تجميد سلسلة مجاني</b><small>مرة كل يوم'+(a.fz?' · أُخذ اليوم':'')+'</small></div><button class="btn sm gold" data-shop="ad:freeze" '+(a.fz?'disabled':'')+'>شاهد</button></div><div class="card shopit"><div class="shi">⚡</div><div class="shd"><b>مضاعف ×2 لنصف ساعة</b><small>مرة كل يوم'+(a.bs?' · أُخذ اليوم':'')+'</small></div><button class="btn sm gold" data-shop="ad:boost" '+(a.bs?'disabled':'')+'>شاهد</button></div>':'')+
         '<button class="card shopit" data-go="learn"><div class="shi">★</div><div class="shd"><b>تعلّم لتكسب</b><small>كل مرحلة تُتمّها تمنحك 15 نقطة</small></div><span class="btn sm">ابدأ</span></button></div></section>';
     }
     if(SHOPTAB==='mine'){
@@ -8208,7 +8221,7 @@ document.addEventListener('keydown',function(e){
     const v=b.dataset.shop,a=v.split(':')[0],id=v.split(':').slice(1).join(':');
     if(a==='tab'){SHOPTAB=id;return renderShop()}
     if(a==='try'){TRY=(TRY===id)?null:id;return renderShop()}
-    if(a==='ad')return watchAd();
+    if(a==='ad')return watchAd(id);
     if(a==='buy')return buy(id);
     if(a==='eq')return equip(id);
   },true);
@@ -8841,6 +8854,7 @@ function botLobbyHTML(){
   function watch(){
     tick();
     if(S.hp>=MAX){toast('قلوبك ممتلئة');return}
+    if(S.kids){toast('الإعلانات غير متاحة في وضع الأطفال');return}
     if(adsLeft()<=0){toast('بلغتَ حدّ إعلانات اليوم');return}
     const ads=window.NF_ADS;
     if(!ads||typeof ads.show!=='function'){toast('الإعلانات غير متاحة حاليًا');return}

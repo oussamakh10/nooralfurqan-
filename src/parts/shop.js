@@ -13,6 +13,8 @@
     {id:'hat:cap',sec:'الهدهد',t:'قبعة التخرج',d:'غطاء رأس للهدهد',p:300,k:'own',ic:'🎓',eq:'hat',v:'cap'},
     {id:'hat:crown',sec:'الهدهد',t:'تاج',d:'غطاء رأس للهدهد',p:400,k:'own',ic:'👑',eq:'hat',v:'crown'},
     {id:'face:glasses',sec:'الهدهد',t:'نظارة',d:'للوجه، تُلبس مع أي غطاء رأس',p:200,k:'own',ic:'👓',eq:'face',v:'glasses'},
+    {id:'hat:kufi',sec:'الهدهد',t:'طاقية',d:'طاقية بيضاء للهدهد',p:120,k:'own',ic:'🧢',eq:'hat',v:'kufi'},
+    {id:'neck:bow',sec:'الهدهد',t:'ربطة عنق',d:'للعنق، تُلبس مع الباقي',p:130,k:'own',ic:'🎀',eq:'neck',v:'bow'},
     {id:'neck:scarf',sec:'الهدهد',t:'وشاح أخضر',d:'للعنق، يُلبس مع الباقي',p:150,k:'own',ic:'🧣',eq:'neck',v:'scarf'},
     {id:'pal:gold',sec:'ألوان التطبيق',t:'ذهبي',d:'لون التطبيق',p:120,k:'own',col:'#A8730A',eq:'pal',v:'gold'},
     {id:'pal:ocean',sec:'ألوان التطبيق',t:'أزرق',d:'لون التطبيق',p:120,k:'own',col:'#1C7E9E',eq:'pal',v:'ocean'},
@@ -47,6 +49,7 @@
     if(window.NF_ADS&&typeof window.NF_ADS.show==='function'){try{return window.NF_ADS.ready?!!window.NF_ADS.ready(ADS_CFG.place):true}catch(e){return false}}
     return adTest();
   }
+  function adOK(){return !S.kids&&adReady()}
   function adWait(){const a=adS();return Math.max(0,((a.t||0)+ADS_CFG.cooldown*1000-Date.now())/1000)}
   function runAd(){
     if(window.NF_ADS&&typeof window.NF_ADS.show==='function')return window.NF_ADS.show(ADS_CFG.place);
@@ -56,13 +59,20 @@
       const iv=setInterval(function(){s--;const e=document.getElementById('adsn');if(e)e.textContent=s;if(s<=0){clearInterval(iv);o.remove();res({rewarded:true})}},1000);
     });
   }
-  function watchAd(){
+  function watchAd(kind){
     const a=adS();
+    if(S.kids){toast('الإعلانات غير متاحة في وضع الأطفال');return}
     if(!adReady()){toast('الإعلانات غير متاحة حاليًا');return}
+    if(kind==='freeze'){if(a.fz){toast('أخذتَ تجميد اليوم');return}if((S.freeze||0)>=3){toast('لديك الحد الأقصى: 3');return}}
+    if(kind==='boost'&&a.bs){toast('أخذتَ مضاعف اليوم');return}
     if(a.n>=ADS_CFG.dailyCap){toast('بلغتَ حدّ اليوم من الإعلانات');return}
     if(adWait()>0){toast('انتظر قليلًا قبل الإعلان التالي');return}
     Promise.resolve().then(runAd).then(function(r){
-      if(r&&r.rewarded){const x=adS();x.n++;x.t=Date.now();S.xp+=ADS_CFG.reward;save();try{SND.coin()}catch(e){}renderTop();toast('+'+ADS_CFG.reward+' نقطة، شكرًا لك');renderShop()}
+      if(r&&r.rewarded){const x=adS();x.n++;x.t=Date.now();let m;
+        if(kind==='freeze'){x.fz=1;S.freeze=(S.freeze||0)+1;m='حصلتَ على تجميد سلسلة مجاني'}
+        else if(kind==='boost'){x.bs=1;S.boost=Math.max(Date.now(),S.boost||0)+1800*1000;m='مضاعف ×2 لمدة 30 دقيقة'}
+        else{S.xp+=ADS_CFG.reward;m='+'+ADS_CFG.reward+' نقطة، شكرًا لك'}
+        save();try{SND.coin()}catch(e){}renderTop();toast(m);renderShop()}
       else toast('لم تُكمل الإعلان، لا مكافأة');
     }).catch(function(){toast('تعذّر عرض الإعلان')});
   }
@@ -162,7 +172,7 @@
   }
   function pageShop(){
     migrate();
-    const a=adS(),ready=adReady(),left=ADS_CFG.dailyCap-a.n,deal=dealItem();
+    const a=adS(),ready=adOK(),left=ADS_CFG.dailyCap-a.n,deal=dealItem();
     const tryIt=TRY&&ITEMS.find(function(x){return x.id===TRY});
     let h='<section class="sec" style="margin-top:16px"><div class="card fitroom"><div class="fr-art"><div class="fr-glow"></div>'+outfitSvg(150)+'</div>'+
       '<div class="fr-info"><div class="fr-bal">'+IC.gem+'<b>'+N(S.xp)+'</b><span>نقطة</span></div>'+
@@ -174,7 +184,8 @@
     }
     if(SHOPTAB==='all'||SHOPTAB==='boost'){
       h+='<section class="sec"><h2>اكسب نقاطًا</h2><div style="display:grid;gap:10px"><div class="card shopit"><div class="shi">▶</div><div class="shd"><b>شاهد إعلانًا قصيرًا</b><small>+'+ADS_CFG.reward+' نقطة'+(ready?' · المتبقي اليوم: '+N(Math.max(0,left))+'':'')+'</small></div>'+
-        (ready?'<button class="btn sm gold" data-shop="ad">شاهد</button>':'<button class="btn sm ghost" disabled>قريبًا</button>')+'</div>'+
+        (ready?'<button class="btn sm gold" data-shop="ad">شاهد</button>':'<button class="btn sm ghost" disabled>'+(S.kids?'للكبار':'قريبًا')+'</button>')+'</div>'+
+        (ready?'<div class="card shopit"><div class="shi">❄</div><div class="shd"><b>تجميد سلسلة مجاني</b><small>مرة كل يوم'+(a.fz?' · أُخذ اليوم':'')+'</small></div><button class="btn sm gold" data-shop="ad:freeze" '+(a.fz?'disabled':'')+'>شاهد</button></div><div class="card shopit"><div class="shi">⚡</div><div class="shd"><b>مضاعف ×2 لنصف ساعة</b><small>مرة كل يوم'+(a.bs?' · أُخذ اليوم':'')+'</small></div><button class="btn sm gold" data-shop="ad:boost" '+(a.bs?'disabled':'')+'>شاهد</button></div>':'')+
         '<button class="card shopit" data-go="learn"><div class="shi">★</div><div class="shd"><b>تعلّم لتكسب</b><small>كل مرحلة تُتمّها تمنحك 15 نقطة</small></div><span class="btn sm">ابدأ</span></button></div></section>';
     }
     if(SHOPTAB==='mine'){
@@ -229,7 +240,7 @@
     const v=b.dataset.shop,a=v.split(':')[0],id=v.split(':').slice(1).join(':');
     if(a==='tab'){SHOPTAB=id;return renderShop()}
     if(a==='try'){TRY=(TRY===id)?null:id;return renderShop()}
-    if(a==='ad')return watchAd();
+    if(a==='ad')return watchAd(id);
     if(a==='buy')return buy(id);
     if(a==='eq')return equip(id);
   },true);
