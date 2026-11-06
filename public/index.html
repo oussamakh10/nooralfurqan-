@@ -839,6 +839,13 @@ html[data-tab="play"] #page{background:radial-gradient(60% 40% at 50% 100%,color
 .mgcard{display:grid;gap:4px;text-align:center;padding:16px 10px;border-radius:20px;border:2px solid color-mix(in srgb,var(--accent) 30%,transparent);background:linear-gradient(160deg,var(--surface),var(--accent-soft));box-shadow:0 4px 0 color-mix(in srgb,var(--accent) 35%,transparent);font:inherit;color:inherit;cursor:pointer}
 .mgcard b{font:800 1rem var(--display)}.mgcard small{opacity:.75;font-size:.78rem}
 .mgcard:active{transform:translateY(2px);box-shadow:none}
+.gh .ghh{display:flex;align-items:center;gap:12px}.gh .ghh h2{margin:0}.gh .ghh p{margin:2px 0 0;font-size:.9rem}
+.orn{display:flex;align-items:center;gap:10px;margin:14px 0;color:var(--accent)}.orn i{flex:1;height:2px;background:linear-gradient(90deg,transparent,color-mix(in srgb,var(--accent) 55%,transparent),transparent);border-radius:2px}.orn b{font-size:1.3rem;line-height:1}
+.gbig{display:flex;align-items:center;justify-content:space-between;gap:10px;width:100%;margin-top:12px;padding:16px 18px;border-radius:24px;border:2px solid var(--accent);background:linear-gradient(135deg,var(--accent),color-mix(in srgb,var(--accent) 65%,#000));color:#fff;text-align:start;box-shadow:0 5px 0 color-mix(in srgb,var(--accent) 55%,#000)}
+.gbig:active{transform:translateY(3px);box-shadow:none}.gbt{display:grid;gap:4px}.gbt b{font:800 1.25rem var(--display)}.gbt small{opacity:.9;font-size:.85rem}.gbi{flex:none}
+.gsm{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin-top:10px}.gsm button{display:grid;gap:3px;padding:12px 6px;text-align:center;border-radius:18px;border:2px solid color-mix(in srgb,var(--accent) 30%,transparent);background:linear-gradient(160deg,var(--surface),var(--accent-soft))}.gsm b{font:800 .98rem var(--display)}.gsm small{opacity:.75;font-size:.74rem}.gsm button:active{transform:translateY(2px)}
+.gh3{margin:0 0 8px;font:800 1.05rem var(--display)}.gcu{width:100%}
+
 .mgmain{display:grid;gap:12px;align-content:start}
 .mgcols{display:grid;grid-template-columns:1fr 1fr;gap:10px}
 .mgcol{display:grid;gap:8px;align-content:start}
@@ -7801,6 +7808,9 @@ document.addEventListener('click',function(e){
   if(a==='hquiz')return hifzQuiz(+d.hs2);
   if(a==='rback'){RV.s=0;pageRead();window.scrollTo(0,0);return}
   if(a==='play-surah')return playSurah(LS.s);
+  if(a==='gblitz'){GS.mode='blitz';return startGame()}
+  if(a==='gfr'){GS.mode='friends';GS.cust=true;return pagePlay()}
+  if(a==='gcust'){GS.cust=!GS.cust;return pagePlay()}
   if(a==='dl-surah')return dlSurah();
   if(a==='dl-del')return dlDel();
   if(a==='toggle'){if(AU.paused)AU.play().catch(function(){audioErr()});else AU.pause();return}
@@ -8755,10 +8765,18 @@ function botLobbyHTML(){
   pagePlay=function(){
     _pp();
     const pg=$('#page');if(!pg)return;
-    const sec=document.createElement('section');sec.className='sec';sec.style.marginTop='20px';
-    sec.innerHTML='<h2>ألعاب سريعة</h2><div class="mggrid">'+MG_LIST.map(function(g){
-      return '<button class="mgcard" data-mg="open:'+g[0]+'"><b>'+g[1]+'</b><small>'+g[2]+'</small></button>'}).join('')+'<button class="mgcard" data-act="duel-open"><b>ضد الهدهد</b><small>بمستويات، دون إنترنت</small></button><button class="mgcard" data-act="duel-open"><b>تحدٍّ مع صديق</b><small>غرفة برمز</small></button></div>';
-    pg.insertBefore(sec,pg.firstChild);
+    const form=pg.firstElementChild;
+    const hd=document.createElement('section');hd.className='sec gh';hd.style.marginTop='14px';
+    hd.innerHTML='<div class="ghh"><div class="mas">'+hoopoe('happy',72)+'</div><div><h2>الألعاب</h2><p class="muted">اختر لعبة وابدأ فورًا</p></div></div><div class="orn" aria-hidden="true"><i></i><b>۞</b><i></i></div>'+
+      '<button class="gbig" data-act="duel-open"><span class="gbt"><b>تحدَّ الهدهد</b><small>بمستويات سهل ومتوسط وصعب، دون إنترنت</small></span><span class="gbi">'+hoopoe('cheer',56)+'</span></button>'+
+      '<div class="gsm"><button data-act="duel-open"><b>مع صديق</b><small>غرفة برمز</small></button><button data-act="gblitz"><b>60 ثانية</b><small>سباق الوقت</small></button><button data-act="gfr"><b>أصدقاء</b><small>جهاز واحد</small></button></div>'+
+      '<div class="orn" aria-hidden="true"><i></i><b>۞</b><i></i></div><h3 class="gh3">ألعاب مصغّرة</h3><div class="mggrid">'+MG_LIST.map(function(g){
+        return '<button class="mgcard" data-mg="open:'+g[0]+'"><b>'+g[1]+'</b><small>'+g[2]+'</small></button>'}).join('')+'</div>'+
+      '<div class="orn" aria-hidden="true"><i></i><b>۞</b><i></i></div><button class="btn ghost gcu" data-act="gcust" aria-expanded="'+(!!GS.cust)+'">اختبار مخصّص: الميدان والمستوى والعدد '+(GS.cust?'▴':'▾')+'</button>';
+    if(form&&form.tagName==='SECTION'){
+      if(GS.cust){const t=form.querySelector('h2');if(t)t.remove();form.style.marginTop='8px';pg.insertBefore(hd,form)}
+      else{form.remove();pg.appendChild(hd)}
+    }else pg.insertBefore(hd,pg.firstChild);
   };
 })();
 

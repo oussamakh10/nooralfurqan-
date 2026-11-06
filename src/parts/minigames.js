@@ -284,9 +284,17 @@
   pagePlay=function(){
     _pp();
     const pg=$('#page');if(!pg)return;
-    const sec=document.createElement('section');sec.className='sec';sec.style.marginTop='20px';
-    sec.innerHTML='<h2>ألعاب سريعة</h2><div class="mggrid">'+MG_LIST.map(function(g){
-      return '<button class="mgcard" data-mg="open:'+g[0]+'"><b>'+g[1]+'</b><small>'+g[2]+'</small></button>'}).join('')+'<button class="mgcard" data-act="duel-open"><b>ضد الهدهد</b><small>بمستويات، دون إنترنت</small></button><button class="mgcard" data-act="duel-open"><b>تحدٍّ مع صديق</b><small>غرفة برمز</small></button></div>';
-    pg.insertBefore(sec,pg.firstChild);
+    const form=pg.firstElementChild;
+    const hd=document.createElement('section');hd.className='sec gh';hd.style.marginTop='14px';
+    hd.innerHTML='<div class="ghh"><div class="mas">'+hoopoe('happy',72)+'</div><div><h2>الألعاب</h2><p class="muted">اختر لعبة وابدأ فورًا</p></div></div><div class="orn" aria-hidden="true"><i></i><b>۞</b><i></i></div>'+
+      '<button class="gbig" data-act="duel-open"><span class="gbt"><b>تحدَّ الهدهد</b><small>بمستويات سهل ومتوسط وصعب، دون إنترنت</small></span><span class="gbi">'+hoopoe('cheer',56)+'</span></button>'+
+      '<div class="gsm"><button data-act="duel-open"><b>مع صديق</b><small>غرفة برمز</small></button><button data-act="gblitz"><b>60 ثانية</b><small>سباق الوقت</small></button><button data-act="gfr"><b>أصدقاء</b><small>جهاز واحد</small></button></div>'+
+      '<div class="orn" aria-hidden="true"><i></i><b>۞</b><i></i></div><h3 class="gh3">ألعاب مصغّرة</h3><div class="mggrid">'+MG_LIST.map(function(g){
+        return '<button class="mgcard" data-mg="open:'+g[0]+'"><b>'+g[1]+'</b><small>'+g[2]+'</small></button>'}).join('')+'</div>'+
+      '<div class="orn" aria-hidden="true"><i></i><b>۞</b><i></i></div><button class="btn ghost gcu" data-act="gcust" aria-expanded="'+(!!GS.cust)+'">اختبار مخصّص: الميدان والمستوى والعدد '+(GS.cust?'▴':'▾')+'</button>';
+    if(form&&form.tagName==='SECTION'){
+      if(GS.cust){const t=form.querySelector('h2');if(t)t.remove();form.style.marginTop='8px';pg.insertBefore(hd,form)}
+      else{form.remove();pg.appendChild(hd)}
+    }else pg.insertBefore(hd,pg.firstChild);
   };
 })();

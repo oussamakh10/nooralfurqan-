@@ -99,6 +99,9 @@ document.addEventListener('click',function(e){
   if(a==='hquiz')return hifzQuiz(+d.hs2);
   if(a==='rback'){RV.s=0;pageRead();window.scrollTo(0,0);return}
   if(a==='play-surah')return playSurah(LS.s);
+  if(a==='gblitz'){GS.mode='blitz';return startGame()}
+  if(a==='gfr'){GS.mode='friends';GS.cust=true;return pagePlay()}
+  if(a==='gcust'){GS.cust=!GS.cust;return pagePlay()}
   if(a==='dl-surah')return dlSurah();
   if(a==='dl-del')return dlDel();
   if(a==='toggle'){if(AU.paused)AU.play().catch(function(){audioErr()});else AU.pause();return}
