@@ -175,6 +175,7 @@ function renderAssistant(){
 const SMALL=[
  {re:/^(السلام عليكم|سلام|مرحبا|مرحبًا|اهلا|أهلا|أهلًا|هلا|صباح الخير|مساء الخير)/,a:['وعليكم السلام ورحمة الله! أنا هدهد. اسألني عن آية أو حكم أو سيرة، أو اطلب مني الشرح.','أهلًا بك! ما الذي تريد أن تتعلمه اليوم؟']},
  {re:/(شكرا|شكرًا|جزاك الله|بارك الله|جزاك)/,a:['وإياك، بارك الله فيك! اسألني متى شئت.','العفو! يسعدني أن أنفعك.']},
+ {re:/(من صنعك|من صممك|من برمجك|من طورك|من هو مطورك|من مطورك|من خلقك|من انشأك|من أنشأك)/,a:['صنعني المطوّر خلوفي أسامة ليكون رفيقك في «نور الفرقان».']},
  {re:/(من انت|من أنت|ما اسمك|ما هو اسمك|عرف بنفسك|ماذا تفعل|ماذا تستطيع)/,a:['أنا هدهد، رفيقك في «نور الفرقان». أبحث لك في دروس التطبيق وأحكامه وتفسير الميسر والجلالين، وأشرح لك بتبسيط. لست مفتيًا، فللفتوى اسأل عالمًا موثوقًا.']}
 ];
 const FU=/^(و?(ماذا|لماذا|كيف|اشرح|زد|زدني|اكثر|أكثر|مثال|فسر|فسّر|فصل|فصّل|وضح|وضّح|دليل|ما الدليل|اعد|أعد)\b|.*\b(اكثر|أكثر|بالتفصيل|دليله|مثالا|مثالًا)\s*$)/;
@@ -185,6 +186,13 @@ function askReveal(){
   const card=last[0].closest('.card');const mine=card?Array.from(card.querySelectorAll('.ak-part')):[];
   if(mine.length<2)return;mine.slice(1).forEach(function(p){p.style.opacity='0';p.style.transition='opacity .5s'});
   mine.slice(1).forEach(function(p,i){setTimeout(function(){p.style.opacity='1'},500*(i+1))});
+}
+function askRemote(q){
+  const url=window.NF_AI_URL||'/.netlify/functions/hoopoe';
+  const hist=AS.slice(-9).map(function(m){return {role:m.r==='u'?'user':'assistant',content:m.t||''}});
+  const ctl=typeof AbortController!=='undefined'?new AbortController():null,tm=setTimeout(function(){if(ctl)ctl.abort()},25000);
+  return fetch(url,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({messages:hist,ctx:(window.__askCtx||[])}),signal:ctl?ctl.signal:undefined})
+   .then(function(r){clearTimeout(tm);if(!r.ok)throw 0;return r.json()}).then(function(j){if(!j||!j.text)throw 0;return j.text});
 }
 function askSend(txt){
   const inp=$('#asq'),q=(typeof txt==='string'?txt:(inp&&inp.value)||'').trim();if(!q)return;
@@ -207,6 +215,7 @@ function askSend(txt){
     const done=function(h,t){AS.push({r:'a',t:t,h:h});renderAssistant();try{SND.coin()}catch(e){}setTimeout(askReveal,30)};
     const intro=r.used?'<p style="margin:0 0 6px"><b>'+esc(fu?'تتمةً لسؤالك:':['وجدتُ لك هذا:','إليك ما وجدته:','هذا ما عندي في الأمر:'][Math.floor(Math.random()*3)])+'</b></p>':'';
     const lh=intro+localHtml(r)+chips(),lt=r.used?r.ctx.join('\n'):'لم أجد جوابًا في محتوى التطبيق.';
+    const viaClaude=function(){
     if(!S.kids&&window.claude&&claude.use){
       return claude.use('sample').then(function(sm){
         if(!sm)return done(lh,lt);
@@ -216,7 +225,13 @@ function askSend(txt){
         });
       }).catch(function(){done(lh,lt)});
     }
-    done(lh,lt);
+    return done(lh,lt);
+    };
+    window.__askCtx=r.used?r.ctx.slice(0,4):[];
+    if(!S.kids&&navigator.onLine!==false&&/^https?:/.test(location.protocol)&&window.NF_AI_URL!==''){
+      return askRemote(q).then(function(t){done('<p style="white-space:pre-wrap">'+esc(t)+'</p>'+(r.ruling?'<p class="muted">هذا ليس فتوى؛ اسأل عالمًا موثوقًا في حالتك الخاصة.</p>':''),t)}).catch(viaClaude);
+    }
+    return viaClaude();
   }).catch(function(){out.innerHTML='<div class="card"><p>تعذّر البحث الآن، حاول مرة أخرى.</p></div>'});
 }
 document.addEventListener('click',function(e){const b=e.target.closest&&e.target.closest('[data-act="ask-chip"]');if(b){askSend(b.getAttribute('data-q'))}});
