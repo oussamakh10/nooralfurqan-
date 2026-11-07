@@ -1118,3 +1118,9 @@ section.unit .uh .un small{font:700 .62rem var(--display);opacity:.85}
 .lr-pts{margin:10px 0 0;font-weight:900;color:#d9b45a;font-size:1.2rem}
 @media (prefers-reduced-motion:reduce){.lr-s.on{animation:none}.ln-row,.ln-go{transition:none}}
 .ln-pi{transform:none}
+.cv-ov{position:fixed;inset:0;z-index:9999;display:grid;place-items:center;padding:16px;background:rgba(0,0,0,.78);overflow:auto}
+.cv-box{width:min(720px,100%);display:grid;gap:12px}
+.cv-box img{width:100%;height:auto;border-radius:14px;box-shadow:0 10px 40px rgba(0,0,0,.5)}
+.cv-act{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.ln-cert{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;min-height:52px;margin-top:10px;border-radius:16px;border:1.5px solid #d9b45a;background:color-mix(in srgb,#d9b45a 14%,var(--surface));color:inherit;font:800 .95rem var(--display);cursor:pointer}
+.ln-cert:focus-visible{outline:3px solid #d9b45a;outline-offset:2px}

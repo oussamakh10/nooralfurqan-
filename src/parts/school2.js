@@ -85,21 +85,9 @@
   };
   /* شهادة */
   function drawCert(kind){
-    const c=document.createElement('canvas');c.width=1400;c.height=990;const x=c.getContext('2d');
-    x.fillStyle='#fbf3dc';x.fillRect(0,0,1400,990);
-    x.strokeStyle='#0e7a53';x.lineWidth=14;x.strokeRect(30,30,1340,930);x.strokeStyle='#c8a24a';x.lineWidth=4;x.strokeRect(58,58,1284,874);
-    x.textAlign='center';x.direction='rtl';
-    const s=schS(),nm=(S.prof&&S.prof.name)||'الطالب',n=kind==='f'?null:+kind[1];
+    const s=schS(),n=kind==='f'?null:+kind[1];
     const sc=kind==='f'?s.bf:s['bt'+n],what=kind==='f'?'السنة الدراسية كاملة':sg(SCHTRI[n-1].t);
-    x.fillStyle='#0e7a53';x.font='700 70px serif';x.fillText('شهادة إتمام',700,190);
-    x.fillStyle='#5a4a1c';x.font='36px serif';x.fillText('تشهد منصة «نور الفرقان» بأن',700,290);
-    x.fillStyle='#0b3d2e';x.font='700 88px serif';x.fillText(nm,700,420);
-    x.fillStyle='#5a4a1c';x.font='38px serif';x.fillText('قد اجتاز بنجاح اختبار',700,520);
-    x.fillStyle='#0e7a53';x.font='700 54px serif';x.fillText('العلوم الإسلامية — السنة الثالثة ثانوي',700,610);
-    x.fillText(what,700,690);
-    x.fillStyle='#5a4a1c';x.font='40px serif';x.fillText('بنتيجة '+schFmt(sc)+' / 20',700,780);
-    x.font='28px serif';x.fillText(new Date().toLocaleDateString('en-GB'),300,900);x.fillText('نور الفرقان — خلوفي أسامة',1050,900);
-    return c;
+    return certArt({title:'شهادة نجاح',pre:'تشهد منصة «نور الفرقان» بأن',name:certName(),mid:'قد اجتاز بنجاح اختبار العلوم الإسلامية — السنة الثالثة ثانوي',main:what,sub:'بنتيجة '+schFmt(sc)+' / 20',date:certDate()});
   }
   document.addEventListener('click',function(e){
     const b=e.target.closest('[data-sc2]');if(!b)return;

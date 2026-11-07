@@ -42,7 +42,7 @@
             const c=done?'done':isCur?'cur':'lock',nq=(l.qs||[]).length;
             h+='<li><button class="ln-row '+c+'" '+(lock?'disabled aria-label="'+l.title+' (مغلق)"':'data-lesson="'+l.id+'"')+'><span class="ln-no">'+(done?IC.check:N(li+1))+'</span><span class="ln-tt"><b>'+l.title+'</b><small>'+N(nq)+' سؤالًا · نحو '+N(mins(nq))+' د</small></span><span class="ln-st">'+(done?'مكتمل':isCur?'ابدأ':IC.lock)+'</span></button></li>';
           });
-          path.outerHTML=h+'</ol>';
+          path.outerHTML=h+'</ol>'+(dd===u.lessons.length?'<button class="ln-cert" data-cert="'+ui+'">🎓 شهادة الوحدة</button>':'');
         }
       });
     }catch(e){}
@@ -94,13 +94,13 @@
       if(!L||L.review||L.hifzTest||!L.lesson)return;
       const acc=Math.max(0,Math.round((L.total/(L.total+L.wrongs))*100));
       const g=acc>=90?['ممتاز',3]:acc>=75?['جيد جدًا',2]:acc>=60?['جيد',1]:['مقبول',1];
-      const nx=ALL.find(function(l){return !S.done[l.id]});
+      const nx=ALL.find(function(l){return !S.done[l.id]});window.__lacc=window.__lacc||{};window.__lacc[L.lesson.id]=acc;
       let st='';for(let i=1;i<=3;i++)st+='<span class="lr-s'+(i<=g[1]?' on':'')+'" style="animation-delay:'+(.15*i)+'s">★</span>';
       $('#lesson').innerHTML='<div class="lmain lr-main"><div class="mas">'+hoopoe('cheer',120)+'</div><p class="lr-k">تقرير الدرس</p><h2>'+L.lesson.title+'</h2>'+
         '<div class="lr-stars" aria-hidden="true">'+st+'</div><div class="lr-grade">التقدير: <b>'+g[0]+'</b></div>'+
         '<div class="lr-grid"><div><b>'+N(acc)+'%</b><span>دقة الإجابات</span></div><div><b>'+N(L.total)+'</b><span>سؤال</span></div><div><b>'+N(L.wrongs)+'</b><span>أخطاء</span></div><div><b>'+N(L.best)+'</b><span>أطول تتابع</span></div></div>'+
         '<p class="lr-pts">+'+N(L.gain)+' نقطة</p></div>'+
-        '<div class="lfoot"><div class="in" style="display:grid;gap:8px">'+(nx?'<button class="btn" data-lesson="'+nx.id+'">الدرس التالي: '+nx.title+'</button><button class="btn ghost" data-act="leave">العودة إلى الدروس</button>':'<button class="btn" data-act="leave">العودة إلى الدروس</button>')+'</div></div>';
+        '<div class="lfoot"><div class="in" style="display:grid;gap:8px">'+(nx?'<button class="btn" data-lesson="'+nx.id+'">الدرس التالي: '+nx.title+'</button>':'')+'<button class="btn ghost" data-lcert="'+L.lesson.id+'">🎓 شهادة الدرس</button><button class="btn ghost" data-act="leave">العودة إلى الدروس</button>'+'</div></div>';
     }catch(e){}
   };
 })();
