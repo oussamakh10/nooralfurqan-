@@ -873,6 +873,40 @@ html[data-tab="play"] #page{background:radial-gradient(60% 40% at 50% 100%,color
 .hm-sec>h2::after{content:"";flex:1;height:1px;background:linear-gradient(90deg,rgba(217,180,90,.6),transparent)}
 .hm-sec>h2>span.o{color:#d9b45a;font-size:.9rem}
 .hm-go{border:2px solid rgba(255,255,255,.35)}
+/* القراءة الجديدة */
+.rd2{margin-top:6px!important;display:grid;gap:14px}
+.rd-ban{display:grid;justify-items:center;gap:2px;padding:6px 0 2px;text-align:center}
+.rd-ban b{font:700 1.7rem/1.4 var(--quran);color:var(--gold-t,#d9b45a)}
+.rd-ban small{opacity:.7;font-size:.82rem}
+.rd-o{color:#d9b45a;font-size:.9rem}
+.rd-cont{display:flex;align-items:center;justify-content:space-between;gap:12px;width:100%;padding:14px 18px;border:2px solid rgba(255,255,255,.3);border-radius:22px;background:linear-gradient(180deg,#3ccf98,#25a476);color:#04281c;text-align:start;font:inherit;cursor:pointer;box-shadow:0 5px 0 #17795a,0 12px 20px rgba(0,0,0,.22)}
+.rd-cont:active{transform:translateY(3px);box-shadow:0 2px 0 #17795a}
+.rd-cont span{display:grid;gap:2px}
+.rd-cont small{font-size:.8rem;opacity:.8}
+.rd-cont b{font:700 1.3rem/1.5 var(--quran)}
+.rd-cont i{font-style:normal;font-size:2rem;line-height:1;transform:scaleX(1)}
+.rd-wird{border-radius:22px!important}
+.rd-chips{flex-wrap:nowrap!important;overflow-x:auto;scrollbar-width:none;padding-bottom:4px}
+.rd-chips::-webkit-scrollbar{display:none}
+.rd-chips .tag{flex:none;min-height:44px}
+.srow{border-radius:20px!important;padding:10px 14px!important;min-height:64px;position:relative}
+.srow .num{flex:none;width:44px;height:44px;display:grid;place-items:center;font:700 .95rem var(--display);color:#d9b45a;background:rgba(217,180,90,.12);border:1.5px solid rgba(217,180,90,.55);transform:rotate(0);border-radius:14px!important}
+.srow>span:nth-child(2){flex:1}
+.rd-go{font-style:normal;font-size:1.6rem;opacity:.45}
+.srow:active{transform:scale(.985)}
+.rd-sban{border-radius:120px 120px 22px 22px;border:2px solid rgba(217,180,90,.65);background:linear-gradient(180deg,rgba(14,70,58,.96),rgba(8,38,33,.98));box-shadow:inset 0 0 0 5px rgba(8,38,33,.9),inset 0 0 0 6.5px rgba(217,180,90,.35);padding:16px 14px 14px;margin:8px 0 14px;display:grid;justify-items:center;gap:6px;color:#fff}
+.rd-sban .rhead{width:100%;margin:6px 0 0}
+.rd-sban .rhead h2{color:#f6e3a6;font-size:2.2rem}
+.rd-sban .iconbtn{background:rgba(255,255,255,.1);border:1.5px solid rgba(217,180,90,.5);color:#f6e3a6}
+.rd-meta{font-size:.82rem;color:#d9b45a;padding:2px 12px;border:1px solid rgba(217,180,90,.5);border-radius:999px}
+.rd-nav{display:none}
+.bsm{text-align:center;color:var(--gold-t,#d9b45a);margin:10px 0 16px}
+.ay{border:0!important;border-bottom:1px solid var(--line)!important;border-radius:0!important;background:transparent!important;padding:16px 4px 14px!important;margin:0!important}
+.ay.on{background:rgba(217,180,90,.1)!important;border-radius:16px!important;box-shadow:none!important}
+.ayt{line-height:2.4!important;text-align:justify}
+.acts{gap:6px!important;margin-top:10px!important}
+.acts button{min-height:40px;border-radius:999px!important;font-size:.82rem!important;padding:0 14px!important;border-width:1.5px!important;opacity:.95}
+.acts .rd{border-color:var(--accent)!important}
 .hm-go{display:flex;align-items:center;justify-content:space-between;gap:12px;width:100%;padding:14px 18px;border:0;border-radius:22px;background:linear-gradient(180deg,#3ccf98,#25a476);color:#04281c;text-align:start;font:inherit;cursor:pointer;box-shadow:0 5px 0 #17795a,0 12px 20px rgba(0,0,0,.25);transition:transform .12s}
 .hm-go:active{transform:translateY(3px);box-shadow:0 2px 0 #17795a}
 .hm-gt{display:grid;gap:2px;min-width:0}
@@ -9426,6 +9460,56 @@ function botLobbyHTML(){
     }catch(e){try{console.warn('home2',e)}catch(x){}}
   };
   try{if(typeof TAB!=='undefined'&&TAB==='home')renderPage()}catch(e){}
+})();
+
+/* ===== صفحة القراءة: تخطيط جديد ===== */
+(function(){
+  const _pr=pageRead,_fl=fillList,_os=openSurah;
+  pageRead=function(){
+    _pr();
+    const pg=document.getElementById('page');if(!pg||RV.s)return;
+    try{
+      const sec=pg.querySelector('section.sec');if(!sec||sec.classList.contains('rd2'))return;
+      sec.classList.add('rd2');
+      const h2=sec.querySelector('h2');if(h2)h2.remove();
+      const last=sec.querySelector('[data-surah][data-jump]');
+      const wird=sec.querySelector('.card.wird');
+      const top=document.createElement('div');top.className='rd-top';
+      top.innerHTML='<div class="rd-ban"><span class="rd-o" aria-hidden="true">✦</span><b>المصحف الشريف</b><small>114 سورة · 6236 آية</small></div>'+
+        (last?'<button class="rd-cont" data-surah="'+last.getAttribute('data-surah')+'" data-jump="'+last.getAttribute('data-jump')+'"><span><small>تابع من حيث توقفت</small><b>'+last.querySelector('span').textContent+'</b></span><i aria-hidden="true">‹</i></button>':
+          '<button class="rd-cont" data-surah="1"><span><small>ابدأ القراءة</small><b>سورة الفاتحة</b></span><i aria-hidden="true">‹</i></button>');
+      sec.insertBefore(top,sec.firstChild);
+      if(last)last.remove();
+      if(wird)wird.classList.add('rd-wird');
+      const ch=sec.querySelector('.rgch');if(ch)ch.classList.add('rd-chips');
+    }catch(e){try{console.warn('read2',e)}catch(x){}}
+  };
+  fillList=function(){
+    _fl();
+    document.querySelectorAll('#rlist .srow').forEach(function(r){
+      if(r.querySelector('.rd-go'))return;
+      r.insertAdjacentHTML('beforeend','<i class="rd-go" aria-hidden="true">‹</i>');
+    });
+  };
+  openSurah=function(i,jump){
+    _os(i,jump);
+    let n=0;const t=setInterval(function(){
+      n++;const pg=document.getElementById('page'),hd=pg&&pg.querySelector('.rhead');
+      if(hd||n>40){clearInterval(t)}
+      if(!hd||hd.classList.contains('rd-done'))return;
+      try{
+        hd.classList.add('rd-done');
+        const meta=hd.nextElementSibling;
+        const ban=document.createElement('div');ban.className='rd-sban';
+        const mt=meta&&meta.classList.contains('muted')?meta.textContent:'';
+        if(meta&&meta.classList.contains('muted'))meta.remove();
+        hd.parentNode.insertBefore(ban,hd);ban.appendChild(hd);
+        if(mt)ban.insertAdjacentHTML('beforeend','<span class="rd-meta">'+esc(mt)+'</span>');
+        const pn=pg.querySelectorAll('.ay').length;
+        if(pn)ban.insertAdjacentHTML('beforeend','<div class="rd-nav" aria-hidden="true"><span style="width:0"></span></div>');
+      }catch(e){}
+    },60);
+  };
 })();
 
 </script>

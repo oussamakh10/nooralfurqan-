@@ -572,6 +572,40 @@ html[data-tab="play"] #page{background:radial-gradient(60% 40% at 50% 100%,color
 .hm-sec>h2::after{content:"";flex:1;height:1px;background:linear-gradient(90deg,rgba(217,180,90,.6),transparent)}
 .hm-sec>h2>span.o{color:#d9b45a;font-size:.9rem}
 .hm-go{border:2px solid rgba(255,255,255,.35)}
+/* القراءة الجديدة */
+.rd2{margin-top:6px!important;display:grid;gap:14px}
+.rd-ban{display:grid;justify-items:center;gap:2px;padding:6px 0 2px;text-align:center}
+.rd-ban b{font:700 1.7rem/1.4 var(--quran);color:var(--gold-t,#d9b45a)}
+.rd-ban small{opacity:.7;font-size:.82rem}
+.rd-o{color:#d9b45a;font-size:.9rem}
+.rd-cont{display:flex;align-items:center;justify-content:space-between;gap:12px;width:100%;padding:14px 18px;border:2px solid rgba(255,255,255,.3);border-radius:22px;background:linear-gradient(180deg,#3ccf98,#25a476);color:#04281c;text-align:start;font:inherit;cursor:pointer;box-shadow:0 5px 0 #17795a,0 12px 20px rgba(0,0,0,.22)}
+.rd-cont:active{transform:translateY(3px);box-shadow:0 2px 0 #17795a}
+.rd-cont span{display:grid;gap:2px}
+.rd-cont small{font-size:.8rem;opacity:.8}
+.rd-cont b{font:700 1.3rem/1.5 var(--quran)}
+.rd-cont i{font-style:normal;font-size:2rem;line-height:1;transform:scaleX(1)}
+.rd-wird{border-radius:22px!important}
+.rd-chips{flex-wrap:nowrap!important;overflow-x:auto;scrollbar-width:none;padding-bottom:4px}
+.rd-chips::-webkit-scrollbar{display:none}
+.rd-chips .tag{flex:none;min-height:44px}
+.srow{border-radius:20px!important;padding:10px 14px!important;min-height:64px;position:relative}
+.srow .num{flex:none;width:44px;height:44px;display:grid;place-items:center;font:700 .95rem var(--display);color:#d9b45a;background:rgba(217,180,90,.12);border:1.5px solid rgba(217,180,90,.55);transform:rotate(0);border-radius:14px!important}
+.srow>span:nth-child(2){flex:1}
+.rd-go{font-style:normal;font-size:1.6rem;opacity:.45}
+.srow:active{transform:scale(.985)}
+.rd-sban{border-radius:120px 120px 22px 22px;border:2px solid rgba(217,180,90,.65);background:linear-gradient(180deg,rgba(14,70,58,.96),rgba(8,38,33,.98));box-shadow:inset 0 0 0 5px rgba(8,38,33,.9),inset 0 0 0 6.5px rgba(217,180,90,.35);padding:16px 14px 14px;margin:8px 0 14px;display:grid;justify-items:center;gap:6px;color:#fff}
+.rd-sban .rhead{width:100%;margin:6px 0 0}
+.rd-sban .rhead h2{color:#f6e3a6;font-size:2.2rem}
+.rd-sban .iconbtn{background:rgba(255,255,255,.1);border:1.5px solid rgba(217,180,90,.5);color:#f6e3a6}
+.rd-meta{font-size:.82rem;color:#d9b45a;padding:2px 12px;border:1px solid rgba(217,180,90,.5);border-radius:999px}
+.rd-nav{display:none}
+.bsm{text-align:center;color:var(--gold-t,#d9b45a);margin:10px 0 16px}
+.ay{border:0!important;border-bottom:1px solid var(--line)!important;border-radius:0!important;background:transparent!important;padding:16px 4px 14px!important;margin:0!important}
+.ay.on{background:rgba(217,180,90,.1)!important;border-radius:16px!important;box-shadow:none!important}
+.ayt{line-height:2.4!important;text-align:justify}
+.acts{gap:6px!important;margin-top:10px!important}
+.acts button{min-height:40px;border-radius:999px!important;font-size:.82rem!important;padding:0 14px!important;border-width:1.5px!important;opacity:.95}
+.acts .rd{border-color:var(--accent)!important}
 .hm-go{display:flex;align-items:center;justify-content:space-between;gap:12px;width:100%;padding:14px 18px;border:0;border-radius:22px;background:linear-gradient(180deg,#3ccf98,#25a476);color:#04281c;text-align:start;font:inherit;cursor:pointer;box-shadow:0 5px 0 #17795a,0 12px 20px rgba(0,0,0,.25);transition:transform .12s}
 .hm-go:active{transform:translateY(3px);box-shadow:0 2px 0 #17795a}
 .hm-gt{display:grid;gap:2px;min-width:0}
