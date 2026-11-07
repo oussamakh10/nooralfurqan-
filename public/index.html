@@ -1018,6 +1018,54 @@ section[data-ag]:not([hidden]){animation:acin .3s ease-out}
 .dqage-c b{font-size:1.2rem;color:#f6e3a6}
 .dqage-c p{margin:0;line-height:1.9}
 .dqage-c small{opacity:.75;line-height:1.7}
+/* ===== الألعاب: لغة التصميم الموحّدة ===== */
+.gf{display:grid;gap:14px}
+.gf .seg{display:grid;grid-template-columns:repeat(3,1fr);gap:4px;padding:5px;border-radius:999px;border:1.5px solid color-mix(in srgb,#d9b45a 45%,transparent);background:color-mix(in srgb,var(--line) 30%,transparent)}
+.gf .seg button{border-radius:999px;min-height:46px;font-weight:800;transition:background-color .2s,color .2s,transform .12s}
+.gf .seg button[aria-pressed="true"]{background:var(--accent);color:var(--on-accent,#04210f);box-shadow:0 3px 10px color-mix(in srgb,var(--accent) 45%,transparent)}
+.gf .seg button:active{transform:scale(.97)}
+.gf-md{display:flex;align-items:center;justify-content:center;gap:8px;margin:0;font-weight:700;font-size:.95rem;opacity:.9}
+.gf-f,.gf>.card.field{padding:14px 14px 16px;border-radius:22px;border:1.5px solid color-mix(in srgb,#d9b45a 28%,var(--line));background:var(--surface);box-shadow:inset 0 0 0 4px color-mix(in srgb,var(--surface) 80%,transparent),inset 0 0 0 5px color-mix(in srgb,#d9b45a 16%,transparent)}
+.gf-f .lbl{display:flex;align-items:center;gap:8px;margin:0 0 12px;font:800 1.02rem var(--display)}
+.gf-f .lbl::before{content:"✦";color:#d9b45a;font-size:.85em}
+.gf-f .opts2{display:flex;flex-wrap:wrap;gap:8px}
+.gf .tag{display:inline-flex;align-items:center;gap:6px;min-height:44px;padding:8px 16px;border-radius:999px;border:1.5px solid color-mix(in srgb,var(--accent) 35%,var(--line));background:transparent;color:inherit;font-weight:700;transition:background-color .2s,color .2s,transform .12s,border-color .2s}
+.gf .tag:active{transform:scale(.95)}
+.gf .tag[aria-pressed="true"]{background:var(--accent);color:var(--on-accent,#04210f);border-color:var(--accent);box-shadow:0 2px 8px color-mix(in srgb,var(--accent) 40%,transparent)}
+.gf .tag[aria-pressed="true"]::after{content:"✓";font-weight:900;font-size:.85em}
+.gf .tag:focus-visible,.gf .seg button:focus-visible,.gf-go:focus-visible{outline:3px solid #d9b45a;outline-offset:2px}
+.gf-e{font-size:1.05em;line-height:1}
+.gf-f [data-gc],.gf-f [data-gt]{flex:1 1 0;justify-content:center;min-width:64px}
+.gf-f [data-gc]{font-size:1.1rem}
+.gf-pl{display:flex;align-items:center;gap:10px;margin:0 0 10px;padding:4px 6px 4px 14px;border-radius:999px;border:1.5px solid color-mix(in srgb,var(--accent) 35%,var(--line));background:color-mix(in srgb,var(--line) 22%,transparent)}
+.gf-pl i{flex:none;display:grid;place-items:center;width:34px;height:34px;border-radius:50%;background:var(--accent);color:var(--on-accent,#04210f);font:800 .95rem var(--display);font-style:normal}
+.gf-pl input{flex:1;min-width:0;min-height:40px;border:0;background:transparent;color:inherit;font:inherit;font-weight:700;outline:0}
+.gf-pl:focus-within{border-color:#d9b45a;box-shadow:0 0 0 3px color-mix(in srgb,#d9b45a 30%,transparent)}
+.gf .card.field .opts2 .btn.sm{min-height:44px;border-radius:999px}
+.gf-bz{display:flex;align-items:center;gap:16px;padding:16px;border-radius:26px;border:1.5px solid color-mix(in srgb,#d9b45a 50%,transparent);background:linear-gradient(135deg,color-mix(in srgb,var(--accent) 22%,var(--surface)),var(--surface))}
+.gf-bzt{flex:none;display:grid;place-items:center;width:86px;height:86px;border-radius:50%;border:3px solid #d9b45a;background:var(--surface);animation:gfpulse 2.4s ease-in-out infinite}
+.gf-bzt b{font:900 1.9rem/1 var(--display);color:#d9b45a}
+.gf-bzt span{font-size:.75rem;opacity:.8;margin-top:-14px}
+.gf-bzl p{margin:0 0 8px;font-weight:700;line-height:1.6}
+.gf-bzl div{display:flex;flex-wrap:wrap;gap:6px}
+.gf-bzl i{font-style:normal;font-size:.8rem;font-weight:700;padding:4px 10px;border-radius:999px;background:color-mix(in srgb,var(--accent) 22%,transparent)}
+@keyframes gfpulse{0%,100%{box-shadow:0 0 0 0 color-mix(in srgb,#d9b45a 45%,transparent)}50%{box-shadow:0 0 0 10px transparent}}
+.gf-sum{display:grid;grid-template-columns:auto 1fr;align-items:center;gap:2px 14px;padding:14px 16px;border-radius:22px;background:color-mix(in srgb,var(--accent) 14%,var(--surface));border:1.5px dashed color-mix(in srgb,var(--accent) 55%,transparent)}
+.gf-sum b{grid-row:span 2;font:900 2.2rem/1 var(--display);color:var(--accent)}
+.gf-sum span{font-weight:800}
+.gf-sum small{opacity:.8;font-size:.82rem;line-height:1.5}
+.gf-go{position:sticky;bottom:92px;z-index:3;display:flex;align-items:center;justify-content:center;gap:10px;min-height:58px;font:900 1.2rem var(--display);box-shadow:0 5px 0 color-mix(in srgb,var(--accent) 55%,#000),0 12px 24px rgba(0,0,0,.3)}
+.gf-go:active{transform:translateY(3px);box-shadow:0 2px 0 color-mix(in srgb,var(--accent) 55%,#000)}
+.gf-go[disabled]{opacity:.5;box-shadow:none}
+.gf-pi{width:0;height:0;border-block:9px solid transparent;border-inline-start:15px solid currentColor;transform:scaleX(-1)}
+.gf-best{margin:0;text-align:center;font-weight:700;opacity:.85}
+.gh .gbig{border:2px solid #d9b45a;box-shadow:inset 0 0 0 4px color-mix(in srgb,#d9b45a 22%,transparent),0 5px 0 color-mix(in srgb,var(--accent) 50%,#000)}
+.gh .gsm button{min-height:72px;border-radius:20px 20px 8px 8px;border-color:color-mix(in srgb,#d9b45a 40%,transparent)}
+.gh .gsm button:focus-visible,.gh .gbig:focus-visible,.gh .mgcard:focus-visible,.gh .gcu:focus-visible{outline:3px solid #d9b45a;outline-offset:2px}
+.gh .mggrid .mgcard{border-color:color-mix(in srgb,#d9b45a 35%,transparent);min-height:84px}
+.gh .gcu{min-height:52px;border-radius:999px;border:1.5px dashed #d9b45a;font-weight:800}
+@media (prefers-reduced-motion:reduce){.gf-bzt{animation:none}.gf .tag,.gf .seg button{transition:none}}
+.gh .gcu{font-size:.92rem;line-height:1.5;padding:10px 14px}
 .hm-go{display:flex;align-items:center;justify-content:space-between;gap:12px;width:100%;padding:14px 18px;border:0;border-radius:22px;background:linear-gradient(180deg,#3ccf98,#25a476);color:#04281c;text-align:start;font:inherit;cursor:pointer;box-shadow:0 5px 0 #17795a,0 12px 20px rgba(0,0,0,.25);transition:transform .12s}
 .hm-go:active{transform:translateY(3px);box-shadow:0 2px 0 #17795a}
 .hm-gt{display:grid;gap:2px;min-width:0}
@@ -9838,6 +9886,61 @@ function botLobbyHTML(){
     if(S.prof&&S.prof.age&&S.prof.age<cloudAge()&&!S.prof.age>=99){toast('التحدي المباشر لمن بلغ '+N(cloudAge())+' سنة فأكثر. جرّب اللعب ضد الهدهد.');return}
     return _dj.apply(this,arguments);
   };
+})();
+
+
+/* ===== صفحة الألعاب: تحسين الأوضاع الثلاثة ===== */
+(function(){
+  const _pp=pagePlay;
+  const DESC={solo:['🎯','تدرّب بمفردك واكسب النقاط'],friends:['👥','بالتناوب على جهاز واحد'],blitz:['⚡','سباق مع الوقت: ستون ثانية فقط']};
+  const FICO={quran:'📖',sunna:'📜',seera:'🕌',sahaba:'⭐',fiqh:'⚖️',aqeeda:'💡',prophets:'🌙',gharib:'🔤',ayat:'✍️',order:'🔢'};
+  pagePlay=function(){
+    _pp();
+    const pg=document.getElementById('page');if(!pg)return;
+    const form=pg.querySelector('section.sec:not(.gh)');
+    if(!form||form.classList.contains('gf'))return;
+    try{
+      form.classList.add('gf');
+      const mode=(form.querySelector('.seg [aria-pressed="true"]')||{}).getAttribute&&form.querySelector('.seg [aria-pressed="true"]').getAttribute('data-gmode')||'solo';
+      form.setAttribute('data-mode',mode);
+      const seg=form.querySelector('.seg');
+      if(seg){
+        const d=DESC[mode]||DESC.solo,p=document.createElement('p');p.className='gf-md';
+        p.innerHTML='<span aria-hidden="true">'+d[0]+'</span>'+d[1];
+        seg.insertAdjacentElement('afterend',p);
+      }
+      /* بطاقة وضع 60 ثانية */
+      const bz=form.querySelector(':scope > .card:not(.field)');
+      if(bz){
+        bz.className='gf-bz';
+        bz.innerHTML='<div class="gf-bzt"><b>60</b><span>ثانية</span></div><div class="gf-bzl"><p>أجب عن أكبر عدد من الأسئلة قبل انتهاء الوقت.</p><div><i>✓ +10 نقاط</i><i>🔥 تتابع يزيد المكافأة</i></div></div>';
+      }
+      /* اللاعبون */
+      form.querySelectorAll('input[data-pl]').forEach(function(inp,i){
+        const l=document.createElement('label');l.className='gf-pl';
+        l.innerHTML='<i aria-hidden="true">'+(i+1)+'</i>';
+        inp.parentNode.insertBefore(l,inp);l.appendChild(inp);
+        inp.placeholder='اسم اللاعب '+(i+1);
+      });
+      form.querySelectorAll('.field').forEach(function(f){f.classList.add('gf-f')});
+      form.querySelectorAll('[data-gf]').forEach(function(b){
+        const id=b.getAttribute('data-gf');if(FICO[id]&&!b.querySelector('.gf-e')){const e=document.createElement('span');e.className='gf-e';e.setAttribute('aria-hidden','true');e.textContent=FICO[id];b.insertBefore(e,b.firstChild)}
+      });
+      /* ملخّص العدد */
+      const sum=Array.prototype.find.call(form.querySelectorAll(':scope > p.muted'),function(p){return p.textContent.indexOf('الأسئلة الجاهزة')===0});
+      if(sum){
+        const t=sum.textContent,m=t.match(/:\s*([0-9,٠-٩]+)/),ay=t.indexOf('أكمل الآية')>=0,fr=t.indexOf('يُوزَّع')>=0;
+        const s=document.createElement('div');s.className='gf-sum';s.setAttribute('role','status');
+        s.innerHTML='<b>'+(m?m[1]:'0')+'</b><span>سؤال جاهز بهذا الاختيار</span>'+(ay||fr?'<small>'+(ay?'+ أسئلة «أكمل الآية» تُولَّد من المصحف. ':'')+(fr?'يُوزَّع العدد بالتساوي بين اللاعبين.':'')+'</small>':'');
+        sum.replaceWith(s);
+      }
+      const go=form.querySelector('[data-act="gstart"]');
+      if(go){go.classList.add('gf-go');go.innerHTML='<span class="gf-pi" aria-hidden="true"></span>ابدأ اللعب'}
+      const bst=form.querySelector(':scope > p.muted:last-child');
+      if(bst&&bst.textContent.indexOf('أفضل')===0)bst.className='gf-best';
+    }catch(e){}
+  };
+  /* تحديث الوصف عند تبديل الوضع لا يلزم: الصفحة تُعاد رسمها */
 })();
 
 </script>
