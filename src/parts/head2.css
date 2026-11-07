@@ -1030,3 +1030,19 @@ body[data-tab=ach]{--tabtint:#D9A21B}
 .gh .mggrid .mgcard small{color:inherit;opacity:.7}
 .gh .gcu{border:1px solid var(--line);border-radius:16px;box-shadow:none;background:var(--surface)}
 .gf-go{position:static}
+/* ===== الألعاب: ترتيب جديد للأزرار ===== */
+.gf-f .opts2:has([data-gf]){display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.gf-f [data-gf]{justify-content:space-between;min-height:56px;padding:8px 16px;border-radius:16px;font-size:1rem}
+.gf-f [data-gf]::before{content:"";flex:none;order:2;width:22px;height:22px;border-radius:50%;border:2px solid color-mix(in srgb,currentColor 35%,transparent)}
+.gf-f [data-gf][aria-pressed="true"]::before{border-color:var(--on-accent,#04210f);background:radial-gradient(circle,var(--on-accent,#04210f) 0 38%,transparent 42%)}
+.gf-f .opts2:has([data-gl]),.gf-f .opts2:has([data-gc]),.gf-f .opts2:has([data-gt]){display:grid;grid-auto-flow:column;grid-auto-columns:1fr;gap:4px;padding:4px;border:1px solid var(--line);border-radius:18px;background:var(--surface)}
+.gf-f .opts2:has([data-gl]) .tag,.gf-f .opts2:has([data-gc]) .tag,.gf-f .opts2:has([data-gt]) .tag{border:0;border-radius:14px;background:transparent;min-height:50px;justify-content:center;padding:6px 4px}
+.gf-f .opts2:has([data-gl]) .tag[aria-pressed="true"],.gf-f .opts2:has([data-gc]) .tag[aria-pressed="true"],.gf-f .opts2:has([data-gt]) .tag[aria-pressed="true"]{background:var(--accent);color:var(--on-accent,#04210f)}
+.gf .seg{grid-template-columns:repeat(3,1fr);border-radius:18px}
+.gf .seg button{border-radius:14px}
+.gf-sum{justify-content:space-between;padding:12px 16px;border:1px solid var(--line);border-radius:16px;background:var(--surface);flex-wrap:wrap}
+.gf-sum b{order:2;font-size:1.8rem}.gf-sum span{order:1}
+.gf-go{border-radius:18px;min-height:60px;margin-bottom:8px}
+.gf-f [data-gf]::before{border-radius:7px}
+.gf-f [data-gf][aria-pressed="true"]{background:color-mix(in srgb,var(--accent) 16%,var(--surface));border:1.5px solid var(--accent);color:inherit}
+.gf-f [data-gf][aria-pressed="true"]::before{border-color:var(--accent);background:var(--accent) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M5 12.5l4.5 4.5L19 7.5' fill='none' stroke='%2304210f' stroke-width='3.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center/80% no-repeat}
