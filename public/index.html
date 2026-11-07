@@ -964,6 +964,37 @@ html[data-tab="play"] #page{background:radial-gradient(60% 40% at 50% 100%,color
 .hd footer{display:flex;align-items:center;justify-content:space-between;gap:10px;border-top:1px dashed rgba(217,180,90,.35);padding-top:10px}
 .hd-r{font-size:.82rem;opacity:.75}
 .hd .btn.sm{min-height:44px;border-radius:999px;padding:0 24px}
+/* الإنجازات الجديدة */
+.ac-hero{margin-top:8px;border-radius:140px 140px 26px 26px;border:2px solid rgba(217,180,90,.65);background:linear-gradient(180deg,rgba(14,70,58,.96),rgba(8,38,33,.98));box-shadow:inset 0 0 0 5px rgba(8,38,33,.9),inset 0 0 0 6.5px rgba(217,180,90,.35),0 12px 26px rgba(0,0,0,.28);padding:22px 16px 16px;display:grid;justify-items:center;gap:8px;color:#fff;text-align:center}
+.ac-fl{filter:drop-shadow(0 0 14px rgba(255,154,60,.7));animation:acfl 1.6s ease-in-out infinite;transform-origin:50% 90%}
+@keyframes acfl{0%,100%{transform:scale(1) rotate(-2deg)}50%{transform:scale(1.1) rotate(2deg)}}
+.ac-st{display:grid;line-height:1.1}
+.ac-st b{font:700 3.2rem/1.1 var(--display);color:#ffd37a}
+.ac-st span{font-size:.95rem;opacity:.85}
+.ac-wk{display:flex;gap:8px;margin-top:4px}
+.ac-wk span{display:grid;justify-items:center;gap:4px;font-size:.72rem;opacity:.9}
+.ac-wk i{width:26px;height:26px;border-radius:50%;border:2px solid rgba(217,180,90,.4);background:rgba(255,255,255,.05)}
+.ac-wk .on i{background:#ff9a3c;border-color:#ffd37a;box-shadow:0 0 10px rgba(255,154,60,.6)}
+.ac-wk .now i{outline:2px solid #3ccf98;outline-offset:2px}
+.ac-row{display:flex;align-items:center;justify-content:space-around;width:100%;margin-top:8px;padding-top:12px;border-top:1px dashed rgba(217,180,90,.4)}
+.ac-row>div:not(.ac-ring){display:grid;gap:2px}
+.ac-row b{font:700 1.5rem var(--display);color:#f6e3a6}
+.ac-row span{font-size:.78rem;opacity:.8}
+.ac-ring{--pp:0;width:64px;height:64px;border-radius:50%;display:grid;place-items:center;background:conic-gradient(#3ccf98 calc(var(--pp)*1%),rgba(255,255,255,.15) 0);animation:hmring 1.1s .2s cubic-bezier(.2,.8,.2,1) forwards}
+.ac-ring em{font-style:normal;width:50px;height:50px;border-radius:50%;background:#0b2a28;display:grid;place-items:center;font-size:.82rem;font-weight:700}
+.ac-sub{opacity:.75}
+.ac-tabs{display:flex;gap:8px;overflow-x:auto;scrollbar-width:none;margin:14px 0 4px;padding:2px}
+.ac-tabs::-webkit-scrollbar{display:none}
+.ac-tabs button{flex:1 1 0;min-width:0;min-height:44px;padding:0 6px;border-radius:999px;border:1.5px solid rgba(217,180,90,.4);background:transparent;color:inherit;font:700 .92rem var(--text);cursor:pointer}
+.ac-tabs button[aria-pressed="true"]{background:#d9b45a;color:#0b2a28;border-color:#d9b45a}
+section[data-ag][hidden]{display:none!important}
+section[data-ag]:not([hidden]){animation:acin .3s ease-out}
+@keyframes acin{from{opacity:0;transform:translateY(8px)}}
+.bars i{transform-origin:bottom;animation:acbar .7s cubic-bezier(.2,.8,.2,1) both}
+@keyframes acbar{from{transform:scaleY(0)}}
+.pbar i{animation:acw .9s cubic-bezier(.2,.8,.2,1) both}
+@keyframes acw{from{width:0}}
+@media (prefers-reduced-motion:reduce){.ac-fl,.ac-ring,.bars i,.pbar i,section[data-ag]{animation:none!important}.ac-ring{--pp:var(--p)}}
 .hm-go{display:flex;align-items:center;justify-content:space-between;gap:12px;width:100%;padding:14px 18px;border:0;border-radius:22px;background:linear-gradient(180deg,#3ccf98,#25a476);color:#04281c;text-align:start;font:inherit;cursor:pointer;box-shadow:0 5px 0 #17795a,0 12px 20px rgba(0,0,0,.25);transition:transform .12s}
 .hm-go:active{transform:translateY(3px);box-shadow:0 2px 0 #17795a}
 .hm-gt{display:grid;gap:2px;min-width:0}
@@ -9633,6 +9664,44 @@ function botLobbyHTML(){
       sh.innerHTML='<div class="rc-bg" data-rcclose="1"></div><div class="rc-pan"><div class="rc-grip"></div><b>اختر القارئ</b><div class="rc-list">'+(window.__RECS||[]).map(function(r){return '<button class="rc-it" data-rec="'+r.id+'" aria-pressed="'+r.on+'"><i>'+r.l+'</i><span>'+r.n+'</span><em aria-hidden="true">'+(r.on?'✓':'')+'</em></button>'}).join('')+'</div></div>';
       document.body.appendChild(sh);return}
     if(e.target.closest&&(e.target.closest('[data-rcclose]')||e.target.closest('.rc-it'))){setTimeout(function(){const s=document.querySelector('.rc-sheet');if(s)s.remove()},0)}
+  });
+})();
+
+/* ===== صفحة الإنجازات: ملخص حيّ وتبويبات ===== */
+(function(){
+  const _pa=pageAch;let ATAB='ov';
+  const GROUPS={ov:['حسناتي','إنجازاتي'],ch:['تحدي الأسبوع','تحديات اليوم','تحديات طويلة'],bd:['الأوسمة','نقاط الضعف'],ac:['حسابي']};
+  const TABS=[['ov','نظرة عامة'],['ch','التحديات'],['bd','الأوسمة'],['ac','حسابي']];
+  function apply(pg){
+    pg.querySelectorAll(':scope > section.sec').forEach(function(s){
+      const h=s.querySelector('h2'),t=h?h.textContent.trim():'';
+      let g='ov';for(const k in GROUPS)if(GROUPS[k].indexOf(t)>=0)g=k;
+      s.setAttribute('data-ag',g);s.hidden=g!==ATAB;
+    });
+    pg.querySelectorAll('.ac-tabs button').forEach(function(b){b.setAttribute('aria-pressed',b.getAttribute('data-atab')===ATAB?'true':'false')});
+  }
+  pageAch=function(){
+    _pa();
+    const pg=document.getElementById('page');if(!pg||pg.querySelector('.ac-hero')||!pg.querySelector('section.sec'))return;
+    try{
+      const AR=['ح','ن','ث','ر','خ','ج','س'];let wk='';
+      for(let i=6;i>=0;i--){const d=new Date();d.setDate(d.getDate()-i);wk+='<span class="'+(S.days[ymd(d)]?'on':'')+(i===0?' now':'')+'"><i aria-hidden="true"></i><b>'+AR[d.getDay()]+'</b></span>'}
+      const st=streak(),dn=doneN(),tot=ALL.length||1,pc=Math.round(dn*100/tot),acc=S.q?Math.round(S.qc/S.q*100):0;
+      const hero=document.createElement('div');hero.className='ac-hero';
+      hero.innerHTML='<div class="ac-fl" aria-hidden="true"><svg viewBox="0 0 24 24" width="54" height="54"><path d="M12 2c1 4 5 6 5 11a5 5 0 01-10 0c0-2 1-3 2-4 0 2 1 3 2 3 0-4-1-6 1-10z" fill="#ff9a3c" stroke="#ffd37a" stroke-width="1"/></svg></div>'+
+        '<div class="ac-st"><b>'+N(st)+'</b><span>'+(st===1?'يوم متتالٍ':'أيام متتالية')+'</span></div>'+
+        '<div class="ac-wk" role="img" aria-label="نشاط آخر سبعة أيام">'+wk+'</div>'+
+        '<div class="ac-row"><div><b>'+N(S.xp)+'</b><span>نقطة</span></div><div class="ac-ring" style="--p:'+pc+'"><em>'+N(pc)+'%</em></div><div><b>'+N(acc)+'%</b><span>دقة الإجابات</span></div></div>'+
+        '<small class="ac-sub">أتممتَ '+N(dn)+' من '+N(tot)+' درسًا</small>';
+      const tabs=document.createElement('div');tabs.className='ac-tabs';tabs.setAttribute('role','group');tabs.setAttribute('aria-label','أقسام الإنجازات');
+      tabs.innerHTML=TABS.map(function(t){return '<button data-atab="'+t[0]+'" aria-pressed="false">'+t[1]+'</button>'}).join('');
+      pg.insertBefore(tabs,pg.firstChild);pg.insertBefore(hero,pg.firstChild);
+      apply(pg);
+    }catch(e){try{console.warn('ach2',e)}catch(x){}}
+  };
+  document.addEventListener('click',function(e){
+    const b=e.target.closest&&e.target.closest('[data-atab]');if(!b)return;
+    ATAB=b.getAttribute('data-atab');apply(document.getElementById('page'));window.scrollTo({top:0});
   });
 })();
 
