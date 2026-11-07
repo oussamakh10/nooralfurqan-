@@ -30,17 +30,17 @@
         tile('data-go="shop"',HMI['🛍️'],'المتجر','إكسسوارات')+
         tile('data-act="dhikr-open"',HMI['📿'],'الأذكار','وسبحة')+
        '</div>';
-      const kids=[hero];
-      if(mission)kids.push(mission);
+      const kids=[hero];const orn=function(s){const h=s&&s.querySelector&&s.querySelector('h2');if(h&&!h.querySelector('.o')){h.insertAdjacentHTML('afterbegin','<span class="o" aria-hidden="true">✦</span>');s.classList.add('hm-sec')}return s};
+      if(mission)kids.push(orn(mission));
       if(days.length){
         const sn=document.createElement('section');sn.className='sec hm-days';
         sn.innerHTML='<h2>اليوم</h2><div class="hm-snap"></div>';
         const rail=sn.querySelector('.hm-snap');days.forEach(function(d){rail.appendChild(d)});
         if(guide){guide.classList.add('hm-guide');rail.appendChild(guide)}
-        kids.push(sn);
+        kids.push(orn(sn));
       }
-      if(search)kids.push(search);
-      if(prayer)kids.push(prayer);
+      if(search)kids.push(orn(search));
+      if(prayer)kids.push(orn(prayer));
       const det=document.createElement('details');det.className='hm-about';
       det.innerHTML='<summary>عن التطبيق والمصادر والمنشئ</summary>';
       about.forEach(function(s){if(s){const h=s.querySelector('h2');if(h)h.classList.add('hm-h3');det.appendChild(s)}});

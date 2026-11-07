@@ -861,6 +861,18 @@ html[data-tab="play"] #page{background:radial-gradient(60% 40% at 50% 100%,color
 .hm-date{font-size:.78rem;color:#d9b45a;opacity:.9}
 .hmt{color:var(--ink,inherit)}
 .hm-bird{position:relative;flex:none;border-radius:50%;background:rgba(0,0,0,.25);border:2px solid rgba(217,180,90,.6);padding:2px;line-height:0}
+.hm-hero{flex-direction:column-reverse;justify-content:flex-end;text-align:center;border-radius:150px 150px 26px 26px;padding:26px 18px 20px;background:linear-gradient(180deg,rgba(14,70,58,.96),rgba(8,38,33,.98)),url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='56' height='56' viewBox='0 0 56 56'%3E%3Cg fill='none' stroke='%23d9b45a' stroke-opacity='.16' stroke-width='1'%3E%3Cpath d='M28 4l6 14 14-6-6 14 14 6-14 6 6 14-14-6-6 14-6-14-14 6 6-14-14-6 14-6-6-14 14 6z'/%3E%3C/g%3E%3C/svg%3E");background-blend-mode:normal;border:2px solid rgba(217,180,90,.7);box-shadow:inset 0 0 0 6px rgba(8,38,33,.9),inset 0 0 0 7.5px rgba(217,180,90,.35),0 12px 28px rgba(0,0,0,.3)}
+.hm-hero:after{content:"";position:absolute;inset:0;background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='56' height='56' viewBox='0 0 56 56'%3E%3Cg fill='none' stroke='%23d9b45a' stroke-opacity='.16' stroke-width='1'%3E%3Cpath d='M28 4l6 14 14-6-6 14 14 6-14 6 6 14-14-6-6 14-6-14-14 6 6-14-14-6 14-6-6-14 14 6z'/%3E%3C/g%3E%3C/svg%3E");opacity:.9;pointer-events:none}
+.hm-hero>*{z-index:1}
+.hm-bird{width:122px;height:122px;display:grid;place-items:center;box-shadow:0 0 0 5px rgba(217,180,90,.18),0 0 34px rgba(217,180,90,.3);margin-top:-2px}
+.hm-hi{justify-items:center}
+.hm-hi h1{font-size:2.3rem}
+.hm-hi p{max-width:24ch}
+.hm-sec>h2{display:flex;align-items:center;gap:10px;padding:0;margin-bottom:12px;font-size:1.15rem}
+.hm-sec>h2::before{display:none}
+.hm-sec>h2::after{content:"";flex:1;height:1px;background:linear-gradient(90deg,rgba(217,180,90,.6),transparent)}
+.hm-sec>h2>span.o{color:#d9b45a;font-size:.9rem}
+.hm-go{border:2px solid rgba(255,255,255,.35)}
 .hm-go{display:flex;align-items:center;justify-content:space-between;gap:12px;width:100%;padding:14px 18px;border:0;border-radius:22px;background:linear-gradient(180deg,#3ccf98,#25a476);color:#04281c;text-align:start;font:inherit;cursor:pointer;box-shadow:0 5px 0 #17795a,0 12px 20px rgba(0,0,0,.25);transition:transform .12s}
 .hm-go:active{transform:translateY(3px);box-shadow:0 2px 0 #17795a}
 .hm-gt{display:grid;gap:2px;min-width:0}
@@ -9391,17 +9403,17 @@ function botLobbyHTML(){
         tile('data-go="shop"',HMI['🛍️'],'المتجر','إكسسوارات')+
         tile('data-act="dhikr-open"',HMI['📿'],'الأذكار','وسبحة')+
        '</div>';
-      const kids=[hero];
-      if(mission)kids.push(mission);
+      const kids=[hero];const orn=function(s){const h=s&&s.querySelector&&s.querySelector('h2');if(h&&!h.querySelector('.o')){h.insertAdjacentHTML('afterbegin','<span class="o" aria-hidden="true">✦</span>');s.classList.add('hm-sec')}return s};
+      if(mission)kids.push(orn(mission));
       if(days.length){
         const sn=document.createElement('section');sn.className='sec hm-days';
         sn.innerHTML='<h2>اليوم</h2><div class="hm-snap"></div>';
         const rail=sn.querySelector('.hm-snap');days.forEach(function(d){rail.appendChild(d)});
         if(guide){guide.classList.add('hm-guide');rail.appendChild(guide)}
-        kids.push(sn);
+        kids.push(orn(sn));
       }
-      if(search)kids.push(search);
-      if(prayer)kids.push(prayer);
+      if(search)kids.push(orn(search));
+      if(prayer)kids.push(orn(prayer));
       const det=document.createElement('details');det.className='hm-about';
       det.innerHTML='<summary>عن التطبيق والمصادر والمنشئ</summary>';
       about.forEach(function(s){if(s){const h=s.querySelector('h2');if(h)h.classList.add('hm-h3');det.appendChild(s)}});
