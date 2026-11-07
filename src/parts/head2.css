@@ -1050,3 +1050,8 @@ body[data-tab=ach]{--tabtint:#D9A21B}
 .gf-f [data-gf]{min-height:46px;padding:6px 12px;font-size:.92rem;border-radius:14px}
 .gf-f [data-gf]::before{width:18px;height:18px}
 .gf-f .opts2:has([data-gl]) .tag,.gf-f .opts2:has([data-gc]) .tag,.gf-f .opts2:has([data-gt]) .tag{min-height:44px;font-size:.92rem}
+.gf-f .opts2:has([data-gl]),.gf-f .opts2:has([data-gc]),.gf-f .opts2:has([data-gt]){padding:3px;border-radius:14px}
+.gf-f .opts2:has([data-gl]) .tag,.gf-f .opts2:has([data-gc]) .tag,.gf-f .opts2:has([data-gt]) .tag{min-height:40px;font-size:.85rem;border-radius:11px;padding:4px 2px}
+.gf .seg button{min-height:42px;font-size:.88rem}
+.gf-f .lbl{font-size:.92rem;margin-bottom:8px}
+.gf-f [data-gf]{min-height:42px;font-size:.88rem}
