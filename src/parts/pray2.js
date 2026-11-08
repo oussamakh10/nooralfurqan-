@@ -1,6 +1,35 @@
 /* ===== المواقيت 2: بطاقة الصلاة القادمة + اختيار مدينة بنافذة التطبيق + بوصلة قبلة ===== */
 (function(){
   const NM=[['fajr',['الفجر','Fajr','Fajr'],'🌌'],['sunrise',['الشروق','Sunrise','Lever du soleil'],'🌅'],['dhuhr',['الظهر','Dhuhr','Dhuhr'],'☀️'],['asr',['العصر','Asr','Asr'],'🌤️'],['maghrib',['المغرب','Maghrib','Maghrib'],'🌇'],['isha',['العشاء','Isha','Isha'],'🌙']];
+  const PQ={on:false,h:null,hit:false};
+  function headApply(){
+    const i=document.querySelector('.pr-dial i'),r=document.querySelector('.pr-ring'),st=document.getElementById('prst');if(!i||PQ.h==null)return;
+    const qb=+i.dataset.qb,rel=((qb-PQ.h)%360+360)%360;
+    i.style.transform='rotate('+rel.toFixed(1)+'deg)';if(r)r.style.transform='rotate('+(-PQ.h).toFixed(1)+'deg)';
+    const d=Math.min(rel,360-rel),hit=d<5;
+    i.style.background=hit?'#d9b45a':'';
+    if(st)st.textContent=hit?g3(['✓ الهاتف متجه نحو القبلة','✓ Your phone faces the Qibla','✓ Le téléphone est orienté vers la Qibla']):g3(['أدِر الهاتف حتى يشير السهم للأعلى','Turn your phone until the arrow points up','Tournez le téléphone jusqu’à ce que la flèche pointe vers le haut']);
+    if(hit&&!PQ.hit&&navigator.vibrate)try{navigator.vibrate(40)}catch(x){}
+    PQ.hit=hit;
+  }
+  function onOri(e){
+    let h=null;
+    if(typeof e.webkitCompassHeading==='number')h=e.webkitCompassHeading;
+    else if(e.alpha!=null&&(e.absolute||e.type==='deviceorientationabsolute'))h=360-e.alpha;
+    if(h==null)return;
+    PQ.h=(h+360)%360;headApply();
+  }
+  function compassStop(){window.removeEventListener('deviceorientationabsolute',onOri,true);window.removeEventListener('deviceorientation',onOri,true);PQ.on=false;PQ.h=null;try{renderPrayer()}catch(x){}}
+  function compassStart(){
+    const go=function(){
+      PQ.on=true;window.addEventListener('deviceorientationabsolute',onOri,true);window.addEventListener('deviceorientation',onOri,true);
+      renderPrayer();
+      setTimeout(function(){if(PQ.on&&PQ.h==null){const st=document.getElementById('prst');if(st)st.textContent=g3(['حسّاس الاتجاه غير متاح على هذا الجهاز أو المتصفح.','Orientation sensor not available on this device or browser.','Capteur d’orientation indisponible sur cet appareil ou navigateur.'])}},1800);
+    };
+    if(typeof DeviceOrientationEvent!=='undefined'&&typeof DeviceOrientationEvent.requestPermission==='function'){
+      DeviceOrientationEvent.requestPermission().then(function(r){if(r==='granted')go();else toast(g3(['لم يُمنح إذن الحسّاس','Sensor permission denied','Autorisation du capteur refusée']))}).catch(function(){toast(g3(['تعذّر تشغيل البوصلة','Could not start the compass','Impossible de démarrer la boussole']))});
+    }else go();
+  }
   function cn(x){return x==='الجزائر'?g3(['الجزائر','Algiers','Alger']):T(x)}
   function cd(h){const m=Math.max(0,Math.round(h*60)),a=Math.floor(m/60),b=m%60;
     return g3(['بعد ','in ','dans '])+(a?N(a)+g3([' س ',' h ',' h ']):'')+N(b)+g3([' د',' min',' min'])}
@@ -17,8 +46,9 @@
      '<button class="pr-city" data-pcity="open" aria-haspopup="dialog"><span class="pr-pin" aria-hidden="true">📍</span><span class="pr-cn"><small>'+esc(g3(['المدينة','City','Ville']))+'</small><b>'+esc(cn(c[0]))+'</b></span><span class="pr-chev" aria-hidden="true">⌄</span></button>'+
      '<div class="pr-next"><div class="pr-ni" aria-hidden="true">'+nx[2]+'</div><div class="pr-nt"><small>'+esc(g3(['الصلاة القادمة','Next prayer','Prochaine prière']))+'</small><b>'+esc(g3(nx[1]))+' · '+fmtT(t[nx[0]])+'</b><span>'+esc(cd(diff))+'</span></div></div>'+
      '<div class="pr-grid">'+NM.map(function(n){const on=n[0]===nx[0]&&(t[n[0]]>nowH||n[0]==='fajr'),past=t[n[0]]<=nowH&&!on;return '<div class="pr-t'+(on?' nx':'')+(past?' past':'')+'"><i aria-hidden="true">'+n[2]+'</i><span>'+esc(g3(n[1]))+'</span><b>'+fmtT(t[n[0]])+'</b></div>'}).join('')+'</div>'+
-     '<div class="pr-q"><div class="pr-dial" aria-hidden="true"><em>N</em><i style="transform:rotate('+qb.toFixed(0)+'deg)"></i><u>🕋</u></div><div><b>'+esc(g3(['اتجاه القبلة','Qibla direction','Direction de la Qibla']))+' · '+N(Math.round(qb))+'°</b><p>'+esc(g3(['من الشمال الحقيقي باتجاه عقارب الساعة. استعن ببوصلة هاتفك.','Clockwise from true north. Use your phone compass.','Dans le sens horaire depuis le nord vrai. Utilisez la boussole du téléphone.']))+'</p></div></div>'+
+     '<div class="pr-q"><div class="pr-dial" aria-hidden="true"><div class="pr-ring"><em>N</em></div><i data-qb="'+qb.toFixed(1)+'" style="transform:rotate('+qb.toFixed(0)+'deg)"></i><u>🕋</u></div><div><b>'+esc(g3(['اتجاه القبلة','Qibla direction','Direction de la Qibla']))+' · '+N(Math.round(qb))+'°</b><p>'+esc(g3(['من الشمال الحقيقي باتجاه عقارب الساعة.','Clockwise from true north.','Dans le sens horaire depuis le nord vrai.']))+'</p><button class="pr-cbtn" data-pq="toggle">'+esc(PQ.on?g3(['إيقاف البوصلة','Stop compass','Arrêter la boussole']):g3(['تشغيل البوصلة الحية','Enable live compass','Activer la boussole en direct']))+'</button><p class="pr-st" id="prst" role="status" aria-live="polite"></p></div></div>'+
      '<p class="pr-note">ⓘ '+esc(g3(['الطريقة: ','Method: ','Méthode : ']))+esc(T(METH[S.method][0]))+' · '+esc(g3(['الأوقات حسابية بتوقيت جهازك، فتحقق منها مع مسجدك أو التقويم الرسمي.','Times are calculated using your device time zone; confirm with your mosque or the official calendar.','Horaires calculés selon le fuseau de votre appareil ; vérifiez auprès de votre mosquée ou du calendrier officiel.']))+'</p>';
+    if(PQ.on)headApply();
   };
   function sheet(){
     let s=document.getElementById('prsheet');if(s)s.remove();
@@ -36,6 +66,7 @@
   }
   function close(){const s=document.getElementById('prsheet');if(s)s.remove()}
   document.addEventListener('click',function(e){
+    const pq=e.target.closest('[data-pq]');if(pq){PQ.on?compassStop():compassStart();return}
     const b=e.target.closest('[data-pcity]');
     if(!b){if(e.target.id==='prsheet')close();return}
     const a=b.dataset.pcity;

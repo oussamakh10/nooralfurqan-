@@ -1223,3 +1223,10 @@ section.unit .uh .un small{font:700 .62rem var(--display);opacity:.85}
 .pr-opt i{font-style:normal;color:var(--accent);font-weight:800}
 .pr-city:focus-visible,.pr-opt:focus-visible,.pr-geo:focus-visible,#prq:focus-visible{outline:3px solid #d9b45a;outline-offset:2px}
 @media (prefers-reduced-motion:reduce){.pr-sh{animation:none}}
+.pr-dial em{position:static;transform:none}
+.pr-ring{position:absolute;inset:0;border-radius:50%;transition:transform .12s linear}
+.pr-ring em{position:absolute;top:2px;left:50%;transform:translateX(-50%)}
+.pr-dial i{transition:transform .12s linear,background .2s}
+.pr-cbtn{margin-top:8px;min-height:40px;padding:6px 14px;border-radius:12px;border:2px solid #d9b45a;background:transparent;color:inherit;font:600 .88rem inherit;cursor:pointer}
+.pr-cbtn:focus-visible{outline:3px solid #d9b45a;outline-offset:2px}
+.pr-st{margin:6px 0 0!important;font-weight:700;color:var(--accent)!important}
