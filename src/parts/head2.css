@@ -1230,3 +1230,9 @@ section.unit .uh .un small{font:700 .62rem var(--display);opacity:.85}
 .pr-cbtn{margin-top:8px;min-height:40px;padding:6px 14px;border-radius:12px;border:2px solid #d9b45a;background:transparent;color:inherit;font:600 .88rem inherit;cursor:pointer}
 .pr-cbtn:focus-visible{outline:3px solid #d9b45a;outline-offset:2px}
 .pr-st{margin:6px 0 0!important;font-weight:700;color:var(--accent)!important}
+.pr-pin{color:#d9b45a;display:grid}
+.pr-ni{color:#d9b45a;display:grid}
+.pr-t i{color:#d9b45a;display:grid}
+.pr-t.past i{color:var(--muted)}
+.pr-geo{display:flex;align-items:center;justify-content:center;gap:8px;color:#d9b45a}.pr-geo span,.pr-geo{color:inherit}
+.pr-dial u{display:grid;color:#d9b45a;line-height:0}
