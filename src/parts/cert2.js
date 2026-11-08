@@ -2,7 +2,7 @@
 function certArt(o){
   const W=1400,H=990,c=document.createElement('canvas');c.width=W;c.height=H;const x=c.getContext('2d');
   const G='#c9a24a',GL='#e8cf8a',GR='#0e6b47',GD='#0a3d2b',INK='#2b2414',F='"Tajawal","Amiri",Tahoma,serif';
-  x.textAlign='center';x.direction='rtl';x.textBaseline='alphabetic';
+  x.textAlign='center';x.direction=(typeof LANG!=='undefined'&&LANG!=='ar')?'ltr':'rtl';x.textBaseline='alphabetic';
   /* الورق */
   const bg=x.createLinearGradient(0,0,W,H);bg.addColorStop(0,'#fbf3dc');bg.addColorStop(1,'#f3e4b8');x.fillStyle=bg;x.fillRect(0,0,W,H);
   /* نجوم ثمانية خافتة */
@@ -22,23 +22,23 @@ function certArt(o){
   x.save();x.translate(W/2,150);x.strokeStyle=G;x.lineWidth=4;
   x.beginPath();x.moveTo(-230,60);x.lineTo(-230,0);x.quadraticCurveTo(-230,-60,0,-85);x.quadraticCurveTo(230,-60,230,0);x.lineTo(230,60);x.stroke();
   x.restore();
-  x.fillStyle=GR;x.font='700 34px '+F;x.fillText('بسم الله الرحمن الرحيم',W/2,160);
+  x.fillStyle=GR;{let bf=34,bt=T('بسم الله الرحمن الرحيم');x.font='700 '+bf+'px '+F;while(x.measureText(bt).width>440&&bf>18){bf-=2;x.font='700 '+bf+'px '+F}x.fillText(bt,W/2,160)}
   /* العنوان */
-  x.fillStyle=GD;x.font='900 92px '+F;x.fillText(o.title,W/2,290);
+  x.fillStyle=GD;x.font='900 92px '+F;x.fillText(T(o.title),W/2,290);
   /* فاصل */
   x.strokeStyle=G;x.lineWidth=3;x.beginPath();x.moveTo(W/2-260,322);x.lineTo(W/2-30,322);x.moveTo(W/2+30,322);x.lineTo(W/2+260,322);x.stroke();
   x.fillStyle=G;x.font='700 34px '+F;x.fillText('✦',W/2,334);
   /* النص */
-  x.fillStyle='#5a4a1c';x.font='500 38px '+F;x.fillText(o.pre,W/2,410);
+  x.fillStyle='#5a4a1c';x.font='500 38px '+F;x.fillText(T(o.pre),W/2,410);
   x.fillStyle=GD;x.font='900 96px '+F;
   let nm=o.name,fs=96;while(x.measureText(nm).width>1000&&fs>48){fs-=4;x.font='900 '+fs+'px '+F}
   x.fillText(nm,W/2,520);
   x.strokeStyle=GL;x.lineWidth=3;x.beginPath();x.moveTo(W/2-330,548);x.lineTo(W/2+330,548);x.stroke();
-  x.fillStyle='#5a4a1c';x.font='500 38px '+F;x.fillText(o.mid,W/2,616);
+  x.fillStyle='#5a4a1c';x.font='500 38px '+F;x.fillText(T(o.mid),W/2,616);
   x.fillStyle=GR;x.font='800 60px '+F;
-  let mn=o.main;fs=60;while(x.measureText(mn).width>1050&&fs>36){fs-=3;x.font='800 '+fs+'px '+F}
+  let mn=T(o.main).replace(/^«\s*|\s*»$/g,function(m){return m.indexOf('«')>=0?'« ':' »'});fs=60;while(x.measureText(mn).width>1050&&fs>36){fs-=3;x.font='800 '+fs+'px '+F}
   x.fillText(mn,W/2,700);
-  if(o.sub){x.fillStyle=INK;x.font='600 40px '+F;x.fillText(o.sub,W/2,765)}
+  if(o.sub){x.fillStyle=INK;x.font='600 40px '+F;x.fillText(T(o.sub),W/2,765)}
   /* الختم */
   const sx=W/2,sy=850;
   x.save();x.translate(sx,sy);
@@ -49,8 +49,8 @@ function certArt(o){
   /* التوقيعات */
   x.fillStyle='#5a4a1c';x.font='500 30px '+F;
   x.fillText(o.date,300,885);x.strokeStyle=G;x.lineWidth=2;x.beginPath();x.moveTo(170,850);x.lineTo(430,850);x.stroke();
-  x.fillText('خلوفي أسامة · نور الفرقان',1100,885);x.beginPath();x.moveTo(970,850);x.lineTo(1230,850);x.stroke();
-  x.font='400 24px '+F;x.fillStyle='#8a7a4c';x.fillText('التاريخ',300,914);x.fillText('المنشئ',1100,914);
+  {let cf=30,ct=T('خلوفي أسامة · نور الفرقان');x.font='500 '+cf+'px '+F;while(x.measureText(ct).width>230&&cf>16){cf-=2;x.font='500 '+cf+'px '+F}x.fillText(ct,1100,885)}x.beginPath();x.moveTo(970,850);x.lineTo(1230,850);x.stroke();
+  x.font='400 24px '+F;x.fillStyle='#8a7a4c';x.fillText(T('التاريخ'),300,914);x.fillText(T('المنشئ'),1100,914);
   return c;
 }
 function certDate(){try{return new Date().toLocaleDateString('ar-DZ-u-nu-latn',{year:'numeric',month:'long',day:'numeric'})}catch(e){return new Date().toLocaleDateString('en-GB')}}
@@ -75,7 +75,7 @@ certCard=function(ui){
 function lessonCert(id){
   const l=ALL.find(function(z){return z.id===id});if(!l)return;
   const u=DATA[l.unit]||{title:''},acc=(window.__lacc||{})[id];
-  const c=certArt({title:'شهادة إتمام الدرس',pre:'تشهد منصة «نور الفرقان» بأن',name:certName(),mid:'قد أتمّ بنجاح درس',main:'« '+l.title+' »',sub:'من وحدة «'+u.title+'»'+(acc!=null?' · الدقة '+acc+'%':''),date:certDate()});
+  const c=certArt({title:'شهادة إتمام الدرس',pre:'تشهد منصة «نور الفرقان» بأن',name:certName(),mid:'قد أتمّ بنجاح درس',main:'« '+T(l.title)+' »',sub:T('من وحدة')+' «'+T(u.title)+'»'+(acc!=null?' · '+T('الدقة')+' '+acc+'%':''),date:certDate()});
   certShow(c,'certificate-lesson-'+id+'.png');
 }
 document.addEventListener('click',function(e){const b=e.target.closest('[data-lcert]');if(b)lessonCert(b.dataset.lcert)});
