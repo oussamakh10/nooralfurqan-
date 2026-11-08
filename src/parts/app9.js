@@ -155,7 +155,7 @@ document.addEventListener('keydown',function(e){
   if(TABS.some(function(t){return t[0]===h}))TAB=h;
   applyTheme();applyFreeze();dayState();renderTop();renderNav();renderMini();renderPage();initBoard();
   const afterConsent=function(ms){(function w(){if(!S.consent)return setTimeout(w,300);setTimeout(function(){if(!S.prof&&$('#lesson').hidden)openOnboard()},ms)})()};
-  if(!S.lang){S.lang='ar';S.langAuto=1;save();afterConsent(250)}
+  if(!S.lang){S.lang=LANG;S.langAuto=1;save();afterConsent(250)}
   else if(!S.prof)afterConsent(400);
 })();
 

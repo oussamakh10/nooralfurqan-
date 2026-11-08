@@ -4,11 +4,13 @@ const LANGS=[['ar','العربية'],['en','English'],['fr','Français']];
 let LANG='ar',I18=null;
 const LST=new WeakMap();
 /* العربية هي اللغة الافتراضية عند الدخول؛ تُغيَّر من الإعدادات */
-function detectLang(){return 'ar'}
+function detectLang(){try{const l=((navigator.languages&&navigator.languages[0])||navigator.language||'ar').slice(0,2).toLowerCase();return l==='ar'?'ar':l==='fr'?'fr':'en'}catch(e){return 'ar'}}
 (function(){
-  if(S.lang)LANG=S.lang;
+  if(S.lang&&!S.langAuto)LANG=S.lang;
+  else if(S.langAuto){LANG=detectLang();S.lang=LANG}
   else{const used=S.prof||S.xp>0||Object.keys(S.done||{}).length;if(used){S.lang='ar'}else LANG=detectLang()}
   if(LANG!=='ar'&&LANG!=='en'&&LANG!=='fr')LANG='ar';
+  if(LANG!=='ar'&&S.langAuto&&!S.trAuto){S.tr='en';S.trAuto=1}
 })();
 const AR_RE=/[؀-ۿ]/;
 const MISS=new Set();
@@ -119,7 +121,7 @@ function rerenderAll(){
 }
 function setLang(l){
   if(l===LANG&&S.lang===l&&(I18||l==='ar'))return;
-  LANG=l;S.lang=l;if(l!=='ar'&&!S.trAuto){S.tr='en';S.trAuto=1}save();
+  LANG=l;S.lang=l;S.langAuto=0;if(l!=='ar'&&!S.trAuto){S.tr='en';S.trAuto=1}save();
   loadPack().then(function(){rerenderAll()});
 }
 function langBtns(){return '<span class="opts2">'+LANGS.map(function(x){return '<button class="tag" data-lang="'+x[0]+'" aria-pressed="'+(LANG===x[0])+'" dir="auto" lang="'+x[0]+'">'+x[1]+'</button>'}).join('')+'</span>'}
