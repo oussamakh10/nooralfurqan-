@@ -29,8 +29,8 @@ jobs:
         working-directory: android
         run: |
           sed -i 's#https\\://github.com/gradle/gradle-distributions/releases/download/v\([0-9.]*\)/#https\\://services.gradle.org/distributions/#' gradle/wrapper/gradle-wrapper.properties
-          cat gradle/wrapper/gradle-wrapper.properties | grep distributionUrl
-          ./gradlew assembleDebug --no-daemon
+          sed -i 's/networkTimeout=.*/networkTimeout=120000/' gradle/wrapper/gradle-wrapper.properties
+          for i in 1 2 3 4; do ./gradlew assembleDebug --no-daemon && break || sleep 20; done
       - uses: actions/upload-artifact@v4
         with:
           name: nooralfurqan-apk
