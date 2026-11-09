@@ -17,14 +17,12 @@ jobs:
       - run: npm install
       - run: npx cap add android
       - run: npx cap sync android
-      - name: Icons
+      - name: Icons and splash
         run: |
-          for d in mipmap-mdpi mipmap-hdpi mipmap-xhdpi mipmap-xxhdpi mipmap-xxxhdpi; do
-            for n in ic_launcher ic_launcher_round ic_launcher_foreground; do
-              cp public/icon-512.png android/app/src/main/res/$d/$n.png || true
-            done
-          done
-          rm -f android/app/src/main/res/mipmap-anydpi-v26/*.xml
+          R=android/app/src/main/res
+          find $R -name 'ic_launcher*' -delete
+          rm -f $R/drawable*/splash.png
+          cp -r android-res/* $R/
       - name: Build
         working-directory: android
         run: |
