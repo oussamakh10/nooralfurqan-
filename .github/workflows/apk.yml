@@ -3,6 +3,8 @@ on:
   workflow_dispatch:
   push:
     branches: [unit-sequence, main]
+permissions:
+  contents: write
 jobs:
   apk:
     runs-on: ubuntu-latest
@@ -33,3 +35,9 @@ jobs:
         with:
           name: nooralfurqan-apk
           path: android/app/build/outputs/apk/debug/app-debug.apk
+      - name: Release
+        env: {GH_TOKEN: "${{ github.token }}"}
+        run: |
+          cp android/app/build/outputs/apk/debug/app-debug.apk nooralfurqan.apk
+          gh release delete apk-latest -y --cleanup-tag || true
+          gh release create apk-latest nooralfurqan.apk -t "نور الفرقان APK" -n "ثبّت الملف على أندرويد"
