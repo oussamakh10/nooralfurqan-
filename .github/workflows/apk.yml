@@ -26,6 +26,8 @@ jobs:
           M=android/app/src/main/AndroidManifest.xml
           sed -i 's/<application/<application android:allowBackup="false" android:usesCleartextTraffic="false" android:fullBackupContent="false"/' $M
           sed -i 's/android:allowBackup="true"//' $M
+          sed -i 's#<application#<uses-permission android:name="android.permission.POST_NOTIFICATIONS"/><uses-permission android:name="android.permission.SCHEDULE_EXACT_ALARM"/><uses-permission android:name="android.permission.USE_EXACT_ALARM"/><application#' $M
+          if [ -f public/adhan/adhan.mp3 ]; then mkdir -p $R/raw && cp public/adhan/adhan.mp3 $R/raw/adhan.mp3; fi
       - name: Build
         working-directory: android
         run: |
