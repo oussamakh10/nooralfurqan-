@@ -9,3 +9,5 @@
 مواد المتجر: مجلد store/ (أيقونة، لقطات، وصف).
 ## التعديل
 عدّل `src/parts/*` ثم ./build.sh (لا تعدّل index.html مباشرة). قبل الإطلاق: مراجعة شرعية (docs/sharia_review.md) وخصوصية الأطفال والحقوق (docs/legal_review.md).
+## ملف APK
+ارفع المشروع إلى GitHub ثم: تبويب Actions ← Build APK ← Run workflow. بعد دقائق نزّل `nooralfurqan-apk` (app-debug.apk) وثبّته على الهاتف مباشرة. التطبيق يضمّن كل الملفات داخله فيعمل كتطبيق حقيقي.

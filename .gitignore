@@ -2,3 +2,5 @@ node_modules/
 .firebase/
 *.log
 __pycache__/
+node_modules
+android
