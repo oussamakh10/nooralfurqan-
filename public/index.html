@@ -5949,6 +5949,7 @@ if(window.__dip)DEFP=window.__dip;
 window.addEventListener('beforeinstallprompt',function(e){e.preventDefault();DEFP=e;window.__dip=e;showInstBar()});
 window.addEventListener('appinstalled',function(){DEFP=null;S.instOk=1;save();const b=document.getElementById('instbar');if(b)b.remove()});
 function showInstBar(){
+  return;
   if(!HOSTED||isStandalone()||S.instOk||document.getElementById('instbar'))return;
   if(S.instDis&&Date.now()-S.instDis<3*864e5)return;
   const b=document.createElement('div');b.id='instbar';b.setAttribute('role','region');
@@ -6004,7 +6005,7 @@ function openAbout(){
   const es=extraSettings;
   extraSettings=function(){
     let h=es();
-    if(!isStandalone())h+='<div class="setrow"><span>'+esc(g3(["تثبيت التطبيق","Install the app","Installer l’application"]))+'</span><button class="btn sm ghost" data-act="inst-go">'+esc(g3(["تثبيت","Install","Installer"]))+'</button></div>';
+    if(!isStandalone()&&!window.Capacitor)h+='<div class="setrow"><span>'+esc(g3(["تثبيت التطبيق","Install the app","Installer l’application"]))+'</span><button class="btn sm ghost" data-act="inst-go">'+esc(g3(["تثبيت","Install","Installer"]))+'</button></div>';
     return h+'<div class="setrow"><span>'+esc(g3(["عن التطبيق والخصوصية","About & privacy","À propos et confidentialité"]))+'</span><button class="btn sm ghost" data-act="about-open">'+esc(g3(["فتح","Open","Ouvrir"]))+'</button></div>';
   };
   document.addEventListener('click',function(e){
@@ -10615,14 +10616,24 @@ document.addEventListener('click',function(e){const b=e.target.closest('[data-lc
     if(hit&&!PQ.hit&&navigator.vibrate)try{navigator.vibrate(40)}catch(x){}
     PQ.hit=hit;
   }
+  let CH=null,CT=0;
   function onOri(e){
     let h=null;
     if(typeof e.webkitCompassHeading==='number')h=e.webkitCompassHeading;
-    else if(e.alpha!=null&&(e.absolute||e.type==='deviceorientationabsolute'))h=360-e.alpha;
-    if(h==null)return;
-    PQ.h=(h+360)%360;headApply();
+    else if(e.alpha!=null&&e.beta!=null&&e.gamma!=null&&(e.absolute||e.type==='deviceorientationabsolute')){
+      const r=Math.PI/180,z=e.alpha*r,x=e.beta*r,y=e.gamma*r,cz=Math.cos(z),sz=Math.sin(z),cy=Math.cos(y),sy=Math.sin(y),sx=Math.sin(x);
+      const vx=-cz*sy-sz*sx*cy,vy=-sz*sy+cz*sx*cy;h=Math.atan2(vx,vy)/r;
+    }
+    if(h==null||!isFinite(h))return;
+    const n=performance.now();if(n-CT<50)return;CT=n;
+    const a=h*Math.PI/180;
+    if(CH==null)CH={s:Math.sin(a),c:Math.cos(a)};
+    else{const k=.12;CH.s+=(Math.sin(a)-CH.s)*k;CH.c+=(Math.cos(a)-CH.c)*k}
+    const v=(Math.atan2(CH.s,CH.c)*180/Math.PI+360)%360;
+    if(PQ.h!=null){let d=Math.abs(v-PQ.h);d=Math.min(d,360-d);if(d<1.2)return}
+    PQ.h=v;headApply();
   }
-  function compassStop(){window.removeEventListener('deviceorientationabsolute',onOri,true);window.removeEventListener('deviceorientation',onOri,true);PQ.on=false;PQ.h=null;try{renderPrayer()}catch(x){}}
+  function compassStop(){window.removeEventListener('deviceorientationabsolute',onOri,true);window.removeEventListener('deviceorientation',onOri,true);PQ.on=false;PQ.h=null;CH=null;try{renderPrayer()}catch(x){}}
   function compassStart(){
     const go=function(){
       PQ.on=true;window.addEventListener('deviceorientationabsolute',onOri,true);window.addEventListener('deviceorientation',onOri,true);

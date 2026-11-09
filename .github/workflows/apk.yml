@@ -23,6 +23,9 @@ jobs:
           find $R -name 'ic_launcher*' -delete
           rm -f $R/drawable*/splash.png
           cp -r android-res/* $R/
+          M=android/app/src/main/AndroidManifest.xml
+          sed -i 's/<application/<application android:allowBackup="false" android:usesCleartextTraffic="false" android:fullBackupContent="false"/' $M
+          sed -i 's/android:allowBackup="true"//' $M
       - name: Build
         working-directory: android
         run: |

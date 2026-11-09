@@ -12,14 +12,24 @@
     if(hit&&!PQ.hit&&navigator.vibrate)try{navigator.vibrate(40)}catch(x){}
     PQ.hit=hit;
   }
+  let CH=null,CT=0;
   function onOri(e){
     let h=null;
     if(typeof e.webkitCompassHeading==='number')h=e.webkitCompassHeading;
-    else if(e.alpha!=null&&(e.absolute||e.type==='deviceorientationabsolute'))h=360-e.alpha;
-    if(h==null)return;
-    PQ.h=(h+360)%360;headApply();
+    else if(e.alpha!=null&&e.beta!=null&&e.gamma!=null&&(e.absolute||e.type==='deviceorientationabsolute')){
+      const r=Math.PI/180,z=e.alpha*r,x=e.beta*r,y=e.gamma*r,cz=Math.cos(z),sz=Math.sin(z),cy=Math.cos(y),sy=Math.sin(y),sx=Math.sin(x);
+      const vx=-cz*sy-sz*sx*cy,vy=-sz*sy+cz*sx*cy;h=Math.atan2(vx,vy)/r;
+    }
+    if(h==null||!isFinite(h))return;
+    const n=performance.now();if(n-CT<50)return;CT=n;
+    const a=h*Math.PI/180;
+    if(CH==null)CH={s:Math.sin(a),c:Math.cos(a)};
+    else{const k=.12;CH.s+=(Math.sin(a)-CH.s)*k;CH.c+=(Math.cos(a)-CH.c)*k}
+    const v=(Math.atan2(CH.s,CH.c)*180/Math.PI+360)%360;
+    if(PQ.h!=null){let d=Math.abs(v-PQ.h);d=Math.min(d,360-d);if(d<1.2)return}
+    PQ.h=v;headApply();
   }
-  function compassStop(){window.removeEventListener('deviceorientationabsolute',onOri,true);window.removeEventListener('deviceorientation',onOri,true);PQ.on=false;PQ.h=null;try{renderPrayer()}catch(x){}}
+  function compassStop(){window.removeEventListener('deviceorientationabsolute',onOri,true);window.removeEventListener('deviceorientation',onOri,true);PQ.on=false;PQ.h=null;CH=null;try{renderPrayer()}catch(x){}}
   function compassStart(){
     const go=function(){
       PQ.on=true;window.addEventListener('deviceorientationabsolute',onOri,true);window.addEventListener('deviceorientation',onOri,true);

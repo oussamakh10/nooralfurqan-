@@ -1,3 +1,13 @@
-{"appId":"com.nooralfurqan.app","appName":"نور الفرقان","webDir":"public",
-"server":{"androidScheme":"https"},
-"android":{"backgroundColor":"#0b3330"}}
+{
+ "appId": "com.nooralfurqan.app",
+ "appName": "نور الفرقان",
+ "webDir": "public",
+ "server": {
+  "androidScheme": "https"
+ },
+ "android": {
+  "backgroundColor": "#0b3330",
+  "allowMixedContent": false,
+  "webContentsDebuggingEnabled": false
+ }
+}

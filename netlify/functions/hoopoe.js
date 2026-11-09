@@ -19,6 +19,9 @@ exports.handler = async (event) => {
   if (org) H['Access-Control-Allow-Origin'] = org;
   if (event.httpMethod === 'OPTIONS') return { statusCode: 204, headers: H, body: '' };
   if (event.httpMethod !== 'POST') return { statusCode: 405, headers: H, body: '{"error":"method"}' };
+  H['X-Content-Type-Options'] = 'nosniff';
+  if (org && event.headers && event.headers.origin && event.headers.origin !== org) return { statusCode: 403, headers: H, body: '{"error":"origin"}' };
+  if ((event.body || '').length > 20000) return { statusCode: 413, headers: H, body: '{"error":"size"}' };
   const key = process.env.ANTHROPIC_API_KEY;
   if (!key) return { statusCode: 503, headers: H, body: '{"error":"not_configured"}' };
   const ip = (event.headers['x-nf-client-connection-ip'] || event.headers['x-forwarded-for'] || '').split(',')[0].trim();

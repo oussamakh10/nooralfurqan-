@@ -19,6 +19,7 @@ if(window.__dip)DEFP=window.__dip;
 window.addEventListener('beforeinstallprompt',function(e){e.preventDefault();DEFP=e;window.__dip=e;showInstBar()});
 window.addEventListener('appinstalled',function(){DEFP=null;S.instOk=1;save();const b=document.getElementById('instbar');if(b)b.remove()});
 function showInstBar(){
+  return;
   if(!HOSTED||isStandalone()||S.instOk||document.getElementById('instbar'))return;
   if(S.instDis&&Date.now()-S.instDis<3*864e5)return;
   const b=document.createElement('div');b.id='instbar';b.setAttribute('role','region');
@@ -74,7 +75,7 @@ function openAbout(){
   const es=extraSettings;
   extraSettings=function(){
     let h=es();
-    if(!isStandalone())h+='<div class="setrow"><span>'+esc(g3(["تثبيت التطبيق","Install the app","Installer l’application"]))+'</span><button class="btn sm ghost" data-act="inst-go">'+esc(g3(["تثبيت","Install","Installer"]))+'</button></div>';
+    if(!isStandalone()&&!window.Capacitor)h+='<div class="setrow"><span>'+esc(g3(["تثبيت التطبيق","Install the app","Installer l’application"]))+'</span><button class="btn sm ghost" data-act="inst-go">'+esc(g3(["تثبيت","Install","Installer"]))+'</button></div>';
     return h+'<div class="setrow"><span>'+esc(g3(["عن التطبيق والخصوصية","About & privacy","À propos et confidentialité"]))+'</span><button class="btn sm ghost" data-act="about-open">'+esc(g3(["فتح","Open","Ouvrir"]))+'</button></div>';
   };
   document.addEventListener('click',function(e){
