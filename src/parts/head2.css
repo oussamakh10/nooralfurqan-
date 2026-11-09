@@ -1236,3 +1236,8 @@ section.unit .uh .un small{font:700 .62rem var(--display);opacity:.85}
 .pr-t.past i{color:var(--muted)}
 .pr-geo{display:flex;align-items:center;justify-content:center;gap:8px;color:#d9b45a}.pr-geo span,.pr-geo{color:inherit}
 .pr-dial u{display:grid;color:#d9b45a;line-height:0}
+
+.bk-pg{font-family:var(--quran);line-height:2.5;text-align:justify;text-wrap:pretty;background:var(--surface);border:2px solid var(--line);border-radius:18px;padding:16px 14px;margin-top:8px}
+.bk-a{display:inline}.bk-n{font-size:.7em;color:var(--gold,#c9a24a);white-space:nowrap}
+.bk-sur{text-align:center;font-weight:800;margin:10px 0;padding:6px;border:2px solid var(--gold,#c9a24a);border-radius:12px;font-size:.8em}
+.bk-bsm{text-align:center;margin:4px 0 8px;font-size:.85em}
