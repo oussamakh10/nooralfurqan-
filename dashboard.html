@@ -1,0 +1,60 @@
+<title>لوحة نور الفرقان</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<style>
+/* لوحة متابعة المطوّر: ملخص أرقام ثم حالة الجاهزية ثم ما ينقص */
+:root{--bg:#f4f6f3;--fg:#13302c;--mut:#5b716c;--card:#fff;--line:#d9e2de;--acc:#1d6a5e;--gold:#b88a1e;--ok:#2f9e6a;--warn:#c98a12;--bad:#c0463b;color-scheme:light}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0d1f1c;--fg:#e8efec;--mut:#98b0aa;--card:#14302b;--line:#254841;--acc:#4fc3a8;--gold:#e6c473;--ok:#4fcf93;--warn:#e8b64a;--bad:#ef7f72;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#0d1f1c;--fg:#e8efec;--mut:#98b0aa;--card:#14302b;--line:#254841;--acc:#4fc3a8;--gold:#e6c473;--ok:#4fcf93;--warn:#e8b64a;--bad:#ef7f72;color-scheme:dark}
+body{background:var(--bg);color:var(--fg);font:400 15px/1.7 'Noto Naskh Arabic',system-ui,sans-serif;padding-block:20px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+main{max-width:860px;margin:0 auto;display:grid;gap:22px}
+h1{margin:0;font:800 1.7rem 'Noto Naskh Arabic',serif;text-wrap:balance}
+h2{margin:0 0 10px;font:700 1.05rem 'Noto Naskh Arabic',serif;color:var(--acc)}
+.sub{margin:4px 0 0;color:var(--mut);font-size:.88rem}
+.tiles{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px}
+.t{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:12px 14px;min-width:0}
+.t b{display:block;font:800 1.9rem/1.2 system-ui,sans-serif;font-variant-numeric:tabular-nums;color:var(--fg)}
+.t span{color:var(--mut);font-size:.82rem}
+.bd{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:6px 14px}
+.r{display:flex;align-items:center;gap:10px;padding:9px 0;border-bottom:1px solid var(--line)}
+.r:last-child{border:0}
+.r div{flex:1;min-width:0}.r small{display:block;color:var(--mut);font-size:.8rem}
+.p{flex:none;font-size:.78rem;font-weight:700;padding:2px 10px;border-radius:99px;border:1px solid currentColor}
+.ok{color:var(--ok)}.wn{color:var(--warn)}.bd2{color:var(--bad)}
+.runs{display:flex;gap:6px;align-items:flex-end;height:56px;direction:ltr}
+.runs i{flex:1;border-radius:4px 4px 0 0;background:var(--ok);height:100%}.runs i.f{background:var(--bad);height:45%}.runs i.n{background:var(--line);height:30%}
+.note{color:var(--mut);font-size:.82rem}
+</style>
+<main>
+<header><h1>لوحة نور الفرقان</h1><p class="sub">لقطة بتاريخ 9 نوفمبر 2026. الأرقام من مستودع المشروع وإصدار GitHub.</p></header>
+
+<section><h2>الأرقام الآن</h2>
+<div class="tiles">
+<div class="t"><b>1</b><span>تنزيلات الـAPK من رابط GitHub</span></div>
+<div class="t"><b>23</b><span>وحدة تعليمية</span></div>
+<div class="t"><b>109</b><span>درس</span></div>
+<div class="t"><b>1013</b><span>سؤال تقريبًا</span></div>
+<div class="t"><b>187</b><span>إجابة معرفية للهدهد بثلاث لغات</span></div>
+<div class="t"><b>196</b><span>تعديل محفوظ (commit)</span></div>
+</div>
+<p class="note" style="margin-top:8px">عدّاد التنزيلات لا يحسب الملفات التي أُرسلت إليك مباشرة، ويرجَّح أن التنزيل الواحد المسجَّل من بيئة الاختبار.</p></section>
+
+<section><h2>آخر خمس عمليات بناء للـAPK</h2>
+<div class="bd" style="padding:14px"><div class="runs" role="img" aria-label="من الأقدم إلى الأحدث: متوقف، نجاح، نجاح، نجاح، فشل"><i class="n"></i><i></i><i></i><i></i><i class="f"></i></div>
+<p class="note" style="margin:8px 0 0">فشل الأخير كان عطلًا عابرًا في تنزيل Gradle من GitHub، وأُعيد البناء بنجاح بعده.</p></div></section>
+
+<section><h2>جاهزية الإطلاق</h2>
+<div class="bd">
+<div class="r"><div>موقع PWA وملف APK يعملان<small>الموقع منشور للتجربة، والـAPK يُبنى تلقائيًا عند كل تحديث</small></div><span class="p ok">جاهز</span></div>
+<div class="r"><div>الأمان والخصوصية في التطبيق<small>CSP، منع النسخ الاحتياطي، قواعد Firestore محكمة، وضع الأطفال دون 13</small></div><span class="p ok">جاهز</span></div>
+<div class="r"><div>الإنجليزية والفرنسية<small>الواجهة والمدرسية والهدهد؛ آيات الأحاديث والأدعية تبقى بالعربية عمدًا</small></div><span class="p ok">جاهز</span></div>
+<div class="r"><div>صوت الأذان<small>ضع adhan.mp3 وfajr.mp3 في مجلد public/adhan بحقوق مسموحة</small></div><span class="p wn">ناقص</span></div>
+<div class="r"><div>الذكاء الاصطناعي للهدهد<small>انشر دالة Netlify وأضف ANTHROPIC_API_KEY وNF_ORIGIN</small></div><span class="p wn">ناقص</span></div>
+<div class="r"><div>Firebase: الدخول والمتصدرون والتحدي المباشر<small>يلزمه مشروعك وملف firebase-config.json</small></div><span class="p wn">ناقص</span></div>
+<div class="r"><div>إحصائيات المستخدمين والأعطال<small>Firebase Analytics وCrashlytics غير مفعّلين، فلا بيانات لعرضها بعد</small></div><span class="p bd2">غير مربوط</span></div>
+<div class="r"><div>مراجعة شرعية وحقوق الصوت<small>قبل الإطلاق العام على Play</small></div><span class="p wn">قبل الإطلاق</span></div>
+<div class="r"><div>توقيع الـAPK بمفتاحك للنشر على Play<small>الملف الحالي موقَّع بمفتاح اختبار ويكفي للتثبيت المباشر</small></div><span class="p wn">ناقص</span></div>
+</div></section>
+
+<section><h2>رسائل المستخدمين</h2>
+<div class="bd" style="padding:14px"><p style="margin:0">لا رسائل مستلمة بعد. أزرار «أبلغ عن خطأ» تُحفظ في قاعدة Firebase عند ربطها، وبريد الدعم الرسمي okheloufi30@gmail.com.</p></div></section>
+</main>
