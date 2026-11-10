@@ -24,6 +24,7 @@
       else root.classList.toggle('focus');
     }
   });
+  document.addEventListener('click',function(e){const t=e.target.closest&&e.target.closest('[data-r5=list]');if(!t||e.target.closest('button'))return;const l=document.getElementById('rlist');if(l)l.scrollIntoView({behavior:'smooth',block:'start'})});
   const _pr=pageRead;
   pageRead=function(){
     _pr();
@@ -38,8 +39,8 @@
       const head=document.createElement('div');head.className='r5-head';
       head.innerHTML='<b>'+esc(g3(['القرآن الكريم','The Noble Quran','Le Saint Coran']))+'</b><p>'+N(114)+' '+esc(g3(['سورة','surahs','sourates']))+' · '+N(30)+' '+esc(g3(['جزءًا','juz','juz']))+' · '+N(6236)+' '+esc(g3(['آية','verses','versets']))+'</p>';
       const tiles=document.createElement('div');tiles.className='r5-tiles';
-      tiles.innerHTML='<button class="r5-tile" data-bk="open"><small>'+esc(g3(['القراءة الهادئة','Quiet reading','Lecture calme']))+'</small><b>'+esc(g3(['صفحة ','Page ','Page ']))+N((S.bkp||0)+1)+esc(g3([' من 620',' of 620',' sur 620']))+'</b><span>'+esc(g3(['حسناتك تُحسب بصمت','Hasanat counted silently','Hasanat comptées en silence']))+'</span></button>'+
-        '<div class="r5-tile r5-w"><small>'+esc(g3(['وردك اليوم','Today’s portion','Votre portion du jour']))+'</small><b>'+N(r)+' / '+N(tgt)+' '+esc(g3(['آية','verses','versets']))+'</b><i class="r5-pb"><u style="width:'+pc+'%"></u></i></div>';
+      tiles.innerHTML='<button class="r5-tile" data-bk="open"><small>'+esc(g3(['النوع الأول','Mode 1','Mode 1']))+'</small><b>'+esc(g3(['القراءة الصامتة','Silent reading','Lecture silencieuse']))+'</b><span>'+esc(g3(['بصفحات المصحف · صفحة ','By mushaf pages · page ','Par pages · page ']))+N((S.bkp||0)+1)+esc(g3([' · حسناتك تُحسب بصمت',' · hasanat counted silently',' · hasanat comptées en silence']))+'</span></button>'+
+        '<div class="r5-tile r5-w on" data-r5="list"><small>'+esc(g3(['النوع الثاني','Mode 2','Mode 2']))+'</small><b>'+esc(g3(['القراءة بعداد الحسنات','Reading with hasanat counter','Lecture avec compteur']))+'</b><span>'+esc(g3(['وردك اليوم ','Today’s portion ','Portion du jour ']))+N(r)+' / '+N(tgt)+'</span><i class="r5-pb"><u style="width:'+pc+'%"></u></i></div>';
       if(kb){kb.classList.remove('r3-khat');kb.classList.add('r5-khat');tiles.querySelector('.r5-w').appendChild(kb)}
       hero.remove();if(seg)seg.remove();
       sec.insertBefore(tiles,sec.firstChild);

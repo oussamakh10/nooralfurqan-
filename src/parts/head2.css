@@ -1541,3 +1541,7 @@ background:
 .r5-head{border-color:var(--g1)!important;background:radial-gradient(120% 140% at 50% 0,var(--g2),transparent 60%),var(--a2)!important}
 .r5-head b{text-shadow:none!important}.r5-head b::before,.r5-head b::after{color:var(--gold,#C8A24A)!important}
 .r5-head p::before{background:linear-gradient(90deg,transparent,var(--gold,#C8A24A) 30%,var(--gold,#C8A24A) 70%,transparent) center/100% 1px no-repeat!important}
+
+.rd-chips,.rgch{display:none!important}
+.r5-tile.on{border-color:var(--gold,#C8A24A);background:var(--g2)}
+.r5-tile b{font-size:1.02rem}
