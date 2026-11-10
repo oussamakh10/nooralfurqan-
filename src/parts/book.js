@@ -23,28 +23,29 @@
     const arr=PG[p];let h='',last=0;
     arr.forEach(function(x){
       const s=x[0],a=x[1];
-      if(a===1&&s!==last){h+='<div class="bk-sur"><i aria-hidden="true">✦</i>'+g3(['سورة ','Surah ','Sourate '])+T(Q.ch[s-1][0])+'<i aria-hidden="true">✦</i></div>';if(s!==1&&s!==9)h+='<div class="bk-bsm">بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ</div>'}
+      if(a===1&&s!==last){h+='<div class="bk3-sur"><span>'+esc(T(Q.ch[s-1][0]))+'</span></div>';if(s!==1&&s!==9)h+='<div class="bk3-bsm">بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ</div>'}
       last=s;
-      h+='<span class="bk-a">'+Q.v[s-1][a-1]+' <span class="bk-n">'+N(a)+'</span></span> ';
+      h+='<span class="bk3-a">'+Q.v[s-1][a-1]+' <span class="bk3-n">'+N(a)+'</span></span> ';
     });
-    const first=arr[0],lastv=arr[arr.length-1],juz=Math.min(30,Math.floor(p/PG.length*30)+1);
-    const lbl=function(a){return g3(a)};
-    let opts='';for(let i=1;i<=114;i++)opts+='<option value="'+i+'"'+(i===first[0]?' selected':'')+'>'+N(i)+' · '+esc(T(Q.ch[i-1][0]))+'</option>';
-    let jo='';for(let j=1;j<=30;j++)jo+='<option value="'+j+'"'+(j===juz?' selected':'')+'>'+lbl(['الجزء ','Juz ','Juz '])+N(j)+'</option>';
-    $('#page').innerHTML='<section class="sec bk bk2">'+
-      '<div class="bk-top"><button class="bk-ib" data-bk="back" aria-label="'+lbl(['رجوع','Back','Retour'])+'"><svg viewBox="0 0 24 24" aria-hidden="true" width="22" height="22"><path d="M9 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/></svg></button>'+
-      '<button class="bk-title" data-bk="pick" aria-expanded="false"><b>'+esc(T(Q.ch[first[0]-1][0]))+'</b><small>'+lbl(['الجزء ','Juz ','Juz '])+N(juz)+' · '+lbl(['صفحة ','Page ','Page '])+N(p+1)+' / '+N(PG.length)+' ▾</small></button>'+
-      '<span class="bk-fz"><button class="bk-ib" data-bk="fm" aria-label="'+lbl(['تصغير الخط','Smaller text','Réduire'])+'">أ−</button><button class="bk-ib" data-bk="fp" aria-label="'+lbl(['تكبير الخط','Larger text','Agrandir'])+'">أ+</button></span></div>'+
-      '<div id="bkpick" class="bk-pick" hidden><b>'+lbl(['ابدأ القراءة من…','Start reading from…','Commencer la lecture à…'])+'</b>'+
-        '<label>'+lbl(['السورة','Surah','Sourate'])+'<select id="bksur">'+opts+'</select></label>'+
-        '<label>'+lbl(['الجزء','Juz','Juz'])+'<select id="bkjz">'+jo+'</select></label>'+
-        '<label>'+lbl(['رقم الصفحة','Page number','Numéro de page'])+'<span class="bk-gorow"><input id="bkj" type="number" min="1" max="'+PG.length+'" inputmode="numeric" value="'+(p+1)+'"><button class="btn sm gold" data-bk="go">'+lbl(['ابدأ','Start','Aller'])+'</button></span></label>'+
-        '<button class="btn sm ghost" data-bk="resume">'+lbl(['العودة إلى آخر صفحة وصلت لها','Back to my last page','Retour à ma dernière page'])+'</button></div>'+
-      '<div class="bk-sheet"><div class="bk-pg" style="font-size:'+fs()+'rem"><div class="bk-hd"><span>'+esc(T(Q.ch[first[0]-1][0]))+'</span><span>'+lbl(['الجزء ','Juz ','Juz '])+N(juz)+'</span></div>'+h+'<div class="bk-ft"><span>'+N(p+1)+'</span></div></div></div>'+
-      '<div class="bk-bar"><button class="bk-nx" data-bk="prev" '+(p===0?'disabled':'')+' aria-label="'+lbl(['الصفحة السابقة','Previous page','Page précédente'])+'">›</button>'+
-      '<input id="bksl" class="bk-sl" type="range" min="1" max="'+PG.length+'" value="'+(p+1)+'" aria-label="'+lbl(['اختر الصفحة','Choose page','Choisir la page'])+'" style="direction:rtl">'+
-      '<button class="bk-nx" data-bk="next" '+(p>=PG.length-1?'disabled':'')+' aria-label="'+lbl(['الصفحة التالية','Next page','Page suivante'])+'">‹</button></div>'+
-      '<p class="fine">'+lbl(['قراءة هادئة: تُضاف حسنات الصفحة تلقائيًا عند الانتقال إلى التالية بعد قراءتها، دون أي تنبيه. تقسيم الصفحات تقريبي وليس كمصحف المدينة.','Calm reading: the page’s hasanat are added automatically when you move on after reading it, with no alert. Page division is approximate, not the Madinah mushaf.','Lecture calme : les hasanat de la page sont ajoutées automatiquement quand vous passez à la suivante après l’avoir lue, sans alerte. Découpage approximatif, pas celui du mushaf de Médine.'])+'</p></section>';
+    const first=arr[0],juz=Math.min(30,Math.floor(p/PG.length*30)+1),L=function(a){return g3(a)};
+    const th=S.bkth||'paper';
+    const tb=function(k,l){return '<button class="bk3-th" data-th="'+k+'" aria-pressed="'+(th===k)+'">'+esc(l)+'</button>'};
+    $('#page').innerHTML='<section class="sec bk bk3 th-'+th+' on">'+
+      '<div class="bk3-ctl"><button class="bk-nx bk3-ib" data-bk="back" aria-label="'+L(['رجوع','Back','Retour'])+'">›</button>'+
+      '<button class="bk3-title" data-bk="pick" aria-expanded="false"><b>'+esc(T(Q.ch[first[0]-1][0]))+'</b><small>'+L(['الجزء ','Juz ','Juz '])+N(juz)+' · '+L(['صفحة ','Page ','Page '])+N(p+1)+' / '+N(PG.length)+' ▾</small></button>'+
+      '<button class="bk-nx bk3-ib" data-bk="set" aria-label="'+L(['المظهر والخط','Appearance','Apparence'])+'">Aa</button></div>'+
+      '<div id="bkset" class="bk3-set" hidden><div class="bk3-row"><span>'+L(['حجم الخط','Text size','Taille'])+'</span><span><button class="bk3-ib" data-bk="fm" aria-label="'+L(['تصغير','Smaller','Réduire'])+'">أ−</button><button class="bk3-ib" data-bk="fp" aria-label="'+L(['تكبير','Larger','Agrandir'])+'">أ+</button></span></div>'+
+      '<div class="bk3-row"><span>'+L(['الخلفية','Background','Fond'])+'</span><span>'+tb('paper',L(['ورقي','Paper','Papier']))+tb('sepia',L(['سيبيا','Sepia','Sépia']))+tb('night',L(['ليلي','Night','Nuit']))+'</span></div>'+
+      '<p>'+L(['تُضاف حسنات الصفحة تلقائيًا عند الانتقال إلى التالية بعد قراءتها، دون أي تنبيه. تقسيم الصفحات تقريبي وليس كمصحف المدينة.','Hasanat for a page are added automatically when you move on after reading it, with no alert. Page division is approximate, not the Madinah mushaf.','Les hasanat d’une page sont ajoutées automatiquement quand vous passez à la suivante après l’avoir lue, sans alerte. Découpage approximatif, pas celui du mushaf de Médine.'])+'</p></div>'+
+      '<div id="bkpick" class="bk-pick" hidden></div>'+
+      '<div class="bk3-scroll"><div class="bk3-rh"><span>'+esc(T(Q.ch[first[0]-1][0]))+'</span><span>'+L(['الجزء ','Juz ','Juz '])+N(juz)+'</span></div>'+
+      '<div class="bk-pg bk3-txt" style="font-size:'+fs()+'rem">'+h+'</div><div class="bk3-pn">'+N(p+1)+'</div></div>'+
+      '<div class="bk3-dock"><button class="bk-nx" data-bk="prev" '+(p===0?'disabled':'')+' aria-label="'+L(['الصفحة السابقة','Previous page','Page précédente'])+'">›</button>'+
+      '<input id="bksl" class="bk-sl" type="range" min="1" max="'+PG.length+'" value="'+(p+1)+'" aria-label="'+L(['اختر الصفحة','Choose page','Choisir la page'])+'" style="direction:rtl">'+
+      '<button class="bk-nx" data-bk="next" '+(p>=PG.length-1?'disabled':'')+' aria-label="'+L(['الصفحة التالية','Next page','Page suivante'])+'">‹</button></div>'+
+      '<div class="bk3-prog" aria-hidden="true"><i style="width:'+((p+1)/PG.length*100).toFixed(1)+'%"></i></div></section>';
+    const root=document.querySelector('.bk3');
+    setTimeout(function(){if(root&&root.isConnected)root.classList.remove('on')},2600);
     window.scrollTo(0,0);
   }
   window.bkShow=function(p){count(CUR);show(p)};window.bkPG=function(){return build()};window.bkCur=function(){return CUR};
