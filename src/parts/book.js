@@ -28,7 +28,7 @@
       h+='<span class="bk3-a">'+Q.v[s-1][a-1]+' <span class="bk3-n">'+N(a)+'</span></span> ';
     });
     const first=arr[0],juz=Math.min(30,Math.floor(p/PG.length*30)+1),L=function(a){return g3(a)};
-    const th=S.bkth||'paper';
+    const th=({paper:1,night:1,emerald:1})[S.bkth]?S.bkth:'emerald';
     const tb=function(k,l){return '<button class="bk3-th" data-th="'+k+'" aria-pressed="'+(th===k)+'">'+esc(l)+'</button>'};
     const chip=function(t,ic,l){return '<button class="bk3-chip" data-bk="pickto" data-to="'+t+'"><i aria-hidden="true">'+ic+'</i>'+esc(l)+'</button>'};
     $('#page').innerHTML='<section class="sec bk bk3 th-'+th+'">'+
@@ -37,17 +37,13 @@
       '<button class="bk3-ib" data-bk="set" aria-label="'+L(['المظهر والخط','Appearance','Apparence'])+'">Aa</button></div>'+
       '<div class="bk3-chips">'+chip('sur','☰',L(['السور','Surahs','Sourates']))+chip('juz','◐',L(['الأجزاء','Juz','Juz']))+chip('pg','#',L(['رقم الصفحة','Page no.','N° de page']))+'</div>'+
       '<div id="bkset" class="bk3-set" hidden><div class="bk3-row"><span>'+L(['حجم الخط','Text size','Taille'])+'</span><span><button class="bk3-ib" data-bk="fm" aria-label="'+L(['تصغير','Smaller','Réduire'])+'">أ−</button><button class="bk3-ib" data-bk="fp" aria-label="'+L(['تكبير','Larger','Agrandir'])+'">أ+</button></span></div>'+
-      '<div class="bk3-row"><span>'+L(['الخلفية','Background','Fond'])+'</span><span>'+tb('paper',L(['ورقي','Paper','Papier']))+tb('sepia',L(['سيبيا','Sepia','Sépia']))+tb('night',L(['ليلي','Night','Nuit']))+'</span></div>'+
+      '<div class="bk3-row"><span>'+L(['الخلفية','Background','Fond'])+'</span><span>'+tb('emerald',L(['أخضر','Green','Vert']))+tb('paper',L(['ورقي','Paper','Papier']))+tb('night',L(['ليلي','Night','Nuit']))+'</span></div>'+
       '<div class="bk3-row"><span>'+L(['وضع التركيز (إخفاء الأدوات)','Focus mode (hide tools)','Mode concentration'])+'</span><button class="bk3-th" data-bk="focus">'+L(['تفعيل','On','Activer'])+'</button></div>'+
       '<p>'+L(['اضغط على آية لتظليلها. تُضاف حسنات الصفحة تلقائيًا عند الانتقال إلى التالية بعد قراءتها، دون أي تنبيه. تقسيم الصفحات تقريبي وليس كمصحف المدينة.','Tap a verse to highlight it. Hasanat for a page are added automatically when you move on after reading it, with no alert. Page division is approximate, not the Madinah mushaf.','Touchez un verset pour le surligner. Les hasanat d’une page sont ajoutées automatiquement quand vous passez à la suivante, sans alerte. Découpage approximatif, pas celui du mushaf de Médine.'])+'</p></div></div>'+
       '<div id="bkpick" class="bk-pick" hidden></div>'+
-      '<div class="bk3-scroll"><div class="bk3-rh"><span>'+esc(T(Q.ch[first[0]-1][0]))+'</span><span>'+L(['الجزء ','Juz ','Juz '])+N(juz)+'</span></div>'+
-      '<div class="bk-pg bk3-txt bk3-'+dir+'" style="font-size:'+fs()+'rem">'+h+'</div><div class="bk3-pn"><span>'+N(p+1)+'</span></div></div>'+
-      '<div class="bk3-dock"><button class="bk-nx" data-bk="prev" '+(p===0?'disabled':'')+' aria-label="'+L(['الصفحة السابقة','Previous page','Page précédente'])+'">›</button>'+
-      '<div class="bk3-mid"><small>'+L(['صفحة ','Page ','Page '])+N(p+1)+' / '+N(PG.length)+' · '+L(['الجزء ','Juz ','Juz '])+N(juz)+'</small>'+
-      '<input id="bksl" class="bk-sl" type="range" min="1" max="'+PG.length+'" value="'+(p+1)+'" aria-label="'+L(['اختر الصفحة','Choose page','Choisir la page'])+'" style="direction:rtl"></div>'+
-      '<button class="bk-nx" data-bk="next" '+(p>=PG.length-1?'disabled':'')+' aria-label="'+L(['الصفحة التالية','Next page','Page suivante'])+'">‹</button></div>'+
-      '<div class="bk3-prog" aria-hidden="true"><i style="width:'+((p+1)/PG.length*100).toFixed(1)+'%"></i></div></section>';
+      '<div class="bk3-scroll"><div class="bk3-rh"><span>'+esc(T(Q.ch[first[0]-1][0]))+'</span><span>'+L(['الجزء ','Juz ','Juz '])+N(juz)+' · '+L(['صفحة ','Page ','Page '])+N(p+1)+' / '+N(PG.length)+'</span></div>'+
+      '<div class="bk-pg bk3-txt bk3-'+dir+'" style="font-size:'+fs()+'rem">'+h+'</div><div class="bk3-pn"><button class="bk3-pg" data-bk="prev" '+(p===0?'disabled':'')+'>› '+L(['السابقة','Previous','Précédente'])+'</button><span>'+N(p+1)+'</span><button class="bk3-pg" data-bk="next" '+(p>=PG.length-1?'disabled':'')+'>'+L(['التالية','Next','Suivante'])+' ‹</button></div></div>'+
+      '</section>';
     window.scrollTo(0,0);
   }
   window.bkShow=function(p){count(CUR);show(p)};window.bkPG=function(){return build()};window.bkCur=function(){return CUR};

@@ -1765,6 +1765,39 @@ body:has(.bk3) #top,body:has(.bk3) .topwrap,body:has(.bk3) #nav{display:none!imp
 .bk3-mid small{font:700 .74rem system-ui,sans-serif;color:var(--mut)}
 .bk3 .bk-nx{background:var(--bar);color:var(--barfg);transition:transform .12s}
 .bk3-prog{position:static;flex:none}
+/* ===== ألوان التطبيق في القارئ ===== */
+.bk3{--bg:#0c2822;--fg:#f2ead0;--mut:#9fb9af;--acc:#e6c473;--line:rgba(230,196,115,.24);--bar:#134438;--barfg:#f6efd6;--tint:rgba(230,196,115,.11);
+background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='56' height='56' viewBox='0 0 56 56'><g fill='none' stroke='%23e6c473' stroke-opacity='.07' stroke-width='1'><rect x='12' y='12' width='32' height='32'/><rect x='12' y='12' width='32' height='32' transform='rotate(45 28 28)'/></g></svg>")}
+.bk3.th-paper{--bg:#f6edcf;--fg:#1d2a22;--mut:#6d6a4f;--acc:#14574a;--line:rgba(20,87,74,.24);--bar:#14574a;--barfg:#f6e3a6;--tint:rgba(20,87,74,.09);background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='56' height='56' viewBox='0 0 56 56'><g fill='none' stroke='%2314574a' stroke-opacity='.07' stroke-width='1'><rect x='12' y='12' width='32' height='32'/><rect x='12' y='12' width='32' height='32' transform='rotate(45 28 28)'/></g></svg>")}
+.bk3.th-night{--bg:#07120f;--fg:#e9e2c8;--mut:#8aa399;--acc:#d9b45a;--line:rgba(217,180,90,.2);--bar:#0d2520;--barfg:#e9e2c8;--tint:rgba(217,180,90,.09)}
+.bk3-head{border-bottom:2px solid var(--acc)}
+.bk3-chip{border-color:rgba(230,196,115,.55)}
+.bk3-rh{display:flex!important;justify-content:space-between;font:700 .78rem system-ui,sans-serif!important;padding-top:2px}
+.bk3-scroll{padding-bottom:calc(28px + env(safe-area-inset-bottom,0px))!important}
+.bk3-pn{display:flex!important;align-items:center;justify-content:space-between;gap:10px;margin-top:18px}
+.bk3-pg{min-height:44px;padding:0 16px;border-radius:999px;border:1.5px solid var(--acc);background:none;color:var(--acc);font:700 .85rem inherit;cursor:pointer}
+.bk3-pg:disabled{opacity:.3}.bk3-pg:active{transform:scale(.94)}
+/* ===== صفحة القراءة: زخرفة الأسماء والخلفيات ===== */
+.r5-head{position:relative;padding:18px 14px 16px!important;border-radius:24px;text-align:center;overflow:hidden;border:1.5px solid rgba(201,162,74,.6);
+background:radial-gradient(120% 140% at 50% 0,rgba(230,196,115,.22),transparent 60%),url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='48' height='48' viewBox='0 0 48 48'><g fill='none' stroke='%23c9a24a' stroke-opacity='.28' stroke-width='1'><rect x='10' y='10' width='28' height='28'/><rect x='10' y='10' width='28' height='28' transform='rotate(45 24 24)'/></g></svg>")}
+.r5-head b{font:700 2.5rem/1.35 var(--quran)!important;text-shadow:0 2px 0 rgba(201,162,74,.35)}
+.r5-head b::before,.r5-head b::after{content:"❁";font-size:.45em;color:#c9a24a;margin-inline:.5em;vertical-align:middle}
+.r5-head p::before{content:"";display:block;height:10px;margin:2px auto 6px;max-width:220px;background:linear-gradient(90deg,transparent,#c9a24a 30%,#c9a24a 70%,transparent) center/100% 1px no-repeat}
+#page #rlist .srow{position:relative;grid-template-columns:58px 1fr auto!important;gap:12px!important;min-height:86px;padding:12px 14px 16px 12px!important;margin-bottom:10px;border:1.5px solid rgba(201,162,74,.55)!important;border-radius:22px!important;overflow:hidden;
+background:
+ url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='90' height='54' viewBox='0 0 90 54'><g fill='%23c9a24a' fill-opacity='.16'><path d='M4 54V34Q18 6 32 34V54Z'/><rect x='34' y='14' width='6' height='40'/><path d='M34 14l3-9 3 9Z'/><path d='M46 54V40Q58 18 70 40V54Z'/></g></svg>") left bottom/90px 54px no-repeat,
+ url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='48' height='48' viewBox='0 0 48 48'><g fill='none' stroke='%23c9a24a' stroke-opacity='.2' stroke-width='1'><rect x='10' y='10' width='28' height='28'/><rect x='10' y='10' width='28' height='28' transform='rotate(45 24 24)'/></g></svg>"),
+ linear-gradient(135deg,rgba(230,196,115,.16),rgba(20,87,74,.10))!important;box-shadow:0 3px 0 rgba(201,162,74,.28)!important}
+#page #rlist .srow:nth-child(4n+2){background-position:left bottom,0 0,0 0!important}
+#page #rlist .srow:nth-child(odd){background-blend-mode:normal}
+#page #rlist .srow .num{width:54px!important;height:54px!important;display:grid;place-items:center;opacity:1!important;background:linear-gradient(150deg,#f3dc9a,#c9a24a)!important;color:#0e3f37!important;font:800 1rem system-ui,sans-serif!important;clip-path:polygon(50% 0,61% 22%,85% 15%,78% 39%,100% 50%,78% 61%,85% 85%,61% 78%,50% 100%,39% 78%,15% 85%,22% 61%,0 50%,22% 39%,15% 15%,39% 22%)!important;filter:drop-shadow(0 2px 2px rgba(0,0,0,.3))}
+#page #rlist .srow b{font:700 1.7rem/1.3 var(--quran)!important;display:block;text-shadow:0 1px 0 rgba(201,162,74,.35)}
+#page #rlist .srow b::before{content:"❁";color:#c9a24a;font-size:.5em;margin-inline-end:.4em;vertical-align:middle}
+#page #rlist .srow b::after{content:"";display:block;height:5px;margin-top:3px;width:70%;background:linear-gradient(90deg,#c9a24a,transparent) bottom/100% 1px no-repeat}
+#page #rlist .srow small{font-size:.8rem!important;opacity:.85}
+#page #rlist .r4-end{background:rgba(201,162,74,.2)!important;border:1px solid rgba(201,162,74,.6)!important}
+#page #rlist .r4-bar{inset-inline:14px;bottom:6px;height:3px;border-radius:3px;background:rgba(0,0,0,.12)!important}
+#page #rlist .srow.r4-done{border-color:#2f9e6a!important}
 </style>
 <div class="bgpat" id="bg"></div>
 <header class="top" id="top"></header>
@@ -11064,7 +11097,7 @@ KNOW.unshift.apply(KNOW,K.map(function(x){return {q:x[0],a:x[1],s:'نور الف
       h+='<span class="bk3-a">'+Q.v[s-1][a-1]+' <span class="bk3-n">'+N(a)+'</span></span> ';
     });
     const first=arr[0],juz=Math.min(30,Math.floor(p/PG.length*30)+1),L=function(a){return g3(a)};
-    const th=S.bkth||'paper';
+    const th=({paper:1,night:1,emerald:1})[S.bkth]?S.bkth:'emerald';
     const tb=function(k,l){return '<button class="bk3-th" data-th="'+k+'" aria-pressed="'+(th===k)+'">'+esc(l)+'</button>'};
     const chip=function(t,ic,l){return '<button class="bk3-chip" data-bk="pickto" data-to="'+t+'"><i aria-hidden="true">'+ic+'</i>'+esc(l)+'</button>'};
     $('#page').innerHTML='<section class="sec bk bk3 th-'+th+'">'+
@@ -11073,17 +11106,13 @@ KNOW.unshift.apply(KNOW,K.map(function(x){return {q:x[0],a:x[1],s:'نور الف
       '<button class="bk3-ib" data-bk="set" aria-label="'+L(['المظهر والخط','Appearance','Apparence'])+'">Aa</button></div>'+
       '<div class="bk3-chips">'+chip('sur','☰',L(['السور','Surahs','Sourates']))+chip('juz','◐',L(['الأجزاء','Juz','Juz']))+chip('pg','#',L(['رقم الصفحة','Page no.','N° de page']))+'</div>'+
       '<div id="bkset" class="bk3-set" hidden><div class="bk3-row"><span>'+L(['حجم الخط','Text size','Taille'])+'</span><span><button class="bk3-ib" data-bk="fm" aria-label="'+L(['تصغير','Smaller','Réduire'])+'">أ−</button><button class="bk3-ib" data-bk="fp" aria-label="'+L(['تكبير','Larger','Agrandir'])+'">أ+</button></span></div>'+
-      '<div class="bk3-row"><span>'+L(['الخلفية','Background','Fond'])+'</span><span>'+tb('paper',L(['ورقي','Paper','Papier']))+tb('sepia',L(['سيبيا','Sepia','Sépia']))+tb('night',L(['ليلي','Night','Nuit']))+'</span></div>'+
+      '<div class="bk3-row"><span>'+L(['الخلفية','Background','Fond'])+'</span><span>'+tb('emerald',L(['أخضر','Green','Vert']))+tb('paper',L(['ورقي','Paper','Papier']))+tb('night',L(['ليلي','Night','Nuit']))+'</span></div>'+
       '<div class="bk3-row"><span>'+L(['وضع التركيز (إخفاء الأدوات)','Focus mode (hide tools)','Mode concentration'])+'</span><button class="bk3-th" data-bk="focus">'+L(['تفعيل','On','Activer'])+'</button></div>'+
       '<p>'+L(['اضغط على آية لتظليلها. تُضاف حسنات الصفحة تلقائيًا عند الانتقال إلى التالية بعد قراءتها، دون أي تنبيه. تقسيم الصفحات تقريبي وليس كمصحف المدينة.','Tap a verse to highlight it. Hasanat for a page are added automatically when you move on after reading it, with no alert. Page division is approximate, not the Madinah mushaf.','Touchez un verset pour le surligner. Les hasanat d’une page sont ajoutées automatiquement quand vous passez à la suivante, sans alerte. Découpage approximatif, pas celui du mushaf de Médine.'])+'</p></div></div>'+
       '<div id="bkpick" class="bk-pick" hidden></div>'+
-      '<div class="bk3-scroll"><div class="bk3-rh"><span>'+esc(T(Q.ch[first[0]-1][0]))+'</span><span>'+L(['الجزء ','Juz ','Juz '])+N(juz)+'</span></div>'+
-      '<div class="bk-pg bk3-txt bk3-'+dir+'" style="font-size:'+fs()+'rem">'+h+'</div><div class="bk3-pn"><span>'+N(p+1)+'</span></div></div>'+
-      '<div class="bk3-dock"><button class="bk-nx" data-bk="prev" '+(p===0?'disabled':'')+' aria-label="'+L(['الصفحة السابقة','Previous page','Page précédente'])+'">›</button>'+
-      '<div class="bk3-mid"><small>'+L(['صفحة ','Page ','Page '])+N(p+1)+' / '+N(PG.length)+' · '+L(['الجزء ','Juz ','Juz '])+N(juz)+'</small>'+
-      '<input id="bksl" class="bk-sl" type="range" min="1" max="'+PG.length+'" value="'+(p+1)+'" aria-label="'+L(['اختر الصفحة','Choose page','Choisir la page'])+'" style="direction:rtl"></div>'+
-      '<button class="bk-nx" data-bk="next" '+(p>=PG.length-1?'disabled':'')+' aria-label="'+L(['الصفحة التالية','Next page','Page suivante'])+'">‹</button></div>'+
-      '<div class="bk3-prog" aria-hidden="true"><i style="width:'+((p+1)/PG.length*100).toFixed(1)+'%"></i></div></section>';
+      '<div class="bk3-scroll"><div class="bk3-rh"><span>'+esc(T(Q.ch[first[0]-1][0]))+'</span><span>'+L(['الجزء ','Juz ','Juz '])+N(juz)+' · '+L(['صفحة ','Page ','Page '])+N(p+1)+' / '+N(PG.length)+'</span></div>'+
+      '<div class="bk-pg bk3-txt bk3-'+dir+'" style="font-size:'+fs()+'rem">'+h+'</div><div class="bk3-pn"><button class="bk3-pg" data-bk="prev" '+(p===0?'disabled':'')+'>› '+L(['السابقة','Previous','Précédente'])+'</button><span>'+N(p+1)+'</span><button class="bk3-pg" data-bk="next" '+(p>=PG.length-1?'disabled':'')+'>'+L(['التالية','Next','Suivante'])+' ‹</button></div></div>'+
+      '</section>';
     window.scrollTo(0,0);
   }
   window.bkShow=function(p){count(CUR);show(p)};window.bkPG=function(){return build()};window.bkCur=function(){return CUR};
