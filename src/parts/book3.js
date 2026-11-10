@@ -14,7 +14,7 @@
     if(tab==='sur'){
       h+='<div class="bkp-list">';
       for(let s=1;s<=114;s++){const p=I.first[s]||0;
-        h+='<button class="bkp-row" data-bkp="'+p+'"><i>'+N(s)+'</i><span><b>'+esc(T(Q.ch[s-1][0]))+'</b><small>'+esc(g(['صفحة ','Page ','Page ']))+N(p+1)+' · '+esc(g(['الجزء ','Juz ','Juz ']))+N(I.juz(p))+' · '+N(Q.v[s-1].length)+' '+esc(g(['آية','verses','versets']))+'</small></span><em aria-hidden="true">‹</em></button>'}
+        h+='<button class="bkp-row" data-bkp="'+p+'"><i>'+N(s)+'</i><span><b>'+esc(T(Q.ch[s-1][0]))+'</b><small>'+esc(g(['صفحة ','Page ','Page ']))+N(p+1)+' · '+esc(g(['الجزء ','Juz ','Juz ']))+N(I.juz(p))+' · '+esc(Q.ch[s-1][1]==='م'?g(['مكية','Meccan','Mecquoise']):g(['مدنية','Medinan','Médinoise']))+' · '+N(Q.v[s-1].length)+' '+esc(g(['آية','verses','versets']))+'</small></span><em aria-hidden="true">‹</em></button>'}
       h+='</div>';
     }else if(tab==='juz'){
       h+='<div class="bkp-juz">';

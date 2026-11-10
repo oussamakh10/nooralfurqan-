@@ -1343,3 +1343,36 @@ section.unit .uh .un small{font:700 .62rem var(--display);opacity:.85}
 .bkp-jt.on{border-color:#e6c473;background:rgba(230,196,115,.15)}
 .bkp-pgbox{display:grid;gap:8px}.bkp-pgbox label{font-weight:700;font-size:.85rem}
 .bkp-pgbox input{font-size:1.4rem;text-align:center}
+
+/* ===== قائمة السور (صفوف) ===== */
+#rlist.slist{grid-template-columns:1fr!important;gap:10px!important}
+#rlist .srow{position:relative;display:flex!important;align-items:center;justify-items:unset;text-align:start!important;gap:14px!important;min-height:72px;padding:10px 14px 14px!important;border-radius:22px!important;overflow:hidden}
+#rlist .srow .num{flex:none;width:52px;height:52px;font-size:1rem;background:linear-gradient(160deg,#1d7a69,#0e3f37);box-shadow:0 0 0 2px #e6c473 inset}
+#rlist .srow>span:nth-child(2){flex:1;text-align:start}
+#rlist .srow b{font:700 1.4rem/1.4 var(--quran);color:#0e3f37}
+#rlist .srow small{font-size:.78rem;opacity:.8}
+.r4-end{flex:none;font-style:normal;min-width:34px;text-align:center;padding:2px 8px;border-radius:999px;font:800 .75rem system-ui,sans-serif}
+.r4-end.mk{background:rgba(184,137,42,.18);color:#7d5a12}.r4-end.md{background:rgba(29,122,105,.16);color:#14574a}
+.r4-bar{position:absolute;inset-inline:14px;bottom:5px;height:4px;border-radius:4px;background:rgba(0,0,0,.08)}
+.r4-bar u{display:block;height:100%;border-radius:4px;background:#2f9e6a}
+#rlist .srow.r4-done{border-color:#2f9e6a!important}
+#rlist .srow.fin::after{display:none}
+/* ===== القراءة بالصفحات: ورقة مصحف ===== */
+.bk-top{background:transparent!important;box-shadow:none!important;color:#14574a!important;padding:2px!important}
+.bk-ib{background:var(--surface)!important;border:1.5px solid #b8892a!important;color:#14574a!important}
+.bk-title b{font:700 1.7rem/1.3 var(--quran)!important}
+.bk-title small{display:inline-block;margin:2px auto 0;padding:1px 12px;border-radius:999px;background:rgba(184,137,42,.16);color:#7d5a12;opacity:1!important;font-weight:700}
+.bk-sheet{background:none!important;padding:0 8px 0 0!important;box-shadow:none!important}
+.bk-pg{position:relative;background:linear-gradient(90deg,rgba(184,137,42,.10),transparent 12%,transparent 88%,rgba(184,137,42,.10)),#fcf6e4!important;border:3px double #a87a1c!important;border-radius:4px!important;outline:1px solid rgba(168,122,28,.55)!important;outline-offset:-9px!important;padding:16px 20px 10px!important;line-height:2.55!important;box-shadow:3px 0 0 -1px #efe3bd,6px 0 0 -2px #d9c68f,9px 0 0 -3px #c8b27a,0 14px 26px rgba(0,0,0,.25)!important;animation:bkin .3s ease}
+@keyframes bkin{from{opacity:0;transform:translateX(-22px)}to{opacity:1;transform:none}}
+.bk-pg::before,.bk-pg::after{content:"❖";position:absolute;color:#a87a1c;font-size:1.1rem;line-height:1}
+.bk-pg::before{top:3px;inset-inline-start:5px}.bk-pg::after{top:3px;inset-inline-end:5px}
+.bk-hd{font:700 .85rem var(--quran)!important;padding:2px 6px 5px!important}
+.bk-sur{background:linear-gradient(180deg,#fff7dc,#f1dfa6)!important;color:#0e3f37!important;border:2px solid #a87a1c;border-radius:30px!important;margin:12px 4px!important;font:700 1.45rem var(--quran)!important;box-shadow:inset 0 0 0 3px #fcf6e4,inset 0 0 0 4px #a87a1c}
+.bk-sur i{color:#a87a1c;opacity:1}
+.bk-bsm{font-size:1.15em;color:#0e3f37;text-align:center}
+.bk-n{background:radial-gradient(circle,#fff7dc 55%,#ecd8a0);border:1.5px solid #a87a1c;color:#6b4c0c;font-size:.52em!important}
+.bk-ft span{border-radius:50%;background:#fff7dc;box-shadow:0 0 0 3px #fcf6e4,0 0 0 4px #a87a1c}
+.bk-bar{background:var(--surface)!important;border:1.5px solid #b8892a;box-shadow:0 8px 20px rgba(0,0,0,.22)!important}
+.bk-nx{background:#14574a!important;color:#f6e3a6!important}
+.bk-sl{accent-color:#14574a!important}
