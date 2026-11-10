@@ -3,9 +3,13 @@
   document.addEventListener('click',function(e){
     const root=document.querySelector('.bk3');if(!root)return;
     const pk=document.getElementById('bkpick'),st=document.getElementById('bkset');let closed=false;
-    if(pk&&!pk.hidden&&!e.target.closest('#bkpick,[data-bk=pick]')){pk.hidden=true;closed=true}
+    if(pk&&!pk.hidden&&!e.target.closest('#bkpick,[data-bk=pick],[data-bk=pickto]')){pk.hidden=true;closed=true}
     if(st&&!st.hidden&&!e.target.closest('#bkset,[data-bk=set]')){st.hidden=true;closed=true}
     if(closed)return;
+    const pt=e.target.closest('[data-bk=pickto]');
+    if(pt){if(pk){pk.hidden=false;if(st)st.hidden=true;if(window.bkTab)window.bkTab(pt.dataset.to)}return}
+    const fc=e.target.closest('[data-bk=focus]');
+    if(fc){root.classList.add('focus');if(st)st.hidden=true;return}
     const set=e.target.closest('[data-bk=set]');
     if(set){if(st)st.hidden=!st.hidden;if(pk)pk.hidden=true;return}
     const th=e.target.closest('[data-th]');
@@ -14,7 +18,10 @@
     if(e.target.closest('.bk3-scroll')&&!e.target.closest('button,input,select,a')){
       const x=e.clientX/window.innerWidth;
       const go=function(a){const b=root.querySelector('[data-bk='+a+']');if(b)b.click()};
-      if(x<.3)go('next');else if(x>.7)go('prev');else root.classList.toggle('on');
+      const va=e.target.closest('.bk3-a');
+      if(x<.22)go('next');else if(x>.78)go('prev');
+      else if(va)va.classList.toggle('hl');
+      else root.classList.toggle('focus');
     }
   });
   const _pr=pageRead;

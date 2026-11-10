@@ -19,33 +19,35 @@
     let sum=0;(PG[p]||[]).forEach(function(x){sum+=markRead(x[0],x[1],true)||0});return sum;
   }
   function show(p){
-    PG=build();p=Math.max(0,Math.min(PG.length-1,p));CUR=p;S.bkp=p;save();T0=Date.now();
+    PG=build();p=Math.max(0,Math.min(PG.length-1,p));const dir=p<CUR?'back':'fwd';CUR=p;S.bkp=p;save();T0=Date.now();
     const arr=PG[p];let h='',last=0;
     arr.forEach(function(x){
       const s=x[0],a=x[1];
-      if(a===1&&s!==last){h+='<div class="bk3-sur"><span>'+esc(T(Q.ch[s-1][0]))+'</span></div>';if(s!==1&&s!==9)h+='<div class="bk3-bsm">بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ</div>'}
+      if(a===1&&s!==last){const c=Q.ch[s-1];h+='<div class="bk3-sur"><i aria-hidden="true">✦</i><b>'+g3(['سورة ','Surah ','Sourate '])+esc(T(c[0]))+'</b><small>'+esc(c[1]==='م'?g3(['مكية','Meccan','Mecquoise']):g3(['مدنية','Medinan','Médinoise']))+' · '+N(c[2])+' '+g3(['آية','verses','versets'])+'</small></div>';if(s!==1&&s!==9)h+='<div class="bk3-bsm">بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ</div>'}
       last=s;
       h+='<span class="bk3-a">'+Q.v[s-1][a-1]+' <span class="bk3-n">'+N(a)+'</span></span> ';
     });
     const first=arr[0],juz=Math.min(30,Math.floor(p/PG.length*30)+1),L=function(a){return g3(a)};
     const th=S.bkth||'paper';
     const tb=function(k,l){return '<button class="bk3-th" data-th="'+k+'" aria-pressed="'+(th===k)+'">'+esc(l)+'</button>'};
-    $('#page').innerHTML='<section class="sec bk bk3 th-'+th+' on">'+
-      '<div class="bk3-ctl"><button class="bk-nx bk3-ib" data-bk="back" aria-label="'+L(['رجوع','Back','Retour'])+'">›</button>'+
-      '<button class="bk3-title" data-bk="pick" aria-expanded="false"><b>'+esc(T(Q.ch[first[0]-1][0]))+'</b><small>'+L(['الجزء ','Juz ','Juz '])+N(juz)+' · '+L(['صفحة ','Page ','Page '])+N(p+1)+' / '+N(PG.length)+' ▾</small></button>'+
-      '<button class="bk-nx bk3-ib" data-bk="set" aria-label="'+L(['المظهر والخط','Appearance','Apparence'])+'">Aa</button></div>'+
+    const chip=function(t,ic,l){return '<button class="bk3-chip" data-bk="pickto" data-to="'+t+'"><i aria-hidden="true">'+ic+'</i>'+esc(l)+'</button>'};
+    $('#page').innerHTML='<section class="sec bk bk3 th-'+th+'">'+
+      '<div class="bk3-head"><div class="bk3-ctl"><button class="bk3-ib" data-bk="back" aria-label="'+L(['رجوع','Back','Retour'])+'">›</button>'+
+      '<button class="bk3-title" data-bk="pickto" data-to="sur"><b>'+esc(T(Q.ch[first[0]-1][0]))+'</b><small>'+L(['اضغط لتغيير السورة','Tap to change surah','Touchez pour changer'])+' ▾</small></button>'+
+      '<button class="bk3-ib" data-bk="set" aria-label="'+L(['المظهر والخط','Appearance','Apparence'])+'">Aa</button></div>'+
+      '<div class="bk3-chips">'+chip('sur','☰',L(['السور','Surahs','Sourates']))+chip('juz','◐',L(['الأجزاء','Juz','Juz']))+chip('pg','#',L(['رقم الصفحة','Page no.','N° de page']))+'</div>'+
       '<div id="bkset" class="bk3-set" hidden><div class="bk3-row"><span>'+L(['حجم الخط','Text size','Taille'])+'</span><span><button class="bk3-ib" data-bk="fm" aria-label="'+L(['تصغير','Smaller','Réduire'])+'">أ−</button><button class="bk3-ib" data-bk="fp" aria-label="'+L(['تكبير','Larger','Agrandir'])+'">أ+</button></span></div>'+
       '<div class="bk3-row"><span>'+L(['الخلفية','Background','Fond'])+'</span><span>'+tb('paper',L(['ورقي','Paper','Papier']))+tb('sepia',L(['سيبيا','Sepia','Sépia']))+tb('night',L(['ليلي','Night','Nuit']))+'</span></div>'+
-      '<p>'+L(['تُضاف حسنات الصفحة تلقائيًا عند الانتقال إلى التالية بعد قراءتها، دون أي تنبيه. تقسيم الصفحات تقريبي وليس كمصحف المدينة.','Hasanat for a page are added automatically when you move on after reading it, with no alert. Page division is approximate, not the Madinah mushaf.','Les hasanat d’une page sont ajoutées automatiquement quand vous passez à la suivante après l’avoir lue, sans alerte. Découpage approximatif, pas celui du mushaf de Médine.'])+'</p></div>'+
+      '<div class="bk3-row"><span>'+L(['وضع التركيز (إخفاء الأدوات)','Focus mode (hide tools)','Mode concentration'])+'</span><button class="bk3-th" data-bk="focus">'+L(['تفعيل','On','Activer'])+'</button></div>'+
+      '<p>'+L(['اضغط على آية لتظليلها. تُضاف حسنات الصفحة تلقائيًا عند الانتقال إلى التالية بعد قراءتها، دون أي تنبيه. تقسيم الصفحات تقريبي وليس كمصحف المدينة.','Tap a verse to highlight it. Hasanat for a page are added automatically when you move on after reading it, with no alert. Page division is approximate, not the Madinah mushaf.','Touchez un verset pour le surligner. Les hasanat d’une page sont ajoutées automatiquement quand vous passez à la suivante, sans alerte. Découpage approximatif, pas celui du mushaf de Médine.'])+'</p></div></div>'+
       '<div id="bkpick" class="bk-pick" hidden></div>'+
       '<div class="bk3-scroll"><div class="bk3-rh"><span>'+esc(T(Q.ch[first[0]-1][0]))+'</span><span>'+L(['الجزء ','Juz ','Juz '])+N(juz)+'</span></div>'+
-      '<div class="bk-pg bk3-txt" style="font-size:'+fs()+'rem">'+h+'</div><div class="bk3-pn">'+N(p+1)+'</div></div>'+
+      '<div class="bk-pg bk3-txt bk3-'+dir+'" style="font-size:'+fs()+'rem">'+h+'</div><div class="bk3-pn"><span>'+N(p+1)+'</span></div></div>'+
       '<div class="bk3-dock"><button class="bk-nx" data-bk="prev" '+(p===0?'disabled':'')+' aria-label="'+L(['الصفحة السابقة','Previous page','Page précédente'])+'">›</button>'+
-      '<input id="bksl" class="bk-sl" type="range" min="1" max="'+PG.length+'" value="'+(p+1)+'" aria-label="'+L(['اختر الصفحة','Choose page','Choisir la page'])+'" style="direction:rtl">'+
+      '<div class="bk3-mid"><small>'+L(['صفحة ','Page ','Page '])+N(p+1)+' / '+N(PG.length)+' · '+L(['الجزء ','Juz ','Juz '])+N(juz)+'</small>'+
+      '<input id="bksl" class="bk-sl" type="range" min="1" max="'+PG.length+'" value="'+(p+1)+'" aria-label="'+L(['اختر الصفحة','Choose page','Choisir la page'])+'" style="direction:rtl"></div>'+
       '<button class="bk-nx" data-bk="next" '+(p>=PG.length-1?'disabled':'')+' aria-label="'+L(['الصفحة التالية','Next page','Page suivante'])+'">‹</button></div>'+
       '<div class="bk3-prog" aria-hidden="true"><i style="width:'+((p+1)/PG.length*100).toFixed(1)+'%"></i></div></section>';
-    const root=document.querySelector('.bk3');
-    setTimeout(function(){if(root&&root.isConnected)root.classList.remove('on')},2600);
     window.scrollTo(0,0);
   }
   window.bkShow=function(p){count(CUR);show(p)};window.bkPG=function(){return build()};window.bkCur=function(){return CUR};

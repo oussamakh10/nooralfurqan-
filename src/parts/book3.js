@@ -1,5 +1,5 @@
 (function(){
-  let tab='sur';
+  let tab='sur';window.bkTab=function(t){tab=t;render()};
   function info(){
     const P=window.bkPG(),L=P.length,first={};
     P.forEach(function(pg,i){pg.forEach(function(x){if(x[1]===1&&first[x[0]]==null)first[x[0]]=i})});

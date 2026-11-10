@@ -1447,3 +1447,44 @@ body:has(.bk3) #top,body:has(.bk3) .topwrap,body:has(.bk3) #nav{display:none!imp
 
 .bk3 .bk-pick .btn{background:none!important;color:var(--fg)!important;border:1px solid var(--line)!important;box-shadow:none!important}
 .bk3 .bk-pick .btn.gold{background:var(--acc)!important;color:var(--bg)!important;border-color:var(--acc)!important}
+
+/* ===== القارئ الصامت v3: أشرطة ثابتة، ألوان حية ===== */
+.bk3{--bar:#1f6b5a;--barfg:#f3f7f4;--tint:rgba(47,111,94,.11)}
+.bk3.th-sepia{--bar:#4f5d27;--barfg:#f6f0dc;--tint:rgba(86,102,42,.14)}
+.bk3.th-night{--bar:#18223f;--barfg:#e8e3d3;--tint:rgba(143,195,176,.11)}
+.bk3-head{position:relative;flex:none;background:var(--bar);color:var(--barfg);border-radius:0 0 26px 26px;box-shadow:0 8px 22px rgba(0,0,0,.2);z-index:4}
+.bk3 .bk3-ctl{position:static;transform:none;background:none;display:flex;align-items:center;gap:8px;padding:max(10px,env(safe-area-inset-top,0px)) 12px 6px}
+.bk3 .bk3-ib{background:rgba(255,255,255,.14);border:0;color:var(--barfg);min-width:44px;min-height:44px;border-radius:14px;font:700 1.1rem system-ui,sans-serif}
+.bk3 .bk3-title{flex:1;display:grid;justify-items:center;gap:0;border:0;background:rgba(255,255,255,.12);border-radius:16px;padding:4px 10px;color:var(--barfg);min-height:52px}
+.bk3 .bk3-title b{font:700 1.65rem/1.35 var(--quran)}
+.bk3 .bk3-title small{color:var(--barfg);opacity:.85;font-size:.72rem;font-weight:700}
+.bk3-chips{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;padding:4px 12px 14px}
+.bk3-chip{display:flex;align-items:center;justify-content:center;gap:6px;min-height:40px;border:1.5px solid rgba(255,255,255,.35);border-radius:999px;background:none;color:var(--barfg);font:700 .82rem inherit;cursor:pointer;transition:transform .12s,background .12s}
+.bk3-chip i{font-style:normal;opacity:.85}
+.bk3-chip:active,.bk3 .bk3-ib:active,.bk3 .bk-nx:active{transform:scale(.94);background:rgba(255,255,255,.25)}
+.bk3 .bk3-set{position:absolute;top:calc(100% + 8px);inset-inline:12px;margin-inline:auto;background:var(--bg);color:var(--fg)}
+.bk3 .bk3-set .bk3-ib{background:var(--tint);color:var(--fg)}
+.bk3.focus .bk3-head,.bk3.focus .bk3-dock{display:none}
+.bk3-scroll{padding:12px 20px 18px!important}
+.bk3-rh{display:none}
+.bk3 .bk-pg{line-height:2.2!important;text-align:justify;text-align-last:start}
+.bk3-fwd{animation:bk3f .32s cubic-bezier(.2,.8,.2,1)!important}
+.bk3-back{animation:bk3b .32s cubic-bezier(.2,.8,.2,1)!important}
+@keyframes bk3f{from{opacity:0;transform:translateX(-26px)}to{opacity:1;transform:none}}
+@keyframes bk3b{from{opacity:0;transform:translateX(26px)}to{opacity:1;transform:none}}
+.bk3-sur{display:grid;justify-items:center;gap:0;margin:6px 0 10px;padding:10px 12px;border:1.5px solid var(--acc);border-radius:20px;background:var(--tint);position:relative;font:inherit}
+.bk3-sur::before,.bk3-sur::after{content:none}
+.bk3-sur b{font:700 1.9rem/1.4 var(--quran);color:var(--acc)}
+.bk3-sur small{font:600 .78rem system-ui,sans-serif;color:var(--mut)}
+.bk3-sur i{position:absolute;inset-inline-start:14px;top:10px;font-style:normal;color:var(--acc);opacity:.6}
+.bk3-bsm{margin:0 0 6px}
+.bk3-n{background:var(--acc);color:var(--bg);border:0;font-weight:700}
+.bk3-a{border-radius:8px;-webkit-box-decoration-break:clone;box-decoration-break:clone;transition:background .2s}
+.bk3-a.hl{background:color-mix(in srgb,var(--acc) 20%,transparent)}
+.bk3-pn{display:grid;place-items:center;margin-top:14px}
+.bk3-pn span{min-width:44px;padding:4px 14px;text-align:center;border-radius:999px;background:var(--tint);color:var(--acc);font:800 .9rem system-ui,sans-serif}
+.bk3 .bk3-dock{position:static;transform:none;flex:none;margin:0 12px max(12px,env(safe-area-inset-bottom,0px));background:var(--bg);border:1.5px solid var(--acc);box-shadow:0 8px 22px rgba(0,0,0,.18)}
+.bk3-mid{display:grid;gap:0;min-width:0;text-align:center}
+.bk3-mid small{font:700 .74rem system-ui,sans-serif;color:var(--mut)}
+.bk3 .bk-nx{background:var(--bar);color:var(--barfg);transition:transform .12s}
+.bk3-prog{position:static;flex:none}

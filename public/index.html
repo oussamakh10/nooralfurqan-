@@ -1725,6 +1725,46 @@ body:has(.bk3) #top,body:has(.bk3) .topwrap,body:has(.bk3) #nav{display:none!imp
 #page .r5 .rd-cont{background-image:none!important}
 .bk3 .bk-pick .btn{background:none!important;color:var(--fg)!important;border:1px solid var(--line)!important;box-shadow:none!important}
 .bk3 .bk-pick .btn.gold{background:var(--acc)!important;color:var(--bg)!important;border-color:var(--acc)!important}
+/* ===== القارئ الصامت v3: أشرطة ثابتة، ألوان حية ===== */
+.bk3{--bar:#1f6b5a;--barfg:#f3f7f4;--tint:rgba(47,111,94,.11)}
+.bk3.th-sepia{--bar:#4f5d27;--barfg:#f6f0dc;--tint:rgba(86,102,42,.14)}
+.bk3.th-night{--bar:#18223f;--barfg:#e8e3d3;--tint:rgba(143,195,176,.11)}
+.bk3-head{position:relative;flex:none;background:var(--bar);color:var(--barfg);border-radius:0 0 26px 26px;box-shadow:0 8px 22px rgba(0,0,0,.2);z-index:4}
+.bk3 .bk3-ctl{position:static;transform:none;background:none;display:flex;align-items:center;gap:8px;padding:max(10px,env(safe-area-inset-top,0px)) 12px 6px}
+.bk3 .bk3-ib{background:rgba(255,255,255,.14);border:0;color:var(--barfg);min-width:44px;min-height:44px;border-radius:14px;font:700 1.1rem system-ui,sans-serif}
+.bk3 .bk3-title{flex:1;display:grid;justify-items:center;gap:0;border:0;background:rgba(255,255,255,.12);border-radius:16px;padding:4px 10px;color:var(--barfg);min-height:52px}
+.bk3 .bk3-title b{font:700 1.65rem/1.35 var(--quran)}
+.bk3 .bk3-title small{color:var(--barfg);opacity:.85;font-size:.72rem;font-weight:700}
+.bk3-chips{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;padding:4px 12px 14px}
+.bk3-chip{display:flex;align-items:center;justify-content:center;gap:6px;min-height:40px;border:1.5px solid rgba(255,255,255,.35);border-radius:999px;background:none;color:var(--barfg);font:700 .82rem inherit;cursor:pointer;transition:transform .12s,background .12s}
+.bk3-chip i{font-style:normal;opacity:.85}
+.bk3-chip:active,.bk3 .bk3-ib:active,.bk3 .bk-nx:active{transform:scale(.94);background:rgba(255,255,255,.25)}
+.bk3 .bk3-set{position:absolute;top:calc(100% + 8px);inset-inline:12px;margin-inline:auto;background:var(--bg);color:var(--fg)}
+.bk3 .bk3-set .bk3-ib{background:var(--tint);color:var(--fg)}
+.bk3.focus .bk3-head,.bk3.focus .bk3-dock{display:none}
+.bk3-scroll{padding:12px 20px 18px!important}
+.bk3-rh{display:none}
+.bk3 .bk-pg{line-height:2.2!important;text-align:justify;text-align-last:start}
+.bk3-fwd{animation:bk3f .32s cubic-bezier(.2,.8,.2,1)!important}
+.bk3-back{animation:bk3b .32s cubic-bezier(.2,.8,.2,1)!important}
+@keyframes bk3f{from{opacity:0;transform:translateX(-26px)}to{opacity:1;transform:none}}
+@keyframes bk3b{from{opacity:0;transform:translateX(26px)}to{opacity:1;transform:none}}
+.bk3-sur{display:grid;justify-items:center;gap:0;margin:6px 0 10px;padding:10px 12px;border:1.5px solid var(--acc);border-radius:20px;background:var(--tint);position:relative;font:inherit}
+.bk3-sur::before,.bk3-sur::after{content:none}
+.bk3-sur b{font:700 1.9rem/1.4 var(--quran);color:var(--acc)}
+.bk3-sur small{font:600 .78rem system-ui,sans-serif;color:var(--mut)}
+.bk3-sur i{position:absolute;inset-inline-start:14px;top:10px;font-style:normal;color:var(--acc);opacity:.6}
+.bk3-bsm{margin:0 0 6px}
+.bk3-n{background:var(--acc);color:var(--bg);border:0;font-weight:700}
+.bk3-a{border-radius:8px;-webkit-box-decoration-break:clone;box-decoration-break:clone;transition:background .2s}
+.bk3-a.hl{background:color-mix(in srgb,var(--acc) 20%,transparent)}
+.bk3-pn{display:grid;place-items:center;margin-top:14px}
+.bk3-pn span{min-width:44px;padding:4px 14px;text-align:center;border-radius:999px;background:var(--tint);color:var(--acc);font:800 .9rem system-ui,sans-serif}
+.bk3 .bk3-dock{position:static;transform:none;flex:none;margin:0 12px max(12px,env(safe-area-inset-bottom,0px));background:var(--bg);border:1.5px solid var(--acc);box-shadow:0 8px 22px rgba(0,0,0,.18)}
+.bk3-mid{display:grid;gap:0;min-width:0;text-align:center}
+.bk3-mid small{font:700 .74rem system-ui,sans-serif;color:var(--mut)}
+.bk3 .bk-nx{background:var(--bar);color:var(--barfg);transition:transform .12s}
+.bk3-prog{position:static;flex:none}
 </style>
 <div class="bgpat" id="bg"></div>
 <header class="top" id="top"></header>
@@ -11015,33 +11055,35 @@ KNOW.unshift.apply(KNOW,K.map(function(x){return {q:x[0],a:x[1],s:'نور الف
     let sum=0;(PG[p]||[]).forEach(function(x){sum+=markRead(x[0],x[1],true)||0});return sum;
   }
   function show(p){
-    PG=build();p=Math.max(0,Math.min(PG.length-1,p));CUR=p;S.bkp=p;save();T0=Date.now();
+    PG=build();p=Math.max(0,Math.min(PG.length-1,p));const dir=p<CUR?'back':'fwd';CUR=p;S.bkp=p;save();T0=Date.now();
     const arr=PG[p];let h='',last=0;
     arr.forEach(function(x){
       const s=x[0],a=x[1];
-      if(a===1&&s!==last){h+='<div class="bk3-sur"><span>'+esc(T(Q.ch[s-1][0]))+'</span></div>';if(s!==1&&s!==9)h+='<div class="bk3-bsm">بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ</div>'}
+      if(a===1&&s!==last){const c=Q.ch[s-1];h+='<div class="bk3-sur"><i aria-hidden="true">✦</i><b>'+g3(['سورة ','Surah ','Sourate '])+esc(T(c[0]))+'</b><small>'+esc(c[1]==='م'?g3(['مكية','Meccan','Mecquoise']):g3(['مدنية','Medinan','Médinoise']))+' · '+N(c[2])+' '+g3(['آية','verses','versets'])+'</small></div>';if(s!==1&&s!==9)h+='<div class="bk3-bsm">بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ</div>'}
       last=s;
       h+='<span class="bk3-a">'+Q.v[s-1][a-1]+' <span class="bk3-n">'+N(a)+'</span></span> ';
     });
     const first=arr[0],juz=Math.min(30,Math.floor(p/PG.length*30)+1),L=function(a){return g3(a)};
     const th=S.bkth||'paper';
     const tb=function(k,l){return '<button class="bk3-th" data-th="'+k+'" aria-pressed="'+(th===k)+'">'+esc(l)+'</button>'};
-    $('#page').innerHTML='<section class="sec bk bk3 th-'+th+' on">'+
-      '<div class="bk3-ctl"><button class="bk-nx bk3-ib" data-bk="back" aria-label="'+L(['رجوع','Back','Retour'])+'">›</button>'+
-      '<button class="bk3-title" data-bk="pick" aria-expanded="false"><b>'+esc(T(Q.ch[first[0]-1][0]))+'</b><small>'+L(['الجزء ','Juz ','Juz '])+N(juz)+' · '+L(['صفحة ','Page ','Page '])+N(p+1)+' / '+N(PG.length)+' ▾</small></button>'+
-      '<button class="bk-nx bk3-ib" data-bk="set" aria-label="'+L(['المظهر والخط','Appearance','Apparence'])+'">Aa</button></div>'+
+    const chip=function(t,ic,l){return '<button class="bk3-chip" data-bk="pickto" data-to="'+t+'"><i aria-hidden="true">'+ic+'</i>'+esc(l)+'</button>'};
+    $('#page').innerHTML='<section class="sec bk bk3 th-'+th+'">'+
+      '<div class="bk3-head"><div class="bk3-ctl"><button class="bk3-ib" data-bk="back" aria-label="'+L(['رجوع','Back','Retour'])+'">›</button>'+
+      '<button class="bk3-title" data-bk="pickto" data-to="sur"><b>'+esc(T(Q.ch[first[0]-1][0]))+'</b><small>'+L(['اضغط لتغيير السورة','Tap to change surah','Touchez pour changer'])+' ▾</small></button>'+
+      '<button class="bk3-ib" data-bk="set" aria-label="'+L(['المظهر والخط','Appearance','Apparence'])+'">Aa</button></div>'+
+      '<div class="bk3-chips">'+chip('sur','☰',L(['السور','Surahs','Sourates']))+chip('juz','◐',L(['الأجزاء','Juz','Juz']))+chip('pg','#',L(['رقم الصفحة','Page no.','N° de page']))+'</div>'+
       '<div id="bkset" class="bk3-set" hidden><div class="bk3-row"><span>'+L(['حجم الخط','Text size','Taille'])+'</span><span><button class="bk3-ib" data-bk="fm" aria-label="'+L(['تصغير','Smaller','Réduire'])+'">أ−</button><button class="bk3-ib" data-bk="fp" aria-label="'+L(['تكبير','Larger','Agrandir'])+'">أ+</button></span></div>'+
       '<div class="bk3-row"><span>'+L(['الخلفية','Background','Fond'])+'</span><span>'+tb('paper',L(['ورقي','Paper','Papier']))+tb('sepia',L(['سيبيا','Sepia','Sépia']))+tb('night',L(['ليلي','Night','Nuit']))+'</span></div>'+
-      '<p>'+L(['تُضاف حسنات الصفحة تلقائيًا عند الانتقال إلى التالية بعد قراءتها، دون أي تنبيه. تقسيم الصفحات تقريبي وليس كمصحف المدينة.','Hasanat for a page are added automatically when you move on after reading it, with no alert. Page division is approximate, not the Madinah mushaf.','Les hasanat d’une page sont ajoutées automatiquement quand vous passez à la suivante après l’avoir lue, sans alerte. Découpage approximatif, pas celui du mushaf de Médine.'])+'</p></div>'+
+      '<div class="bk3-row"><span>'+L(['وضع التركيز (إخفاء الأدوات)','Focus mode (hide tools)','Mode concentration'])+'</span><button class="bk3-th" data-bk="focus">'+L(['تفعيل','On','Activer'])+'</button></div>'+
+      '<p>'+L(['اضغط على آية لتظليلها. تُضاف حسنات الصفحة تلقائيًا عند الانتقال إلى التالية بعد قراءتها، دون أي تنبيه. تقسيم الصفحات تقريبي وليس كمصحف المدينة.','Tap a verse to highlight it. Hasanat for a page are added automatically when you move on after reading it, with no alert. Page division is approximate, not the Madinah mushaf.','Touchez un verset pour le surligner. Les hasanat d’une page sont ajoutées automatiquement quand vous passez à la suivante, sans alerte. Découpage approximatif, pas celui du mushaf de Médine.'])+'</p></div></div>'+
       '<div id="bkpick" class="bk-pick" hidden></div>'+
       '<div class="bk3-scroll"><div class="bk3-rh"><span>'+esc(T(Q.ch[first[0]-1][0]))+'</span><span>'+L(['الجزء ','Juz ','Juz '])+N(juz)+'</span></div>'+
-      '<div class="bk-pg bk3-txt" style="font-size:'+fs()+'rem">'+h+'</div><div class="bk3-pn">'+N(p+1)+'</div></div>'+
+      '<div class="bk-pg bk3-txt bk3-'+dir+'" style="font-size:'+fs()+'rem">'+h+'</div><div class="bk3-pn"><span>'+N(p+1)+'</span></div></div>'+
       '<div class="bk3-dock"><button class="bk-nx" data-bk="prev" '+(p===0?'disabled':'')+' aria-label="'+L(['الصفحة السابقة','Previous page','Page précédente'])+'">›</button>'+
-      '<input id="bksl" class="bk-sl" type="range" min="1" max="'+PG.length+'" value="'+(p+1)+'" aria-label="'+L(['اختر الصفحة','Choose page','Choisir la page'])+'" style="direction:rtl">'+
+      '<div class="bk3-mid"><small>'+L(['صفحة ','Page ','Page '])+N(p+1)+' / '+N(PG.length)+' · '+L(['الجزء ','Juz ','Juz '])+N(juz)+'</small>'+
+      '<input id="bksl" class="bk-sl" type="range" min="1" max="'+PG.length+'" value="'+(p+1)+'" aria-label="'+L(['اختر الصفحة','Choose page','Choisir la page'])+'" style="direction:rtl"></div>'+
       '<button class="bk-nx" data-bk="next" '+(p>=PG.length-1?'disabled':'')+' aria-label="'+L(['الصفحة التالية','Next page','Page suivante'])+'">‹</button></div>'+
       '<div class="bk3-prog" aria-hidden="true"><i style="width:'+((p+1)/PG.length*100).toFixed(1)+'%"></i></div></section>';
-    const root=document.querySelector('.bk3');
-    setTimeout(function(){if(root&&root.isConnected)root.classList.remove('on')},2600);
     window.scrollTo(0,0);
   }
   window.bkShow=function(p){count(CUR);show(p)};window.bkPG=function(){return build()};window.bkCur=function(){return CUR};
@@ -11251,7 +11293,7 @@ KNOW.unshift.apply(KNOW,K.map(function(x){return {q:x[0],a:x[1],s:'نور الف
 })();
 
 (function(){
-  let tab='sur';
+  let tab='sur';window.bkTab=function(t){tab=t;render()};
   function info(){
     const P=window.bkPG(),L=P.length,first={};
     P.forEach(function(pg,i){pg.forEach(function(x){if(x[1]===1&&first[x[0]]==null)first[x[0]]=i})});
@@ -11313,9 +11355,13 @@ KNOW.unshift.apply(KNOW,K.map(function(x){return {q:x[0],a:x[1],s:'نور الف
   document.addEventListener('click',function(e){
     const root=document.querySelector('.bk3');if(!root)return;
     const pk=document.getElementById('bkpick'),st=document.getElementById('bkset');let closed=false;
-    if(pk&&!pk.hidden&&!e.target.closest('#bkpick,[data-bk=pick]')){pk.hidden=true;closed=true}
+    if(pk&&!pk.hidden&&!e.target.closest('#bkpick,[data-bk=pick],[data-bk=pickto]')){pk.hidden=true;closed=true}
     if(st&&!st.hidden&&!e.target.closest('#bkset,[data-bk=set]')){st.hidden=true;closed=true}
     if(closed)return;
+    const pt=e.target.closest('[data-bk=pickto]');
+    if(pt){if(pk){pk.hidden=false;if(st)st.hidden=true;if(window.bkTab)window.bkTab(pt.dataset.to)}return}
+    const fc=e.target.closest('[data-bk=focus]');
+    if(fc){root.classList.add('focus');if(st)st.hidden=true;return}
     const set=e.target.closest('[data-bk=set]');
     if(set){if(st)st.hidden=!st.hidden;if(pk)pk.hidden=true;return}
     const th=e.target.closest('[data-th]');
@@ -11324,7 +11370,10 @@ KNOW.unshift.apply(KNOW,K.map(function(x){return {q:x[0],a:x[1],s:'نور الف
     if(e.target.closest('.bk3-scroll')&&!e.target.closest('button,input,select,a')){
       const x=e.clientX/window.innerWidth;
       const go=function(a){const b=root.querySelector('[data-bk='+a+']');if(b)b.click()};
-      if(x<.3)go('next');else if(x>.7)go('prev');else root.classList.toggle('on');
+      const va=e.target.closest('.bk3-a');
+      if(x<.22)go('next');else if(x>.78)go('prev');
+      else if(va)va.classList.toggle('hl');
+      else root.classList.toggle('focus');
     }
   });
   const _pr=pageRead;
