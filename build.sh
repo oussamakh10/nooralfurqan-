@@ -10,7 +10,7 @@ echo '<div class="bgpat" id="bg"></div>
 <div id="cele" hidden dir="rtl" lang="ar"></div>
 <div id="toast" hidden role="status"></div>
 <script>'
-for f in meta lessons lessons2 new_A new_B new_C new_D adv_1 adv_2 adv_3 adv pro_1 pro_2 pro_3 prq data hoopoe app1 i18n snd app2 app3 app5 app6 guide extra safe fb pro school_t1 school_t2 school_t3 school app4 school2 bac_data bac ui2 ui3 qtypes ask ask2 install adv2 native polish polish2 polish3 splash store entry app9 follow shop ui5 duelp2p botduel minigames hearts features10 legal dua home2 read2 listen2 ach2 duelq games2 learn2 cert2 sch3 pray2 doc2 ask3 ask4 ask5 book adhan read3; do cat $P/$f.js; echo; done
+for f in meta lessons lessons2 new_A new_B new_C new_D adv_1 adv_2 adv_3 adv pro_1 pro_2 pro_3 prq data hoopoe app1 i18n snd app2 app3 app5 app6 guide extra safe fb pro school_t1 school_t2 school_t3 school app4 school2 bac_data bac ui2 ui3 qtypes ask ask2 install adv2 native polish polish2 polish3 splash store entry app9 follow shop ui5 duelp2p botduel minigames hearts features10 legal dua home2 read2 listen2 ach2 duelq games2 learn2 cert2 sch3 pray2 doc2 ask3 ask4 ask5 book adhan read3 book2; do cat $P/$f.js; echo; done
 echo '</script>'; } > hudhud.html
 # syntax check of the concatenated script
 python3 - <<'PY'

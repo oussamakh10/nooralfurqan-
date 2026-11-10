@@ -23,24 +23,31 @@
     const arr=PG[p];let h='',last=0;
     arr.forEach(function(x){
       const s=x[0],a=x[1];
-      if(a===1&&s!==last){h+='<div class="bk-sur">'+g3(['سورة ','Surah ','Sourate '])+T(Q.ch[s-1][0])+'</div>';if(s!==1&&s!==9)h+='<div class="bk-bsm">بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ</div>'}
+      if(a===1&&s!==last){h+='<div class="bk-sur"><i aria-hidden="true">✦</i>'+g3(['سورة ','Surah ','Sourate '])+T(Q.ch[s-1][0])+'<i aria-hidden="true">✦</i></div>';if(s!==1&&s!==9)h+='<div class="bk-bsm">بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ</div>'}
       last=s;
-      let t=Q.v[s-1][a-1];
-      if(a===1&&s===1)t=t;
-      h+='<span class="bk-a">'+t+' <span class="bk-n">﴿'+N(a)+'﴾</span></span> ';
+      h+='<span class="bk-a">'+Q.v[s-1][a-1]+' <span class="bk-n">'+N(a)+'</span></span> ';
     });
-    const first=arr[0],lastv=arr[arr.length-1];
-    $('#page').innerHTML='<section class="sec bk" style="margin-top:12px">'+
-      '<div class="rhead"><button class="iconbtn" data-bk="back" aria-label="رجوع"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></button>'+
-      '<h2>'+g3(['صفحة ','Page ','Page '])+N(p+1)+' <small class="muted">'+g3(['من ','of ','sur '])+N(PG.length)+'</small></h2>'+
-      '<span><button class="iconbtn" data-bk="fm" aria-label="تصغير الخط">أ−</button><button class="iconbtn" data-bk="fp" aria-label="تكبير الخط">أ+</button></span></div>'+
-      '<p class="muted" style="text-align:center;font-size:.85rem">'+Q.ch[first[0]-1][0]+' '+N(first[1])+' – '+(lastv[0]!==first[0]?Q.ch[lastv[0]-1][0]+' ':'')+N(lastv[1])+'</p>'+
-      '<div class="bk-pg" style="font-size:'+fs()+'rem">'+h+'</div>'+
-      '<div class="opts2" style="justify-content:space-between;margin-top:12px"><button class="btn ghost" data-bk="prev" '+(p===0?'disabled':'')+'>'+g3(['الصفحة السابقة','Previous page','Page précédente'])+'</button><button class="btn gold" data-bk="next" '+(p>=PG.length-1?'disabled':'')+'>'+g3(['الصفحة التالية','Next page','Page suivante'])+'</button></div>'+
-      '<div class="opts2" style="margin-top:10px;justify-content:center"><label class="muted" for="bkj">'+g3(['اذهب إلى صفحة','Go to page','Aller à la page'])+'</label><input id="bkj" type="number" min="1" max="'+PG.length+'" inputmode="numeric" style="width:90px"><button class="btn sm ghost" data-bk="go">'+g3(['اذهب','Go','Aller'])+'</button></div>'+
-      '<p class="fine" style="margin-top:10px">'+g3(['قراءة هادئة: تُضاف حسنات الصفحة تلقائيًا عند الانتقال إلى التالية بعد قراءتها، دون أي تنبيه. تقسيم الصفحات تقريبي وليس كمصحف المدينة.','Calm reading: the page’s hasanat are added automatically when you move on after reading it, with no alert. Page division is approximate, not the Madinah mushaf.','Lecture calme : les hasanat de la page sont ajoutées automatiquement quand vous passez à la suivante après l’avoir lue, sans alerte. Découpage approximatif, pas celui du mushaf de Médine.'])+'</p></section>';
+    const first=arr[0],lastv=arr[arr.length-1],juz=Math.min(30,Math.floor(p/PG.length*30)+1);
+    const lbl=function(a){return g3(a)};
+    let opts='';for(let i=1;i<=114;i++)opts+='<option value="'+i+'"'+(i===first[0]?' selected':'')+'>'+N(i)+' · '+esc(T(Q.ch[i-1][0]))+'</option>';
+    let jo='';for(let j=1;j<=30;j++)jo+='<option value="'+j+'"'+(j===juz?' selected':'')+'>'+lbl(['الجزء ','Juz ','Juz '])+N(j)+'</option>';
+    $('#page').innerHTML='<section class="sec bk bk2">'+
+      '<div class="bk-top"><button class="bk-ib" data-bk="back" aria-label="'+lbl(['رجوع','Back','Retour'])+'"><svg viewBox="0 0 24 24" aria-hidden="true" width="22" height="22"><path d="M9 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/></svg></button>'+
+      '<button class="bk-title" data-bk="pick" aria-expanded="false"><b>'+esc(T(Q.ch[first[0]-1][0]))+'</b><small>'+lbl(['الجزء ','Juz ','Juz '])+N(juz)+' · '+lbl(['صفحة ','Page ','Page '])+N(p+1)+' / '+N(PG.length)+' ▾</small></button>'+
+      '<span class="bk-fz"><button class="bk-ib" data-bk="fm" aria-label="'+lbl(['تصغير الخط','Smaller text','Réduire'])+'">أ−</button><button class="bk-ib" data-bk="fp" aria-label="'+lbl(['تكبير الخط','Larger text','Agrandir'])+'">أ+</button></span></div>'+
+      '<div id="bkpick" class="bk-pick" hidden><b>'+lbl(['ابدأ القراءة من…','Start reading from…','Commencer la lecture à…'])+'</b>'+
+        '<label>'+lbl(['السورة','Surah','Sourate'])+'<select id="bksur">'+opts+'</select></label>'+
+        '<label>'+lbl(['الجزء','Juz','Juz'])+'<select id="bkjz">'+jo+'</select></label>'+
+        '<label>'+lbl(['رقم الصفحة','Page number','Numéro de page'])+'<span class="bk-gorow"><input id="bkj" type="number" min="1" max="'+PG.length+'" inputmode="numeric" value="'+(p+1)+'"><button class="btn sm gold" data-bk="go">'+lbl(['ابدأ','Start','Aller'])+'</button></span></label>'+
+        '<button class="btn sm ghost" data-bk="resume">'+lbl(['العودة إلى آخر صفحة وصلت لها','Back to my last page','Retour à ma dernière page'])+'</button></div>'+
+      '<div class="bk-sheet"><div class="bk-pg" style="font-size:'+fs()+'rem"><div class="bk-hd"><span>'+esc(T(Q.ch[first[0]-1][0]))+'</span><span>'+lbl(['الجزء ','Juz ','Juz '])+N(juz)+'</span></div>'+h+'<div class="bk-ft"><span>'+N(p+1)+'</span></div></div></div>'+
+      '<div class="bk-bar"><button class="bk-nx" data-bk="prev" '+(p===0?'disabled':'')+' aria-label="'+lbl(['الصفحة السابقة','Previous page','Page précédente'])+'">›</button>'+
+      '<input id="bksl" class="bk-sl" type="range" min="1" max="'+PG.length+'" value="'+(p+1)+'" aria-label="'+lbl(['اختر الصفحة','Choose page','Choisir la page'])+'" style="direction:rtl">'+
+      '<button class="bk-nx" data-bk="next" '+(p>=PG.length-1?'disabled':'')+' aria-label="'+lbl(['الصفحة التالية','Next page','Page suivante'])+'">‹</button></div>'+
+      '<p class="fine">'+lbl(['قراءة هادئة: تُضاف حسنات الصفحة تلقائيًا عند الانتقال إلى التالية بعد قراءتها، دون أي تنبيه. تقسيم الصفحات تقريبي وليس كمصحف المدينة.','Calm reading: the page’s hasanat are added automatically when you move on after reading it, with no alert. Page division is approximate, not the Madinah mushaf.','Lecture calme : les hasanat de la page sont ajoutées automatiquement quand vous passez à la suivante après l’avoir lue, sans alerte. Découpage approximatif, pas celui du mushaf de Médine.'])+'</p></section>';
     window.scrollTo(0,0);
   }
+  window.bkShow=function(p){count(CUR);show(p)};window.bkPG=function(){return build()};window.bkCur=function(){return CUR};
   function open(p){RV.bk=1;loadQ().then(function(){show(p==null?(S.bkp||0):p)})}
   pageRead=function(){
     if(RV.bk){open(CUR||S.bkp||0);return}
