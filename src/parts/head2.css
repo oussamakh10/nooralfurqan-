@@ -1327,3 +1327,19 @@ section.unit .uh .un small{font:700 .62rem var(--display);opacity:.85}
 .bk-nx{width:46px;height:46px;border:0;border-radius:50%;background:#e6c473;color:#33260a;font:800 1.6rem/1 system-ui,sans-serif;cursor:pointer}
 .bk-nx:disabled{opacity:.35}
 .bk-sl{width:100%;accent-color:#e6c473;min-height:32px}
+
+.bk-pick{padding:12px!important;gap:10px!important}
+.bkp-tabs{display:grid;grid-template-columns:repeat(3,1fr);gap:4px;padding:4px;border-radius:999px;background:rgba(0,0,0,.12)}
+.bkp-tabs button{min-height:40px;border:0;border-radius:999px;background:transparent;color:inherit;font:700 .85rem var(--display,inherit);cursor:pointer}
+.bkp-tabs button[aria-selected=true]{background:#e6c473;color:#33260a}
+.bkp-hint{margin:0;text-align:center;font-size:.82rem;opacity:.85}
+.bkp-list{display:grid;gap:6px;max-height:52vh;overflow:auto;padding-inline-end:2px}
+.bkp-row{display:flex;align-items:center;gap:12px;text-align:start;min-height:56px;padding:6px 10px;border-radius:14px;border:1.5px solid var(--line);background:transparent;color:inherit;cursor:pointer;font:inherit}
+.bkp-row i{flex:none;width:38px;height:38px;display:grid;place-items:center;background:#14574a;color:#f6e3a6;font:800 .85rem system-ui,sans-serif;font-style:normal;clip-path:polygon(30% 0,70% 0,100% 30%,100% 70%,70% 100%,30% 100%,0 70%,0 30%)}
+.bkp-row span{flex:1;display:grid;min-width:0}.bkp-row b{font:700 1.1rem/1.4 var(--quran)}.bkp-row small{opacity:.75;font-size:.74rem}.bkp-row em{font-style:normal;opacity:.5}
+.bkp-juz{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;max-height:52vh;overflow:auto}
+.bkp-jt{display:grid;justify-items:center;gap:0;padding:10px 4px;border-radius:16px;border:1.5px solid var(--line);background:transparent;color:inherit;cursor:pointer;font:inherit}
+.bkp-jt b{font:800 1.6rem/1.2 system-ui,sans-serif;color:#9a7416}.bkp-jt span{font-weight:700;font-size:.8rem}.bkp-jt small{opacity:.75;font-size:.7rem}
+.bkp-jt.on{border-color:#e6c473;background:rgba(230,196,115,.15)}
+.bkp-pgbox{display:grid;gap:8px}.bkp-pgbox label{font-weight:700;font-size:.85rem}
+.bkp-pgbox input{font-size:1.4rem;text-align:center}

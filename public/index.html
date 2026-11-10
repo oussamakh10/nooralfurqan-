@@ -1610,6 +1610,21 @@ body[data-tab=ach]{--tabtint:#D9A21B}
 .bk-nx{width:46px;height:46px;border:0;border-radius:50%;background:#e6c473;color:#33260a;font:800 1.6rem/1 system-ui,sans-serif;cursor:pointer}
 .bk-nx:disabled{opacity:.35}
 .bk-sl{width:100%;accent-color:#e6c473;min-height:32px}
+.bk-pick{padding:12px!important;gap:10px!important}
+.bkp-tabs{display:grid;grid-template-columns:repeat(3,1fr);gap:4px;padding:4px;border-radius:999px;background:rgba(0,0,0,.12)}
+.bkp-tabs button{min-height:40px;border:0;border-radius:999px;background:transparent;color:inherit;font:700 .85rem var(--display,inherit);cursor:pointer}
+.bkp-tabs button[aria-selected=true]{background:#e6c473;color:#33260a}
+.bkp-hint{margin:0;text-align:center;font-size:.82rem;opacity:.85}
+.bkp-list{display:grid;gap:6px;max-height:52vh;overflow:auto;padding-inline-end:2px}
+.bkp-row{display:flex;align-items:center;gap:12px;text-align:start;min-height:56px;padding:6px 10px;border-radius:14px;border:1.5px solid var(--line);background:transparent;color:inherit;cursor:pointer;font:inherit}
+.bkp-row i{flex:none;width:38px;height:38px;display:grid;place-items:center;background:#14574a;color:#f6e3a6;font:800 .85rem system-ui,sans-serif;font-style:normal;clip-path:polygon(30% 0,70% 0,100% 30%,100% 70%,70% 100%,30% 100%,0 70%,0 30%)}
+.bkp-row span{flex:1;display:grid;min-width:0}.bkp-row b{font:700 1.1rem/1.4 var(--quran)}.bkp-row small{opacity:.75;font-size:.74rem}.bkp-row em{font-style:normal;opacity:.5}
+.bkp-juz{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;max-height:52vh;overflow:auto}
+.bkp-jt{display:grid;justify-items:center;gap:0;padding:10px 4px;border-radius:16px;border:1.5px solid var(--line);background:transparent;color:inherit;cursor:pointer;font:inherit}
+.bkp-jt b{font:800 1.6rem/1.2 system-ui,sans-serif;color:#9a7416}.bkp-jt span{font-weight:700;font-size:.8rem}.bkp-jt small{opacity:.75;font-size:.7rem}
+.bkp-jt.on{border-color:#e6c473;background:rgba(230,196,115,.15)}
+.bkp-pgbox{display:grid;gap:8px}.bkp-pgbox label{font-weight:700;font-size:.85rem}
+.bkp-pgbox input{font-size:1.4rem;text-align:center}
 </style>
 <div class="bgpat" id="bg"></div>
 <header class="top" id="top"></header>
@@ -11131,6 +11146,44 @@ KNOW.unshift.apply(KNOW,K.map(function(x){return {q:x[0],a:x[1],s:'نور الف
     if(t.id==='bksl')window.bkShow(+t.value-1);
     else if(t.id==='bksur'){const s=+t.value;for(let i=0;i<P.length;i++){if(P[i].some(function(x){return x[0]===s&&x[1]===1})){window.bkShow(i);break}}}
     else if(t.id==='bkjz')window.bkShow(Math.round((+t.value-1)*P.length/30));
+  });
+})();
+
+(function(){
+  let tab='sur';
+  function info(){
+    const P=window.bkPG(),L=P.length,first={};
+    P.forEach(function(pg,i){pg.forEach(function(x){if(x[1]===1&&first[x[0]]==null)first[x[0]]=i})});
+    return {P:P,L:L,first:first,juz:function(p){return Math.min(30,Math.floor(p/L*30)+1)},jstart:function(j){return Math.ceil((j-1)*L/30)}};
+  }
+  function render(){
+    const el=document.getElementById('bkpick');if(!el||!window.bkPG)return;
+    const I=info(),cur=window.bkCur(),g=g3;
+    let h='<div class="bkp-tabs" role="tablist">'+
+      [['sur',g(['السور','Surahs','Sourates'])],['juz',g(['الأجزاء','Juz','Juz'])],['pg',g(['رقم الصفحة','Page no.','N° de page'])]].map(function(t){return '<button role="tab" data-bt="'+t[0]+'" aria-selected="'+(tab===t[0])+'">'+esc(t[1])+'</button>'}).join('')+'</div>';
+    h+='<p class="bkp-hint">'+esc(g(['أنت الآن في الصفحة ','You are on page ','Vous êtes à la page ']))+N(cur+1)+esc(g([' من ',' of ',' sur ']))+N(I.L)+' · '+esc(g(['الجزء ','Juz ','Juz ']))+N(I.juz(cur))+'</p>';
+    if(tab==='sur'){
+      h+='<div class="bkp-list">';
+      for(let s=1;s<=114;s++){const p=I.first[s]||0;
+        h+='<button class="bkp-row" data-bkp="'+p+'"><i>'+N(s)+'</i><span><b>'+esc(T(Q.ch[s-1][0]))+'</b><small>'+esc(g(['صفحة ','Page ','Page ']))+N(p+1)+' · '+esc(g(['الجزء ','Juz ','Juz ']))+N(I.juz(p))+' · '+N(Q.v[s-1].length)+' '+esc(g(['آية','verses','versets']))+'</small></span><em aria-hidden="true">‹</em></button>'}
+      h+='</div>';
+    }else if(tab==='juz'){
+      h+='<div class="bkp-juz">';
+      for(let j=1;j<=30;j++){const p=I.jstart(j),f=I.P[p][0][0];
+        h+='<button class="bkp-jt'+(I.juz(cur)===j?' on':'')+'" data-bkp="'+p+'"><b>'+N(j)+'</b><span>'+esc(g(['الجزء','Juz','Juz']))+'</span><small>'+esc(g(['صفحة ','p. ','p. ']))+N(p+1)+'</small><small>'+esc(T(Q.ch[f-1][0]))+'</small></button>'}
+      h+='</div>';
+    }else{
+      h+='<div class="bkp-pgbox"><label for="bkj">'+esc(g(['اكتب رقم الصفحة (من 1 إلى '+620+')','Type a page number (1 to 620)','Saisissez un numéro de page (1 à 620)']))+'</label><div class="bk-gorow"><input id="bkj" type="number" min="1" max="'+I.L+'" inputmode="numeric" value="'+(cur+1)+'"><button class="btn gold" data-bk="go">'+esc(g(['ابدأ من هنا','Start here','Commencer ici']))+'</button></div></div>';
+    }
+    h+='<button class="btn sm ghost" data-bk="resume">'+esc(g(['العودة إلى آخر صفحة وصلت لها','Back to my last page','Retour à ma dernière page']))+'</button>';
+    el.innerHTML=h;
+    const on=el.querySelector('.bkp-jt.on');if(on&&on.scrollIntoView)try{on.scrollIntoView({block:'center'})}catch(e){}
+  }
+  document.addEventListener('click',function(e){
+    const t=e.target.closest&&e.target.closest('[data-bk=pick],[data-bt],[data-bkp]');if(!t)return;
+    if(t.dataset.bk==='pick'){setTimeout(function(){const p=document.getElementById('bkpick');if(p&&!p.hidden)render()},0)}
+    else if(t.dataset.bt){tab=t.dataset.bt;render()}
+    else if(t.dataset.bkp!=null&&window.bkShow)window.bkShow(+t.dataset.bkp);
   });
 })();
 </script></body></html>
