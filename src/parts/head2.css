@@ -1522,3 +1522,10 @@ background:
 #page #rlist .r4-end{background:rgba(201,162,74,.2)!important;border:1px solid rgba(201,162,74,.6)!important}
 #page #rlist .r4-bar{inset-inline:14px;bottom:6px;height:3px;border-radius:3px;background:rgba(0,0,0,.12)!important}
 #page #rlist .srow.r4-done{border-color:#2f9e6a!important}
+
+#page #rlist .srow{grid-template-columns:44px 1fr auto!important;min-height:62px!important;padding:8px 12px 12px 10px!important;margin-bottom:7px!important;border-radius:18px!important;gap:10px!important}
+#page #rlist .srow .num{width:42px!important;height:42px!important;font-size:.85rem!important}
+#page #rlist .srow b{font-size:1.3rem!important}
+#page #rlist .srow small{font-size:.72rem!important}
+#page #rlist .r4-end{font-size:.68rem!important;padding:1px 7px!important}
+#page #rlist .r4-bar{bottom:4px!important;height:2px!important}
