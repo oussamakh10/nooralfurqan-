@@ -1539,6 +1539,54 @@ body[data-tab=ach]{--tabtint:#D9A21B}
 .adh-sw{width:52px;height:30px;border-radius:99px;border:2px solid var(--line);background:var(--surface-2,#ddd);position:relative;padding:0;cursor:pointer}
 .adh-sw i{position:absolute;top:3px;inset-inline-start:3px;width:20px;height:20px;border-radius:50%;background:#fff;box-shadow:0 1px 4px #0005;transition:.2s}
 .adh-sw[aria-checked=true]{background:#2f9e7a;border-color:#2f9e7a}.adh-sw[aria-checked=true] i{inset-inline-start:25px}
+/* ===== القراءة: مكتبة المصحف ===== */
+#page.r3l .rd2{gap:12px}
+.r3-hero{border-radius:26px;padding:16px 16px 14px;color:#fff;background:radial-gradient(120% 140% at 85% -10%,#2c8a76 0,#14574a 45%,#0a2f2a 100%);border:2px solid rgba(230,196,115,.55);box-shadow:0 14px 28px rgba(0,0,0,.25),inset 0 0 0 5px rgba(8,38,33,.55);display:grid;gap:12px;position:relative;overflow:hidden}
+.r3-hero::after{content:"";position:absolute;inset-inline-start:-40px;bottom:-50px;width:150px;height:150px;border:2px solid rgba(230,196,115,.25);border-radius:50%;box-shadow:0 0 0 14px rgba(230,196,115,.08),0 0 0 30px rgba(230,196,115,.05);pointer-events:none}
+.r3-ttl{display:flex;align-items:center;justify-content:center;gap:10px;color:#f3dca0}
+.r3-ttl b{font:700 1.55rem/1.4 var(--quran)}.r3-ttl span{opacity:.7;font-size:1.3rem}
+.r3-row{display:flex;align-items:center;gap:14px}
+.r3-ring{width:84px;height:84px;flex:none}
+.r3-wt{display:grid;gap:2px;min-width:0}.r3-wt small{color:rgba(255,255,255,.75);font-size:.78rem}.r3-wt b{font:800 1.15rem/1.4 var(--display,inherit)}
+.r3-khat{justify-self:start;margin-top:4px;min-height:34px;padding:0 12px!important;font-size:.78rem!important;border-radius:999px!important;background:rgba(255,255,255,.12)!important;color:#fff!important;border:1.5px solid rgba(230,196,115,.55)!important;box-shadow:none!important}
+.r3-hero .rd-cont{position:relative;z-index:1;margin:0;border-radius:18px;padding:12px 16px;border:2px solid rgba(255,255,255,.35);background:linear-gradient(180deg,#f6e3a6,#e0b94f);color:#33260a;box-shadow:0 4px 0 #a07a1c}
+.r3-hero .rd-cont small{opacity:.8}.r3-hero .rd-cont b{font-size:1.2rem}
+.r3-seg{display:grid;grid-template-columns:1fr 1fr;gap:4px;padding:4px;border-radius:999px;background:var(--surface-2,rgba(0,0,0,.07));border:1.5px solid var(--line)}
+.r3-seg button{min-height:42px;border:0;border-radius:999px;font:700 .9rem var(--display,inherit);background:transparent;color:inherit;cursor:pointer}
+.r3-seg button[aria-pressed=true]{background:#14574a;color:#f6e3a6;box-shadow:0 2px 6px rgba(0,0,0,.25)}
+#page.r3l .rd-chips{gap:8px}
+#page.r3l .rd-chips .tag{min-height:38px;border-radius:12px!important;font-size:.82rem}
+#rlist.slist{display:grid!important;grid-template-columns:1fr 1fr;gap:10px}
+#rlist .srow{display:grid!important;grid-template-columns:1fr;justify-items:center;text-align:center;gap:6px;min-height:0;padding:16px 8px 12px!important;border-radius:20px!important;border:1.5px solid var(--line)!important;background:var(--surface)!important;box-shadow:0 2px 0 rgba(0,0,0,.05)}
+#rlist .srow .num{width:46px;height:46px;border-radius:0!important;border:0;background:#14574a;color:#f6e3a6;clip-path:polygon(30% 0,70% 0,100% 30%,100% 70%,70% 100%,30% 100%,0 70%,0 30%);font:800 .95rem var(--display,inherit)}
+#rlist .srow>span:nth-child(2){flex:none;display:grid;gap:0}
+#rlist .srow b{font:700 1.15rem/1.5 var(--quran)}
+#rlist .srow small{font-size:.74rem;opacity:.7}
+#rlist .srow.seen{border-color:rgba(184,137,42,.7)!important}
+#rlist .srow.fin::after{content:"✓";position:absolute;top:8px;inset-inline-end:10px;color:#2f9e6a;font-weight:800}
+#rlist .emptybox,#rlist>:not(.srow){grid-column:1/-1}
+/* صفحة السورة */
+#page.r3s .rd-sban{border-radius:0;background:none;box-shadow:none;border:0;border-block:4px double #b8892a;padding:14px 4px 12px;margin:10px 0 12px;color:inherit}
+#page.r3s .rd-sban .rhead h2{color:#14574a;font:700 2.4rem/1.4 var(--quran)}
+#page.r3s .rd-sban .iconbtn{background:#14574a;color:#f6e3a6;border:0;border-radius:14px}
+#page.r3s .rd-meta{color:#7d5a12;border-color:rgba(184,137,42,.6);background:rgba(184,137,42,.1)}
+#page.r3s .wird{padding:8px 12px!important;border-radius:16px!important}
+#page.r3s .wird .wfoot{display:none}
+#page.r3s .wird .wrow b{font-size:.9rem}
+#page.r3s .ay{border:1.5px solid var(--line)!important;border-radius:20px!important;background:var(--surface)!important;padding:14px 14px 12px!important;margin:12px 0!important;box-shadow:0 2px 0 rgba(0,0,0,.05)}
+#page.r3s .ay.on{border-color:#b8892a!important;background:rgba(184,137,42,.12)!important}
+#page.r3s .ayt{line-height:2.5!important}
+#page.r3s .ayt .no{display:inline-grid;place-items:center;width:34px;height:34px;margin-inline:6px;background:#14574a;color:#f6e3a6;border:0;font:800 .8rem system-ui,sans-serif;clip-path:polygon(30% 0,70% 0,100% 30%,100% 70%,70% 100%,30% 100%,0 70%,0 30%);vertical-align:middle}
+#page.r3s .trn{margin:8px 0 0;padding-top:8px;border-top:1px dashed var(--line);font-size:.95rem;line-height:1.7;opacity:.9}
+#page.r3s .acts{flex-wrap:nowrap!important;overflow-x:auto;scrollbar-width:none;gap:6px!important;margin-top:10px!important;padding-bottom:2px}
+#page.r3s .acts::-webkit-scrollbar{display:none}
+#page.r3s .acts button{flex:none;min-height:34px;padding:0 12px!important;font-size:.75rem!important;border-radius:10px!important}
+#page.r3s .acts .rd:not(.done){background:#14574a!important;color:#f6e3a6!important;border-color:#14574a!important}
+#page.r3s .tf{margin-top:10px;padding:10px 12px;border-radius:14px;background:rgba(20,87,74,.08);border:1px solid var(--line)}
+#page.r3s .bsm{font-size:1.5rem;color:#7d5a12;margin:10px 0 6px}
+/* القراءة بالصفحات */
+.bk-pg{border:3px double #b8892a!important;border-radius:6px!important;background:var(--surface);box-shadow:0 10px 22px rgba(0,0,0,.14),inset 0 0 0 6px rgba(184,137,42,.07)}
+.bk-sur{background:#14574a;color:#f6e3a6;border:0!important;border-radius:6px!important}
 </style>
 <div class="bgpat" id="bg"></div>
 <header class="top" id="top"></header>
@@ -10986,5 +11034,56 @@ const S=[["(سامحني|انا اسف|أنا آسف|اعتذر منك)", "لا 
 SOC.unshift.apply(SOC,S.map(function(x){return {re:new RegExp(x[0]),a:[x[1]]}}));
 const K=[["ما هي الكتب السماوية", "الكتب السماوية المذكورة في القرآن: التوراة لموسى، والزبور لداود، والإنجيل لعيسى، والقرآن لمحمد ﷺ، وصحف إبراهيم. والقرآن مهيمن عليها وهو المحفوظ من التحريف."], ["من هم اولو العزم من الرسل", "أولو العزم من الرسل خمسة عند جمهور العلماء: نوح وإبراهيم وموسى وعيسى ومحمد عليهم الصلاة والسلام، وقد جمعهم قوله تعالى في سورة الأحزاب آية 7."], ["من هم الملائكة وما اسماء الملائكة", "الملائكة عباد مكرمون خُلقوا من نور ولا يعصون الله. ومن أشهرهم جبريل (الوحي)، وميكائيل (القطر)، وإسرافيل (النفخ في الصور)، ومالك خازن النار، ومنكر ونكير، والكرام الكاتبون."], ["كم عدد اسماء الله الحسنى", "جاء في الحديث: «إن لله تسعةً وتسعين اسمًا من أحصاها دخل الجنة»، وليس في الحديث حصر أسماء الله بهذا العدد، وإحصاؤها حفظها وفهمها والعمل بمقتضاها."], ["ما الفرق بين الحديث القدسي والحديث النبوي", "الحديث القدسي ما يرويه النبي ﷺ عن ربه بمعناه بلفظ النبي ﷺ، وليس له أحكام القرآن في التلاوة والتعبد به. أما الحديث النبوي فمن قول النبي ﷺ أو فعله أو تقريره."], ["من هو الصحابي", "الصحابي من لقي النبي ﷺ مؤمنًا به ومات على الإسلام. والصحابة عدول عند أهل السنة، وهم خير القرون."], ["من اول من اسلم", "أول من آمن من النساء خديجة، ومن الرجال الأحرار أبو بكر الصديق، ومن الصبيان علي بن أبي طالب، ومن الموالي زيد بن حارثة، ومن العبيد بلال، رضي الله عنهم."], ["ما الفرق بين الحج والعمرة", "الحج ركن من أركان الإسلام وله وقت محدد (أشهر الحج) وفيه الوقوف بعرفة. أما العمرة فسنة مؤكدة عند الجمهور وتؤدى في أي وقت، وفيها الإحرام والطواف والسعي والتقصير أو الحلق."], ["ما هو الربا", "الربا زيادة محرمة في بيع الأموال الربوية أو في القرض الذي يجرّ نفعًا مشروطًا. وقد حرّمه الله في قوله: ﴿وَأَحَلَّ اللَّهُ الْبَيْعَ وَحَرَّمَ الرِّبَا﴾ (البقرة 275)."], ["ما هي المسح على الخفين مدة", "يمسح المقيم يومًا وليلة، والمسافر ثلاثة أيام بلياليها، بشرط أن يلبس الخفين على طهارة، وتبدأ المدة عند أول مسح بعد الحدث."], ["ما هي صلاة التراويح وكم عدد ركعاتها", "التراويح قيام رمضان بعد العشاء. والثابت عن النبي ﷺ إحدى عشرة ركعة، وصلاها المسلمون في عهد عمر ثلاثًا وعشرين، فالأمر فيه سعة. والمهم الخشوع وتحسين الصلاة."], ["ما هي قصة الاسراء والمعراج", "الإسراء رحلة النبي ﷺ ليلًا من المسجد الحرام إلى المسجد الأقصى، والمعراج صعوده إلى السماوات العلى. وفيها فُرضت الصلوات الخمس، وذُكر الإسراء في أول سورة الإسراء."], ["ما علامات ليلة القدر", "ليلة القدر في العشر الأواخر من رمضان، وأرجاها الأوتار. من علاماتها أن الصباح يكون صافيًا والشمس تطلع بلا شعاع شديد. وأعظم ما يُغتنم فيها الدعاء: «اللهم إنك عفو تحب العفو فاعف عني»."], ["ما فضل بر الوالدين", "بر الوالدين من أعظم القربات، وقرنه الله بتوحيده: ﴿وَقَضَىٰ رَبُّكَ أَلَّا تَعْبُدُوا إِلَّا إِيَّاهُ وَبِالْوَالِدَيْنِ إِحْسَانًا﴾. وهو من أحب الأعمال إلى الله بعد الصلاة على وقتها، وللأم حق عظيم."], ["ما فضل صلة الرحم", "صلة الرحم من أسباب البركة في الرزق والعمر، قال النبي ﷺ: «من أحب أن يُبسط له في رزقه ويُنسأ له في أثره فليصل رحمه»، وقطيعتها من كبائر الذنوب."], ["ما هو الصبر وما انواعه", "الصبر حبس النفس على الطاعة، وعن المعصية، وعلى أقدار الله المؤلمة. وقال تعالى: ﴿إِنَّمَا يُوَفَّى الصَّابِرُونَ أَجْرَهُم بِغَيْرِ حِسَابٍ﴾ (الزمر 10)."], ["ما هو التوكل على الله", "التوكل صدق الاعتماد على الله مع الأخذ بالأسباب. قال النبي ﷺ: «اعقلها وتوكل»، وقال تعالى: ﴿وَمَن يَتَوَكَّلْ عَلَى اللَّهِ فَهُوَ حَسْبُهُ﴾ (الطلاق 3)."], ["ما هو الشكر وكيف نشكر الله", "الشكر الاعتراف بالنعمة باللسان والعمل بها في طاعة الله. وقال تعالى: ﴿لَئِن شَكَرْتُمْ لَأَزِيدَنَّكُمْ﴾ (إبراهيم 7)."], ["هل الايمان يزيد وينقص", "نعم، عند أهل السنة الإيمان قول وعمل واعتقاد، يزيد بالطاعة وينقص بالمعصية. قال تعالى: ﴿لِيَزْدَادُوا إِيمَانًا مَّعَ إِيمَانِهِمْ﴾ (الفتح 4)."], ["ما معنى بسم الله الرحمن الرحيم", "«بسم الله» أبدأ مستعينًا بالله، و«الرحمن» ذو الرحمة الواسعة التي تعم الخلق، و«الرحيم» ذو الرحمة الخاصة بالمؤمنين. وهي أول سور القرآن إلا التوبة."], ["ما معنى الحمد لله", "الحمد لله ثناء على الله بصفاته الكاملة وإنعامه، ومعناه أن الحمد كله مستحَق لله وحده. وهي أول آية بعد البسملة في الفاتحة."], ["ما معنى سبحان الله", "سبحان الله تنزيه الله عن كل نقص وعيب وعما لا يليق بجلاله. وهي من الباقيات الصالحات."], ["ما هي آداب الطعام", "من آداب الطعام: غسل اليدين، والتسمية، والأكل باليمين والأكل مما يليك، وعدم عيب الطعام، والحمد بعده، وعدم الإسراف."], ["ما هي آداب الاستئذان", "الاستئذان ثلاث مرات: فإن أُذن لك دخلت، وإلا رجعت. قال تعالى: ﴿لَا تَدْخُلُوا بُيُوتًا غَيْرَ بُيُوتِكُمْ حَتَّىٰ تَسْتَأْنِسُوا وَتُسَلِّمُوا﴾ (النور 27)."], ["ما حكم الكذب", "الكذب محرم، وهو من علامات النفاق: «آية المنافق ثلاث: إذا حدّث كذب، وإذا وعد أخلف، وإذا اؤتمن خان». ويجوز في الإصلاح بين الناس وفق ما ورد في الشرع."], ["ما حكم الانصات لخطبة الجمعة", "يجب الإنصات لخطبة الجمعة، وقال النبي ﷺ: «إذا قلت لصاحبك أنصت والإمام يخطب فقد لغوت». والأفضل ترك العبث والحديث حتى تنتهي الخطبة."], ["ما هي الهجرة الى الحبشة", "هاجر بعض الصحابة إلى الحبشة فرارًا بدينهم من أذى قريش، وكان النجاشي ملكًا عادلًا آواهم ورفض تسليمهم. وكان على رأسهم جعفر بن أبي طالب رضي الله عنه."], ["ما هو الفرق بين الاسلام والايمان", "إذا ذُكرا معًا فالإسلام الأعمال الظاهرة (الأركان الخمسة) والإيمان الأعمال الباطنة (أركان الإيمان الستة). وإذا ذُكر أحدهما دخل فيه الآخر. كما في حديث جبريل."], ["ما هو الغسل الواجب متى يجب", "يجب الغسل بالجنابة (خروج المني أو الجماع)، وبانقطاع الحيض والنفاس، وبإسلام الكافر عند بعض العلماء، وبالموت لغير الشهيد (غسل الميت)."], ["هل يجوز الجمع بين الصلاتين", "يجوز الجمع بين الظهر والعصر وبين المغرب والعشاء للمسافر، وللمريض، وعند المطر والمشقة بحسب أقوال أهل العلم، وفي عرفة ومزدلفة للحاج. وفي حالتك الخاصة راجع عالمًا موثوقًا."], ["متى يستحب الغسل", "من الأغسال المستحبة: غسل الجمعة، وغسل العيدين، والغسل للإحرام، ولدخول مكة، وبعد غسل الميت. وغسل الجمعة سنة مؤكدة عند الجمهور."], ["هل القران نزل دفعة واحدة", "نزل القرآن جملة إلى بيت العزة في السماء الدنيا في ليلة القدر، ثم نزل منجّمًا على النبي ﷺ في نحو ثلاث وعشرين سنة بحسب الوقائع والأحداث."], ["من كتب القران وجمعه", "كُتب القرآن في عهد النبي ﷺ على الرقاع والعسب، وجُمع في مصحف واحد في عهد أبي بكر بعد اليمامة بأمر عمر وجمع زيد بن ثابت، ثم نسخ عثمان المصاحف ووزعها على الأمصار."]];
 KNOW.unshift.apply(KNOW,K.map(function(x){return {q:x[0],a:x[1],s:'نور الفرقان'}}));
+})();
+
+/* ===== القراءة: هوية بصرية جديدة (مكتبة المصحف) دون حذف أي ميزة ===== */
+(function(){
+  const _pr=pageRead,_fl=fillList;
+  function ring(p){
+    const R=34,C=2*Math.PI*R;
+    return '<svg class="r3-ring" viewBox="0 0 80 80" aria-hidden="true"><circle cx="40" cy="40" r="'+R+'" fill="none" stroke="rgba(255,255,255,.18)" stroke-width="7"/><circle cx="40" cy="40" r="'+R+'" fill="none" stroke="#e6c473" stroke-width="7" stroke-linecap="round" stroke-dasharray="'+(C*p).toFixed(1)+' '+C.toFixed(1)+'" transform="rotate(-90 40 40)"/><text x="40" y="46" text-anchor="middle" font-size="19" font-weight="800" fill="#fff" font-family="system-ui,sans-serif">'+Math.round(p*100)+'%</text></svg>';
+  }
+  pageRead=function(){
+    _pr();
+    const pg=document.getElementById('page');if(!pg)return;
+    pg.classList.toggle('r3s',!!RV.s);pg.classList.toggle('r3l',!RV.s);
+    if(RV.s)return;
+    try{
+      const sec=pg.querySelector('section.rd2');if(!sec||sec.classList.contains('r3-done'))return;
+      sec.classList.add('r3-done');
+      const old=document.getElementById('bkcard');if(old)old.remove();
+      const top=sec.querySelector('.rd-top'),wird=sec.querySelector('.rd-wird');
+      const tgt=wirdTarget(),r=Math.min(readToday(),tgt);
+      const hero=document.createElement('div');hero.className='r3-hero';
+      hero.innerHTML='<div class="r3-ttl"><span aria-hidden="true">﴾</span><b>'+esc(g3(['المصحف الشريف','The Noble Quran','Le Saint Coran']))+'</b><span aria-hidden="true">﴿</span></div>'+
+        '<div class="r3-row">'+ring(r/tgt)+'<div class="r3-wt"><small>'+esc(g3(['وردك اليوم','Today’s portion','Votre portion du jour']))+'</small><b>'+N(r)+' / '+N(tgt)+' '+esc(g3(['آية','verses','versets']))+'</b><small>'+esc(g3(['ختمة في ','Complete in ','Lecture complète en ']))+N(S.khat.days)+esc(g3([' يومًا · '+N(S.khat.n)+' ختمة',' days · '+N(S.khat.n)+' completed',' jours · '+N(S.khat.n)+' terminée(s)']))+'</small></div></div>';
+      const cont=top&&top.querySelector('.rd-cont');
+      if(cont)hero.appendChild(cont);
+      const kb=wird&&wird.querySelector('[data-act="khat-set"]');
+      if(kb){kb.classList.add('r3-khat');hero.querySelector('.r3-wt').appendChild(kb)}
+      if(wird)wird.remove();if(top)top.remove();
+      sec.insertBefore(hero,sec.firstChild);
+      const seg=document.createElement('div');seg.className='r3-seg';seg.setAttribute('role','group');
+      seg.innerHTML='<button aria-pressed="true">'+esc(g3(['بالسور والآيات','By surah & verse','Par sourate et verset']))+'</button><button data-bk="open" aria-pressed="false">'+esc(g3(['بالصفحات','By pages','Par pages']))+(S.bkp?' · '+N(S.bkp+1):'')+'</button>';
+      hero.after(seg);
+    }catch(e){try{console.warn('read3',e)}catch(x){}}
+  };
+  fillList=function(){
+    _fl();
+    document.querySelectorAll('#rlist .srow').forEach(function(r){
+      const g=r.querySelector('.rd-go');if(g)g.remove();
+      const n=+r.dataset.surah;if(typeof S.opened!=='undefined'&&S.opened&&S.opened[n])r.classList.add('seen');
+      if(typeof surahDoneToday==='function'&&surahDoneToday(n))r.classList.add('fin');
+    });
+  };
+})();
+
+(function(){
+  const _os3=openSurah;
+  openSurah=function(i,jump){
+    const r=_os3(i,jump);
+    const pg=document.getElementById('page');if(pg){pg.classList.add('r3s');pg.classList.remove('r3l')}
+    return r;
+  };
 })();
 </script></body></html>
