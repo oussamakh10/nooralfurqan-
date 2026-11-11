@@ -1556,3 +1556,6 @@ background:
 #page.r3s .ayt .no{background:linear-gradient(150deg,var(--gold,#C8A24A),var(--accent,#0F7A4C))!important;color:#fff!important}
 #page.r3s .acts .rd:not(.done){background:var(--accent,#0F7A4C)!important;border-color:var(--accent,#0F7A4C)!important;color:#fff!important}
 #page.r3s .bsm{color:var(--gold,#C8A24A)!important}
+
+#page #rlist .srow b::after{display:none!important}
+.r5-khat{color:var(--gold,#C8A24A)!important}
