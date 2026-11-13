@@ -1,6 +1,6 @@
 /* ===== تمارين على نمط الباكالوريا: أكمل النص، تفسير الآية، وضعية إدماجية، توصيل، ترتيب ===== */
 (function(){
-  let BX=null;
+  let BX=null,TM=null;
   const AR09={'٠':'0','١':'1','٢':'2','٣':'3','٤':'4','٥':'5','٦':'6','٧':'7','٨':'8','٩':'9'};
   function N(s){
     return String(s||'').replace(/[٠-٩]/g,function(c){return AR09[c]}).replace(/[ً-ٰٟۖ-ۭـ]/g,'')
@@ -62,11 +62,41 @@
       openOverlay();render();
     });
   }
+  const VERBS=[['استخرج','انقل من النص دون تغيير ما طُلب'],['اشرح / فسّر','وضّح المعنى بأسلوبك'],['علّل','اذكر السبب أو الحكمة'],['استنتج','توصّل إلى حكم أو فائدة من المعطيات'],['بيّن','أظهر الفكرة مع دليلها'],['عرّف','حدّد المفهوم بإيجاز'],['قارن','أبرز أوجه الشبه والاختلاف'],['ناقش','اعرض الرأي وما يقابله ثم رجّح بدليل'],['وظّف','استعمل معارفك في حلّ الوضعية']];
+  const CRIT='<p class="muted" style="font-size:.85rem;margin:8px 0 0">سلّم تنقيط الوضعية: صحة المعارف وتوظيفها (5/8) • انسجام الإجابة ومنهجيتها (1.5) • سلامة اللغة (1) • الإخراج والترتيب (0.5). قارن إجابتك بالنموذج وقيّمها بنفسك.</p>';
+  function startExam(n){
+    const ls=shuffle(SCH.filter(function(l){return BAC[l.id]&&BAC[l.id].sit})),A=ls[0],B=ls[1];if(!A||!B)return;
+    Promise.all([prepare(A.id),prepare(B.id)]).then(function(r){
+      const p1=(r[0]||[]).filter(function(t){return t.k!=='w'}),w=(r[1]||[]).filter(function(t){return t.k==='w'})[0];
+      if(!p1.length||!w){toast('تعذّر إنشاء الموضوع، حاول مجددًا.');return}
+      const tot=p1.reduce(function(a,t){return a+t.w},0),P1='الجزء الأول (12 نقطة) — الوقت المقترح 50 د',P2='الجزء الثاني: الوضعية الإدماجية (8 نقاط) — الوقت المقترح 40 د',tasks=[];
+      p1.forEach(function(t){const c=Object.assign({},t);c.w=Math.round(t.w/tot*12*100)/100;c.ex=P1;tasks.push(c)});
+      const c=Object.assign({},w);c.w=8;c.ex=P2;tasks.push(c);
+      BX={id:'exam',exam:{end:Date.now()+90*60000},title:'نموذج امتحان بكالوريا — الموضوع '+(n===2?'الثاني':'الأول')+' ('+A.t+' / '+B.t+')',tasks:tasks,i:0,earned:0,max:20,res:[],checked:false,fb:null,ord:[]};
+      if(TM)clearInterval(TM);TM=setInterval(tick,1000);
+      openOverlay();render();tick();
+    });
+  }
+  function tick(){
+    if(!BX||!BX.exam){if(TM){clearInterval(TM);TM=null}return}
+    const r=Math.max(0,Math.round((BX.exam.end-Date.now())/1000)),el=document.getElementById('bxtm');
+    if(el){el.textContent=String(Math.floor(r/60)).padStart(2,'0')+':'+String(r%60).padStart(2,'0');el.style.color=r<600?'var(--bad,#c0392b)':''}
+    if(r<=0){toast('انتهى وقت الامتحان');finish()}
+  }
+  function examBox(){
+    const H=(schS().xe||[]),avg=H.length?Math.round(H.reduce(function(a,h){return a+h.s},0)/H.length*10)/10:null,last=H.slice(-5).reverse();
+    return '<section class="sec"><h2>'+esc(g3(['نموذج امتحان بكالوريا','Bac mock exam','Examen blanc du Bac']))+'</h2><div class="card" style="display:grid;gap:8px">'+
+      '<p class="muted" style="margin:0">موضوعان للاختيار، مدة 1س30د بمؤقّت: الجزء الأول (12 نقطة) نصوص شرعية وأسئلة مفاهيم، والجزء الثاني (8 نقاط) وضعية إدماجية. تُحتسب العلامة من 20 وتُحفظ في سجلّك.</p>'+
+      '<div style="display:grid;grid-template-columns:1fr 1fr;gap:8px"><button class="btn gold" data-bx="exam:1">الموضوع الأول</button><button class="btn gold" data-bx="exam:2">الموضوع الثاني</button></div>'+
+      (avg!==null?'<div class="muted" style="font-size:.9rem">المعدّل: <b>'+String(avg).replace(/\.0$/,'')+' / 20</b> في '+H.length+' محاولة — آخر النتائج: '+last.map(function(h){return String(h.s).replace(/\.0$/,'')}).join(' • ')+'</div>':'')+
+      '<details><summary><b>معجم أفعال الأمر في الأسئلة</b></summary><ul style="margin:8px 0 0;padding-inline-start:18px;line-height:1.9">'+VERBS.map(function(v){return '<li><b>'+esc(v[0])+'</b>: '+esc(v[1])+'</li>'}).join('')+'</ul></details>'+
+      '<details><summary><b>نصائح للتعامل مع الورقة</b></summary><ul style="margin:8px 0 0;padding-inline-start:18px;line-height:1.9"><li>اقرأ الموضوعين وابدأ بما تتقنه.</li><li>وزّع الوقت: 50 د للجزء الأول و40 د للوضعية.</li><li>اكتب الآيات والأحاديث بدقة ثم علّق عليها.</li><li>في الوضعية: افهم المعطيات، استحضر المعارف، ثم اربط بينها في فقرة مترابطة.</li><li>خصّص 10 د للمراجعة والإخراج.</li></ul></details></div></section>';
+  }
   function lines(a){return a.map(function(x){return '<li>'+esc(x)+'</li>'}).join('')}
   function render(){
     const x=BX;if(!x)return;if(x.i>=x.tasks.length)return finish();
     const t=x.tasks[x.i],pct=Math.round(x.i/x.tasks.length*100);
-    let h='<div class="ltop"><button class="xbtn" data-bx="quit" aria-label="إغلاق">'+IC.x+'</button><div class="bar" role="progressbar" aria-valuenow="'+pct+'"><i style="width:'+pct+'%"></i></div><div class="chip"><span>'+(x.i+1)+'/'+x.tasks.length+'</span></div></div><div class="lmain">'+
+    let h='<div class="ltop"><button class="xbtn" data-bx="quit" aria-label="إغلاق">'+IC.x+'</button><div class="bar" role="progressbar" aria-valuenow="'+pct+'"><i style="width:'+pct+'%"></i></div><div class="chip"><span>'+(x.i+1)+'/'+x.tasks.length+'</span>'+(x.exam?'<span id="bxtm" style="margin-inline-start:8px;font-variant-numeric:tabular-nums"></span>':'')+'</div></div><div class="lmain">'+
       '<small class="muted">'+esc(x.title)+'</small><h3 class="bxex">'+esc(t.ex)+'</h3>';
     if(t.k==='cl'){
       h+='<div class="card"><p class="bxq">'+esc(t.text)+'</p><small class="muted">['+esc(t.ref)+']</small></div><p><b>'+esc(t.q)+'</b></p>'+
@@ -90,7 +120,7 @@
     }
     if(x.checked){
       const f=x.fb;
-      h+='<div class="card bxfb '+(f.s>=.99?'ok':f.s>0?'part':'bad')+'"><b>'+(f.s>=.99?'أحسنت':f.s>0?'إجابة جزئية':'تحتاج إلى مراجعة')+' — '+(Math.round(f.s*t.w*10)/10)+' / '+t.w+'</b>'+f.html+'</div>';
+      h+='<div class="card bxfb '+(f.s>=.99?'ok':f.s>0?'part':'bad')+'"><b>'+(f.s>=.99?'أحسنت':f.s>0?'إجابة جزئية':'تحتاج إلى مراجعة')+' — '+(Math.round(f.s*t.w*10)/10)+' / '+t.w+'</b>'+f.html+(x.exam&&t.k==='w'?CRIT:'')+'</div>';
     }
     h+='</div><div class="lfoot"><div class="in">'+(x.checked?'<button class="btn" data-bx="next">'+(x.i+1>=x.tasks.length?'النتيجة':'متابعة')+'</button>':'<button class="btn" data-bx="check">تحقق</button>')+'</div></div>';
     $('#lesson').innerHTML=h;
@@ -129,8 +159,9 @@
   }
   function finish(){
     const x=BX;if(!x)return;
+    if(TM){clearInterval(TM);TM=null}
     const sc=Math.round(x.earned/x.max*40)/2,sch=schS();
-    if(x.id!=='mock'){const k='x:'+x.id;if(sch[k]===undefined||sc>sch[k])sch[k]=sc}
+    if(x.exam){const H=(sch.xe=sch.xe||[]);H.push({d:Date.now(),s:sc});if(H.length>20)H.shift()}else if(x.id!=='mock'){const k='x:'+x.id;if(sch[k]===undefined||sc>sch[k])sch[k]=sc}
     try{save()}catch(e){}
     const mood=sc>=16?'wow':sc>=10?'cheer':'sad',lab=sc>=16?'ممتاز، ما شاء الله!':sc>=14?'جيد جدًا':sc>=10?'مقبول، واصل التدرب':'تحتاج إلى مراجعة الدرس';
     const by={};x.res.forEach(function(r){by[r.ex]=by[r.ex]||{e:0,w:0};by[r.ex].e+=r.e;by[r.ex].w+=r.w});
@@ -143,7 +174,7 @@
   /* ---- صفحة تمارين الباك داخل المدرسية ---- */
   function bacPage(){
     const s=schS();
-    return '<section class="sec"><h2>تمارين على نمط الباكالوريا</h2><div class="card" style="display:grid;gap:8px"><p class="muted" style="margin:0">لكل درس: أكمل الآية والحديث، فسّر الآية بأسلوبك، حلّ وضعية إدماجية، وصل وارتّب. الفحص آلي بالكلمات المفتاحية مع نموذج للإجابة.</p><button class="btn gold" data-bx="mock">ورقة تجريبية (3 دروس عشوائية)</button></div></section>'+
+    return examBox()+'<section class="sec"><h2>تمارين على نمط الباكالوريا</h2><div class="card" style="display:grid;gap:8px"><p class="muted" style="margin:0">لكل درس: أكمل الآية والحديث، فسّر الآية بأسلوبك، حلّ وضعية إدماجية، وصل وارتّب. الفحص آلي بالكلمات المفتاحية مع نموذج للإجابة.</p><button class="btn gold" data-bx="mock">ورقة تجريبية (3 دروس عشوائية)</button></div></section>'+
       SCHTRI.map(function(T){return '<section class="sec"><h2>'+esc(T.t[0])+'</h2><div style="display:grid;gap:8px">'+schOf(T.n).filter(function(l){return BAC[l.id]}).map(function(l){const b=s['x:'+l.id];
         return '<button class="card sch-it" data-bx="start:'+l.id+'"><span class="sch-n'+(b!==undefined&&b>=10?' on':'')+'">'+(b!==undefined?String(b).replace(/\.0$/,''):'؟')+'</span><span class="sch-t">'+esc(l.t)+'</span></button>'}).join('')+'</div></section>'}).join('');
   }
@@ -167,18 +198,19 @@
     if(b)b.insertAdjacentHTML('beforebegin','<button class="btn gold" data-bx="start:'+id+'">'+esc(g3(['تمارين على نمط الباكالوريا','Bac-style exercises','Exercices type Bac']))+'</button>');
   };
   const _cl=closeOverlay;
-  closeOverlay=function(){BX=null;_cl()};
+  closeOverlay=function(){BX=null;if(TM){clearInterval(TM);TM=null}_cl()};
   document.addEventListener('click',function(e){
     const b=e.target.closest&&e.target.closest('[data-bx]');if(!b||b.disabled)return;
     const v=b.dataset.bx,a=v.split(':')[0],p=v.split(':').slice(1).join(':');
     if(a==='start')return start(p);
     if(a==='mock')return startMock();
+    if(a==='exam')return startExam(+p);
     if(!BX)return;
     if(a==='check')return check();
     if(a==='next'){BX.i++;BX.checked=false;BX.fb=null;BX.ord=[];return render()}
     if(a==='o'){if(!BX.checked){BX.ord.push(+p);render()}return}
     if(a==='oreset'){BX.ord=[];return render()}
-    if(a==='again'){return BX.id==='mock'?startMock():start(BX.id)}
+    if(a==='again'){return BX.exam?startExam(1):BX.id==='mock'?startMock():start(BX.id)}
     if(a==='quit'){if(confirm('هل تريد إنهاء التمرين؟ ستُحتسب النتيجة بما أنجزت.'))return finish()}
   });
   document.addEventListener('keydown',function(e){
