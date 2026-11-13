@@ -18,7 +18,7 @@
 - المعاينة (Artifact): https://claude.ai/artifact/AXkyFQnun7mEwNqjnvcrfE (الإصدار v58). لإعادة النشر: file_path=`public/index.html` مع `files` {i18n_en.json, i18n_fr.json} من `public/`.
 
 ## الإعلان (آخر ما اشتغلنا عليه)
-- المصدر في `promo/` (مرفوع للمستودع): `v40.html` (الفيديو: «يومك مع نور الفرقان»، 30 ث، 540×960 منطقيًا)، لقطات التطبيق `*.png`، الخطوط، `poster_ad.html` (ملصق 1080×1350، مساراته تشير إلى /tmp/ad فعدّلها).
+- المصدر في `promo/` (مرفوع للمستودع): `v50.html` (الأحدث: ضبابية حركة 3 لقطات فرعية، إيقاع طبول 100 نبضة/د عبر `tools/sfx50.py`، سطر إنجليزي) و`v40.html` (السابق) (الفيديو: «يومك مع نور الفرقان»، 30 ث، 540×960 منطقيًا)، لقطات التطبيق `*.png`، الخطوط، `poster_ad.html` (ملصق 1080×1350، مساراته تشير إلى /tmp/ad فعدّلها).
 - إعادة التصيير: `cd promo && python3 tools/rend40.py 0 900` و`python3 tools/rend40.py 900 1800` (يكتب إلى fr40 — عدّل المسارات من /tmp/vid إلى مجلد العمل)، ثم الصوت `python3 tools/sfx40.py` ثم:
   `ffmpeg -framerate 60 -i fr40/%04d.jpg -i sfx40.wav -map 0:v -map 1:a -c:v libx264 -crf 16 -preset veryfast -pix_fmt yuv420p -c:a aac -b:a 192k -t 30 ad.mp4`
 - لقطات جديدة: `tools/shots6.py` (شاشات) و`tools/st.py` (حالات التسبيح والسؤال). اللغة `ar`، الدقة DPR=3، النافذة 400×860.
