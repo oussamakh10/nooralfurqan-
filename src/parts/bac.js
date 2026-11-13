@@ -9,6 +9,8 @@
   }
   const STOP={};('من في على الى عن ان ان ما لا لم لن قد كل هذا هذه ذلك التي الذي الذين اللذين هو هي هم هن انه انها كان كانت يكون ثم او بل حتي اذا اذ اي ايها يا ولا وما ومن وان وقد فان فيه فيها منه منها له لها لهم عليه عليها عليهم الله ربك ربكم ربهم انما الا الي فيهم بين بعد قبل عند مع غير ولم ولن بها به بهم وهو وهي ولهم'.split(' ')).forEach(function(w){STOP[w]=1});
   function stem(w){w=w.replace(/^(وال|بال|فال|كال|لل|ال)/,'');return w.length>4?w.slice(0,4):w}
+  function lev(a,b){if(Math.abs(a.length-b.length)>1)return 9;const m=[];for(let i=0;i<=a.length;i++){m[i]=[i]}for(let j=1;j<=b.length;j++)m[0][j]=j;for(let i=1;i<=a.length;i++)for(let j=1;j<=b.length;j++)m[i][j]=Math.min(m[i-1][j]+1,m[i][j-1]+1,m[i-1][j-1]+(a[i-1]===b[j-1]?0:1));return m[a.length][b.length]}
+  function near(a,b){a=a.replace(/^(وال|بال|فال|كال|لل|ال)/,'');b=b.replace(/^(وال|بال|فال|كال|لل|ال)/,'');if(!a||!b)return false;if(a===b)return true;if(a.length>=4&&b.length>=4&&(a.indexOf(b)>=0||b.indexOf(a)>=0))return true;const k=Math.min(a.length,b.length,4);if(k>=3&&a.slice(0,k)===b.slice(0,k)&&Math.abs(a.length-b.length)<=3)return true;return a.length>=4&&lev(a,b)<=1}
   function toks(s){return N(s).split(' ').filter(Boolean)}
   function clean(t){return String(t).replace(/[﴿﴾«»]/g,'').replace(/[ۖ-ۜ۟-ۨ]/g,'').replace(/\s+/g,' ').trim()}
   function surahNo(name){const n=N(name);for(let i=0;i<SN.length;i++){if(N(SN[i])===n)return i+1}return 0}
@@ -130,17 +132,17 @@
     const x=BX,t=x.tasks[x.i];if(x.checked)return;let s=0,html='',val='',rows;
     if(t.k==='cl'){
       val=($('#bxin').value||'').trim();if(!val){toast('اكتب إجابتك أولًا');return}
-      s=N(val)===N(t.ans)?1:0;html='<p>الكلمة الصحيحة: <b>'+esc(t.ans)+'</b></p>';
+      s=N(val)===N(t.ans)?1:(near(N(val),N(t.ans))?1:0);html='<p>الكلمة الصحيحة: <b>'+esc(t.ans)+'</b></p>';
     }else if(t.k==='tf'||t.k==='w'){
       val=($('#bxin').value||'').trim();if(!val){toast('اكتب إجابتك أولًا');return}
       if(t.k==='tf'){
-        const ut={};toks(val).forEach(function(w){ut[stem(w)]=1});
-        const hit=t.kw.filter(function(k){return ut[k]}),need=Math.max(3,Math.ceil(t.kw.length*.35));
-        s=toks(val).length<4?0:Math.min(1,hit.length/need);
+        const uw=toks(val);
+        const hit=t.kw.filter(function(k){return uw.some(function(w){return near(stem(w),k)||near(w,k)})}),need=Math.max(2,Math.ceil(t.kw.length*.28));
+        s=uw.length<4?0:Math.min(1,hit.length/need);if(uw.length>=4&&hit.length>=2&&s<.5)s=.5;
         html='<p>غطّيتَ <b>'+hit.length+'</b> من أصل <b>'+t.kw.length+'</b> كلمة مفتاحية من التفسير.'+(toks(val).length<4?' (الإجابة قصيرة جدًا)':'')+'</p><p class="muted" style="font-size:.85rem">الفحص آلي بالكلمات؛ قد تكون إجابتك صحيحة بصياغة أخرى.</p><details open><summary><b>التفسير الميسر (النموذج)</b></summary><p>'+esc(t.model)+'</p></details>';
       }else{
-        const na=N(val),hits=t.pts.map(function(p){return p[0].split('|').some(function(k){k=N(k);return k&&na.indexOf(k)>=0})}),n=hits.filter(Boolean).length,need=Math.max(2,Math.ceil(t.pts.length*.75));
-        s=Math.min(1,n/need);
+        const na=N(val),ua=na.split(' ').filter(Boolean),hits=t.pts.map(function(p){return p[0].split('|').some(function(k){k=N(k);return k&&(na.indexOf(k)>=0||k.split(' ').every(function(kw){return ua.some(function(w){return near(w,kw)})}))})}),n=hits.filter(Boolean).length,need=Math.max(2,Math.ceil(t.pts.length*.6));
+        s=Math.min(1,n/need);if(n>=1&&ua.length>=8&&s<.5)s=.5;
         html='<ul class="bxpts">'+t.pts.map(function(p,i){return '<li class="'+(hits[i]?'sch-good':'sch-bad')+'">'+(hits[i]?'✓ ':'✗ ')+esc(p[1])+'</li>'}).join('')+'</ul><p class="muted" style="font-size:.85rem">الفحص آلي بالكلمات المفتاحية؛ قارن إجابتك بالنموذج.</p><details open><summary><b>الإجابة النموذجية</b></summary><p>'+esc(t.model)+'</p></details>';
       }
     }else if(t.k==='mt'){
