@@ -7484,7 +7484,7 @@ S25:{sit:['تُذكر خطبة الوداع في المناهج لما تضمن�
   function SA(t,f){
     if(f.sa)return '<p class="muted" style="margin:8px 0 0;font-size:.85rem">✓ اعتُمد تقييمك الذاتي.</p>';
     let o='';for(let v=0;v<=t.w;v+=.5)o+='<option value="'+v+'"'+(Math.abs(v-Math.round(f.s*t.w*2)/2)<.01?' selected':'')+'>'+v+'</option>';
-    return '<div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-top:10px"><span>قيّم نفسك من '+t.w+':</span><select id="bxsa">'+o+'</select><button class="btn ghost" data-bx="sa">اعتمد</button></div>';
+    return '<div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-top:10px"><span>قيّم نفسك من '+t.w+':</span><select id="bxsa" aria-label="علامتك الذاتية">'+o+'</select><button class="btn ghost" data-bx="sa">اعتمد</button></div>';
   }
   const TY={cl:'إكمال النصوص',tf:'تفسير الآيات',w:'الوضعيات الإدماجية',mt:'التوصيل بين المفاهيم',ord:'الترتيب'};
   function weak(){
@@ -7539,7 +7539,7 @@ S25:{sit:['تُذكر خطبة الوداع في المناهج لما تضمن�
   function render(){
     const x=BX;if(!x)return;if(x.i>=x.tasks.length)return finish();
     const t=x.tasks[x.i],pct=Math.round(x.i/x.tasks.length*100);
-    let h='<div class="ltop"><button class="xbtn" data-bx="quit" aria-label="إغلاق">'+IC.x+'</button><div class="bar" role="progressbar" aria-valuenow="'+pct+'"><i style="width:'+pct+'%"></i></div><div class="chip"><span>'+(x.i+1)+'/'+x.tasks.length+'</span>'+(x.exam?'<span id="bxtm" style="margin-inline-start:8px;font-variant-numeric:tabular-nums"></span>':'')+'</div></div><div class="lmain">'+
+    let h='<div class="ltop"><button class="xbtn" data-bx="quit" aria-label="إغلاق">'+IC.x+'</button><div class="bar" role="progressbar" aria-valuenow="'+pct+'"><i style="width:'+pct+'%"></i></div><div class="chip"><span>'+(x.i+1)+'/'+x.tasks.length+'</span>'+(x.exam?'<span id="bxtm" role="timer" aria-label="الوقت المتبقي" style="margin-inline-start:8px;font-variant-numeric:tabular-nums"></span>':'')+'</div></div><div class="lmain">'+
       '<small class="muted">'+esc(x.title)+'</small><h3 class="bxex">'+esc(t.ex)+'</h3>';
     if(t.k==='cl'){
       h+='<div class="card"><p class="bxq">'+esc(t.text)+'</p><small class="muted">['+esc(t.ref)+']</small></div><p><b>'+esc(t.q)+'</b></p>'+
