@@ -202,12 +202,12 @@ function openDhikr(tab){
   DK.tab=tab||DK.tab;openOverlay();renderDhikr();
 }
 function renderDhikr(){
-  let h='<div class="ltop"><button class="xbtn" data-act="leave" aria-label="إغلاق">'+IC.x+'</button><div class="seg" style="flex:1">'+[['tasbih','السبحة'],['m','أذكار الصباح'],['e','أذكار المساء']].map(function(x){return '<button data-dk="'+x[0]+'" aria-pressed="'+(DK.tab===x[0])+'">'+x[1]+'</button>'}).join('')+'</div></div><div class="lmain">';
+  let h='<div class="ltop"><button class="xbtn" data-act="leave" aria-label="إغلاق">'+IC.x+'</button><div class="seg" style="flex:1">'+[['tasbih','السبحة'],['m','أذكار الصباح'],['e','أذكار المساء'],['du','الأدعية']].map(function(x){return '<button data-dk="'+x[0]+'" aria-pressed="'+(DK.tab===x[0])+'">'+x[1]+'</button>'}).join('')+'</div></div><div class="lmain">';
   if(DK.tab==='tasbih'){
     if(!TSB)TSB={p:0,c:0};
     const ph=TPH[TSB.p];
     h+='<div class="center"><div class="mas">'+hoopoe('happy',100)+'</div><h2>'+ph[0]+'</h2><button class="tsb" data-act="tsb" aria-label="سبّح">'+N(TSB.c)+'</button><p class="muted">من '+N(ph[1])+' · تسبيحك اليوم: '+N(S.tsd[today()]||0)+'</p><button class="btn sm ghost" data-act="tsreset">إعادة</button></div>';
-  }else{
+  }else if(DK.tab==='du'){h+=duaTabHtml()}else{
     const k=DK.tab,dn=S.adk.d===today()&&S.adk[k];
     h+='<p class="muted" style="font-size:.9rem">اضغط على الذكر كلما كرّرته. الأذكار من السنة الصحيحة، ويُستحسن مراجعتها على كتاب موثوق.</p>'+(dn?'<div class="card" style="border-color:var(--gold)"><b>أتممت أذكار '+(k==='m'?'الصباح':'المساء')+' اليوم ✓</b></div>':'')+'<div class="hifz" style="margin-top:8px" id="adk">'+ADK.map(function(x,i){
       const id=k+i,left=(DK.left[id]===undefined?x.n:DK.left[id]);
