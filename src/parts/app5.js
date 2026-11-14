@@ -202,7 +202,7 @@ function openDhikr(tab){
   DK.tab=tab||DK.tab;openOverlay();renderDhikr();
 }
 function renderDhikr(){
-  let h='<div class="ltop"><button class="xbtn" data-act="leave" aria-label="إغلاق">'+IC.x+'</button><div class="seg" style="flex:1">'+[['tasbih','السبحة'],['m','أذكار الصباح'],['e','أذكار المساء'],['du','الأدعية']].map(function(x){return '<button data-dk="'+x[0]+'" aria-pressed="'+(DK.tab===x[0])+'">'+x[1]+'</button>'}).join('')+'</div></div><div class="lmain">';
+  let h='<div class="ltop"><button class="xbtn" data-act="leave" aria-label="إغلاق">'+IC.x+'</button><div class="seg" style="flex:1" role="group" aria-label="أقسام الأذكار">'+[['tasbih','السبحة'],['m','أذكار الصباح'],['e','أذكار المساء'],['du','الأدعية']].map(function(x){return '<button data-dk="'+x[0]+'" aria-pressed="'+(DK.tab===x[0])+'">'+x[1]+'</button>'}).join('')+'</div></div><div class="lmain">';
   if(DK.tab==='tasbih'){
     if(!TSB)TSB={p:0,c:0};
     const ph=TPH[TSB.p];
