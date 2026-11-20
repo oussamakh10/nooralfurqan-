@@ -22,6 +22,7 @@ with sync_playwright() as p:
     for spec in sys.argv[1:]:
         name,_,chain=spec.partition(':');pg=fresh(b)
         for step in [x for x in chain.split('>') if x]:
-            pg.get_by_text(step,exact=False).last.click(timeout=8000);pg.wait_for_timeout(2500);pg.evaluate(CLR)
+            if step.startswith('fill='):pg.locator('textarea,input[type=text],input:not([type])').last.fill(step[5:]);pg.wait_for_timeout(800);continue
+            pg.get_by_text(step,exact=False).last.click(timeout=8000);pg.wait_for_timeout(3500 if step=='أرسل' else 2500);pg.evaluate(CLR)
         pg.wait_for_timeout(500);out=os.path.join(ROOT,'assets','app',name+'.png');pg.screenshot(path=out);print('saved',out)
     b.close()

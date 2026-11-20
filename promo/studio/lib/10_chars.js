@@ -26,12 +26,13 @@ const POSE={
  cheer:mk([0,-410],[0,-366],[0,-222],[-40,-330],[-70,-430],[40,-330],[70,-430]),
  think:mk([6,-400],[0,-366],[0,-222],[-12,-296],[-16,-232],[26,-300],[26,-376]),
  sad:mk([14,-380],[6,-350],[0,-222],[-4,-290],[0,-236],[10,-286],[10,-232]),
+ fidget:(t)=>mk([16,-388],[6,-356],[0,-222],[0,-290],[24+Math.sin(t*7)*4,-262],[14,-288],[30+Math.sin(t*7+1)*5,-260]),
  shy:mk([16,-388],[6,-356],[0,-222],[0,-290],[26,-262],[14,-288],[30,-260]),
  talk:mk([4,-404],[0,-366],[0,-222],[-12,-296],[-16,-232],[40,-310],[70,-290]),
  shrug:mk([0,-400],[0,-366],[0,-222],[-30,-320],[-52,-300],[30,-320],[52,-300]),
  hold:mk([4,-404],[0,-366],[0,-222],[-12,-296],[-16,-232],[34,-300],[58,-340]),   // holding something at chest height
  wave:(t)=>mk([0,-404],[0,-366],[0,-222],[-12,-296],[-16,-232],[44,-340],[70+Math.sin(t*9)*22,-420]),
- walk:(t,c)=>{const ph=(c&&c._ph)||0,s=Math.sin(ph),co=Math.cos(ph);return mk([0,-404],[0,-366],[0,-222],[-12+s*22,-296],[-16+s*44,-236],[10-s*22,-296],[14-s*44,-236],
+ walk:(t,c)=>{const ph=(c&&c._ph)||0,s=Math.sin(ph),co=Math.cos(ph);return J([0,-404],[0,-366],[0,-222],[-12+s*22,-296],[-16+s*44,-236],[10-s*22,-296],[14-s*44,-236],
     [8+s*26,-118],[10+s*54,-Math.max(0,-co)*26],[-8-s*26,-118],[-10-s*54,-Math.max(0,co)*26])}};
 const JK=['H','N','P','E1','W1','E2','W2','K1','F1','K2','F2'];
 const mixP=(a,b,k)=>{const o={};for(const j of JK)o[j]=[lerp(a[j][0],b[j][0],k),lerp(a[j][1],b[j][1],k)];return o};
@@ -48,7 +49,7 @@ function drawChar(c,t){const x=posX(c,t),y=c.y,f=c.face,s=c.s;let al=c.alpha?kf(
  g.save();g.globalAlpha=al;g.translate(x,y);
  g.save();g.scale(1,.18);g.fillStyle='rgba(0,0,0,.35)';g.beginPath();g.arc(0,0,70*s,0,7);g.fill();g.restore();       // ground shadow
  g.scale(f*s,s);g.lineCap='round';g.lineJoin='round';const lw=1/s;
- const neon=(w,body)=>{g.shadowColor=c.col;g.shadowBlur=22;g.strokeStyle=c.col;g.lineWidth=w;body();g.shadowBlur=0;g.strokeStyle='#effcff';g.lineWidth=Math.max(2,w*.32);body()};
+ const neon=(w,body)=>{g.shadowColor=c.col;g.shadowBlur=12;g.strokeStyle=c.col;g.lineWidth=w;body();g.shadowBlur=0;g.strokeStyle='#effcff';g.lineWidth=Math.max(2,w*.32);body()};
  if(c.acc.includes('backpack')){g.fillStyle=c.shirt;g.strokeStyle=c.col;g.lineWidth=5;rr(g,-62,-362,48,110,14);g.fill();g.stroke()}
  neon(11,()=>{L('N','E1','W1')});
  neon(12,()=>{L('P','K2','F2');L('P','K1','F1')});
@@ -63,29 +64,32 @@ function drawChar(c,t){const x=posX(c,t),y=c.y,f=c.face,s=c.s;let al=c.alpha?kf(
   else if(pr==='tasbih'){g.strokeStyle='#f2c14a';g.fillStyle='#f2c14a';g.lineWidth=3;for(let i=0;i<9;i++){g.beginPath();g.arc(Math.sin(i*.55)*14,6+i*7,4,0,7);g.fill()}}
   else if(pr==='cup'){g.fillStyle='#2a1a05';g.strokeStyle=GOLD;g.lineWidth=4;rr(g,-14,-24,28,32,6);g.fill();g.stroke()}g.restore()}
  // head
- const hx=p.H[0],hy=p.H[1];g.shadowColor=c.col;g.shadowBlur=22;g.fillStyle='#071018';g.strokeStyle=c.col;g.lineWidth=9;g.beginPath();g.arc(hx,hy,44,0,7);g.fill();g.stroke();g.shadowBlur=0;g.strokeStyle='#effcff';g.lineWidth=3;g.beginPath();g.arc(hx,hy,44,0,7);g.stroke();
+ const hx=p.H[0],hy=p.H[1];g.shadowColor=c.col;g.shadowBlur=10;g.fillStyle=c.skin||'#f6dcc2';g.strokeStyle=c.col;g.lineWidth=8;g.beginPath();g.arc(hx,hy,44,0,7);g.fill();g.stroke();g.shadowBlur=0;g.strokeStyle='#effcff';g.lineWidth=3;g.beginPath();g.arc(hx,hy,44,0,7);g.stroke();
  // accessories
  g.lineWidth=7;g.strokeStyle=c.col;g.fillStyle=c.shirt;
  for(const a of c.acc){
   if(a==='cap'){g.shadowColor=c.col;g.shadowBlur=14;g.beginPath();g.arc(hx,hy-6,46,Math.PI*1.02,Math.PI*1.98);g.closePath();g.fillStyle=c.shirt;g.fill();g.stroke();g.beginPath();g.moveTo(hx+20,hy-14);g.lineTo(hx+70,hy-10);g.stroke();g.shadowBlur=0}
-  if(a==='hijab'){g.shadowColor=c.col;g.shadowBlur=14;g.fillStyle=c.shirt;g.beginPath();g.ellipse(hx-4,hy+8,56,62,0,Math.PI*.12,Math.PI*1.9);g.lineTo(hx+16,hy+80);g.quadraticCurveTo(hx-30,hy+110,hx-62,hy+70);g.closePath();g.globalAlpha=al*.9;g.fill();g.stroke();g.globalAlpha=al;g.shadowBlur=0;g.fillStyle='#071018';g.beginPath();g.ellipse(hx+10,hy+8,30,34,0,0,7);g.fill();g.lineWidth=4;g.stroke()}
+  if(a==='hijab'){g.shadowColor=c.col;g.shadowBlur=14;g.fillStyle=c.shirt;g.beginPath();g.ellipse(hx-4,hy+8,56,62,0,Math.PI*.12,Math.PI*1.9);g.lineTo(hx+16,hy+80);g.quadraticCurveTo(hx-30,hy+110,hx-62,hy+70);g.closePath();g.globalAlpha=al*.9;g.fill();g.stroke();g.globalAlpha=al;g.shadowBlur=0;g.fillStyle=c.skin||'#f6dcc2';g.beginPath();g.ellipse(hx+10,hy+8,30,34,0,0,7);g.fill();g.lineWidth=4;g.stroke()}
   if(a==='kufi'){g.shadowColor='#fff';g.shadowBlur=10;g.fillStyle='#e9fff3';g.beginPath();g.ellipse(hx,hy-38,32,14,0,0,7);g.fill();g.strokeStyle=c.col;g.lineWidth=3;g.stroke();g.shadowBlur=0}
   if(a==='beard'){g.strokeStyle=c.col;g.fillStyle=c.shirt;g.lineWidth=5;g.beginPath();g.arc(hx+4,hy+10,40,Math.PI*.15,Math.PI*.85);g.lineTo(hx+4,hy+40);g.closePath();g.fill();g.stroke()}
   if(a==='spiky'){g.strokeStyle=c.col;g.lineWidth=7;for(let i=-2;i<=2;i++){g.beginPath();g.moveTo(hx+i*14,hy-40);g.lineTo(hx+i*18+6,hy-70-(i%2?0:10));g.stroke()}}
   if(a==='headphones'){g.strokeStyle=c.col;g.lineWidth=8;g.shadowColor=c.col;g.shadowBlur=12;g.beginPath();g.arc(hx,hy-6,54,Math.PI*1.05,Math.PI*1.95);g.stroke();g.fillStyle=c.shirt;rr(g,hx-62,hy-12,20,38,8);g.fill();g.stroke();rr(g,hx+42,hy-12,20,38,8);g.fill();g.stroke();g.shadowBlur=0}
  }
- // face
+// face (warm skin, dark eyes with highlight, brows, blush, tears)
  const ex=stepVal(t,c.expr),blink=(Math.floor(t*10)%33===0)?.15:1,tk=c.talk.some(w=>t>=w[0]&&t<w[1]),op=tk?(.5+.5*Math.sin(t*20)):0;
- const e1=[hx+6,hy-6],e2=[hx+28,hy-6];g.fillStyle='#fff';g.shadowBlur=0;
- for(const e of[e1,e2]){g.beginPath();g.ellipse(e[0],e[1],7,7*blink,0,0,7);g.fill();g.fillStyle='#071018';g.beginPath();g.arc(e[0]+2.5,e[1],3,0,7);g.fill();g.fillStyle='#fff'}
- g.strokeStyle='#effcff';g.lineWidth=4;
- const brow=(dy1,dy2)=>{g.beginPath();g.moveTo(e1[0]-8,e1[1]-14+dy1);g.lineTo(e1[0]+8,e1[1]-14+dy2);g.stroke();g.beginPath();g.moveTo(e2[0]-8,e2[1]-14+dy1);g.lineTo(e2[0]+8,e2[1]-14+dy2);g.stroke()};
- if(ex==='sad'||ex==='shy')brow(-5,3);else if(ex==='wow')brow(-9,-9);else if(ex==='think')brow(0,-6);
- const mx=hx+18,my=hy+20;g.beginPath();
- if(tk||ex==='open'||ex==='wow'){g.fillStyle='#ff9ab0';g.ellipse(mx,my,8,5+(ex==='wow'?6:0)+op*7,0,0,7);g.fill()}
- else if(ex==='sad'){g.arc(mx,my+10,10,Math.PI*1.15,Math.PI*1.85);g.stroke()}
- else if(ex==='flat'||ex==='think'||ex==='shy'){g.moveTo(mx-8,my+2);g.lineTo(mx+8,my+2);g.stroke()}
- else{g.arc(mx,my-3,11,Math.PI*.15,Math.PI*.85);g.stroke()}
+ const e1=[hx+4,hy-6],e2=[hx+27,hy-6],DK='#2b1d1d';g.shadowBlur=0;
+ g.fillStyle='rgba(255,120,130,.35)';g.beginPath();g.arc(hx+2,hy+12,8,0,7);g.fill();g.beginPath();g.arc(hx+32,hy+12,8,0,7);g.fill();
+ for(const e of[e1,e2]){g.fillStyle=DK;g.beginPath();g.ellipse(e[0],e[1],8,9*blink,0,0,7);g.fill();g.fillStyle='#fff';g.beginPath();g.arc(e[0]+3,e[1]-3,3,0,7);g.fill()}
+ g.strokeStyle=DK;g.lineWidth=4.5;
+ const brow=(a1,a2,y=-17)=>{g.beginPath();g.moveTo(e1[0]-9,e1[1]+y+a1);g.lineTo(e1[0]+9,e1[1]+y+a2);g.stroke();g.beginPath();g.moveTo(e2[0]-9,e2[1]+y+a2);g.lineTo(e2[0]+9,e2[1]+y+a1);g.stroke()};
+ if(ex==='sad'||ex==='cry')brow(4,-4);else if(ex==='worry'||ex==='shy')brow(5,-5,-18);else if(ex==='wow')brow(-4,-4,-22);else if(ex==='think')brow(2,-5);else if(ex==='happy')brow(-2,-2,-20);else brow(0,0);
+ if(ex==='cry'||ex==='sad'){const u=((t*1.6+c.x*.01)%1);g.fillStyle='rgba(120,200,255,.85)';for(const e of[e1,e2]){g.beginPath();g.ellipse(e[0]+(ex==='cry'?-2:0),e[1]+12+u*30,4,6,0,0,7);g.fill()}}
+ const mx=hx+17,my=hy+22;g.strokeStyle='#7a2e2e';g.lineWidth=4.5;g.beginPath();
+ if(tk||ex==='open'||ex==='wow'){g.fillStyle='#b5434f';g.ellipse(mx,my,9,5+(ex==='wow'?7:0)+op*8,0,0,7);g.fill()}
+ else if(ex==='happy'){g.fillStyle='#b5434f';g.arc(mx,my-4,13,0.05*Math.PI,.95*Math.PI);g.closePath();g.fill()}
+ else if(ex==='sad'||ex==='cry'||ex==='worry'){g.arc(mx,my+10,11,Math.PI*1.12,Math.PI*1.88);g.stroke()}
+ else if(ex==='flat'||ex==='think'||ex==='shy'){g.moveTo(mx-8,my+2);g.lineTo(mx+8,my+2+(ex==='think'?-3:0));g.stroke()}
+ else{g.arc(mx,my-3,12,Math.PI*.12,Math.PI*.88);g.stroke()}
  g.restore()}
 function headPos(c,t){const p=poseOf(c,t),x=posX(c,t);return[x+p.H[0]*c.face*c.s,c.y+p.H[1]*c.s]}
 function drawChars(t,order){const L=(order||CAST).slice().sort((a,b)=>a.y-b.y);for(const c of L)drawChar(c,t)}
