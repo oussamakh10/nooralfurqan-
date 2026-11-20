@@ -20,7 +20,7 @@ TOP.push([14.1,18,[[['اكتب',WH],['سؤالك',GOLD]],[['وتجد',WH],['ال
 TOP.push([21.6,24.3,[[['جرّب',GOLD],['«اسأل',WH],['هدهد»',GOLD]],[['الرابط',GOLD],['في',WH],['البايو',GOLD]]],360,66]);
 CAP.push([.3,3.9,'عندك سؤال وتخجل أن تسأل؟'],[4.2,9.9,'فيصمت.. ويبقى السؤال معه'],[10.2,13.9,'ماذا لو سألت دون حرج؟',GOLD],[14.2,18,'يبحث لك.. وفي الفتاوى يحيلك لأهل العلم'],[21.7,24.3,'لا حرج.. فالسؤال أول العلم',GOLD]);
 S.front=t=>{ // big question mark above omar that grows while he stays silent
- if(t<10){const k=t<4?1:1+P(4,9.5,t)*.9,x=posX(omar,t)+(t<4?-95:120),y=GY0()-(t<4?470:520);g.save();g.translate(x,y+Math.sin(t*4)*10);g.scale(k,k);g.rotate(Math.sin(t*3)*.1);g.font='800 130px TJ';g.textAlign='center';g.fillStyle=t<4?GOLD:'#ff9a8a';g.shadowColor=g.fillStyle;g.shadowBlur=14;g.fillText('؟',0,0);g.restore()}
+ if(t<10){const k=t<4?1:1+P(4,9.5,t)*.9,x=posX(omar,t)+(t<4?-95:-150),y=GY0()-(t<4?470:400);g.save();g.translate(x,y+Math.sin(t*4)*10);g.scale(k,k);g.rotate(Math.sin(t*3)*.1);g.font='800 130px TJ';g.textAlign='center';g.fillStyle=t<4?GOLD:'#ff9a8a';g.shadowColor=g.fillStyle;g.shadowBlur=14;g.fillText('؟',0,0);g.restore()}
  phone(t,{cx:730,cy:960,w:380,h:760,in:10.4,vis:[[10.3,0],[10.9,1],[17.6,1],[18.4,0],[21.4,0],[22,1],[24.2,1],[24.4,0]],screens:[[10.4,12.7,'ask'],[12.7,14.2,'ty'],[14.2,18.1,'t1'],[21.4,24.6,'ask']],taps:[[13.9,0,334]],hl:[[14.8,17.8,-186,-70,372,255]]});
  hoopoeSide(t,10.6,18,950,1210,['hhappy','hwow','hcheer']);hoopoeSide(t,21.8,24.2,560,1215,['hcheer']);
  if(t>=14.3&&t<14.5){}burst(owx(t),GY0()-440,14.4,t);confetti(14.5,t,2.0,50)};
