@@ -95,6 +95,10 @@ def music(style='calm',t0=0,t1=24.4,v=1.0,key=0):
             add(t,whoosh(bar*.9,True,.12*v),0);add(t+bar*.9,thud(.35*v,55),0)
             for q,m in enumerate([ch[3]+24,ch[2]+24,ch[3]+12]):add(t+q*bar/3,chime(N(m+key),.09*v,2.2),.3)
         t+=bar;k+=1
+    if style!='pulse':   # never leave a quiet bar: soft pulse under calm/epic
+        q=t0
+        while q<t1-.2:
+            add(q,kick(.14*v),0);add(q+.25,hat(.05*v),.3);q+=.5
 def branch(t):  # scene change: whoosh + thud + chime
     add(t,whoosh(.45,True,.2),0);add(t+.3,thud(.3,80),0);add(t+.3,chime(N(86),.12,1.2),.2)
 def ding(t,m=88):add(t,chime(N(m),.16,1.2),.2);add(t+.1,chime(N(m+7),.12,1.4),-.2)
@@ -111,12 +115,23 @@ def endcard_cues(t0=24.4):
     add(t0+1.1,chime(N(95),.14,1.0),.2)
     for q in (1.7,2.2,2.7):add(t0+q,tone(900 if q<2.6 else 1100,.1,.2,10),0)
     add(t0+3.3,chime(N(79),.13,1.2),.2);add(t0+4.0,pluck(N(84),.13,.8),0)
+def auto_cues(path='story.js',v=1.0):
+    """tick+soft whoosh at every caption/top-text start parsed from story.js (keeps audio locked to the screen)"""
+    import re
+    src=open(path).read();ts=sorted({float(m) for m in re.findall(r'(?:CAP|TOP)\.push\(\[\s*([\d.]+)\s*,',src)})
+    for t in ts:add(t,tick(.16*v),0);add(t,whoosh(.25,True,.07*v),0)
+def lift(x,target=.05,maxg=3.0):
+    """gentle upward compression: raises quiet moments so no second is dead air"""
+    w=int(sr*.25);e=np.sqrt(np.convolve(x*x,np.ones(w)/w,'same'))+1e-5;gn=np.clip(target/e,1,maxg)
+    gn=np.convolve(gn,np.ones(int(sr*.3))/int(sr*.3),'same');return x*gn
 def finish(path='a.wav'):
     global L,R
     ir=np.exp(-np.arange(int(sr*.35))/sr*14)*rng.standard_normal(int(sr*.35))*.02
     def rev(x):
         m=len(x)+len(ir);return irfft(rfft(x,m)*rfft(ir,m),m)[:len(x)]
     L=L+rev(L)*.6;R=R+rev(R)*.6
+    m_=np.abs(L)+np.abs(R)
+    L=lift(L);R=lift(R)
     fo=np.ones(n);m=int(sr*.5);fo[-m:]=np.linspace(1,0,m);L*=fo;R*=fo
     mx=max(np.abs(L).max(),np.abs(R).max());L=L/mx*.85;R=R/mx*.85
     st=np.stack([L,R],1)

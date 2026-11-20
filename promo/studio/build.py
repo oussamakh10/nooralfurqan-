@@ -77,6 +77,10 @@ def qa(name):
     mean=float(re.search(r'mean_volume: (-?[\d.]+)',v).group(1));mx=float(re.search(r'max_volume: (-?[\d.]+)',v).group(1));rep.append(('audio',f'mean {mean}dB max {mx}dB','OK' if -35<mean<-14 and mx<=0 else 'CHECK LEVELS'))
     bd=subprocess.run(['ffmpeg','-i',f,'-vf','blackdetect=d=0.3:pix_th=0.05','-an','-f','null','-'],capture_output=True,text=True).stderr
     rep.append(('black frames','none' if 'black_start' not in bd else 'FOUND','OK' if 'black_start' not in bd else 'CHECK'))
+    raw=subprocess.run(['ffmpeg','-v','error','-i',f,'-f','f32le','-ac','1','-ar','8000','-'],capture_output=True).stdout
+    import numpy as np
+    x=np.frombuffer(raw,dtype=np.float32);rms=[20*np.log10(np.sqrt((x[i*8000:(i+1)*8000]**2).mean())+1e-9) for i in range(len(x)//8000)]
+    qs=[i for i,r in enumerate(rms) if r<-30];rep.append(('quiet seconds (<-30dB)',str(qs) if qs else 'none','OK' if not qs else 'DEAD AIR - add music/sfx there'))
     sd=subprocess.run(['ffmpeg','-i',f,'-af','silencedetect=n=-45dB:d=1.5','-f','null','-'],capture_output=True,text=True).stderr
     rep.append(('silence >1.5s','none' if 'silence_start' not in sd else 'FOUND','OK' if 'silence_start' not in sd else 'CHECK (dead air)'))
     try:
@@ -103,10 +107,10 @@ S.over=t=>{pill(t,2.6,6,'① السيناريو الأرجح',540,548,CYAN);arro
 '''
 TEMPLATE_AUDIO='''import sys;sys.path.insert(0,'../..')
 from audiolib import *
-music('calm',0,24.4)                      # calm | pulse | epic
+music('calm',0,24.4)                      # calm | pulse | epic (always continuous)\nauto_cues('story.js')                     # tick+whoosh locked to every caption/TOP start
 add(0.05,whoosh(.5,False,.25),0)
 for t in [2.6,6.3,10.4,14.3]:branch(t)    # one per scene change
-midcta_cues(18.2);endcard_cues(24.4)
+
 finish('a.wav')
 '''
 def new(name):
