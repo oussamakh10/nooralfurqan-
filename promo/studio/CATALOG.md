@@ -1,0 +1,3 @@
+# Videos made (story · method) — do not repeat
+15–27 earlier: GPS map, split panels, quiz card, 24h clock, trees, blob/human, rug 40y, cosmic zoom-out, days time-lapse…
+31 دعاء (2:186, 39:53) · 32 الشمعة/الصلاة (4:103) · 33 الميزان (73:4) · 34 الرزق/التوكل (65:3; run cycle+parallax) · 35 الصاحب (hadith) · 36 الصدقة (hadith شق تمرة) · 37 الأمانة (4:58) · 38 بر الوالدين (17:23) · 39 تعلّم الدين (20:114, mock phone) · 40 الفجر (17:78, app notification solution) · 41 what-if (أحب الأعمال أدومها) · 42 battery heart (13:28) · 43 what-if + real app screenshots + bio link (no verse)
