@@ -57,6 +57,7 @@
     '.hz-rr{display:flex;align-items:center;justify-content:center;gap:12px;margin-top:6px}.hz-rr .sm{min-height:44px;border-radius:999px;border:2px solid var(--line);background:var(--surface);color:var(--fg);font:800 .88rem var(--display);padding:0 16px;cursor:pointer}'+
     '.hz-row.fix{position:sticky;bottom:92px;z-index:6;padding:16px 0 6px;margin-top:8px;background:linear-gradient(to top,var(--bg,#fbf3dc) 55%,transparent)}.hz-row.fix button.pri{min-width:60%;min-height:52px;box-shadow:0 5px 0 rgba(0,0,0,.2)}'+
     '.hz-opt{display:flex;align-items:center;justify-content:center;gap:10px;position:relative}.hz-opt i{position:absolute;inset-inline-start:12px;width:28px;height:28px;border-radius:50%;display:grid;place-items:center;font:800 .78rem var(--display);font-style:normal;background:var(--line);color:var(--muted)}';
+    s.textContent+='.hz-audbox{position:sticky;bottom:96px;z-index:7;margin:10px 0;padding:10px 12px;border-radius:16px;background:var(--surface);border:2px solid var(--accent);box-shadow:0 8px 20px -10px rgba(0,0,0,.5);text-align:center}.hz-audbox a{color:var(--accent);font-weight:800}.hz-rr .sm.rec{background:#c0392b;border-color:#c0392b;color:#fff;animation:hzpulse 1s infinite}';
     document.head.appendChild(s);
   }
   /* ---------- تقسيم السورة إلى مقاطع صغيرة ---------- */
@@ -93,11 +94,49 @@
   const prev=function(s,ch){const cs=chunks(s),i=cs.findIndex(function(c){return c[0]===ch[0]});return i>0?cs[i-1]:null};
   const ayText=function(s,a){return Q.v[s-1][a-1]};
   /* ---------- الصوت ---------- */
-  const A=new Audio();let AQ=[];
-  A.addEventListener('ended',function(){if(AQ.length){const n=AQ.shift();playOne(n[0],n[1])}});
-  function playOne(s,a){try{if(typeof AU!=='undefined')AU.pause()}catch(e){}A.src=ayahUrl(recById(S.rec),s,a);const p=A.play();if(p&&p.catch)p.catch(function(){toast('تعذّر تشغيل الصوت. تحقّق من الاتصال.')})}
+  let AQ=[],HZP=false,LASTURL='';
+  const aud=function(h){const e=document.getElementById('hz-aud');if(!e)return;if(!h){e.hidden=true;e.innerHTML='';return}e.hidden=false;e.innerHTML=h};
+  AU.addEventListener('ended',function(){if(HZP&&AQ.length){const n=AQ.shift();playOne(n[0],n[1])}else if(HZP){aud('')}});
+  AU.addEventListener('error',function(){if(!HZP||!AU.getAttribute('src'))return;
+    aud('تعذّر تشغيل الصوت داخل الصفحة. تأكد من الإنترنت وأن الصوت غير مكتوم. <a href="'+esc(LASTURL)+'" target="_blank" rel="noopener">افتح الملف الصوتي في تبويب جديد</a>')});
+  AU.addEventListener('playing',function(){if(HZP)aud('')});
+  function playOne(s,a){
+    HZP=true;AP=null;try{renderMini()}catch(e){}
+    LASTURL=ayahUrl(recById(S.rec),s,a);aud('جارٍ تحميل الصوت…');
+    try{startAudio(LASTURL)}catch(e){aud('تعذّر تشغيل الصوت.')}
+  }
   function playChunk(s,ch){AQ=[];for(let a=ch[0]+1;a<=ch[1];a++)AQ.push([s,a]);playOne(s,ch[0])}
-  function stopA(){AQ=[];try{A.pause()}catch(e){}}
+  function stopA(){AQ=[];HZP=false;try{AU.pause()}catch(e){}aud('')}
+  /* ---------- النطق: تعرّف على الصوت مع مقارنة مرنة ---------- */
+  function fz(a,b){if(a===b)return true;if(Math.min(a.length,b.length)<3)return false;
+    let i=0,j=0,d=0;while(i<a.length&&j<b.length){if(a[i]===b[j]){i++;j++}else{d++;if(d>1)return false;if(a.length>b.length)i++;else if(b.length>a.length)j++;else{i++;j++}}}return d+(a.length-i)+(b.length-j)<=1}
+  function score(want,heard){
+    const W2=want.map(skel).filter(Boolean),H2=heard.map(skel).filter(Boolean),n=W2.length,m=H2.length;
+    const L=[];for(let i=0;i<=n;i++){L.push(new Array(m+1).fill(0))}
+    for(let i=1;i<=n;i++)for(let j=1;j<=m;j++)L[i][j]=fz(W2[i-1],H2[j-1])?L[i-1][j-1]+1:Math.max(L[i-1][j],L[i][j-1]);
+    const miss=[];let i=n,j=m;const ok={};
+    while(i>0&&j>0){if(fz(W2[i-1],H2[j-1])){ok[i-1]=1;i--;j--}else if(L[i-1][j]>=L[i][j-1])i--;else j--}
+    W2.forEach(function(w,k){if(!ok[k])miss.push(k)});
+    return {pct:n?Math.round(L[n][m]/n*100):0,miss:miss,W2:W2}}
+  let REC1=null;
+  function voice(s,a,btn){
+    const SR=window.SpeechRecognition||window.webkitSpeechRecognition;
+    if(!SR){aud('التعرّف على الصوت غير متاح في هذا المتصفح أو هذا العرض. جرّب فتح التطبيق في Chrome على جهازك، أو اقرأ بصوتك واكتفِ بخطوة «التلقين» للتأكد بنفسك.');return}
+    if(REC1){try{REC1.stop()}catch(e){}REC1=null;return}
+    stopA();const old=btn.textContent;btn.textContent='🎙 تكلّم الآن…';btn.classList.add('rec');
+    const want=W(ayText(s,a)),rec=new SR();REC1=rec;rec.lang='ar-SA';rec.interimResults=false;rec.maxAlternatives=3;rec.continuous=false;
+    let got=false;const done=function(){REC1=null;btn.textContent=old;btn.classList.remove('rec')};
+    const to=setTimeout(function(){try{rec.stop()}catch(e){}},15000);
+    rec.onresult=function(e){got=true;let best=null;
+      for(let k=0;k<e.results[0].length;k++){const r=score(want,e.results[0][k].transcript.split(/\s+/).filter(Boolean));if(!best||r.pct>best.pct)best=r}
+      const ws=want.filter(function(w){return skel(w)});const miss=best.miss.map(function(k){return ws[k]}).filter(Boolean);
+      aud((best.pct>=85?'<b style="color:var(--accent)">ممتاز، ما شاء الله!</b> ':best.pct>=55?'<b>جيد، قريب!</b> ':'<b>حاول مرة أخرى بوضوح.</b> ')+'تطابق '+N(best.pct)+'%'+(miss.length&&best.pct<100?'<br>لم أسمع: <span style="font-family:var(--quran);font-size:1.15rem">'+esc(miss.slice(0,5).join(' · '))+'</span>':'')+'<br><small>(تقدير آلي قد يخطئ، والمرجع التلاوة على شيخ)</small>');
+      if(best.pct>=85)SND.correct&&SND.correct();else SND.wrong&&SND.wrong()};
+    rec.onerror=function(e){got=true;const er=e&&e.error;
+      aud(er==='not-allowed'||er==='service-not-allowed'?'لم يُسمح بالميكروفون. فعّل إذن الميكروفون للتطبيق من إعدادات المتصفح ثم أعد المحاولة (قد لا يعمل داخل بعض العروض المضمّنة).':er==='no-speech'?'لم أسمع صوتًا. اقترب من الميكروفون وأعد المحاولة.':er==='audio-capture'?'لا يوجد ميكروفون متاح.':er==='network'?'التعرّف على الصوت يحتاج اتصالًا بالإنترنت.':'تعذّر التعرّف على الصوت ('+esc(er||'')+').')};
+    rec.onend=function(){clearTimeout(to);if(!got)aud('لم أسمع شيئًا. أعد المحاولة وتكلّم بعد ظهور «تكلّم الآن».');done()};
+    try{rec.start()}catch(e){done();aud('تعذّر بدء الميكروفون.')}
+  }
   /* ---------- الشاشة الرئيسية ---------- */
   const box=function(){return document.getElementById('hifzbox')};
   function home(){
@@ -182,7 +221,7 @@
       h+='<p class="hz-stepname">٣) كرّر بصوت مسموع</p><p class="hz-help">انظر في النص وردّد كل آية '+N(REPS)+' مرات، واضغط الزر عند كل مرة.</p>'+
        ayCards(s,ch,function(a){const c=ST.rep[a]||0,d=c>=REPS;if(!d)all=false;
         return '<div class="hz-q"><div class="hz-ay">'+esc(ayText(s,a))+' <span class="no">'+N(a)+'</span></div>'+
-         '<div class="hz-rr"><button class="sm" data-hz="play1" data-a="'+a+'">▶ استمع</button><button class="hz-cc'+(d?' done':'')+'" style="--p:'+Math.min(100,c/REPS*100)+'" data-hz="rep" data-a="'+a+'" aria-label="كرّرتها"><span>'+(d?'✓':N(c)+'/'+N(REPS))+'</span></button><button class="sm" data-hvoice="'+a+'" data-hs2="'+s+'">نطقي</button></div></div>'}) +
+         '<div class="hz-rr"><button class="sm" data-hz="play1" data-a="'+a+'">▶ استمع</button><button class="hz-cc'+(d?' done':'')+'" style="--p:'+Math.min(100,c/REPS*100)+'" data-hz="rep" data-a="'+a+'" aria-label="كرّرتها"><span>'+(d?'✓':N(c)+'/'+N(REPS))+'</span></button><button class="sm" data-hz="voice" data-a="'+a+'">🎙 نطقي</button></div></div>'}) +
        '<div class="hz-row fix"><button class="pri" data-hz="go" '+(all?'':'disabled')+'>تابع إلى التلقين</button></div>';
     }else if(ST.step===3){
       const t=['أخفينا ثلث الكلمات: أكمل الناقص من ذاكرتك ثم اضغط عليه للتأكد.','أخفينا معظم الكلمات: جرّب أن تقرأ الآيات وتتذكر الناقص.','أخفينا النص كله: اقرأ من ذاكرتك، واضغط على أي كلمة للتأكد منها. التلميح يُظهر الحرف الأول.'];
@@ -200,7 +239,7 @@
         h+=qView('٥) اختبر نفسك');
       }
     }
-    box().innerHTML=h;
+    box().innerHTML=h+'<div id="hz-aud" class="hz-help hz-audbox" role="status" aria-live="polite" hidden></div>';
   }
   function qView(title){
     const q=ST.qs[ST.qi],a=ST.ans;
@@ -249,7 +288,7 @@
        '<div class="hz-row">'+(ST.shown?'<button data-hz="play1" data-a="'+ch[0]+'">▶ استمع</button>':'<button class="pri" data-hz="rshow">أظهر النص</button>')+'</div></div>'+
        (ST.shown?'<div class="hz-rate">'+(ok?'<button class="g" data-hz="rate" data-v="2">أتقنته بلا تردد</button>':'')+'<button data-hz="rate" data-v="1">تردّدت قليلًا</button><button class="r" data-hz="rate" data-v="0">نسيت أجزاء منه</button></div>':'');
     }
-    b.innerHTML=h;
+    b.innerHTML=h+'<div id="hz-aud" class="hz-help hz-audbox" role="status" aria-live="polite" hidden></div>';
   }
   function rate(v){
     const it=ST.queue[ST.qi],k=KEY(it.s,it.ch),now=Date.now();
@@ -278,6 +317,7 @@
     if(z==='prevshow'){ST.prev&&ST.prev&&(ST.rv['p'+ST.prev[0]]=1,(function(){for(let a=ST.prev[0];a<=ST.prev[1];a++)ST.rv['p'+a]=1})());view();return}
     if(z==='playall'){playChunk(ST.s,ST.ch);ST.heard++;const el=document.getElementById('hz-heard');if(el)el.textContent='استمعت '+N(ST.heard)+' مرات';const g=document.querySelector('[data-hz="go"]');if(g)g.disabled=false;return}
     if(z==='stopa'){stopA();return}
+    if(z==='voice'){voice(ST.s,+d.a,t);return}
     if(z==='play1'){AQ=[];playOne(ST.mode==='rev'?ST.queue[ST.qi].s:ST.s,+d.a);return}
     if(z==='rep'){const a=+d.a;ST.rep[a]=Math.min(REPS,(ST.rep[a]||0)+1);SND.coin&&0;view();return}
     if(z==='hint'){ST.hint=!ST.hint;view();return}
