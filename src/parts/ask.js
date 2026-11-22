@@ -130,7 +130,7 @@ function askLocal(q,more,bad){
       }
     }
     /* 4) تفسير الميسر عند ضعف النتائج */
-    if(!used&&(!res.length||res[0].cov<.6)&&TF.muy&&qt.length){
+    if(!used&&(!res.length||res[0].cov<.6)&&TF.muy&&qt.length>=2){
       if(!KB.tafDocs){const td=[];TF.muy.forEach(function(sv,i){sv.forEach(function(t,j){if(t)kbAdd(td,tafOf(TF.muy,i+1,j+1),tafOf(TF.muy,i+1,j+1),SN[i]+' '+(j+1),1)})});KB.tafDocs=td;const r=kbIndex(td);KB.tafDf=r.df;KB.tafAvg=r.avg;
         td.forEach(function(x,k){});}
       const tr=kbScore(KB.tafDocs,KB.tafDf,KB.tafAvg,qt,nq);
