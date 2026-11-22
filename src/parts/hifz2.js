@@ -56,10 +56,11 @@
   function dueList(){
     const now=Date.now(),out=[],seen={};
     Object.keys(hz()).forEach(function(k){const r=hz()[k],p=parse(k);if(p&&r.d<=now){out.push({s:p.s,ch:p.ch,d:r.d});seen[k]=1}});
-    Object.keys(S.hifz||{}).forEach(function(sk){const s=+sk;if(!(S.hifz[s]||[]).length||!Q.v[s-1])return;chunks(s).forEach(function(ch){const k=KEY(s,ch);if(!seen[k]&&!hz()[k]&&memHas(s,ch)){out.push({s:s,ch:ch,d:0})}})});
+    Q&&Object.keys(S.hifz||{}).forEach(function(sk){const s=+sk;if(!(S.hifz[s]||[]).length||!Q.v[s-1])return;chunks(s).forEach(function(ch){const k=KEY(s,ch);if(!seen[k]&&!hz()[k]&&memHas(s,ch)){out.push({s:s,ch:ch,d:0})}})});
     out.sort(function(a,b){return a.d-b.d});return out;
   }
   function nextNew(pref){
+    if(!Q)return null;
     const order=pref?[pref].concat(HS.filter(function(x){return x!==pref})):HS;
     for(let i=0;i<order.length;i++){const s=order[i];const cs=chunks(s);for(let j=0;j<cs.length;j++){if(status(s,cs[j])==='new')return {s:s,ch:cs[j],i:j}}}
     return null;
@@ -77,22 +78,24 @@
   const box=function(){return document.getElementById('hifzbox')};
   function home(){
     css();const b=box();if(!b)return;
-    loadQ().then(function(){
+    if(!Q)loadQ().then(function(){if(box()&&!ST&&!HV)home()}).catch(function(){const n=document.getElementById('hz-net');if(n)n.hidden=false});
+    (function(){
       const due=dueList(),nn=nextNew(S.hzl&&S.hzl.s),mk=Object.keys(hz()).length;
       let tot=0,done=0;HS.forEach(function(s){tot+=AYC[s-1];done+=hCount(s)});
       b.innerHTML=
        '<div class="say"><div class="mas">'+hoopoe('happy',88)+'</div><div class="bubble"><p>الحفظ الثابت يأتي من مقطع صغير كل يوم ومراجعة ما قبله. سنمشي معًا بخطوات: استمع، كرّر، أخفِ تدريجيًّا، ثم اختبر نفسك.</p></div></div>'+
-       '<div class="hz-today"><h3>وردك اليوم</h3><p class="muted" style="margin:0 0 8px;font-size:.9rem">'+(due.length?'عندك '+N(due.length)+' مقطع للمراجعة، راجعها قبل أن تحفظ جديدًا.':'لا مراجعات مستحقة الآن. ابدأ حفظًا جديدًا بإذن الله.')+'</p>'+
+       '<div class="hz-today"><h3>وردك اليوم</h3><p class="muted" id="hz-net" '+(Q?'hidden':'')+' style="margin:0 0 8px;font-size:.88rem;color:#c0392b">'+(Q?'':'جارٍ تحميل نص القرآن… إن لم يظهر الزر فتحقّق من الاتصال ثم أعد فتح الصفحة.')+'</p><p class="muted" style="margin:0 0 8px;font-size:.9rem">'+(due.length?'عندك '+N(due.length)+' مقطع للمراجعة، راجعها قبل أن تحفظ جديدًا.':'لا مراجعات مستحقة الآن. ابدأ حفظًا جديدًا بإذن الله.')+'</p>'+
        '<div class="hz-row"><button class="pri" data-hz="rev" '+(due.length?'':'disabled')+'>مراجعة ('+N(due.length)+')</button><button class="'+(due.length?'':'pri')+'" data-hz="new" '+(nn?'':'disabled')+'>'+(nn?'حفظ جديد: '+esc(SN[nn.s-1]):'أتممت كل المقاطع')+'</button></div></div>'+
        '<div class="hz-stats"><div><b>'+N(mk)+'</b><span>مقطع محفوظ</span></div><div><b>'+N(done)+'</b><span>آية</span></div><div><b>'+N(due.length)+'</b><span>للمراجعة</span></div></div>'+
        '<div class="card" style="margin-bottom:10px"><div class="row" style="display:flex;justify-content:space-between"><b>تقدّمك في الحفظ</b><small class="muted">'+N(done)+' من '+N(tot)+' آية</small></div><div class="pbar gold" style="margin-top:6px"><i style="width:'+(done/tot*100)+'%"></i></div></div>'+
        HG.map(function(g){return '<h3 class="hgh">'+g[0]+'</h3><div class="hifz">'+g[1].map(function(s){const c=hCount(s),t=AYC[s-1];return '<button class="hrow" data-hs="'+s+'"><b>'+SN[s-1]+'</b><div class="pbar"><i style="width:'+(c/t*100)+'%"></i></div><small class="muted">'+N(c)+'/'+N(t)+'</small></button>'}).join('')+'</div>'}).join('')+
        '<p class="fine">الأصل في الحفظ المراجعة على شيخ متقن؛ هذه الصفحة تعينك على التكرار والمراجعة المتباعدة (غدًا، ثم 3 أيام، ثم أسبوع…).</p>';
-    });
+    })();
   }
   /* ---------- صفحة السورة: قائمة المقاطع ---------- */
   function surah(s){
     css();const b=box();if(!b)return;
+    if(!Q){b.innerHTML='<div class="hz-top"><button class="iconbtn" data-act="hback" aria-label="رجوع">'+IC.back+'</button><h2>حفظ سورة '+SN[s-1]+'</h2><span style="width:44px"></span></div><p class="hz-help">جارٍ تحميل نص القرآن…</p>'}
     loadQ().then(function(){
       const cs=chunks(s),nn=cs.findIndex(function(c){return status(s,c)==='new'});
       b.innerHTML='<div class="hz-top"><button class="iconbtn" data-act="hback" aria-label="رجوع">'+IC.back+'</button><h2>حفظ سورة '+SN[s-1]+'</h2><span style="width:44px"></span></div>'+
@@ -101,7 +104,7 @@
        cs.map(function(ch,i){const st=status(s,ch),r=rec(s,ch),w=W(ayText(s,ch[0])).slice(0,5).join(' ');
         const pill=st==='new'?'<span class="hz-pill new">جديد</span>':st==='due'?'<span class="hz-pill due">راجِع</span>':st==='strong'?'<span class="hz-pill strong">متقن</span>':'<span class="hz-pill">المستوى '+N(r?r.l:1)+'</span>';
         return '<button class="hz-ch" data-hz="'+(st==='new'?'learn':'revone')+'" data-s="'+s+'" data-a="'+ch[0]+'" data-b="'+ch[1]+'"><span class="n">'+N(i+1)+'</span><span class="t"><b>'+(ch[0]===ch[1]?'الآية '+N(ch[0]):'الآيات '+N(ch[0])+'–'+N(ch[1]))+'</b><span>'+esc(w)+' …</span></span>'+pill+'</button>'}).join('');
-    });
+    }).catch(function(){const bb=box();if(bb)bb.innerHTML='<div class="hz-top"><button class="iconbtn" data-act="hback" aria-label="رجوع">'+IC.back+'</button><h2>حفظ سورة '+SN[s-1]+'</h2><span style="width:44px"></span></div><p class="hz-help" style="color:#c0392b">تعذّر تحميل نص القرآن. تحقّق من الاتصال بالإنترنت ثم أعد المحاولة.</p><div class="hz-row"><button class="pri" data-hz="retry" data-s="'+s+'">إعادة المحاولة</button></div>'});
   }
   /* ---------- أسئلة الاختبار ---------- */
   function lastW(t){const w=W(t);return w[w.length-1]}
@@ -244,6 +247,7 @@
     if(z==='rev'){loadQ().then(function(){const l=dueList();if(l.length)startRev(l)});return}
     if(z==='learn'){loadQ().then(function(){startLearn(+d.s,[+d.a,+d.b])});return}
     if(z==='revone'){loadQ().then(function(){startRev([{s:+d.s,ch:[+d.a,+d.b],d:0}])});return}
+    if(z==='retry'){HV=+d.s;surah(HV);return}
     if(z==='exit'){stopA();ST=null;if(HV)surah(HV);else home();return}
     if(!ST)return;
     if(z==='w'){ST.rv[d.k]=!ST.rv[d.k];view();return}
