@@ -40,7 +40,7 @@ function kbBuild(){
   try{GUIDE.forEach(function(g){(g.items||[]).forEach(function(it){var q=it[0];if(q&&q[0])kbAdd(d,q[0]+' '+(g.t&&g.t[0]||''),q[0],'دليل التطبيق',.8)})})}catch(e){}
   try{for(const k in B){['e','m','h'].forEach(function(l){((B[k]||{})[l]||[]).forEach(function(x){if(x[0]&&x[1])kbAdd(d,x[0]+' '+x[1],x[0]+' — '+x[1],'أسئلة التحدي',.9)})})}}catch(e){}
   try{SN.forEach(function(n,i){const m=(typeof QCH!=='undefined'?0:0);kbAdd(d,'سورة '+n+' عدد آيات '+AYC[i]+' ترتيبها '+(i+1),'سورة '+n+': ترتيبها '+(i+1)+' في المصحف وعدد آياتها '+AYC[i],'فهرس القرآن',.9)})}catch(e){}
-  try{KNOW.forEach(function(k){kbAdd(d,k.q+" "+k.a,k.a,k.s,1.6)})}catch(e){}
+  try{KNOW.forEach(function(k){kbAdd(d,k.q+" "+k.a,k.a,k.s,k.w||1.6)})}catch(e){}
   KB.docs=d;const r=kbIndex(d);KB.df=r.df;KB.avg=r.avg;
 }
 function kbScore(docs,df,avg,qt,qn){
@@ -91,7 +91,7 @@ function quoteSearch(nq,qt){
   kbQN();const res=[];
   const strip=nq.replace(/(^| )(ما|تفسير|معني|معنا|اية|ايه|قال|تعالي|سوره|من|في|اين|هذه|الايه|الاية|هي|هو)(?= |$)/g,' ').replace(/\s+/g,' ').trim();
   const sn=strip.replace(/ا/g,'');
-  if(sn.length>=7){KB.qn.forEach(function(sv,i){sv.forEach(function(t,j){if(res.length<4&&t.indexOf(sn)>=0)res.push([i+1,j+1,9])})})}
+  if(sn.length>=7&&(sn.length>=14||!/^(ما|كم|كيف|لماذا|هل|متي|اين|من|اذكر|عدد|اشرح)( |$)/.test(nq))){KB.qn.forEach(function(sv,i){sv.forEach(function(t,j){if(res.length<4&&t.indexOf(sn)>=0)res.push([i+1,j+1,9])})})}
   const qword=/^(ما|كم|كيف|لماذا|هل|متي|اين|من|اذكر|عدد|اشرح)( |$)/.test(nq)&&!/اية|ايه|تفسير|قال تعالي/.test(nq);
   if(!res.length&&!qword){
     const raw=strip.split(' ').filter(function(w){return w.length>2}).map(function(w){return w.replace(/ا/g,'')}).filter(function(w){return w.length>1});
@@ -109,7 +109,7 @@ function askLocal(q,more,bad){
     /* 1) مرجع آية: 2:255 أو البقرة 255 */
     let s=0,a=0,m=nq.match(/(\d{1,3}) ?: ?(\d{1,3})/);
     if(m){s=+m[1];a=+m[2]}
-    const sf=/تطبيق|الموقع/.test(nq)?0:surahFind(nq);
+    const sf=/تطبيق|الموقع/.test(nq)?0:(!/فضل/.test(nq)&&(/سوره|تفسير|مقاصد|مكيه|مدنيه|ايات|ترتيب|اسم/.test(nq)||nq.split(' ').length<=2)?surahFind(nq):0);
     if(!s&&sf){const m2=nq.match(/(?:اي[هة]|رقم)? ?(\d{1,3})/);if(m2&&+m2[1]>0&&+m2[1]<=AYC[sf-1]&&!/كم|عدد/.test(nq)){s=sf;a=+m2[1]}}
     if(s>=1&&s<=114&&a>=1&&a<=AYC[s-1]){const p=ayahPart(s,a);if(p){parts.push(p);ctx.push(p.c);used=true}}
     else if(sf){shortS=/كم|عدد|مكيه|مدنيه|ترتيب|اي سوره/.test(nq)&&!/تفسير|مقاصد|معني|تسميه|فضل/.test(nq);const p=surahPart(sf,/كم|عدد|مكيه|مدنيه|ترتيب|اي سوره/.test(nq)&&!/تفسير|مقاصد|معني|تسميه|فضل/.test(nq));parts.push(p);ctx.push(p.c);used=true}
