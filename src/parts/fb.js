@@ -98,6 +98,6 @@ function fbOut(del){
   document.addEventListener('click',function(e){
     const t=e.target.closest('button');if(!t||t.disabled)return;const a=t.dataset.act;
     if(a==='fb-out'){fbOut(false).then(function(){toast(g3(["تم تسجيل الخروج. تقدّمك محفوظ على هذا الجهاز.","Signed out. Your progress stays on this device.","Déconnecté. Votre progression reste sur cet appareil."]));openSettings()});return}
-    if(a==='fb-del'){if(confirm(T('سيُحذف تقدّمك المحفوظ في السحابة نهائيًا (يبقى ما على جهازك). متأكد؟'))){fbOut(true).then(function(){toast(g3(["حُذفت بياناتك من السحابة","Your cloud data was deleted","Vos données cloud ont été supprimées"]));openSettings()})}return}
+    if(a==='fb-del'){nfConfirm(T('سيُحذف تقدّمك المحفوظ في السحابة نهائيًا (يبقى ما على جهازك). متأكد؟'),function(){fbOut(true).then(function(){toast(g3(["حُذفت بياناتك من السحابة","Your cloud data was deleted","Vos données cloud ont été supprimées"]));openSettings()})},{title:g3(['حذف بيانات السحابة','Delete cloud data','Supprimer les données cloud']),ok:g3(['نعم، احذف','Yes, delete','Oui, supprimer']),danger:1});return}
   });
 })();

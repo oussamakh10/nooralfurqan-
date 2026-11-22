@@ -33,9 +33,10 @@
     if(b.dataset.lg==='ok'){S.consent={v:1,t:Date.now()};save();const m=document.getElementById('lgm');if(m)m.hidden=true}
     if(b.dataset.lg==='open'){consent()}
     if(b.dataset.lg==='revoke'){
-      if(!confirm(T('سحب الموافقة يوقف ميزات السحابة ويسجّل خروجك. متأكد؟')))return;
+      nfConfirm(T('سحب الموافقة يوقف ميزات السحابة ويسجّل خروجك. متأكد؟'),function(){
       const done=function(){S.consent=null;save();toast(g3(['تم سحب الموافقة','Consent withdrawn','Consentement retiré']));try{openSettings()}catch(x){}};
       if(typeof fbOut==='function'&&S.acct)fbOut(true).then(done);else done();
+      },{title:g3(['سحب الموافقة','Withdraw consent','Retirer le consentement']),ok:g3(['سحب الموافقة','Withdraw','Retirer']),danger:1});
     }
   });
   function row(){

@@ -245,7 +245,7 @@
     if(a==='sa'){const t=BX.tasks[BX.i],v=+($('#bxsa')||{}).value,f=BX.fb,old=f.s*t.w;BX.earned+=v-old;BX.res[BX.res.length-1].e=v;f.s=v/t.w;f.sa=1;return render()}
     if(a==='oreset'){BX.ord=[];return render()}
     if(a==='again'){return BX.exam?startExam(1):BX.id==='drill'?drill(BX.tasks[0].k):BX.id==='mock'?startMock():start(BX.id)}
-    if(a==='quit'){if(confirm('هل تريد إنهاء التمرين؟ ستُحتسب النتيجة بما أنجزت.'))return finish()}
+    if(a==='quit'){nfConfirm('هل تريد إنهاء التمرين؟ ستُحتسب النتيجة بما أنجزت.',function(){finish()},{ok:'إنهاء',danger:1});return}
   });
   document.addEventListener('input',function(e){if(BX&&e.target&&e.target.id==='bxin'){(BX.dr=BX.dr||{})[BX.i]=e.target.value;try{S.bxr=JSON.parse(JSON.stringify(BX));save()}catch(x){}}});
   document.addEventListener('keydown',function(e){

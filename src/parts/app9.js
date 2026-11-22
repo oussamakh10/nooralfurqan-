@@ -86,9 +86,9 @@ document.addEventListener('click',function(e){
   if(a==='circ-join')return joinCircle();
   if(a==='circ-leave'){S.circle='';save();syncBoard();return pageAch()}
   if(a==='settings')return openSettings();
-  if(a==='reset'){if(confirm(T('هل تريد مسح كل تقدّمك؟'))){try{Object.keys(localStorage).forEach(function(k){if(/^(hudhud-|nf-)/.test(k))localStorage.removeItem(k)});sessionStorage.clear()}catch(e){}location.reload()}return}
+  if(a==='reset'){nfConfirm(T('هل تريد مسح كل تقدّمك؟'),function(){try{Object.keys(localStorage).forEach(function(k){if(/^(hudhud-|nf-)/.test(k))localStorage.removeItem(k)});sessionStorage.clear()}catch(e){}location.reload()},{title:g3(['مسح كل التقدّم','Erase all progress','Effacer toute la progression']),note:g3(['ستُمحى نقاطك وسلسلتك ودروسك المحفوظة على هذا الجهاز، ولا يمكن التراجع عن ذلك.','Your points, streak and saved lessons on this device will be erased. This cannot be undone.','Vos points, série et leçons enregistrées sur cet appareil seront effacés. Action irréversible.']),ok:g3(['نعم، امسح','Yes, erase','Oui, effacer']),cancel:g3(['إلغاء','Cancel','Annuler']),danger:1});return}
   if(a==='trtoggle'){S.tr=S.tr==='en'?'':'en';save();return openSurah(RV.s)}
-  if(a==='khat-set'){const v=prompt(T('في كم يومًا تريد ختم المصحف؟ (من 1 إلى 365)'),S.khat.days);const n=parseInt(toLatin(v),10);if(n>=1&&n<=365){S.khat.days=n;save();renderPage()}return}
+  if(a==='khat-set'){nfPrompt(T('في كم يومًا تريد ختم المصحف؟ (من 1 إلى 365)'),S.khat.days,function(v){const n=parseInt(toLatin(v),10);if(n>=1&&n<=365){S.khat.days=n;save();renderPage()}else toast(T('اكتب رقمًا من 1 إلى 365'))},{title:g3(['مدة ختم المصحف','Quran completion goal','Objectif de lecture du Coran']),num:1});return}
   if(a==='wkclaim'){const k=weekKey();if(!S.wkc[k]&&weekSum(S.xpd)>=WK_TARGET){S.wkc[k]=1;addXP(50);SND.bell();celebrate('أتممت تحدي الأسبوع','أضفت 50 نقطة إلى رصيدك.','cheer')}else if(S.wkc[k])toast('استلمتَ مكافأة هذا الأسبوع');else toast('أكمل نقاط تحدي الأسبوع أولًا');return}
   if(a==='review-go'){go('learn');LTAB='review';return startReviewSession()}
   if(a==='dhikr-open'){loadQ().then(function(){openDhikr('tasbih')}).catch(function(){openDhikr('tasbih')});return}

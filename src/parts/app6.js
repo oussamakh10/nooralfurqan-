@@ -188,8 +188,7 @@ const BADN=['كلب','حمار','قحب','شرموط','عاهر','زب','كس','
 function cleanName(n){n=String(n||'').replace(/https?:\/\/\S+|www\.\S+|\S+@\S+|[0-9]{6,}/gi,'').replace(/\s+/g,' ').trim().slice(0,24);const k=' '+(typeof normAr==='function'?normAr(n):n).toLowerCase()+' ';if(!n||BADN.some(function(w){return k.indexOf(' '+w+' ')>=0}))return 'مستخدم';return n}
 function newCircle(){const a='abcdefghjkmnpqrstuvwxyz23456789';let c='';for(let i=0;i<6;i++)c+=a[Math.floor(Math.random()*a.length)];S.circle=c;save();syncBoard();pageAch()}
 function joinCircle(){
-  const v=(prompt(T('اكتب رمز الدائرة'))||'').trim().toLowerCase().replace(/[^a-z0-9]/g,'').slice(0,8);
-  if(v.length>=4){S.circle=v;save();syncBoard();pageAch()}
+  nfPrompt(T('اكتب رمز الدائرة'),'',function(x){const v=(x||'').trim().toLowerCase().replace(/[^a-z0-9]/g,'').slice(0,8);if(v.length>=4){S.circle=v;save();syncBoard();pageAch()}else toast(T('الرمز قصير جدًا'))},{title:g3(['الانضمام إلى دائرة','Join a circle','Rejoindre un cercle']),ok:g3(['انضم','Join','Rejoindre'])});
 }
 
 /* ---------- التذكير اليومي (ملف تقويم) ---------- */

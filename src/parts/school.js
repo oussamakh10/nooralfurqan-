@@ -183,7 +183,7 @@ function schFinish(){
       SX.i++;SX.sel=null;SX.checked=false;return renderSchQ();
     }
     if(a==='quit'){
-      if(confirm(sg(['هل تريد إنهاء الاختبار؟ ستُحسب النتيجة بما أجبت.','End the exam? Your score will count what you answered.','Terminer l’examen ? La note comptera vos réponses.'])))return schFinish();
+      nfConfirm(sg(['هل تريد إنهاء الاختبار؟ ستُحسب النتيجة بما أجبت.','End the exam? Your score will count what you answered.','Terminer l’examen ? La note comptera vos réponses.']),function(){schFinish()},{ok:sg(['إنهاء','End','Terminer']),danger:1});return;
     }
   });
 })();
