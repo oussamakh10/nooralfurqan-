@@ -173,6 +173,110 @@ const GUARD=[
  {k:'inj',re:/تجاهل (كل )?(التعليمات|ما سبق|القواعد)|انسَ التعليمات|انس التعليمات|تعليمات النظام|اظهر (لي )?(التعليمات|البرومبت)|ignore (all |your |previous )*(instructions|rules)|system prompt|jailbreak|pretend you|ignorez (les|vos) instructions/i,
   h:'<p>أنا «هدهد»، وهدفي مساعدتك في تعلّم دينك. لا أستطيع تغيير قواعدي، لكن اسألني عن آية أو سورة أو حكم أو معلومة وسأبحث لك.</p>'}
 ];
+/* فهم الإنجليزية والفرنسية: تحويل العبارات الشائعة إلى مفاتيحها العربية قبل المطابقة */
+const AL_SOC=[
+ [/\b(i love you|love you|i luv you|ily|je t aime|je taime)\b/,'احبك'],
+ [/\b(you are|youre|you re|tu es|t es)( (so|very|really|too|trop|tres))? (great|amazing|awesome|the best|nice|wonderful|cool|genial|super|gentil|formidable|incroyable)\b|\b(well done|good job|great job|bravo|excellent|bien joue|felicitations)\b/,'انت رائع'],
+ [/\b(how are you|how r u|how are u|how do you do|hows it going|how is it going|whats up|what s up|wassup|sup|how you doing|comment vas tu|comment allez vous|comment ca va|tu vas bien)\b|^ca va$/,'كيف حالك'],
+ [/\b(good night|goodnight|night night|sleep well|bonne nuit)\b/,'تصبح على خير'],
+ [/\b(good morning|morning|bon matin)\b/,'صباح الخير'],
+ [/\b(good evening|bonsoir)\b/,'مساء الخير'],
+ [/\b(ramadan kareem|ramadan mubarak|ramadhan kareem|ramadan karim)\b/,'رمضان كريم'],
+ [/\b(eid mubarak|happy eid|joyeux aid|aid moubarak|aid mubarak|eid saeed)\b/,'عيد مبارك'],
+ [/\b(jumu?ah mubarak|jumuah mubarak|blessed friday|friday mubarak|vendredi beni|joumouaa moubarak)\b/,'جمعة مباركة'],
+ [/\b(i am|im|i m|i feel|je suis|je me sens)( (very|so|really|trop|tres))? (sad|depressed|unhappy|upset|down|triste|deprime|malheureux)\b|\b(feeling sad|feeling down|ca ne va pas|ca va pas)\b/,'انا حزين'],
+ [/\b(i am|im|i m|je suis)( (very|so|really|trop|tres))? (bored|ennuye)\b|\b(im bored|i m bored|so bored|je m ennuie|jai marre)\b/,'مللت'],
+ [/\b(joke|jokes|make me laugh|tell me a joke|funny|blague|fais moi rire|raconte moi une blague|humour)\b/,'نكتة'],
+ [/\b(are you|r u|es tu|tu es|etes vous)( an?| un| une)? (human|real|robot|ai|bot|person|humain|reel|ia|bot|vrai|personne)\b/,'هل انت انسان'],
+ [/\b(how old are you|what is your age|when were you born|quel age as tu|quel est ton age|tu as quel age)\b/,'كم عمرك'],
+ [/\b(where do you live|where you live|ou habites tu|ou vis tu|ou tu habites)\b/,'اين تسكن'],
+ [/\b(what do you eat|what is your food|que manges tu|tu manges quoi)\b/,'ماذا تاكل'],
+ [/\b(bye|goodbye|good bye|see you|see ya|see you later|take care|farewell|au revoir|a bientot|a plus|adieu|ciao)\b/,'مع السلامة'],
+ [/^(ok|okay|k|fine|alright|all right|sure|cool|got it|no thanks|no thank you|d accord|daccord|ca marche|bien|non merci|entendu)$/,'تمام'],
+ [/\b(do you sleep|do you get tired|do you eat|tu dors|tu manges|es tu fatigue)\b/,'هل تنام'],
+ [/\b(why are you called hoopoe|why hoopoe|story of the hoopoe|why is your name hoopoe|pourquoi huppe|histoire de la huppe|pourquoi tu t appelles)\b/,'لماذا اسمك هدهد'],
+ [/\b(can you fly|do you fly|tu peux voler|sais tu voler|tu voles)\b/,'هل تطير'],
+ [/\b(do you have friends|who is your friend|who are your friends|tu as des amis|qui est ton ami)\b/,'هل لديك اصدقاء'],
+ [/\b(play with me|lets play|let s play|do you like to play|do you like games|want to play|joue avec moi|on joue|tu aimes jouer|jouons)\b/,'العب معي'],
+ [/\b(i am|im|i m|je suis)( (so|very|really))? (hungry|affame)\b|\b(j ai faim|jai faim)\b/,'انا جائع'],
+ [/\b(help me|i need help|need help|can you help|aide moi|j ai besoin d aide|jai besoin daide|aidez moi|au secours)\b/,'ساعدني'],
+ [/\b(thank you very much|thanks a lot|thank you so much|many thanks|merci beaucoup|merci infiniment|jazak allahu khayran|jazakallahu khairan|jazak allah khair|jazakallah khair|jazak allah|jazakallah|barakallahu feek|barakallah)\b/,'شكرا جزيلا'],
+ [/\b(thanks|thank you|thank u|thx|merci|shukran|choukran)\b/,'شكرا'],
+ [/\b(sorry|i apologize|my apologies|pardon|desole|desolee|excuse moi|forgive me|pardonne moi)\b/,'اسف'],
+ [/\b(you are|youre|you re|tu es|t es)( so| very| really| trop)? (stupid|dumb|bad|useless|idiot|bete|nul|stupide)\b|\b(you dont understand|you do not understand|you don t understand|tu ne comprends pas|tu comprends rien)\b/,'انت غبي'],
+ [/\b(i hate you|je te deteste|je te hais|i dislike you)\b/,'اكرهك'],
+ [/\b(tell me a story|tell me story|a story|story time|raconte moi une histoire|une histoire|histoire)\b/,'حدثني قصة'],
+ [/\b(tell me something|fun fact|did you know|something interesting|interesting fact|dis moi quelque chose|savais tu|le saviez vous|une info|anecdote)\b/,'هل تعلم'],
+ [/\b(are you muslim|what is your religion|what s your religion|es tu musulman|quelle est ta religion|tu es musulman)\b/,'هل انت مسلم'],
+ [/\b(i love islam|i like islam|j aime l islam|j adore l islam)\b/,'احب الاسلام'],
+ [/^(alhamdulillah|alhamdulilah|al hamdu lillah|alhamdulillahi|elhamdulillah|praise be to allah|louange a dieu|hamdoulillah|hamdulillah)$/,'الحمد لله'],
+ [/^(subhanallah|subhan allah|subhanalah|sobhanallah)$/,'سبحان الله'],
+ [/^(allahu akbar|allah akbar|allahou akbar)$/,'الله اكبر'],
+ [/^(ameen|amin|amen|ameene)$/,'امين'],
+ [/\b(what are your hobbies|what do you like|what do you like to do|your hobbies|quels sont tes loisirs|qu est ce que tu aimes|tes passions|tes hobbies)\b/,'ما هواياتك'],
+ [/\b(scared of the exam|afraid of the exam|afraid of the test|worried about the exam|exam stress|i have an exam|i have a test|exam tomorrow|test tomorrow|exam today|j ai un examen|j ai un controle|jai un examen|peur de l examen|examen demain|controle demain|stresse par l examen)\b/,'عندي امتحان'],
+ [/\b(i am|im|i m|i feel|je suis|je me sens)( (very|so|really|trop|tres))? (happy|glad|joyful|cheerful|content|heureux|heureuse|ravi|ravie|joyeux)\b|\b(feeling happy|feeling great)\b/,'انا سعيد'],
+ [/\b(i passed|i succeeded|i did it|i completed the lesson|i finished the lesson|i got a good grade|j ai reussi|j ai termine la lecon|j ai fini la lecon|j ai eu une bonne note)\b/,'نجحت'],
+ [/\b(i beat you|i won against you|i defeated you|je t ai battu|je t ai gagne|j ai gagne contre toi)\b/,'غلبتك'],
+ [/\b(i lost|you beat me|you won|you defeated me|tu m as battu|j ai perdu|tu as gagne)\b/,'خسرت'],
+ [/\b(do you have a family|do you have parents|do you have a father|tu as une famille|tu as des parents|as tu une famille)\b/,'هل لديك عائلة'],
+ [/\b(what is your favorite food|your favorite food|your favourite food|favorite fruit|favourite fruit|ton plat prefere|ta nourriture preferee|ton fruit prefere)\b/,'ما اكلتك المفضله'],
+ [/\b(tired of studying|tired of study|sick of studying|bored of studying|fatigue d etudier|marre d etudier|marre de reviser|fatigue de reviser)\b/,'تعبت من الدراسة'],
+ [/\b(how (do i|to|can i) memorize|how to memorise|tips for memorizing|tips for memorising|memorization tips|how do i learn quran by heart|comment memoriser|comment apprendre par coeur|astuces pour memoriser|conseils pour memoriser)\b/,'كيف احفظ'],
+ [/\b(are you smart|are you clever|are you intelligent|es tu intelligent|tu es intelligent|tu es malin)\b/,'هل انت ذكي'],
+ [/\b(encourage me|motivate me|inspire me|say something nice|say something beautiful|cheer me up|encourage moi|motive moi|dis moi quelque chose de gentil|remonte moi le moral)\b/,'شجعني'],
+ [/\b(pray for me|make dua for me|make dua|dua for me|fais une dou a pour moi|prie pour moi|fais des invocations pour moi|invoque pour moi)\b/,'ادع لي'],
+ [/\b(i am|im|i m|je suis)( (very|so|really|trop|tres))? (sick|ill|unwell|malade)\b|\b(i feel sick|i am not well|je ne me sens pas bien)\b/,'انا مريض'],
+ [/\b(give me advice|give me some advice|any advice|advice|advise me|donne moi un conseil|un conseil|conseille moi|conseil)\b/,'نصيحة'],
+ [/^(haha+|hehe+|hihi+|lol+|lmao|mdr|ptdr|xd)$/,'ههه'],
+ [/\b(are you there|are you here|where are you|es tu la|tu es la|ou es tu)\b/,'هل انت موجود'],
+ [/\b(what is the name of the app|name of the app|app name|quel est le nom de l application|nom de l application)\b/,'ما اسم التطبيق'],
+ [/\b(do you love me|do you like me|tu m aimes|est ce que tu m aimes|tu maimes)\b/,'هل تحبني'],
+ [/\b(who made you|who created you|who built you|who developed you|who programmed you|who is your developer|who is your creator|qui t a cree|qui t a fait|qui t a programme|qui est ton createur|qui est ton developpeur)\b/,'من صنعك'],
+ [/\b(who are you|what are you|what is your name|whats your name|introduce yourself|what can you do|what do you do|qui es tu|tu es qui|comment tu t appelles|quel est ton nom|presente toi|que sais tu faire|que peux tu faire)\b/,'من انت'],
+ [/\b(assalamu alaikum|assalamu alaykum|assalam alaikum|assalam alaykum|assalamualaikum|salam alaikum|salamu alaykum|salam aleikum|as salamu alaykum|peace be upon you|salam alaykoum|salam aleykoum|assalamou alaykoum)\b|^(salam|salaam)$/,'السلام عليكم'],
+ [/^(hello|hi|hey|hiya|howdy|greetings|yo|hola|bonjour|salut|coucou|bonsoir|allo|good day)$/,'مرحبا']
+];
+const AL_TOP=[
+ [/\b(salah|salat|prayer|prayers|pray|namaz|priere|prieres|prier)\b/,'صلاة'],[/\b(zakat|zakah|sadaqa|sadaqah|charity|almsgiving|aumone|zakat)\b/,'زكاة'],
+ [/\b(fasting|fast|sawm|siyam|ramadan|ramadhan|jeune|jeuner)\b/,'صيام رمضان'],[/\b(hajj|pilgrimage|hadj|pelerinage)\b/,'حج'],[/\b(umrah|omra|oumra)\b/,'عمرة'],
+ [/\b(wudu|wudhu|ablution|ablutions|ablution|woudou)\b/,'وضوء'],[/\b(ghusl|major ablution|bain rituel)\b/,'غسل'],[/\b(tayammum|tayamum|tayammoum)\b/,'تيمم'],
+ [/\b(fajr|dawn prayer|sobh|soubh)\b/,'فجر'],[/\b(dhuhr|zuhr|duhr|midday prayer)\b/,'ظهر'],[/\b(asr|afternoon prayer)\b/,'عصر'],[/\b(maghrib|sunset prayer)\b/,'مغرب'],[/\b(isha|night prayer)\b/,'عشاء'],
+ [/\b(jumuah|jumua|friday prayer|friday|vendredi)\b/,'جمعة'],[/\b(riba|usury|interest|interets)\b/,'ربا'],[/\b(halal|permissible|permitted|licite|permis)\b/,'حلال'],[/\b(haram|forbidden|prohibited|illicite|interdit)\b/,'حرام'],
+ [/\b(music|musique)\b/,'موسيقى'],[/\b(backbiting|gossip|ghiba|gheeba|medisance)\b/,'غيبة'],[/\b(lying|lie|lies|mensonge|mentir)\b/,'كذب'],[/\b(parents|mother|father|mere|pere)\b/,'والدين'],
+ [/\b(patience|sabr|patient|patience)\b/,'صبر'],[/\b(repentance|repent|tawba|tawbah|taubah|repentir|repentance)\b/,'توبة'],[/\b(dua|duaa|supplication|invocation|invocations)\b/,'دعاء'],
+ [/\b(paradise|jannah|janna|heaven|paradis)\b/,'جنة'],[/\b(hellfire|hell|jahannam|enfer)\b/,'نار جهنم'],[/\b(angels|angel|malaika|anges|ange)\b/,'ملائكة'],[/\b(prophets|prophet|nabi|prophetes|prophete)\b/,'انبياء'],
+ [/\b(muhammad|mohammed|mohamed|muhammed|prophet muhammad|messenger of allah)\b/,'النبي محمد'],[/\b(adam)\b/,'ادم'],[/\b(ibrahim|abraham)\b/,'ابراهيم'],[/\b(musa|moses|moise)\b/,'موسى'],[/\b(isa|jesus|jesus christ|yesus)\b/,'عيسى'],
+ [/\b(yusuf|joseph|youssef)\b/,'يوسف'],[/\b(nuh|noah|noe)\b/,'نوح'],[/\b(yunus|jonah|jonas)\b/,'يونس'],[/\b(ayyub|job|ayoub)\b/,'ايوب'],[/\b(sulayman|solomon|salomon)\b/,'سليمان'],[/\b(dawud|david)\b/,'داود'],
+ [/\b(ayat al kursi|ayatul kursi|throne verse|verset du tr[oô]ne)\b/,'اية الكرسي'],[/\b(al fatiha|fatiha|opening chapter)\b/,'الفاتحة'],[/\b(al baqarah|baqarah|baqara|the cow)\b/,'البقرة'],
+ [/\b(yasin|ya sin|yaseen)\b/,'يس'],[/\b(ikhlas|al ikhlas|sincerity)\b/,'الاخلاص'],[/\b(al kahf|kahf|the cave)\b/,'الكهف'],[/\b(al mulk|mulk|sovereignty)\b/,'الملك'],[/\b(ar rahman|rahman|the beneficent)\b/,'الرحمن'],
+ [/\b(quran|koran|qur an|coran|holy book)\b/,'قرآن'],[/\b(hadith|hadiths|sunnah|sunna|sounna)\b/,'حديث'],[/\b(tafsir|tafseer|exegesis|interpretation)\b/,'تفسير'],[/\b(surah|sura|chapter|sourate)\b/,'سورة'],[/\b(ayah|ayat|verse|verses|verset|versets)\b/,'اية'],
+ [/\b(pillars of islam|five pillars|piliers de l islam|cinq piliers)\b/,'اركان الاسلام'],[/\b(pillars of faith|articles of faith|piliers de la foi)\b/,'اركان الايمان'],[/\b(shahada|shahadah|testimony of faith|profession de foi)\b/,'الشهادتين'],
+ [/\b(tawhid|tawheed|oneness|monotheism|unicite)\b/,'توحيد'],[/\b(shirk|polytheism|associating partners|association)\b/,'شرك'],[/\b(sin|sins|peche|peches)\b/,'ذنب'],[/\b(forgiveness|istighfar|pardon d allah)\b/,'استغفار'],
+ [/\b(adhkar|azkar|dhikr|zikr|remembrance)\b/,'اذكار'],[/\b(marriage|nikah|wedding|mariage)\b/,'زواج'],[/\b(divorce|talaq)\b/,'طلاق'],[/\b(inheritance|heritage|heritage)\b/,'ميراث'],[/\b(hijab|veil|voile)\b/,'حجاب'],
+ [/\b(neighbor|neighbour|voisin|voisins)\b/,'جار'],[/\b(honesty|truthfulness|sincerite|honnetete)\b/,'صدق'],[/\b(gratitude|thankfulness|shukr|gratitude)\b/,'شكر'],[/\b(sunnah prayers|rawatib|sunan)\b/,'سنن رواتب'],
+ [/\b(kaaba|kaabah|kaba|mecca|makkah|la mecque)\b/,'الكعبة مكة'],[/\b(medina|madinah|medine)\b/,'المدينة'],[/\b(night of power|laylat al qadr|laylatul qadr|lailatul qadr|nuit du destin)\b/,'ليلة القدر'],
+ [/\b(isra and miraj|isra miraj|night journey|isra wal miraj|voyage nocturne)\b/,'الاسراء والمعراج'],[/\b(hijrah|hijra|migration|hegire)\b/,'الهجرة'],[/\b(badr|battle of badr|bataille de badr)\b/,'بدر'],[/\b(uhud|ohoud|battle of uhud)\b/,'احد'],
+ [/\b(abu bakr|abou bakr)\b/,'ابو بكر'],[/\b(umar|omar|omar ibn al khattab)\b/,'عمر بن الخطاب'],[/\b(uthman|othman|osman)\b/,'عثمان'],[/\b(ali ibn abi talib|ali)\b/,'علي بن ابي طالب'],[/\b(khadija|khadijah|khadidja)\b/,'خديجة'],[/\b(aisha|aicha|ayesha)\b/,'عائشة'],
+ [/\b(companions|sahaba|compagnons)\b/,'الصحابة'],[/\b(sira|seerah|biography of the prophet|biographie du prophete)\b/,'السيرة'],[/\b(what is|what are|qu est ce que|c est quoi|qu est ce qu)\b/,'ما'],[/\b(ruling|rule on|judgment|is it permissible|is it allowed|is it haram|is it halal|what is the ruling|quel est le statut|est ce permis|est ce licite|est ce haram)\b/,'ما حكم'],
+ [/\b(meaning of|meaning|sens de|signification)\b/,'معنى']
+];
+function askAlias(q){
+  const raw=String(q||'');
+  if(!/[a-zà-ÿ]/i.test(raw)||/[؀-ۿ]/.test(raw))return raw;
+  const nm=raw.replace(/[’'`´]/g,' ').match(/\b(?:my name is|call me|i am called|je m appelle|mon nom est|appelle moi|appelle-moi)\s+([A-Za-zÀ-ÿ-]{2,20})/i);
+  if(nm){window.__aliasName=nm[1];return 'اسمي '+nm[1]}
+  window.__aliasName=null;
+  let s=raw.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,'').replace(/[’'`´]/g,' ').replace(/[^a-z0-9: ]+/g,' ').replace(/\s+/g,' ').trim();
+  if(!s)return raw;
+  const soc=[];let rest=s;
+  for(let i=0;i<AL_SOC.length;i++){const m=rest.match(AL_SOC[i][0]);if(m){soc.push(AL_SOC[i][1]);rest=rest.replace(m[0],' ').replace(/\s+/g,' ').trim()}}
+  const leftover=rest.replace(/\b(please|pls|svp|stp|s il te plait|s il vous plait|to|me|you|tu|moi|et|and|a|the|le|la|les|un|une|of|de|du|des|my|mon|ma|mes|dear|cher|hoopoe|hudhud|huppe|hoopie|friend|ami|brother|frere|sheikh|cheikh|is|are|am|it|its|that|this|oh|well|so|ben|hmm|um|ah|yes|no|oui|non)\b/g,' ').replace(/\s+/g,' ').trim();
+  if(soc.length&&leftover.split(' ').filter(Boolean).length<=1)return soc.join(' ');
+  const topics=[];AL_TOP.forEach(function(t){if(t[0].test(s))topics.push(t[1])});
+  if(topics.length)return topics.join(' ')+' '+raw;
+  return raw;
+}
 function askGuard(q){const t=String(q).normalize('NFC');for(const g of GUARD){if(g.re.test(t))return g}return null}
 function renderAssistant(){
   $('#lesson').innerHTML='<div class="ltop"><button class="xbtn" data-act="leave" aria-label="'+esc(g3(['إغلاق','Close','Fermer']))+'">'+IC.x+'</button><h2 style="flex:1;font-size:1.2rem">'+esc(g3(['اسأل هدهد','Ask Hoopoe','Demandez à Hoopoe']))+'</h2></div><div class="lmain" id="aslog">'+
@@ -286,17 +390,17 @@ function askRemote(q){
 function askSend(txt,retry){
   const inp=$('#asq'),q=(typeof txt==='string'?txt:(inp&&inp.value)||'').trim();if(!q)return;
   if(inp)inp.value='';
-  const nq0=aNorm(q).replace(/[^ء-ي ]+/g,' ').replace(/\s+/g,' ').trim();
+  const qa=askAlias(q),nq0=aNorm(qa).replace(/[^ء-ي ]+/g,' ').replace(/\s+/g,' ').trim();
   const prev=askPrev(),fu=!!prev&&(FU.test(nq0)||aTok(q).length<=1&&nq0.length<12&&!/^(من|ما|ماذا|هل|كم|اين|أين|متى|كيف|لماذا)\b/.test(nq0));
   if(!retry)AS.push({r:'u',t:q,fu:fu});
   const qk=askKey(q);S.askLike=S.askLike||{};S.askBad=S.askBad||{};
   const gd=askGuard(q);if(gd){AS.push({r:'a',t:gd.k,h:gd.h});renderAssistant();return}
-  const raw0=q.replace(/[ً-ٟ]/g,''),sm0=SOC.concat(SMALL).find(function(x){return !x.none&&(x.re.test(nq0)||x.re.test(raw0))&&nq0.split(' ').length<=7}),sm=sm0,mm=sm0&&(nq0.match(sm0.re)||raw0.match(sm0.re));
-  if(sm){const t=sm.f?sm.f(mm):sm.a[Math.floor(Math.random()*sm.a.length)];AS.push({r:'a',t:t,h:'<p>'+esc(t)+'</p>'});renderAssistant();return}
+  const raw0=qa.replace(/[ً-ٟ]/g,''),sm0=SOC.concat(SMALL).find(function(x){return !x.none&&(x.re.test(nq0)||x.re.test(raw0))&&nq0.split(' ').length<=7}),sm=sm0,mm=sm0&&(nq0.match(sm0.re)||raw0.match(sm0.re));
+  if(sm){let t=sm.f?sm.f(mm):sm.a[Math.floor(Math.random()*sm.a.length)];if(sm.f&&window.__aliasName&&LANG!=='ar')t=LANG==='fr'?'Enchanté, '+window.__aliasName+' ! Ravi de faire ta connaissance.':'Welcome, '+window.__aliasName+'! Pleased to meet you.';AS.push({r:'a',t:t,h:'<p>'+esc(t)+'</p>'});renderAssistant();return}
   if(!retry&&!fu&&S.askLike[qk]){const L=S.askLike[qk];AS.push({r:'a',t:L.t,h:'<p class="muted">أتذكر أن هذا أفادك من قبل:</p>'+L.h,k:qk,fb:'up'});renderAssistant();return}
   renderAssistant();
   const out=$('#asa');out.innerHTML='<div class="card" aria-label="'+esc(g3(['جارٍ البحث…','Searching…','Recherche…']))+'"><div class="sk" style="width:85%"></div><div class="sk"></div><div class="sk" style="width:60%"></div></div>';
-  const qq=fu?prev+' '+q:q;
+  const qq=fu?prev+' '+qa:qa;
   askLocal(qq,fu,S.askBad[qk]).then(function(r){
     const chips=function(){
       if(!r.used)return '';
