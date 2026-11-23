@@ -32,7 +32,7 @@ function tr(s){
     }
   }
   if(v===undefined){v=wordsFB(t);}
-  if(v===undefined||v===null){MISS.add(t.replace(/\d+(?:[.,]\d+)?/g,'§'));return null}
+  if(v===undefined||v===null){MISS.add(t.replace(/\d+(?:[.,]\d+)?/g,'§'));return stripAr(s)}
   return s.slice(0,s.indexOf(t))+v+s.slice(s.indexOf(t)+t.length);
 }
 
@@ -59,7 +59,9 @@ function wordsFB(t){
   }
   return any?out.join('').replace(/\s+/g,' ').replace(/ ([,.:;!?])/g,'$1'):undefined;
 }
-function T(s){const v=tr(String(s));return v==null?s:v}
+/* عند اختيار الإنجليزية أو الفرنسية لا تبقى أي كلمة عربية ظاهرة */
+function stripAr(s){return String(s).replace(/[\u0600-\u06FF\u0750-\u077F\uFB50-\uFDFF\uFE70-\uFEFF]+/g,'').replace(/[ \t]{2,}/g,' ').replace(/ ([,.:;!?،؟])/g,'$1')}
+function T(s){const v=tr(String(s));return v==null?(LANG==='ar'?s:stripAr(s)):v}
 const TATTR=['aria-label','title','placeholder','alt'];
 function xText(n){
   const cur=n.nodeValue;if(LST.get(n)===cur)return;
