@@ -300,7 +300,7 @@ function accountSec(){
   return '<section class="sec" style="margin-top:16px"><h2>حسابي</h2><div class="card acard">'+
    '<div class="ahead"><div class="aav" aria-hidden="true">'+esc((p.name||'?').trim().charAt(0))+'</div><div><b class="aname">'+esc(p.name||'بدون اسم')+'</b><small class="muted">'+esc(L[p.lvl]||'لم يُحدَّد المستوى')+'</small></div></div>'+
    row('العمر',p.age?(typeof p.age==='number'?N(p.age):({kid:'أقل من 12',teen:'12 إلى 17',adult:'18 إلى 39',senior:'40 فأكثر'}[p.age]||'—')):'—')+row('الهدف',esc(G[p.goal]||'—'))+row('المدينة',esc(p.city||'—'))+row('الحساب',esc(acc))+
-   '<div class="aact"><button class="btn sm ghost" data-act="prof-edit">تعديل المعلومات</button><button class="btn sm ghost" data-act="acct-link">'+(linked?'مزامنة الآن':'ربط الحساب')+'</button></div></div></section>';
+   '<div class="aact"><button class="btn sm ghost" data-act="prof-edit">تعديل المعلومات</button></div></div></section>';
 }
 
 function sceneArt(n){
