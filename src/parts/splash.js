@@ -37,9 +37,9 @@
       /* الزائر العائد أو من يفضّل تقليل الحركة: شاشة قصيرة */
       let seen=false,reduce=false;try{seen=!!localStorage.getItem('nf-seen');localStorage.setItem('nf-seen','1')}catch(e){}
       try{reduce=window.matchMedia('(prefers-reduced-motion: reduce)').matches}catch(e){}
-      if(seen||reduce){d.classList.add('quick');ms=reduce?700:1900}
+      if(seen||reduce){d.classList.add('quick');ms=reduce?700:1500}else ms=Math.min(ms,3000);d.setAttribute('title','اضغط للتخطي');
       document.body.appendChild(d);
-      const end=function(){if(!d.isConnected||d.classList.contains('out'))return;d.classList.add('out');setTimeout(function(){d.remove()},d.classList.contains('quick')?550:1000)};
+      const end=function(){if(!d.isConnected||d.classList.contains('out'))return;d.classList.add('out');setTimeout(function(){d.remove()},d.classList.contains('quick')?450:650)};
       d.addEventListener('click',end);setTimeout(end,ms);
     }catch(e){}
   };

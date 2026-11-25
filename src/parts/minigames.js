@@ -77,6 +77,7 @@
   function open(kind){
     loadQ().then(function(q){
       QQ=q;
+      try{clearT()}catch(e){}
       M={kind:kind,i:0,ok:0,bad:0,total:0,lock:false,timer:0,state:'play'};
       openOverlay();
       ({match:startMatch,order:startOrder,blank:startBlank,where:startWhere,tf:startTF,race:startRace})[kind]();
@@ -98,7 +99,7 @@
     try{confetti()}catch(e){}
     M.state='done';
   }
-  function next(delay,fn){M.lock=true;setTimeout(function(){if(M&&M.state==='play'){M.lock=false;fn()}},delay)}
+  function next(delay,fn){const g=M;M.lock=true;setTimeout(function(){if(M&&M===g&&M.state==='play'){M.lock=false;fn()}},delay)}
   function optBtns(opts,done,sel,corr){
     return '<div class="opts">'+opts.map(function(o,i){
       let c='';if(done){if(i===corr)c=' right';else if(i===sel)c=' wrong'}

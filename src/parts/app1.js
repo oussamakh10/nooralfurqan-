@@ -105,7 +105,10 @@ const NAVI={
  read:'<path d="M4 5a2 2 0 0 1 2-2h13v16H6a2 2 0 0 0-2 2zM4 19a2 2 0 0 1 2-2h13"/>',
  listen:'<path d="M4 15v-3a8 8 0 0 1 16 0v3"/><rect x="3" y="14" width="5" height="7" rx="2"/><rect x="16" y="14" width="5" height="7" rx="2"/>',
  ach:'<path d="M8 4h8v6a4 4 0 0 1-8 0zM8 6H4a3 3 0 0 0 4 4M16 6h4a3 3 0 0 1-4 4M12 14v4M8 21h8M10 18h4"/>',
- play:'<path d="M13 2L4 14h7l-1 8 9-12h-7z"/>'
+ play:'<path d="M13 2L4 14h7l-1 8 9-12h-7z"/>',
+ more:'<circle cx="5" cy="12" r="1.600"/><circle cx="12" cy="12" r="1.600"/><circle cx="19" cy="12" r="1.600"/>',
+ sira:'<path d="M12 21s-7-6.200-7-11a7 7 0 0 1 14 0c0 4.800-7 11-7 11z"/><circle cx="12" cy="10" r="2.500"/>',
+ school:'<path d="M3 9l9-5 9 5-9 5z"/><path d="M7 11.500V16c2.500 2 7.500 2 10 0v-4.500"/>'
 };
 
 /* ---------- الخلفية الزخرفية ---------- */
@@ -130,14 +133,27 @@ function renderTop(){
 }
 const TABS=[['home','الرئيسية'],['learn','تعلّم'],['read','القراءة'],['listen','الاستماع'],['ach','إنجازاتي'],['play','الألعاب']];
 let TAB='home';
+const NAV_MAIN=['home','learn','read','listen'];
 function renderNav(){
-  $('#nav').innerHTML=TABS.map(function(t){
+  const main=TABS.filter(function(t){return NAV_MAIN.indexOf(t[0])>-1});
+  const inMore=NAV_MAIN.indexOf(TAB)<0;
+  $('#nav').innerHTML=main.map(function(t){
     return '<button data-go="'+t[0]+'" '+(t[0]===TAB?'aria-current="page"':'')+'><svg viewBox="0 0 24 24" aria-hidden="true">'+NAVI[t[0]]+'</svg><span>'+t[1]+'</span></button>';
-  }).join('');
+  }).join('')+'<button data-go="more" aria-haspopup="dialog" '+(inMore?'aria-current="page"':'')+'><svg viewBox="0 0 24 24" aria-hidden="true">'+NAVI.more+'</svg><span>المزيد</span></button>';
   try{const c=$('#nav [aria-current]');if(c&&c.scrollIntoView)c.scrollIntoView({block:'nearest',inline:'center'})}catch(e){}
 }
 let pageTimer=0;
+function openMore(){
+  let m=document.getElementById('moresheet');if(m)m.remove();
+  m=document.createElement('div');m.id='moresheet';m.setAttribute('role','dialog');m.setAttribute('aria-label','المزيد');
+  m.innerHTML='<div class="mscard"><div class="msgrid">'+TABS.filter(function(t){return NAV_MAIN.indexOf(t[0])<0}).map(function(t){
+    return '<button data-go="'+t[0]+'" '+(t[0]===TAB?'aria-current="page"':'')+'><svg viewBox="0 0 24 24" aria-hidden="true">'+(NAVI[t[0]]||NAVI.more)+'</svg><span>'+t[1]+'</span></button>';}).join('')+'</div><button class="btn ghost msclose" type="button">إغلاق</button></div>';
+  m.addEventListener('click',function(e){if(e.target===m||e.target.closest('.msclose')||e.target.closest('[data-go]'))m.remove()});
+  document.body.appendChild(m);
+  try{const f=m.querySelector('[data-go]');if(f)f.focus()}catch(e){}
+}
 function go(t){
+  if(t==='more'){openMore();return}
   if(t!==TAB)SND.nav();
   TAB=t;try{history.replaceState(null,'','#'+t)}catch(e){}
   renderNav();renderPage();window.scrollTo(0,0);
