@@ -13131,6 +13131,7 @@ window.NF_DOCS={"privacy.html": "<!doctype html><html lang=\"ar\" dir=\"rtl\"><h
   function show(){
     var c=$('#cele');c.hidden=false;c.classList.add('gd-full');
     c.innerHTML='<div class="obx gd-wrap" id="gdwrap" role="dialog" aria-modal="true" aria-label="'+esc(tt(['جولة الهدهد','Hoopoe guide','Guide du Hudhud']))+'">'+
+      '<div class="gd-lang" role="group" aria-label="Language" dir="ltr">'+[['ar','🇸🇦','ع'],['en','🇬🇧','EN'],['fr','🇫🇷','FR']].map(function(x){return '<button class="gd-l'+(LANG===x[0]?' on':'')+'" data-gl="'+x[0]+'" aria-pressed="'+(LANG===x[0])+'" aria-label="'+({ar:'العربية',en:'English',fr:'Français'})[x[0]]+'"><span aria-hidden="true">'+x[1]+'</span> '+x[2]+'</button>'}).join('')+'</div>'+
       '<div class="obtop"><div class="obowl" id="gdbird">'+hoopoe('wow',96)+'</div></div>'+
       '<div id="gdTalk" class="gd-talk" aria-live="polite"></div><div id="gdOpts" class="gd-opts"></div></div>';
     /* لا زر إغلاق: الجولة إلزامية */
@@ -13196,6 +13197,8 @@ window.NF_DOCS={"privacy.html": "<!doctype html><html lang=\"ar\" dir=\"rtl\"><h
     run();
   }
   document.addEventListener('click',function(e){
+    var L=e.target.closest&&e.target.closest('[data-gl]');
+    if(L&&document.getElementById('gdwrap')){setLang(L.dataset.gl);show();run();return}
     var b=e.target.closest&&e.target.closest('[data-gd]');if(!b)return;
     var v=b.dataset.gd;
     if(G.step==='goal'&&['learn','read','sira'].indexOf(v)>=0)G.ans.goal=v;
@@ -13219,6 +13222,7 @@ window.NF_DOCS={"privacy.html": "<!doctype html><html lang=\"ar\" dir=\"rtl\"><h
    '.gd-talk{display:flex;flex-direction:column;gap:10px;max-height:44vh;overflow:auto}'+
    '.gd-msg{margin:0;background:var(--surface);border:1.5px solid var(--line);border-radius:18px 18px 18px 4px;padding:12px 16px;font-size:1.1rem;line-height:1.9;max-width:92%;align-self:flex-start}'+
    '#cele.gd-full{background:var(--bg);display:flex;align-items:stretch;justify-content:center}#cele.gd-full .obx{width:100%;max-width:560px;height:100%;background:transparent;box-shadow:none;border:0;margin:0}'+
+   '.gd-lang{display:flex;gap:8px;justify-content:center;flex-wrap:wrap}.gd-l{height:40px;padding:0 14px;border-radius:999px;border:1.5px solid var(--line);background:var(--surface);color:var(--fg);font-weight:700;display:inline-flex;align-items:center;gap:6px;cursor:pointer}.gd-l.on{border-color:var(--gold);box-shadow:0 0 0 2px var(--gold)}'+
    '.gd-opts{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;min-height:52px}.gd-opts>*{flex:0 0 auto;width:auto!important;height:48px!important;min-height:0!important;padding:0 20px!important;border-radius:999px!important;line-height:1.2;aspect-ratio:auto!important;display:inline-flex;align-items:center}'+
    '.gd-hi{outline:3px solid var(--gold);outline-offset:3px;border-radius:14px;animation:gdp 1.4s ease-in-out infinite}'+
    '@keyframes gdp{50%{outline-color:transparent}}'+
