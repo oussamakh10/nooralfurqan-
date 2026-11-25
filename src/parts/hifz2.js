@@ -257,7 +257,7 @@
     if(full){SND.surah();celebrate('ما شاء الله، حفظت سورة '+SN[s-1],'ثبّتك الله. راجعها كل يوم.','cheer')}
     save();renderTop();
     const nx=nextNew(s);
-    box().innerHTML='<div class="hz-done"><div>'+hoopoe('cheer',110)+'</div><h3>ثبّت الله حفظك</h3><p class="muted">'+esc(label(s,ch))+'<br>موعد مراجعته القادمة: <b>غدًا</b> بإذن الله، ثم بعد 3 أيام، ثم أسبوع.</p>'+
+    box().innerHTML='<div class="hz-done"><div>'+hoopoe('love',110)+'</div><h3>ثبّت الله حفظك</h3><p class="muted">'+esc(label(s,ch))+'<br>موعد مراجعته القادمة: <b>غدًا</b> بإذن الله، ثم بعد 3 أيام، ثم أسبوع.</p>'+
       '<div class="hz-row">'+(nx?'<button class="pri" data-hz="learn" data-s="'+nx.s+'" data-a="'+nx.ch[0]+'" data-b="'+nx.ch[1]+'">المقطع التالي</button>':'')+'<button data-hz="exit">إنهاء</button></div>'+
       '<p class="fine">نصيحة: لا تُكثر في اليوم الواحد؛ مقطع جديد وراجع ما قبله أفضل من حفظ كثير ينساه صاحبه.</p></div>';
     ST=null;

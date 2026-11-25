@@ -96,7 +96,7 @@
       const g=acc>=90?['ممتاز',3]:acc>=75?['جيد جدًا',2]:acc>=60?['جيد',1]:['مقبول',1];
       const nx=ALL.find(function(l){return !S.done[l.id]});window.__lacc=window.__lacc||{};window.__lacc[L.lesson.id]=acc;
       let st='';for(let i=1;i<=3;i++)st+='<span class="lr-s'+(i<=g[1]?' on':'')+'" style="animation-delay:'+(.15*i)+'s">★</span>';
-      $('#lesson').innerHTML='<div class="lmain lr-main"><div class="mas">'+hoopoe('cheer',120)+'</div><p class="lr-k">تقرير الدرس</p><h2>'+L.lesson.title+'</h2>'+
+      $('#lesson').innerHTML='<div class="lmain lr-main"><div class="mas">'+hoopoe(acc>=90?'love':acc>=60?'cheer':'think',120)+'</div><p class="lr-k">تقرير الدرس</p><h2>'+L.lesson.title+'</h2>'+
         '<div class="lr-stars" aria-hidden="true">'+st+'</div><div class="lr-grade">التقدير: <b>'+g[0]+'</b></div>'+
         '<div class="lr-grid"><div><b>'+N(acc)+'%</b><span>دقة الإجابات</span></div><div><b>'+N(L.total)+'</b><span>سؤال</span></div><div><b>'+N(L.wrongs)+'</b><span>أخطاء</span></div><div><b>'+N(L.best)+'</b><span>أطول تتابع</span></div></div>'+
         '<p class="lr-pts">+'+N(L.gain)+' نقطة</p></div>'+

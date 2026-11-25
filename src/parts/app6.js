@@ -299,7 +299,7 @@ let AS=[];
 function openAssistant(){openOverlay();renderAssistant()}
 function renderAssistant(){
   $('#lesson').innerHTML='<div class="ltop"><button class="xbtn" data-act="leave" aria-label="إغلاق">'+IC.x+'</button><h2 style="flex:1;font-size:1.2rem">اسأل هدهد</h2></div><div class="lmain" id="aslog">'+
-   '<div class="say"><div class="mas">'+hoopoe('happy',72)+'</div><div class="bubble"><p>اسألني عن آية أو سورة أو معلومة في الدين. أجيب باختصار، وفي الفتاوى والمسائل الخلافية أحيلك إلى أهل العلم.</p></div></div>'+
+   '<div class="say"><div class="mas">'+hoopoe('think',72)+'</div><div class="bubble"><p>اسألني عن آية أو سورة أو معلومة في الدين. أجيب باختصار، وفي الفتاوى والمسائل الخلافية أحيلك إلى أهل العلم.</p></div></div>'+
    AS.map(function(m){return '<div class="card" style="'+(m.r==='u'?'background:var(--accent-soft)':'')+'"><p style="white-space:pre-wrap">'+esc(m.t)+'</p></div>'}).join('')+'<div id="asa"></div></div>'+
    '<div class="lfoot"><div class="in" style="display:grid;gap:8px"><input type="text" id="asq" placeholder="اكتب سؤالك" maxlength="300" aria-label="سؤالك"><button class="btn" data-act="ask-send">أرسل</button></div></div>';
 }

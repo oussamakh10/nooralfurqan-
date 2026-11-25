@@ -5778,7 +5778,7 @@ let AS=[];
 function openAssistant(){openOverlay();renderAssistant()}
 function renderAssistant(){
   $('#lesson').innerHTML='<div class="ltop"><button class="xbtn" data-act="leave" aria-label="إغلاق">'+IC.x+'</button><h2 style="flex:1;font-size:1.2rem">اسأل هدهد</h2></div><div class="lmain" id="aslog">'+
-   '<div class="say"><div class="mas">'+hoopoe('happy',72)+'</div><div class="bubble"><p>اسألني عن آية أو سورة أو معلومة في الدين. أجيب باختصار، وفي الفتاوى والمسائل الخلافية أحيلك إلى أهل العلم.</p></div></div>'+
+   '<div class="say"><div class="mas">'+hoopoe('think',72)+'</div><div class="bubble"><p>اسألني عن آية أو سورة أو معلومة في الدين. أجيب باختصار، وفي الفتاوى والمسائل الخلافية أحيلك إلى أهل العلم.</p></div></div>'+
    AS.map(function(m){return '<div class="card" style="'+(m.r==='u'?'background:var(--accent-soft)':'')+'"><p style="white-space:pre-wrap">'+esc(m.t)+'</p></div>'}).join('')+'<div id="asa"></div></div>'+
    '<div class="lfoot"><div class="in" style="display:grid;gap:8px"><input type="text" id="asq" placeholder="اكتب سؤالك" maxlength="300" aria-label="سؤالك"><button class="btn" data-act="ask-send">أرسل</button></div></div>';
 }
@@ -8409,7 +8409,7 @@ function askAlias(q){
 function askGuard(q){const t=String(q).normalize('NFC');for(const g of GUARD){if(g.re.test(t))return g}return null}
 function renderAssistant(){
   $('#lesson').innerHTML='<div class="ltop"><button class="xbtn" data-act="leave" aria-label="'+esc(g3(['إغلاق','Close','Fermer']))+'">'+IC.x+'</button><h2 style="flex:1;font-size:1.2rem">'+esc(g3(['اسأل هدهد','Ask Hoopoe','Demandez à Hoopoe']))+'</h2></div><div class="lmain" id="aslog">'+
-   '<div class="say"><div class="mas">'+hoopoe('happy',72)+'</div><div class="bubble"><p>'+esc(g3(['اسألني عن آية أو سورة أو حكم أو معلومة في الدين، وأبحث لك في كل محتوى التطبيق: الدروس والمدرسية والأحاديث والأذكار والقرآن وتفسيره. وفي الفتاوى أحيلك إلى أهل العلم.','Ask me about a verse, a surah or any Islamic topic. I search all the app’s content (lessons, school, hadith, adhkar, Quran and tafsir). For fatwas, please ask a scholar.','Posez-moi une question sur un verset, une sourate ou un sujet islamique. Je cherche dans tout le contenu de l’application. Pour les fatwas, consultez un savant.']))+'</p></div></div>'+
+   '<div class="say"><div class="mas">'+hoopoe('think',72)+'</div><div class="bubble"><p>'+esc(g3(['اسألني عن آية أو سورة أو حكم أو معلومة في الدين، وأبحث لك في كل محتوى التطبيق: الدروس والمدرسية والأحاديث والأذكار والقرآن وتفسيره. وفي الفتاوى أحيلك إلى أهل العلم.','Ask me about a verse, a surah or any Islamic topic. I search all the app’s content (lessons, school, hadith, adhkar, Quran and tafsir). For fatwas, please ask a scholar.','Posez-moi une question sur un verset, une sourate ou un sujet islamique. Je cherche dans tout le contenu de l’application. Pour les fatwas, consultez un savant.']))+'</p></div></div>'+
    ''+
    AS.map(function(m,ix){return '<div class="card"'+(m.r==='u'?' data-u="1"':'')+' style="'+(m.r==='u'?'background:var(--accent-soft)':'')+'">'+(m.h?m.h:'<p style="white-space:pre-wrap">'+esc(m.t)+'</p>')+(m.r==='a'&&m.k?fbHtml(ix,m):'')+'</div>'}).join('')+'<div id="asa"></div></div>'+
    '<div class="lfoot"><div class="in" style="display:grid;gap:8px"><input type="text" id="asq" placeholder="'+esc(g3(['اكتب سؤالك','Type your question','Écrivez votre question']))+'" maxlength="300" aria-label="'+esc(g3(['سؤالك','Your question','Votre question']))+'"><button class="btn" data-act="ask-send">'+esc(g3(['أرسل','Send','Envoyer']))+'</button></div></div>';
@@ -11000,7 +11000,7 @@ document.addEventListener('click',function(e){
       const g=acc>=90?['ممتاز',3]:acc>=75?['جيد جدًا',2]:acc>=60?['جيد',1]:['مقبول',1];
       const nx=ALL.find(function(l){return !S.done[l.id]});window.__lacc=window.__lacc||{};window.__lacc[L.lesson.id]=acc;
       let st='';for(let i=1;i<=3;i++)st+='<span class="lr-s'+(i<=g[1]?' on':'')+'" style="animation-delay:'+(.15*i)+'s">★</span>';
-      $('#lesson').innerHTML='<div class="lmain lr-main"><div class="mas">'+hoopoe('cheer',120)+'</div><p class="lr-k">تقرير الدرس</p><h2>'+L.lesson.title+'</h2>'+
+      $('#lesson').innerHTML='<div class="lmain lr-main"><div class="mas">'+hoopoe(acc>=90?'love':acc>=60?'cheer':'think',120)+'</div><p class="lr-k">تقرير الدرس</p><h2>'+L.lesson.title+'</h2>'+
         '<div class="lr-stars" aria-hidden="true">'+st+'</div><div class="lr-grade">التقدير: <b>'+g[0]+'</b></div>'+
         '<div class="lr-grid"><div><b>'+N(acc)+'%</b><span>دقة الإجابات</span></div><div><b>'+N(L.total)+'</b><span>سؤال</span></div><div><b>'+N(L.wrongs)+'</b><span>أخطاء</span></div><div><b>'+N(L.best)+'</b><span>أطول تتابع</span></div></div>'+
         '<p class="lr-pts">+'+N(L.gain)+' نقطة</p></div>'+
@@ -12745,7 +12745,7 @@ window.NF_DOCS={"privacy.html": "<!doctype html><html lang=\"ar\" dir=\"rtl\"><h
     if(full){SND.surah();celebrate('ما شاء الله، حفظت سورة '+SN[s-1],'ثبّتك الله. راجعها كل يوم.','cheer')}
     save();renderTop();
     const nx=nextNew(s);
-    box().innerHTML='<div class="hz-done"><div>'+hoopoe('cheer',110)+'</div><h3>ثبّت الله حفظك</h3><p class="muted">'+esc(label(s,ch))+'<br>موعد مراجعته القادمة: <b>غدًا</b> بإذن الله، ثم بعد 3 أيام، ثم أسبوع.</p>'+
+    box().innerHTML='<div class="hz-done"><div>'+hoopoe('love',110)+'</div><h3>ثبّت الله حفظك</h3><p class="muted">'+esc(label(s,ch))+'<br>موعد مراجعته القادمة: <b>غدًا</b> بإذن الله، ثم بعد 3 أيام، ثم أسبوع.</p>'+
       '<div class="hz-row">'+(nx?'<button class="pri" data-hz="learn" data-s="'+nx.s+'" data-a="'+nx.ch[0]+'" data-b="'+nx.ch[1]+'">المقطع التالي</button>':'')+'<button data-hz="exit">إنهاء</button></div>'+
       '<p class="fine">نصيحة: لا تُكثر في اليوم الواحد؛ مقطع جديد وراجع ما قبله أفضل من حفظ كثير ينساه صاحبه.</p></div>';
     ST=null;
