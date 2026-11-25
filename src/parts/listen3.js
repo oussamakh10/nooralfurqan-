@@ -64,13 +64,13 @@
     if(ay){
       h+='<p class="l3-lbl">اضغط على أي آية في الأسفل لتبدأ منها</p>';
     }else{
-      h+='<div class="l3-ctl"><button class="l3-nav" data-l3s="'+(LS.s-1)+'" aria-label="السورة السابقة"'+(LS.s<=1?' disabled':'')+'>'+ICON.prev+'</button>'+
-         '<button class="l3-play" data-act="play-surah" aria-label="تشغيل سورة '+esc(SN[LS.s-1])+'">'+ICON.play+'</button>'+
-         '<button class="l3-nav" data-l3s="'+(LS.s+1)+'" aria-label="السورة التالية"'+(LS.s>=114?' disabled':'')+'>'+ICON.next+'</button></div><p class="l3-lbl">تشغيل بصوت '+esc(r.n)+'</p><div id="dlbox"></div>';
+      h+='<div class="l3-ctl"><button class="l3-nav" data-l3s="'+(LS.s-1)+'" aria-label="'+esc(g3(['السورة السابقة','Previous surah','Sourate précédente']))+'"'+(LS.s<=1?' disabled':'')+'>'+ICON.prev+'</button>'+
+         '<button class="l3-play" data-act="play-surah" aria-label="'+esc(g3(['تشغيل سورة ','Play surah ','Lire la sourate ']))+esc(SN[LS.s-1])+'">'+ICON.play+'</button>'+
+         '<button class="l3-nav" data-l3s="'+(LS.s+1)+'" aria-label="'+esc(g3(['السورة التالية','Next surah','Sourate suivante']))+'"'+(LS.s>=114?' disabled':'')+'>'+ICON.next+'</button></div><p class="l3-lbl">تشغيل بصوت '+esc(r.n)+'</p><div id="dlbox"></div>';
     }
     h+='</div>';
     if(ay)h+='<div class="l3-avs lv" id="lv"><p class="muted">جارٍ تحميل النص…</p></div>';
-    h+='<div class="l3-pk"><div class="l3-pkh"><b>اختر السورة</b><input class="l3-q" id="l3q" type="search" inputmode="search" placeholder="ابحث بالاسم أو الرقم" aria-label="ابحث عن سورة" value="'+esc(QS)+'"></div>'+
+    h+='<div class="l3-pk"><div class="l3-pkh"><b>اختر السورة</b><input class="l3-q" id="l3q" type="search" inputmode="search" placeholder="'+esc(g3(['ابحث بالاسم أو الرقم','Search by name or number','Rechercher par nom ou numéro']))+'" aria-label="'+esc(g3(['ابحث عن سورة','Search for a surah','Rechercher une sourate']))+'" value="'+esc(QS)+'"></div>'+
      '<div class="l3-grid" id="l3grid" role="group" aria-label="السور">'+SN.map(function(n,i){return '<button class="l3-t" data-l3s="'+(i+1)+'" aria-pressed="'+((i+1)===LS.s)+'" data-n="'+esc(aNorm(n))+'"><small>'+N(i+1)+'</small><span>'+esc(n)+'</span></button>'}).join('')+'</div><div class="l3-empty" id="l3none" hidden>لا توجد سورة بهذا الاسم</div></div>';
     if(!ay)h+='<p class="l3-foot">يُشغَّل الملف من موقع MP3Quran. إن لم يعمل داخل الصفحة فسيظهر رابط لفتحه في تبويب جديد.</p>';
     h+='</section>';

@@ -162,4 +162,5 @@ function renderPage(){
   if(pageTimer){clearInterval(pageTimer);pageTimer=0}
   try{document.body.dataset.tab=TAB}catch(e){}
   ({home:pageHome,learn:pageLearn,read:pageRead,listen:pageListen,ach:pageAch,play:pagePlay})[TAB]();
+  try{const pgc=document.getElementById('page');if(pgc&&!pgc.querySelector('h1')){const h=document.createElement('h1');h.className='sr';const tb=TABS.filter(function(t){return t[0]===TAB})[0];h.textContent=tb?tb[1]:'نور الفرقان';pgc.insertBefore(h,pgc.firstChild)}}catch(e){}
 }

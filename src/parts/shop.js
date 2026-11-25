@@ -202,7 +202,7 @@
       });
     }
     h+='<p class="muted" style="font-size:.85rem;margin:14px 4px 90px">المشتريات بالنقاط فقط ولا تتطلب مالًا، وتُحفظ في جهازك.</p>';
-    $('#page').innerHTML=h;
+    $('#page').innerHTML='<h1 class="sr">المتجر</h1>'+h;
   }
   function renderShop(){if(TAB==='shop')pageShop()}
   const _rp=renderPage;

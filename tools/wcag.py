@@ -25,7 +25,7 @@ with sync_playwright() as p:
         ctx=b.new_context(viewport={'width':390,'height':800},color_scheme=theme)
         ctx.add_init_script('try{localStorage.setItem("hudhud-v2",%s)}catch(e){}'%json.dumps(seed['hudhud-v2']));pg=ctx.new_page();pg.goto('http://localhost:8765/index.html');pg.wait_for_timeout(2500)
         pg.evaluate("document.getElementById('splash')&&document.getElementById('splash').remove()")
-        for tab in ('home','learn'):
+        for tab in ('home','learn','read','listen','play','ach'):
             try: pg.evaluate("t=>{const b=document.querySelector('#nav [data-go=\"'+t+'\"]');b&&b.click()}",tab);pg.wait_for_timeout(500)
             except Exception: pass
             d=pg.evaluate(JS)
