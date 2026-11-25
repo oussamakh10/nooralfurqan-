@@ -43,10 +43,11 @@
     if(a==='par-share'){var t=text(report());if(navigator.share)navigator.share({text:t}).catch(function(){});else if(navigator.clipboard)navigator.clipboard.writeText(t).then(function(){toast(tt(['نُسخ التقرير','Report copied','Rapport copié']))}).catch(function(){});return}
   });
   /* صف في الإعدادات */
-  new MutationObserver(function(){
+  var __r=0;new MutationObserver(function(){if(__r)return;__r=requestAnimationFrame(function(){__r=0;ins()})}).observe(document.body,{childList:true,subtree:true});
+  function ins(){
     var c=document.getElementById('cele');if(!c||c.hidden||c.querySelector('[data-act="par-open"]'))return;
     var k=c.querySelector('[data-set="kids"]');if(!k)return;var row=k.closest('.setrow');if(!row)return;
     var d=document.createElement('div');d.className='setrow';d.innerHTML='<span>'+esc(tt(['ركن الوالدين (تقرير أسبوعي)','Parents’ corner (weekly report)','Espace parents (rapport)']))+'</span><button class="tag" data-act="par-open">'+esc(tt(['فتح','Open','Ouvrir']))+'</button>';
     row.parentNode.insertBefore(d,row.nextSibling);
-  }).observe(document.body,{childList:true,subtree:true});
+  }
 })();

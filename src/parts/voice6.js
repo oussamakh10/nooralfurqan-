@@ -22,7 +22,7 @@
     v.setAttribute('aria-label',tt(['قارئ آخر','Another voice','Autre voix']));v.textContent=(S.vx|0)%2?'2':'1';
     top.appendChild(s);top.appendChild(v);
   }
-  new MutationObserver(function(){addBtns()}).observe(document.body,{childList:true,subtree:true});
+  var __r=0;new MutationObserver(function(){if(__r)return;__r=requestAnimationFrame(function(){__r=0;addBtns()})}).observe(document.body,{childList:true,subtree:true});
   document.addEventListener('click',function(e){
     var b=e.target.closest&&e.target.closest('[data-act="story-speak"],[data-act="voice-next"]');if(!b)return;
     if(b.dataset.act==='voice-next'){S.vx=((S.vx|0)+1)%2;save();b.textContent=S.vx%2?'2':'1';window.speakNow(tt(['تم تغيير القارئ','Voice changed','Voix changée']));return}

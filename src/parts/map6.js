@@ -77,7 +77,7 @@
     b.innerHTML='<b>'+esc(tt(['خريطة السيرة','Seerah map','Carte de la Sîra']))+'</b><span>'+esc(tt(['مواقع الأحداث على خط زمني.','Event locations on a timeline.','Lieux des événements sur une frise.']))+'</span>';
     hero.parentNode.insertBefore(b,hero.nextSibling);
   }
-  new MutationObserver(addBtn).observe(document.body,{childList:true,subtree:true});
+  var __r=0;new MutationObserver(function(){if(__r)return;__r=requestAnimationFrame(function(){__r=0;addBtn()})}).observe(document.body,{childList:true,subtree:true});
   document.addEventListener('click',function(e){
     var b=e.target.closest&&e.target.closest('[data-act^="map-"]');if(!b)return;var a=b.dataset.act;
     if(a==='map-open')open();else if(a==='map-x')closeOverlay();else if(a==='map-go'){cur=+b.dataset.i;draw()}
