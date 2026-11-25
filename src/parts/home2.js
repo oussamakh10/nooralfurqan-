@@ -27,6 +27,7 @@
         tile('data-act="ask-open"',HMI['🪶'],'اسأل هدهد','مساعدك')+
         tile('data-go="read"',HMI['📖'],'المصحف','وتفسير')+
         tile(due?'data-act="review-go"':'data-go="listen"',due?HMI['🔁']:HMI['🎧'],due?'مراجعة':'استماع',due?N(due)+' أسئلة':'تلاوات')+
+        tile('data-act="w5-open"',HMI['📖'],'وردي','5 دقائق')+
         tile('data-go="shop"',HMI['🛍️'],'المتجر','إكسسوارات')+
         tile('data-act="dhikr-open"',HMI['📿'],'الأذكار','وسبحة')+
        '</div>';
