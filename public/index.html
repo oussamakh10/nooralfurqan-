@@ -4293,6 +4293,13 @@ function hoopoeNew(mood,size){
   var eyes;
   if(mood==='cheer'){
     eyes='<path d="M36 56 Q46 44 56 56" fill="none" stroke="var(--hp-dark)" stroke-width="4.6" stroke-linecap="round"/><path d="M64 56 Q74 44 84 56" fill="none" stroke="var(--hp-dark)" stroke-width="4.6" stroke-linecap="round"/>';
+  }else if(mood==='sleep'){
+    eyes='<path d="M36 55 Q46 63 56 55" fill="none" stroke="var(--hp-dark)" stroke-width="4" stroke-linecap="round"/><path d="M64 55 Q74 63 84 55" fill="none" stroke="var(--hp-dark)" stroke-width="4" stroke-linecap="round"/><text x="92" y="30" font-size="14" font-weight="700" fill="var(--gold)">z</text><text x="100" y="18" font-size="10" font-weight="700" fill="var(--gold)">z</text>';
+  }else if(mood==='love'){
+    var hr=function(x){return '<path d="M'+x+' 62 C'+(x-12)+' 54 '+(x-8)+' 46 '+x+' 51 C'+(x+8)+' 46 '+(x+12)+' 54 '+x+' 62Z" fill="#E0405A" stroke="#8E1E33" stroke-width="1"/>'};
+    eyes=hr(46)+hr(74);
+  }else if(mood==='think'){
+    eyes='<circle cx="46" cy="55" r="10.5" fill="#fff" stroke="var(--hp-line)" stroke-width="1.4"/><circle cx="74" cy="55" r="10.5" fill="#fff" stroke="var(--hp-line)" stroke-width="1.4"/><circle cx="50" cy="51" r="5.6" fill="var(--hp-dark)"/><circle cx="78" cy="51" r="5.6" fill="var(--hp-dark)"/><circle cx="52" cy="49" r="2" fill="#fff"/><circle cx="80" cy="49" r="2" fill="#fff"/><path d="M35 41 L56 43" stroke="var(--hp-dark)" stroke-width="3.2" stroke-linecap="round"/><path d="M64 38 Q74 33 85 39" fill="none" stroke="var(--hp-dark)" stroke-width="3.2" stroke-linecap="round"/><text x="96" y="22" font-size="16" font-weight="700" fill="var(--gold)">?</text>';
   }else{
     var pr=mood==='wow'?4.4:6.4;
     eyes='<circle cx="46" cy="55" r="10.5" fill="#fff" stroke="var(--hp-line)" stroke-width="1.4"/><circle cx="74" cy="55" r="10.5" fill="#fff" stroke="var(--hp-line)" stroke-width="1.4"/>'+
