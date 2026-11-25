@@ -4892,7 +4892,7 @@ function renderLesson(){
   }else{
     const ans=q.t==='ord'?q.items.join(' ثم '):(QT[q.t]?QT[q.t].ans(q):q.c);
     h+='<div class="lfoot '+(L.ok?'ok':'bad')+'" aria-live="polite"><div class="in"><div class="fb">'+
-      (L.ok?'<h3>'+pick(PRAISE)+'</h3>':'<h3>الإجابة الصحيحة</h3><p><b>'+ans+'</b></p>')+
+      (L.ok?'<h3>'+pick(PRAISE)+'</h3>':'<div style="display:flex;gap:10px;align-items:center"><span aria-hidden="true">'+hoopoe('think',46)+'</span><h3 style="margin:0">الإجابة الصحيحة</h3></div><p><b>'+ans+'</b></p><p class="muted" style="font-size:.85rem">لا بأس، سيعود إليك هذا السؤال غدًا في المراجعة.</p>')+
       (q.n?'<p>'+q.n+'</p>':'')+'</div><button class="btn '+(L.ok?'':'bad')+'" data-act="next">متابعة</button></div></div>';
   }
   if(L.confirm)h+='<div class="modal"><div class="card"><div class="mas" style="display:grid;place-items:center">'+hoopoe('sad',84)+'</div><h3>هل تريد الخروج؟</h3><p class="muted">ستفقد تقدمك في هذا الدرس.</p><button class="btn" data-act="stay">أكمل الدرس</button><button class="btn ghost" data-act="leave">اخرج</button></div></div>';
@@ -5517,10 +5517,8 @@ const OB=[
  {k:'cc',t:'في أي منطقة تعيش؟ (لتحديد حد السن للميزات السحابية)',opts:[['eu','أوروبا'],['dz','الجزائر'],['ar','دولة عربية أخرى'],['o','منطقة أخرى']]},
  {k:'lvl',t:'كيف تقيّم معرفتك بالدين؟',opts:[['b','مبتدئ'],['m','متوسط'],['a','متقدم']]},
  {k:'goal',t:'ما هدفك الأول؟',opts:[['learn','تعلّم الأساسيات'],['khatma','ختم القرآن'],['hifz','حفظ القرآن'],['review','مراجعة ما أعرفه'],['all','كل ذلك']]},
- {k:'mins',t:'كم دقيقة يوميًا تريد أن تخصص؟',opts:[[5,'5 دقائق'],[10,'10 دقائق'],[20,'20 دقيقة'],[30,'30 دقيقة أو أكثر']]},
- {k:'city',t:'في أي مدينة تعيش؟ (لمواقيت الصلاة)',type:'city'},
- {k:'rec',t:'من قارئك المفضل؟',type:'rec'}
-];
+ {k:'mins',t:'كم دقيقة يوميًا تريد أن تخصص؟',opts:[[5,'5 دقائق'],[10,'10 دقائق'],[20,'20 دقيقة'],[30,'30 دقيقة أو أكثر']]}
+];/* المدينة والقارئ يُضبطان لاحقًا من الإعدادات/المواقيت لتقصير البداية */
 let OBI=0,OBD={};
 function openOnboard(){OBI=0;OBD=Object.assign({},S.prof||{});renderOnboard()}
 function renderOnboard(){
@@ -13089,6 +13087,24 @@ window.NF_DOCS={"privacy.html": "<!doctype html><html lang=\"ar\" dir=\"rtl\"><h
    '.ay,.lst>*,.hz-ch{content-visibility:auto;contain-intrinsic-size:auto 120px}';
   document.head.appendChild(st);
   document.addEventListener('visibilitychange',function(){document.documentElement.classList.toggle('nf-hid',document.hidden)});
+})();
+
+/* عرض تذكير يومي لطيف مرة واحدة بعد أول يوم نشاط */
+(function(){
+  function tt(a){try{return g3(a)}catch(e){return a[0]}}
+  function show(){
+    if(S.rem||S.remAsk||!S.days||!S.days[today()]||document.getElementById('nudgeRem'))return;
+    var host=document.querySelector('.hm-hero');if(!host||!host.parentNode)return;
+    var d=document.createElement('div');d.id='nudgeRem';d.className='card';d.style.cssText='margin:10px 0;text-align:center';
+    d.innerHTML='<b>'+esc(tt(['هل أذكّرك بوردك كل يوم؟','Shall I remind you daily?','Un petit rappel chaque jour ?']))+'</b><p class="muted" style="margin:4px 0 10px">'+esc(tt(['إشعار لطيف واحد في الثامنة مساءً. يمكنك تغيير الوقت من الإعدادات.','One gentle notification at 8 pm. Change the time in Settings.','Une notification douce à 20 h. Modifiable dans les réglages.']))+'</p><button class="tag on" data-act="nr-yes">'+esc(tt(['نعم','Yes','Oui']))+'</button> <button class="tag" data-act="nr-no">'+esc(tt(['لاحقًا','Later','Plus tard']))+'</button>';
+    host.parentNode.insertBefore(d,host.nextSibling);
+  }
+  var r=0;new MutationObserver(function(){if(r)return;r=requestAnimationFrame(function(){r=0;show()})}).observe(document.body,{childList:true,subtree:true});
+  document.addEventListener('click',function(e){
+    var b=e.target.closest&&e.target.closest('[data-act^="nr-"]');if(!b)return;
+    S.remAsk=1;if(b.dataset.act==='nr-yes'){S.rem='20:00';S.remd=null;try{if('Notification' in window&&Notification.permission==='default')Notification.requestPermission()}catch(_){}}
+    save();var n=document.getElementById('nudgeRem');if(n)n.remove();
+  });
 })();
 
 </script></body></html>

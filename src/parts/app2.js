@@ -149,7 +149,7 @@ function renderLesson(){
   }else{
     const ans=q.t==='ord'?q.items.join(' ثم '):(QT[q.t]?QT[q.t].ans(q):q.c);
     h+='<div class="lfoot '+(L.ok?'ok':'bad')+'" aria-live="polite"><div class="in"><div class="fb">'+
-      (L.ok?'<h3>'+pick(PRAISE)+'</h3>':'<h3>الإجابة الصحيحة</h3><p><b>'+ans+'</b></p>')+
+      (L.ok?'<h3>'+pick(PRAISE)+'</h3>':'<div style="display:flex;gap:10px;align-items:center"><span aria-hidden="true">'+hoopoe('think',46)+'</span><h3 style="margin:0">الإجابة الصحيحة</h3></div><p><b>'+ans+'</b></p><p class="muted" style="font-size:.85rem">لا بأس، سيعود إليك هذا السؤال غدًا في المراجعة.</p>')+
       (q.n?'<p>'+q.n+'</p>':'')+'</div><button class="btn '+(L.ok?'':'bad')+'" data-act="next">متابعة</button></div></div>';
   }
   if(L.confirm)h+='<div class="modal"><div class="card"><div class="mas" style="display:grid;place-items:center">'+hoopoe('sad',84)+'</div><h3>هل تريد الخروج؟</h3><p class="muted">ستفقد تقدمك في هذا الدرس.</p><button class="btn" data-act="stay">أكمل الدرس</button><button class="btn ghost" data-act="leave">اخرج</button></div></div>';
