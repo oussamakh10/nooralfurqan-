@@ -4,19 +4,21 @@ function hash(s){let h=5381;for(let i=0;i<s.length;i++)h=((h<<5)+h+s.charCodeAt(
 function addDays(n){const d=new Date();d.setDate(d.getDate()+n);return ymd(d)}
 function srUpdate(q,ok){
   const k=hash(q.q),e=S.sr[k];
-  if(!ok){S.sr[k]={b:0,d:addDays(1),q:{q:q.q,c:q.c,w:q.w,n:q.n||''}};save();return}
-  if(e){e.b++;if(e.b>=SRI.length)delete S.sr[k];else e.d=addDays(SRI[e.b]);save()}
+  if(!ok){const m=(e&&e.m||0)+1;S.sr[k]={b:e?Math.max(0,e.b-2):0,m:m,d:addDays(1),q:{q:q.q,c:q.c,w:q.w,n:q.n||''}};save();return}
+  if(e){e.b++;if(e.b>=SRI.length)delete S.sr[k];else{const iv=SRI[e.b];e.d=addDays((e.m||0)>=3?Math.max(1,Math.round(iv*.6)):iv)}save()}
 }
 function srDue(){
   const t=today(),r=[];
-  for(const k in S.sr){const e=S.sr[k];if(e.d<=t)r.push(e.q)}
-  return r;
+  for(const k in S.sr){const e=S.sr[k];if(e.d<=t)r.push({e:e,q:e.q})}
+  r.sort(function(a,b){return a.e.d<b.e.d?-1:a.e.d>b.e.d?1:(b.e.m||0)-(a.e.m||0)||a.e.b-b.e.b});
+  return r.map(function(x){return x.q});
 }
+function srTomorrow(){const t=addDays(1);let n=0;for(const k in S.sr)if(S.sr[k].d===t)n++;return n}
 function learnReview(){
   const due=srDue().length,all=Object.keys(S.sr).length;
   return '<div class="say"><div class="mas">'+hoopoe(due?'happy':'cheer',88)+'</div><div class="bubble"><p>'+(due?'عندك '+N(due)+' من الأسئلة تحتاج مراجعة اليوم.':(all?'لا شيء للمراجعة اليوم. سأذكّرك بالأسئلة في موعدها.':'لا توجد أسئلة للمراجعة بعد. الأسئلة التي تخطئ فيها تأتي هنا تلقائيًا.'))+'</p></div></div>'+
    '<div class="card" style="display:grid;gap:8px"><p class="muted" style="font-size:.92rem">المراجعة المتباعدة: السؤال الذي تخطئ فيه يعود بعد يوم، ثم 3 أيام، ثم أسبوع، ثم أسبوعين، ثم شهر، كلما أجبت عنه صحيحًا.</p>'+
-   '<div class="stats"><div class="stat"><b>'+N(due)+'</b><span>مستحقة الآن</span></div><div class="stat"><b>'+N(all)+'</b><span>قيد المتابعة</span></div><div class="stat"><b>'+N(S.rev||0)+'</b><span>جلسات مراجعة</span></div></div>'+
+   '<div class="stats"><div class="stat"><b>'+N(due)+'</b><span>مستحقة الآن</span></div><div class="stat"><b>'+N(all)+'</b><span>قيد المتابعة</span></div><div class="stat"><b>'+N(srTomorrow())+'</b><span>غدًا</span></div><div class="stat"><b>'+N(S.rev||0)+'</b><span>جلسات مراجعة</span></div></div>'+
    '<button class="btn" data-act="review-go" '+(due?'':'disabled')+'>ابدأ المراجعة</button></div>';
 }
 
