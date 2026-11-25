@@ -1582,3 +1582,14 @@ background:
 #moresheet .msclose{width:100%}
 
 .sr{position:absolute;width:1px;height:1px;margin:-1px;padding:0;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0}
+
+/* v-tod: خلفية الرئيسية بحسب وقت اليوم + أفق مسجد */
+body[data-tod] .hm-hero{background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 80' preserveAspectRatio='none'%3E%3Cpath d='M0 80V62H40V50q10-14 20 0V62H110V58h8V30l4-10 4 10V58h8V62H150V48q50-52 100 0V62H282V58h8V26l4-12 4 12V58h8V62H340V50q10-14 20 0V62H400V80Z' fill='black' fill-opacity='.3'/%3E%3C/svg%3E") bottom center/100% 58px no-repeat,linear-gradient(180deg,var(--tod1),var(--tod2))}
+body[data-tod=dawn]{--tod1:#34507e;--tod2:#b0646b}
+body[data-tod=day]{--tod1:#14695a;--tod2:#0a3a34}
+body[data-tod=sunset]{--tod1:#5b2c52;--tod2:#c0583a}
+body[data-tod=night]{--tod1:#08182a;--tod2:#0b2f2c}
+
+/* v-calm: زخرفة أهدأ في الشاشات الداخلية */
+#bg{transition:opacity .4s}
+body:not([data-tab=home]) #bg{opacity:.5}

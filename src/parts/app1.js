@@ -160,7 +160,7 @@ function go(t){
 }
 function renderPage(){
   if(pageTimer){clearInterval(pageTimer);pageTimer=0}
-  try{document.body.dataset.tab=TAB}catch(e){}
+  try{document.body.dataset.tab=TAB;const hh=new Date().getHours();document.body.dataset.tod=hh>=4&&hh<8?'dawn':hh<16?'day':hh<19?'sunset':'night'}catch(e){}
   ({home:pageHome,learn:pageLearn,read:pageRead,listen:pageListen,ach:pageAch,play:pagePlay})[TAB]();
   try{const pgc=document.getElementById('page');if(pgc&&!pgc.querySelector('h1')){const h=document.createElement('h1');h.className='sr';const tb=TABS.filter(function(t){return t[0]===TAB})[0];h.textContent=tb?tb[1]:'نور الفرقان';pgc.insertBefore(h,pgc.firstChild)}}catch(e){}
 }
