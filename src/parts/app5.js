@@ -90,7 +90,7 @@ const CITIES=[
  ['الجزائر',36.7538,3.0588],['وهران',35.6969,-0.6331],['قسنطينة',36.365,6.6147],['عنابة',36.9,7.7667],['سطيف',36.1898,5.4108],['تلمسان',34.8828,-1.3167],['غرداية',32.4909,3.6735],['ورقلة',31.9539,5.3248],
  ['مكة المكرمة',21.4225,39.8262],['المدينة المنورة',24.4672,39.6111],['الرياض',24.7136,46.6753],['القاهرة',30.0444,31.2357],['الدار البيضاء',33.5731,-7.5898],['تونس',36.8065,10.1815],['طرابلس',32.8872,13.1913],['إسطنبول',41.0082,28.9784],['دبي',25.2048,55.2708],['عمّان',31.9454,35.9284],['جاكرتا',-6.2088,106.8456],['لندن',51.5072,-0.1276],['باريس',48.8566,2.3522],['نيويورك',40.7128,-74.006]
 ];
-const METH={mwl:['رابطة العالم الإسلامي',18,17],egypt:['الهيئة المصرية',19.5,17.5],makkah:['أم القرى',18.5,'90'],isna:['أمريكا الشمالية',15,15],karachi:['كراتشي',18,18]};
+const METH={mwl:['رابطة العالم الإسلامي',18,17],egypt:['الهيئة المصرية',19.5,17.5],makkah:['أم القرى',18.5,'90'],isna:['أمريكا الشمالية',15,15],karachi:['كراتشي',18,18],turkey:['ديانت (تركيا)',18,17],kuwait:['الكويت',18,17.5],qatar:['قطر',18,'90'],morocco:['المغرب',19,17],singapore:['سنغافورة',20,18]};
 const rad=function(x){return x*Math.PI/180},deg=function(x){return x*180/Math.PI};
 const fa=function(x){return ((x%360)+360)%360},fh=function(x){return ((x%24)+24)%24};
 function prayerTimes(lat,lng,date,tz,mk){
@@ -100,10 +100,12 @@ function prayerTimes(lat,lng,date,tz,mk){
   const decl=deg(Math.asin(Math.sin(rad(e))*Math.sin(rad(Ls))));
   const noon=fh(12+tz-lng/15-(((eq+12)%24)-12));
   function T(ang){const x=(-Math.sin(rad(ang))-Math.sin(rad(lat))*Math.sin(rad(decl)))/(Math.cos(rad(lat))*Math.cos(rad(decl)));if(x>1||x<-1)return NaN;return deg(Math.acos(x))/15}
-  function A(f){const a=-deg(Math.atan(1/(f+Math.tan(rad(Math.abs(lat-decl))))));return T(a)}
+  function A(f){f=(S.asrh&&f===1)?2:f;const a=-deg(Math.atan(1/(f+Math.tan(rad(Math.abs(lat-decl))))));return T(a)}
   const m=METH[mk]||METH.mwl,fj=m[1],is=m[2];
   const mag=noon+T(0.833);
-  return {fajr:noon-T(fj),sunrise:noon-T(0.833),dhuhr:noon+1/60,asr:noon+A(1),maghrib:mag,isha:is==='90'?mag+1.5:noon+T(is)};
+  let fajr=noon-T(fj),isha=is==='90'?mag+1.5:noon+T(is),sr=noon-T(0.833);
+  if(isNaN(fajr)||isNaN(isha)){const nt=fh(sr-mag),b=nt/7;if(isNaN(fajr))fajr=sr-b;if(isNaN(isha))isha=mag+b}
+  return {fajr:fajr,sunrise:sr,dhuhr:noon+1/60,asr:noon+A(1),maghrib:mag,isha:isha};
 }
 function fmtT(h){if(isNaN(h))return '—';h=fh(h+0.5/60);const hh=Math.floor(h),mm=Math.floor((h-hh)*60);return toAr(pad(hh,2)+':'+pad(mm,2))}
 function qiblaBearing(lat,lng){
@@ -258,7 +260,7 @@ function openSettings(){
    '<div class="setrow"><span>المظهر</span><span class="opts2">'+[['','تلقائي'],['night','بعد المغرب'],['light','فاتح'],['dark','داكن']].map(function(x){return '<button class="tag" data-theme="'+x[0]+'" aria-pressed="'+((S.theme||'')===x[0])+'">'+x[1]+'</button>'}).join('')+'</span></div>'+
    '<div class="setrow"><span>حجم خط المصحف</span><span class="opts2">'+[[0.85,'صغير'],[1,'متوسط'],[1.2,'كبير'],[1.45,'أكبر']].map(function(x){return '<button class="tag" data-qs="'+x[0]+'" aria-pressed="'+(S.qs===x[0])+'">'+x[1]+'</button>'}).join('')+'</span></div>'+
    '<div class="setrow"><span>شكل الهدهد</span><span class="opts2"><button class="tag" data-hpv="new" aria-pressed="'+(S.hpv!=='old')+'">الجديد</button><button class="tag" data-hpv="old" aria-pressed="'+(S.hpv==='old')+'">السابق</button></span></div>'+
-   '<div class="field"><label for="methsel">طريقة حساب المواقيت</label><select id="methsel">'+Object.keys(METH).map(function(k){return '<option value="'+k+'"'+(S.method===k?' selected':'')+'>'+METH[k][0]+'</option>'}).join('')+'</select></div>'+
+   '<div class="field"><label for="methsel">طريقة حساب المواقيت</label><select id="methsel">'+Object.keys(METH).map(function(k){return '<option value="'+k+'"'+(S.method===k?' selected':'')+'>'+METH[k][0]+'</option>'}).join('')+'</select></div><div class="field"><label><input type="checkbox" id="asrh"'+(S.asrh?' checked':'')+'> '+g3(['العصر بالمذهب الحنفي (الظل مثلان)','Hanafi Asr (shadow = 2×)','Asr hanafite (ombre ×2)'])+'</label></div>'+
    '<div class="field"><label for="remtime">تذكير يومي</label><div class="opts2"><input type="time" id="remtime" value="'+esc(S.rem||'20:00')+'" style="width:auto"><button class="btn sm ghost" data-act="rem-save">تفعيل التنبيه داخل الصفحة</button><button class="btn sm ghost" data-act="rem-ics">حمّل تذكيرًا لتقويم هاتفك</button></div><small class="muted">لا أستطيع إرسال إشعارات والصفحة مغلقة. ملف التقويم يجعل هاتفك يذكّرك يوميًا.</small></div>'+
    extraSettings()+
    '<div class="setrow"><span>ملفي الشخصي'+(S.prof&&S.prof.name?': '+esc(S.prof.name):'')+'</span><button class="btn sm ghost" data-act="prof-edit">تعديل</button></div>'+

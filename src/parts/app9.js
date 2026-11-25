@@ -140,6 +140,7 @@ document.addEventListener('change',function(e){
   if(e.target.id==='lsurah'){LS.s=+e.target.value;LS.a=1;pageListen()}
   if(e.target.id==='citysel'){S.city=e.target.value;save();renderPrayer()}
   if(e.target.id==='methsel'){S.method=e.target.value;save()}
+  if(e.target.id==='asrh'){S.asrh=e.target.checked?1:0;save()}
 });
 document.addEventListener('input',function(e){
   if(e.target.dataset&&e.target.dataset.pl!==undefined){GS.players[+e.target.dataset.pl]=e.target.value}
