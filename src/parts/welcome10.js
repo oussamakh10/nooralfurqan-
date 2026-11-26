@@ -1,7 +1,7 @@
 /* 22: رحلة البداية الموحّدة — ترحيب + موافقة + أسئلة + ملخص، بقيادة الهدهد وبتصميم واحد */
 (function(){
   function tt(a){try{return g3(a)}catch(e){return a[0]}}
-  var STEPS=['hi','name','age','goal','lvl','mins','end'];
+  var STEPS=['hi','try','name','age','goal','lvl','mins','end'];
   var W={step:'hi',a:{},edit:false,hist:[]};
   var TM=0,BT=0;
   function rm(){try{return !!S.rm||matchMedia('(prefers-reduced-motion: reduce)').matches}catch(e){return false}}
@@ -29,6 +29,41 @@
          [30,'🎯',['30 دقيقة أو أكثر','30 minutes or more','30 minutes ou plus'],['لمن يريد التفرّغ','For the dedicated','Pour les motivés']]]}
   };
 
+  var TRY=[
+    {q:['كم عدد أركان الإسلام؟','How many pillars does Islam have?','Combien de piliers compte l’islam ?'],o:[['3','3','3'],['4','4','4'],['5','5','5'],['6','6','6']],c:2},
+    {q:['ما اسم أول سورة في ترتيب المصحف؟','Which surah comes first in the Mushaf?','Quelle est la première sourate du Coran ?'],o:[['الفاتحة','Al-Fatiha','Al-Fâtiha'],['البقرة','Al-Baqarah','Al-Baqara'],['الإخلاص','Al-Ikhlas','Al-Ikhlâs'],['الناس','An-Nas','An-Nâs']],c:0},
+    {q:['كم عدد سور القرآن الكريم؟','How many surahs are in the Qur’an?','Combien de sourates compte le Coran ?'],o:[['110','110','110'],['114','114','114'],['100','100','100'],['120','120','120']],c:1}
+  ];
+  function tState(){return W.t||(W.t={i:0,ok:0,sel:null,done:false})}
+  function tSay(){
+    var t=tState(),q=TRY[t.i];
+    if(t.sel!=null){
+      var ok=t.sel===q.c,ans=tt(q.o[q.c]);
+      return ok?tt(['أحسنت! إجابة صحيحة.','Well done! Correct.','Bravo ! Bonne réponse.']):tt(['ليس تمامًا، والصحيح: '+ans,'Not quite, the answer is: '+ans,'Pas tout à fait, la réponse est : '+ans]);
+    }
+    if(t.i===0)return tt(['جرّب معي سؤالًا سريعًا قبل أن نتعارف، دون أي ضغط!','Try a quick question with me before we get to know each other, no pressure!','Essayez une question rapide avant de faire connaissance, sans pression !']);
+    return tt(['السؤال '+(t.i+1)+' من 3','Question '+(t.i+1)+' of 3','Question '+(t.i+1)+' sur 3']);
+  }
+  function tBody(){
+    var t=tState(),q=TRY[t.i],L=LANG==='ar'?['أ','ب','ج','د']:['A','B','C','D'];
+    var dots='<div class="wl-qd" aria-hidden="true">'+TRY.map(function(_,i){return '<i class="'+(i<t.i?'d':i===t.i?'c':'')+'"></i>'}).join('')+'</div>';
+    return dots+'<div class="wl-qt">'+esc(tt(q.q))+'</div><div class="wl-opts">'+q.o.map(function(o,i){
+      var cls=t.sel==null?'':(i===q.c?' right':(i===t.sel?' wrong':''));
+      return '<button class="wl-o'+cls+'" data-wl-try="'+i+'"'+(t.sel!=null?' disabled':'')+'><span class="wl-oi">'+L[i]+'</span><span class="wl-ot"><b>'+esc(tt(o))+'</b></span></button>'}).join('')+'</div>';
+  }
+  function setSay(text){
+    var say=document.getElementById('wlsay'),gh=document.querySelector('.wl-ghost');
+    if(gh)gh.textContent=text;if(say){say.setAttribute('aria-label',text);typeInto(say,text)}
+  }
+  function pick(i){
+    var t=tState(),q=TRY[t.i];if(t.sel!=null)return;
+    t.sel=i;var ok=i===q.c;if(ok)t.ok++;
+    document.querySelectorAll('[data-wl-try]').forEach(function(b,k){b.disabled=true;if(k===q.c)b.classList.add('right');else if(k===i)b.classList.add('wrong')});
+    var bird=document.getElementById('wlbird');if(bird){bird.className='wl-bird hop';bird.innerHTML=hoopoe(ok?'cheer':'think',92)}
+    setSay(tSay());
+    var cta=document.querySelector('.wl-cta');if(cta){cta.disabled=false;cta.textContent=t.i>=TRY.length-1?tt(['أنهيتُ التجربة','Finish the taster','Terminer']):tt(['التالي','Next','Suivant'])}
+    try{ok?SND.correct():SND.wrong()}catch(e){}
+  }
   function typeInto(el,text,done){
     clearInterval(TM);clearTimeout(BT);
     if(rm()){el.textContent=text;if(done)done();return}
@@ -62,6 +97,8 @@
   function sayFor(step){
     if(step==='hi')return tt(['السلام عليكم! أنا الهدهد، رفيقك في هذه الرحلة. سأرافقك خطوة بخطوة.','Peace be upon you! I am the Hoopoe, your companion on this journey. I will be with you every step.','Salam ! Je suis le Hudhud, votre compagnon de route. Je serai là à chaque pas.']);
     if(step==='end'){var n=nm();return tt(['رائع'+(n?' يا '+n:'')+'! جهّزتُ لك مسارك، وهذا ملخّصه.','Wonderful'+(n?', '+n:'')+'! Your path is ready, here is the summary.','Magnifique'+(n?', '+n:'')+' ! Votre parcours est prêt, voici le résumé.'])}
+    if(step==='try')return tSay();
+    if(step==='name'&&W.t&&W.t.done)return tt(['ما شاء الله! أجبتَ عن '+W.t.ok+' من 3. الآن عرّفني بنفسك: ما اسمك؟','Wonderful! You got '+W.t.ok+' of 3. Now tell me about you: what is your name?','Magnifique ! '+W.t.ok+' sur 3. Maintenant, présentez-vous : quel est votre prénom ?']);
     return tt(Q[step].say);
   }
   function optsHtml(step){
@@ -84,13 +121,16 @@
   }
   function render(){
     var c=$('#cele'),s=W.step,hi=s==='hi',end=s==='end',q=!hi&&!end;
-    var mood=hi?'wow':end?'love':(qIndex()%2?'happy':'cheer');
+    var mood=hi?'wow':end?'love':s==='try'?'happy':(qIndex()%2?'happy':'cheer');
     var body='',foot='';
     if(hi){
       body='<div class="wl-title"><div class="wl-h" role="heading" aria-level="2">'+esc(tt(['نور الفرقان','Nur al-Furqan','Nûr al-Furqân']))+'</div><p>'+esc(tt(['رفيقك لتعلّم الدين خطوة خطوة','Learn your faith step by step','Apprenez votre foi pas à pas']))+'</p></div>';
       foot='<button class="wl-cta" data-wl="next">'+esc(tt(['ابدأ','Begin','Commencer']))+'</button>'+
         '<p class="wl-legal">'+esc(tt(['بالمتابعة توافق على','By continuing you accept the','En continuant vous acceptez la']))+' <a href="privacy.html" target="_blank" rel="noopener">'+esc(tt(['سياسة الخصوصية','Privacy policy','politique de confidentialité']))+'</a> '+esc(tt(['و','and','et']))+' <a href="terms.html" target="_blank" rel="noopener">'+esc(tt(['شروط الاستخدام','Terms','conditions']))+'</a></p>'+
         '<div class="wl-pills" aria-hidden="true"><span>'+ico('🔒')+esc(tt(['تقدّمك على جهازك','Stays on your device','Reste sur votre appareil']))+'</span><span>'+ico('✅')+esc(tt(['بلا إعلانات','No ads','Sans pub']))+'</span><span>'+ico('🌟')+esc(tt(['وضع آمن للأطفال','Safe kids mode','Mode enfants']))+'</span></div>';
+    }else if(s==='try'){
+      body=tBody();var tt0=tState();
+      foot='<button class="wl-cta" data-wl="next"'+(tt0.sel==null?' disabled':'')+'>'+esc(tt0.sel==null?tt(['اختر إجابة','Pick an answer','Choisissez']):(tt0.i>=TRY.length-1?tt(['أنهيتُ التجربة','Finish the taster','Terminer']):tt(['التالي','Next','Suivant'])))+'</button><button class="wl-sec" data-wl="skip">'+esc(tt(['تخطَّ التجربة','Skip the taster','Passer']))+'</button>';
     }else if(end){
       body=summary();
       foot='<button class="wl-cta" data-wl="finish">'+esc(ctaEnd())+'</button><button class="wl-sec" data-wl="explore">'+esc(tt(['أستكشف التطبيق أولًا','Explore the app first','Explorer d’abord']))+'</button>';
@@ -105,7 +145,7 @@
     }
     c.className='wl-full';
     c.innerHTML='<div class="wl'+(LANG==='ar'?'':' wl-ltr')+'" id="wl" role="dialog" aria-modal="true" aria-label="'+esc(tt(['رحلة البداية','Getting started','Pour commencer']))+'"><div class="wl-sky" aria-hidden="true">'+stars()+'</div>'+top()+
-      '<div class="wl-hero'+(hi?' big':'')+'" id="wlhero">'+arch()+'<div class="wl-bird '+(FIRST?'fly':'hop')+'" id="wlbird">'+hoopoe(mood,hi?140:92)+'</div></div>'+
+      '<div class="wl-hero'+(hi?' big':(s==='try'?' sm':''))+'" id="wlhero">'+arch()+'<div class="wl-bird '+(FIRST?'fly':'hop')+'" id="wlbird">'+hoopoe(mood,hi?140:92)+'</div></div>'+
       '<div class="wl-main"><div class="wl-bub" aria-live="polite"><span class="wl-ghost" aria-hidden="true">'+esc(sayFor(s))+'</span><span id="wlsay" class="wl-typed"></span></div>'+(body?'<div class="wl-body" key="'+s+'">'+body+'</div>':'')+'</div>'+
       '<div class="wl-foot">'+foot+'</div></div>';
     c.hidden=false;
@@ -139,6 +179,12 @@
       S.consent=S.consent||{v:1,t:Date.now()};try{save()}catch(e){}
       var m=document.getElementById('lgm');if(m)m.hidden=true;
     }
+    if(W.step==='try'){
+      var t=tState();if(t.sel==null)return;
+      if(t.i<TRY.length-1){t.i++;t.sel=null;render();return}
+      if(!t.done){t.done=true;try{addXP(10)}catch(e){}}
+      go('name');return;
+    }
     if(!collect())return;
     var n=after(W.step);
     if(n==='save')return commit(true);
@@ -153,6 +199,7 @@
     OBD=Object.assign({},S.prof||{},W.a);
     var _c=window.celebrate;window.celebrate=function(){};
     try{obFinish()}catch(e){}finally{window.celebrate=_c}
+    try{if(window.nfPathForGoal&&!S.path&&!edit){var pp=window.nfPathForGoal(W.a.goal);if(pp)S.path=pp}}catch(e){}
     S.welcomed=1;S.guided=1;S.toured=1;S.gs='';S.ws='';S.wa=null;
     try{save()}catch(e){}
     close();
@@ -169,6 +216,8 @@
       if(explore){go2('home');return}
       if(g==='khatma'||g==='hifz'){go2(g==='hifz'?'learn':'read');return}
       go2('learn');
+      var pid=window.nfPathNext&&window.nfPathNext();
+      if(pid){setTimeout(function(){window.nfStartPathLesson(pid)},350);return}
       var l=ALL.find(function(x){return !S.done[x.id]&&!unitLocked(x.unit)});
       if(l)setTimeout(function(){startLesson(l.id)},350);
     }catch(e){}
@@ -179,6 +228,7 @@
     if(!running())return;
     var L=e.target.closest('[data-wl-lang]');
     if(L){var l=L.dataset.wlLang;if(l!==LANG){collect();setLang(l);render()}return}
+    var tr=e.target.closest('[data-wl-try]');if(tr){pick(+tr.dataset.wlTry);return}
     var o=e.target.closest('[data-wl-opt]');
     if(o){
       var v=o.dataset.wlOpt;if(/^\d+$/.test(v))v=+v;W.a[W.step]=v;
@@ -190,7 +240,7 @@
     var b=e.target.closest('[data-wl]');if(!b)return;
     var a=b.dataset.wl;
     if(a==='next')next();
-    else if(a==='skip'){collect();var n=after(W.step);if(n==='save')commit(true);else go(n)}
+    else if(a==='skip'){if(W.step==='try'){go('name');return}collect();var n=after(W.step);if(n==='save')commit(true);else go(n)}
     else if(a==='back')back();
     else if(a==='finish')finish(false);
     else if(a==='explore')finish(true);
@@ -221,6 +271,9 @@
 
   var st=document.createElement('style');
   st.textContent=[
+   '.wl-hero.sm{--hh:min(15vh,108px)}',
+   '.wl-qt{font-size:1.28rem;font-weight:800;line-height:1.7;text-align:center;padding:2px 4px}.wl-qd{display:flex;gap:6px;justify-content:center}.wl-qd i{width:26px;height:6px;border-radius:9px;background:rgba(255,255,255,.16)}.wl-qd i.c{background:var(--g)}.wl-qd i.d{background:#5fd39a}',
+   '.wl-o.right{border-color:#5fd39a;background:rgba(95,211,154,.18)}.wl-o.wrong{border-color:#ff8a80;background:rgba(255,138,128,.16)}.wl-o:disabled{cursor:default}',
    '#cele.wl-full{background:#06231f;display:block;padding:0;overflow:hidden;z-index:70}',
    '#cele.wl-full[hidden]{display:none}',
    '.wl{--g:#e6c473;--cr:#f3e6c0;position:relative;height:100%;max-width:520px;margin:0 auto;display:flex;flex-direction:column;color:var(--cr);padding:max(12px,env(safe-area-inset-top,0px)) max(18px,env(safe-area-inset-right,0px)) max(14px,env(safe-area-inset-bottom,0px)) max(18px,env(safe-area-inset-left,0px));font-family:inherit}',
