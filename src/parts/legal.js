@@ -67,5 +67,5 @@
       clearInterval(t);setTimeout(fn,500);
     },500);
   };
-  if(!S.consent)nfWhen(function(){if(!S.consent)consent()},false);
+  if(!S.consent)nfWhen(function(){if(!S.consent&&((S.prof&&S.prof.done)||S.welcomed))consent()},false);
 })();
