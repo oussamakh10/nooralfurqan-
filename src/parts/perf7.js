@@ -16,7 +16,8 @@
   /* 2) إيقاف الحركات اللانهائية حين يختفي التطبيق */
   var st=document.createElement('style');
   st.textContent='html.nf-hid *,html.nf-hid *::before,html.nf-hid *::after{animation-play-state:paused!important}'+
-   '.ay,.lst>*,.hz-ch{content-visibility:auto;contain-intrinsic-size:auto 120px}';
+   '.ay,.lst>*,.hz-ch{content-visibility:auto;contain-intrinsic-size:auto 120px}'+
+   '.srow{content-visibility:auto;contain-intrinsic-size:auto 66px}.rc,.lv button{content-visibility:auto;contain-intrinsic-size:auto 52px}';
   document.head.appendChild(st);
   document.addEventListener('visibilitychange',function(){document.documentElement.classList.toggle('nf-hid',document.hidden)});
 })();
