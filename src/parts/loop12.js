@@ -68,6 +68,10 @@
     var risk=atRisk(),sk=document.getElementById('skcard');
     if(risk&&!sk){var d=document.createElement('div');d.innerHTML=banner();d.firstChild.style.margin='12px 0';hero.after(d.firstChild)}
     else if(!risk&&sk)sk.remove();
+    if(!document.getElementById('rscard')&&window.NF_SHOP&&NF_SHOP.restoreCard){
+      var rh=NF_SHOP.restoreCard();
+      if(rh){var rw=document.createElement('div');rw.innerHTML=rh;var rc=rw.firstChild;rc.style.margin='12px 0';(document.getElementById('skcard')||hero).after(rc)}
+    }
     if(!document.getElementById('dqcard')){
       var e=document.createElement('div');e.innerHTML=dqCard();var n=e.firstChild;n.style.margin='12px 0';
       var pt=document.getElementById('ptcard');if(pt)pt.before(n);else (document.getElementById('skcard')||hero).after(n);

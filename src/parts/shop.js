@@ -90,13 +90,20 @@
       else if(id==='boost')S.boost=Math.max(Date.now(),S.boost||0)+3600*1000;
       else own()[id]=1;
       save();try{SND.coin()}catch(e){}renderTop();toast('تم الشراء');renderShop();
+      showUndo('اشتريت «'+it.t+'»',function(){
+        S.xp+=PR;
+        if(id==='freeze')S.freeze=Math.max(0,(S.freeze||0)-1);
+        else if(id==='boost')S.boost=Math.max(Date.now(),(S.boost||0)-3600*1000);
+        else{delete own()[id];if(it.eq==='hat'&&S.hat===it.v)S.hat='';if(it.eq==='face'&&S.face===it.v)S.face='';if(it.eq==='neck'&&S.neck===it.v)S.neck=''}
+        save();renderTop();toast('أُعيدت '+N(PR)+' نقطة');renderShop();
+      });
     });
   }
   /* نافذة تأكيد داخل التطبيق (confirm() قد تُحجب في الغلاف) */
-  function askBuy(it,ok){
+  function askBuy(it,ok,price){
     let m=document.getElementById('buyconf');
     if(!m){m=document.createElement('div');m.id='buyconf';m.setAttribute('role','dialog');m.setAttribute('aria-modal','true');document.body.appendChild(m)}
-    m.innerHTML='<div class="bc-card"><div class="bc-t">تأكيد الشراء</div><p>شراء «'+esc(it.t)+'» مقابل '+N(priceOf(it))+' نقطة؟</p><div class="bc-b"><button class="btn ghost sm" data-bc="no">إلغاء</button><button class="btn sm" data-bc="yes">شراء</button></div></div>';
+    m.innerHTML='<div class="bc-card"><div class="bc-t">تأكيد الشراء</div><p>شراء «'+esc(it.t)+'» مقابل '+N(price||priceOf(it))+' نقطة؟</p><div class="bc-b"><button class="btn ghost sm" data-bc="no">إلغاء</button><button class="btn sm" data-bc="yes">شراء</button></div></div>';
     m.hidden=false;
     m.onclick=function(e){
       const b=e.target.closest('button[data-bc]');if(!b)return;
@@ -170,6 +177,54 @@
     if(it.id==='boost'&&boostLeft()>0)st='<small class="muted">فعّال: '+N(Math.ceil(boostLeft()/60000))+' دقيقة</small>';
     return '<div class="card shopit v2">'+tickets(it)+art(it)+'<b class="sname">'+esc(it.t)+'</b><small class="sdesc">'+esc(it.d)+'</small>'+st+'<div class="sact">'+tryb+btn+'</div></div>';
   }
+  /* ---- هدفك القادم + استرجاع السلسلة + تراجع الشراء ---- */
+  const RESTORE_COST=100;
+  function nextGoal(){
+    const l=ITEMS.filter(function(i){return i.k==='own'&&!isOwned(i)}).sort(function(a,b){return priceOf(a)-priceOf(b)});
+    return l[0]||null;
+  }
+  function goalHtml(){
+    const it=nextGoal();if(!it)return '';
+    const pr=priceOf(it),can=S.xp>=pr,pc=Math.min(100,Math.round(S.xp/pr*100));
+    return '<section class="sec"><div class="card goalcard'+(can?' can':'')+'"><div class="gl-h"><small>هدفك القادم</small><b>'+esc(it.t)+'</b></div>'+
+      '<div class="pbar gold"><i style="width:'+pc+'%"></i></div>'+
+      '<div class="gl-f"><span class="muted">'+(can?'يمكنك شراؤه الآن!':'باقٍ لك '+N(pr-S.xp)+' نقطة')+'</span>'+
+      (can?'<button class="btn sm gold" data-shop="buy:'+it.id+'">اشترِه</button>':'<button class="btn sm" data-go="learn">تعلّم لتكسب</button>')+'</div></div></section>';
+  }
+  function lostStreak(){
+    if(S.rsD===today())return 0;
+    const d=new Date();d.setDate(d.getDate()-1);
+    if(S.days[ymd(d)])return 0;
+    let c=0;d.setDate(d.getDate()-1);
+    while(S.days[ymd(d)]){c++;d.setDate(d.getDate()-1)}
+    return c>=2?c:0;
+  }
+  function restoreHtml(){
+    const n=lostStreak();if(!n)return '';
+    const can=S.xp>=RESTORE_COST;
+    return '<section class="sec" id="rscard"><div class="card restorecard"><div class="gl-h"><small>انقطعت سلسلتك أمس</small><b>استرجع سلسلة '+N(n)+' يومًا</b></div>'+
+      '<p class="muted" style="margin:0;font-size:.9rem">متاح اليوم فقط. تُحتسب أمس كيوم نشاط وتتصل سلسلتك من جديد.</p>'+
+      '<button class="btn sm'+(can?' gold':' ghost')+'" data-shop="restore">'+(can?'استرجع مقابل '+N(RESTORE_COST)+' نقطة':'ينقصك '+N(RESTORE_COST-S.xp)+' نقطة')+'</button></div></section>';
+  }
+  function doRestore(){
+    const n=lostStreak();if(!n)return;
+    if(S.xp<RESTORE_COST){toast('ينقصك '+N(RESTORE_COST-S.xp)+' نقطة');return}
+    askBuy({t:'استرجاع سلسلة '+n+' يومًا'},function(){
+      if(S.xp<RESTORE_COST||!lostStreak())return;
+      const d=new Date();d.setDate(d.getDate()-1);
+      S.xp-=RESTORE_COST;S.days[ymd(d)]=1;S.rsD=today();S.max=Math.max(S.max||0,streak());
+      save();try{SND.win()}catch(e){}renderTop();toast('عادت سلسلتك: '+N(streak())+' يومًا');
+      if(TAB==='shop')renderShop();else if(TAB==='home'){try{renderPage()}catch(e){}}
+    },RESTORE_COST);
+  }
+  let UNDO=null,undoT=0;
+  function showUndo(label,fn){
+    UNDO=fn;clearTimeout(undoT);
+    let b=document.getElementById('buyundo');
+    if(!b){b=document.createElement('div');b.id='buyundo';b.setAttribute('role','status');document.body.appendChild(b)}
+    b.innerHTML='<span>'+esc(label)+'</span><button data-undo="1">تراجع</button>';b.hidden=false;
+    undoT=setTimeout(function(){b.hidden=true;UNDO=null},10000);
+  }
   function pageShop(){
     migrate();
     const a=adS(),ready=adOK(),left=ADS_CFG.dailyCap-a.n,deal=dealItem();
@@ -178,6 +233,7 @@
       '<div class="fr-info"><div class="fr-bal">'+IC.gem+'<b>'+N(S.xp)+'</b><span>نقطة</span></div>'+
       '<small class="muted">'+(tryIt?'تجرّب الآن: '+esc(tryIt.t)+' (للمعاينة فقط)':'هدهدك بإطلالته الحالية. اضغط «جرّب» على أي إكسسوار لتراه عليه.')+'</small>'+
       '<small class="muted">كل مرحلة تُتمّها تمنحك 15 نقطة'+(boostLeft()>0?' · مضاعف ×2 فعّال '+N(Math.ceil(boostLeft()/60000))+' د':'')+'</small></div></div></section>';
+    h+=restoreHtml()+goalHtml();
     h+='<div class="seg shoptabs" role="tablist">'+TABS.map(function(t){return '<button role="tab" aria-selected="'+(SHOPTAB===t[0])+'" class="'+(SHOPTAB===t[0]?'on':'')+'" data-shop="tab:'+t[0]+'">'+t[1]+'</button>'}).join('')+'</div>';
     if(SHOPTAB==='all'&&deal){
       h+='<section class="sec"><h2>عرض اليوم</h2><div class="dealbox"><div class="dealtag">خصم 30% اليوم فقط</div>'+card(deal)+'</div></section>';
@@ -236,12 +292,14 @@
     if(s){const v=s.getAttribute('data-spv');if(v!=='b'&&!owned('spv:'+v)){e.stopImmediatePropagation();e.preventDefault();toast('اشترِ هذه الشاشة من المتجر');return}}
     const h=t.closest('button[data-xhat]');
     if(h){const v=h.getAttribute('data-xhat');if(v&&!owned('hat:'+v)){e.stopImmediatePropagation();e.preventDefault();toast('اشترِ هذا الإكسسوار من المتجر');return}}
+    const u=t.closest('button[data-undo]');if(u){e.stopImmediatePropagation();const f=UNDO;UNDO=null;clearTimeout(undoT);const bx=document.getElementById('buyundo');if(bx)bx.hidden=true;if(f)f();return}
     const b=t.closest('button[data-shop]');if(!b)return;
     const v=b.dataset.shop,a=v.split(':')[0],id=v.split(':').slice(1).join(':');
     if(a==='tab'){SHOPTAB=id;return renderShop()}
     if(a==='try'){TRY=(TRY===id)?null:id;return renderShop()}
     if(a==='ad')return watchAd(id);
     if(a==='buy')return buy(id);
+    if(a==='restore')return doRestore();
     if(a==='eq')return equip(id);
   },true);
   /* إكسسوارات الإعدادات القديمة: القفل بالملكية لا بالرصيد */
@@ -250,10 +308,15 @@
     migrate();
     return _es().replace(/(<button class="tag" data-xhat="[^"]*" aria-pressed="[^"]*") disabled>/g,'$1>');
   };
+
+  const st=document.createElement('style');
+  st.textContent='.goalcard,.restorecard{display:grid;gap:8px;border-color:var(--gold)}.gl-h{display:grid;gap:2px}.gl-h small{color:var(--muted);font-size:.8rem}.gl-h b{font:700 1.1rem var(--display)}.gl-f{display:flex;align-items:center;justify-content:space-between;gap:10px}.goalcard.can{background:color-mix(in srgb,var(--gold) 14%,var(--surface))}'+
+   '#buyundo{position:fixed;inset-inline:12px;bottom:calc(84px + env(safe-area-inset-bottom,0px));z-index:80;display:flex;align-items:center;justify-content:space-between;gap:10px;padding:10px 14px;border-radius:16px;background:#0B2A1E;color:#FAF1CC;border:2px solid #F2C94C;box-shadow:0 8px 24px rgba(0,0,0,.35);font:700 .95rem var(--text)}#buyundo[hidden]{display:none}#buyundo button{border:0;border-radius:99px;padding:6px 16px;background:#F2C94C;color:#1C1503;font:800 .9rem var(--text)}';
+  document.head.appendChild(st);
   migrate();
   try{if(location.hash==='#shop'){TAB='shop';renderNav();renderPage()}}catch(e){}
   try{renderTop()}catch(e){}
-  window.NF_SHOP={watchAd:watchAd,items:ITEMS,cfg:ADS_CFG};
+  window.NF_SHOP={watchAd:watchAd,items:ITEMS,cfg:ADS_CFG,restoreCard:restoreHtml};
 })();
 /* أيقونات خطية موحّدة بدل الإيموجي */
 function icoSvg(e){
