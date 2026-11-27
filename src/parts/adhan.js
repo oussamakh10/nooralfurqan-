@@ -52,7 +52,7 @@
     try{
       const LN=window.Capacitor&&window.Capacitor.Plugins&&window.Capacitor.Plugins.LocalNotifications;if(!LN)return;
       const a=A();
-      LN.getPending().then(function(p){return p.notifications&&p.notifications.length?LN.cancel({notifications:p.notifications.map(function(n){return {id:n.id}})}):null}).then(function(){
+      LN.getPending().then(function(p){return (p.notifications||[]).filter(function(n){return n.id<200}).length?LN.cancel({notifications:p.notifications.filter(function(n){return n.id<200}).map(function(n){return {id:n.id}})}):null}).then(function(){
         if(!a.on)return;
         return LN.requestPermissions().then(function(r){
           if(r.display!=='granted')return;
