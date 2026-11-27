@@ -14,3 +14,4 @@
 - اختبار: `python3 -m http.server 8765 -d public` ثم `tools/smoke4.py` (Playwright).
 
 - المهارات (skills) المثبّتة في `.claude/skills/`: webapp-testing، accessibility-review، frontend-design، frontend-a11y، skill-creator، canvas-design، theme-factory، doc-coauthoring، brand-guidelines (هوية Anthropic: لا تُطبَّق على التطبيق). استعملها عند الاختبار والتدقيق والتصميم.
+- مهارات Sentry المنسوخة من github.com/getsentry/skills: find-bugs، security-review، code-review، code-simplifier، secret-serialization، gha-security-review (أمثلتها Django/Python؛ طبّق مبادئها على JS/HTML هنا). استعملها قبل الإطلاق للمراجعة الأمنية.
