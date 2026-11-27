@@ -8,7 +8,7 @@ function detectLang(){try{const l=((navigator.languages&&navigator.languages[0])
 (function(){
   if(S.lang&&!S.langAuto)LANG=S.lang;
   else if(S.langAuto){LANG=detectLang();S.lang=LANG}
-  else{const used=S.prof||S.xp>0||Object.keys(S.done||{}).length;if(used){S.lang='ar'}else LANG=detectLang()}
+  else{S.lang='ar'}
   if(LANG!=='ar'&&LANG!=='en'&&LANG!=='fr')LANG='ar';
   if(LANG!=='ar'&&S.langAuto&&!S.trAuto){S.tr='en';S.trAuto=1}
 })();

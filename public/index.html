@@ -4568,7 +4568,7 @@ function detectLang(){try{const l=((navigator.languages&&navigator.languages[0])
 (function(){
   if(S.lang&&!S.langAuto)LANG=S.lang;
   else if(S.langAuto){LANG=detectLang();S.lang=LANG}
-  else{const used=S.prof||S.xp>0||Object.keys(S.done||{}).length;if(used){S.lang='ar'}else LANG=detectLang()}
+  else{S.lang='ar'}
   if(LANG!=='ar'&&LANG!=='en'&&LANG!=='fr')LANG='ar';
   if(LANG!=='ar'&&S.langAuto&&!S.trAuto){S.tr='en';S.trAuto=1}
 })();
@@ -10481,49 +10481,7 @@ document.addEventListener('click',function(e){
   const v=+b.dataset.duc;DUA_OPEN=v<0?null:v;renderDhikr();
 });
 
-/* ===== دقيقة دعاء بعد الترحيب (مرة واحدة) ===== */
-(function(){
-  let tm=null;
-  function close(always){clearInterval(tm);tm=null;const m=document.getElementById('duam');if(m)m.hidden=true;S.duaV2=1;S.duaAlways=always?1:0;save()}
-  let typer=0;
-  function typeIn(el,text){
-    clearInterval(typer);
-    if(S.rm||!window.requestAnimationFrame){el.textContent=text;return}
-    let i=0;el.textContent='';
-    typer=setInterval(function(){i+=2;el.textContent=text.slice(0,i);if(i>=text.length)clearInterval(typer)},28);
-  }
-  function show(){
-    let m=document.getElementById('duam');
-    if(!m){m=document.createElement('div');m.id='duam';m.setAttribute('role','dialog');m.setAttribute('aria-modal','true');document.body.appendChild(m)}
-    const msg=g3([
-     'السلام عليكم ورحمة الله. قبل أن نبدأ، لي عندك طلب: فقد انتقل إلى رحمة الله في الأيام الماضية الطفل حميد، أخو أسيل. ندعو الله أن يتغمده برحمته ويسكنه فسيح جناته، وأن يربط على قلوب أهله بالصبر والسلوان. ونرجو منك الدعاء للمسلمين والمسلمات جميعًا بما تيسّر من قلبك. جزاك الله خيرًا.',
-     'Peace be upon you. Before we begin, I have a request: little Hamid, Aseel’s brother, passed away to Allah’s mercy in recent days. We ask Allah to envelop him in His mercy, grant him the highest Paradise, and give his family patience and comfort. We ask you to pray for all Muslim men and women with whatever your heart offers. Jazāk Allāhu khayran.',
-     'Que la paix soit sur vous. Avant de commencer, j’ai une demande : le petit Hamid, frère d’Aseel, est retourné à la miséricorde d’Allah ces derniers jours. Nous demandons à Allah de l’envelopper de Sa miséricorde, de l’accueillir au plus haut du Paradis et de donner patience et réconfort à sa famille. Nous vous demandons d’invoquer pour tous les musulmans et musulmanes comme votre cœur vous le dicte. Jazâk Allâhu khayran.']);
-    let ic='';try{ic='<div style="text-align:center;display:flex;gap:14px;justify-content:center;color:var(--accent)">'+icoSvg('🌙')+icoSvg('📖')+icoSvg('✦')+'</div>'}catch(e){}
-    m.innerHTML='<div class="obx"><div class="obtop"><div class="obowl">'+hoopoe('sad',120)+'</div></div>'+
-     '<div class="obbub" aria-label="'+esc(msg)+'"><span id="duasay"></span></div>'+
-     '<div class="duafade" id="duafade">'+ic+
-     '<p class="duat">اللَّهُمَّ ارْحَمْ حَمِيدًا وَاجْعَلْهُ فَرَطًا وَذُخْرًا لِوَالِدَيْهِ، وَأَلْهِمْ أَهْلَهُ الصَّبْرَ وَالسُّلْوَانَ، وَاغْفِرْ لِلْمُسْلِمِينَ وَالْمُسْلِمَاتِ، الْأَحْيَاءِ مِنْهُمْ وَالْأَمْوَاتِ.</p>'+
-     '<div class="obfoot"><button class="btn" data-dua="always">'+esc(g3(['أظهرها لي في كل دخول للتطبيق','Show it every time I open the app','L’afficher à chaque ouverture']))+'</button>'+
-     '<button class="btn ghost" data-dua="once">'+esc(g3(['مرة واحدة فقط','Only once','Une seule fois']))+'</button></div></div></div>';
-    m.hidden=false;
-    typeIn(document.getElementById('duasay'),msg);
-    setTimeout(function(){const f=document.getElementById('duafade');if(f)f.classList.add('on')},S.rm?0:Math.min(5200,msg.length*14+400));
-  }
-  document.addEventListener('click',function(e){
-    const b=e.target.closest&&e.target.closest('[data-dua]');if(!b)return;
-    const a=b.dataset.dua;if(a==='always')close(true);else if(a==='once'||a==='end')close(false);
-  });
-  const of=obFinish;
-  obFinish=function(){
-    const first=!S.duaV2;
-    const r=of.apply(this,arguments);
-    if(first)setTimeout(show,350);
-    return r;
-  };
-  /* تظهر لكل مستخدم عند الفتح (حتى لو تخطّى الترحيب) إلى أن يختار */
-  if(!S.duaV2||S.duaAlways)nfWhen(show,true);
-})();
+
 
 /* ===== إعادة ترتيب الصفحة الرئيسية: تخطيط جديد يعيد استخدام العناصر القديمة ===== */
 (function(){
@@ -13132,7 +13090,7 @@ window.NF_DOCS={"privacy.html": "<!doctype html><html lang=\"ar\" dir=\"rtl\"><h
   function show(){
     var c=$('#cele');c.hidden=false;c.classList.add('gd-full');
     c.innerHTML='<div class="obx gd-wrap" id="gdwrap" role="dialog" aria-modal="true" aria-label="'+esc(tt(['جولة الهدهد','Hoopoe guide','Guide du Hudhud']))+'">'+
-      '<div class="gd-lang" role="group" aria-label="Language" dir="ltr">'+[['ar','🇸🇦','ع'],['en','🇬🇧','EN'],['fr','🇫🇷','FR']].map(function(x){return '<button class="gd-l'+(LANG===x[0]?' on':'')+'" data-gl="'+x[0]+'" aria-pressed="'+(LANG===x[0])+'" aria-label="'+({ar:'العربية',en:'English',fr:'Français'})[x[0]]+'"><span aria-hidden="true">'+x[1]+'</span> '+x[2]+'</button>'}).join('')+'</div>'+
+      '<div class="gd-lang" role="group" aria-label="Language">'+[['ar','🇸🇦','ع'],['en','🇬🇧','EN'],['fr','🇫🇷','FR']].map(function(x){return '<button class="gd-l'+(LANG===x[0]?' on':'')+'" data-gl="'+x[0]+'" aria-pressed="'+(LANG===x[0])+'" aria-label="'+({ar:'العربية',en:'English',fr:'Français'})[x[0]]+'"><span aria-hidden="true">'+x[1]+'</span> '+x[2]+'</button>'}).join('')+'</div>'+
       '<div class="obtop"><div class="obowl" id="gdbird">'+hoopoe('wow',96)+'</div></div>'+
       '<div id="gdTalk" class="gd-talk" aria-live="polite"></div><div id="gdOpts" class="gd-opts"></div></div>';
     /* لا زر إغلاق: الجولة إلزامية */
@@ -13316,7 +13274,7 @@ window.NF_DOCS={"privacy.html": "<!doctype html><html lang=\"ar\" dir=\"rtl\"><h
   function stars(){var o='';for(var i=0;i<12;i++){o+='<i style="left:'+((i*37+11)%100)+'%;top:'+((i*53+7)%70)+'%;width:'+(2+(i%3))+'px;height:'+(2+(i%3))+'px;animation-delay:'+((i%9)*.45)+'s"></i>'}return o}
   var FIRST=true;
   function langs(){
-    return '<div class="wl-lang" role="group" aria-label="Language" dir="ltr">'+[['ar','ع'],['en','EN'],['fr','FR']].map(function(x){
+    return '<div class="wl-lang" role="group" aria-label="Language">'+[['ar','ع'],['en','EN'],['fr','FR']].map(function(x){
       return '<button class="wl-l'+(LANG===x[0]?' on':'')+'" data-wl-lang="'+x[0]+'" aria-pressed="'+(LANG===x[0])+'" aria-label="'+({ar:'العربية',en:'English',fr:'Français'})[x[0]]+'">'+x[1]+'</button>'}).join('')+'</div>';
   }
   function qIndex(){return ['name','age','goal','lvl','mins'].indexOf(W.step)}
@@ -13554,7 +13512,7 @@ window.NF_DOCS={"privacy.html": "<!doctype html><html lang=\"ar\" dir=\"rtl\"><h
    '.wl-dots{display:inline-flex;gap:5px;align-items:center;height:1.8em}.wl-dots i{width:8px;height:8px;border-radius:50%;background:var(--g);opacity:.4;animation:wld 1s infinite}.wl-dots i:nth-child(2){animation-delay:.15s}.wl-dots i:nth-child(3){animation-delay:.3s}@keyframes wld{50%{opacity:1;transform:translateY(-3px)}}',
    '.wl-body{display:flex;flex-direction:column;gap:10px;animation:wlin .4s cubic-bezier(.2,.8,.2,1) both}@keyframes wlin{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}',
    '.wl-opts{display:flex;flex-direction:column;gap:9px}',
-   '.wl-o{display:flex;align-items:center;gap:12px;width:100%;min-height:64px;padding:10px 14px;border-radius:18px;border:2px solid rgba(230,196,115,.2);background:rgba(0,0,0,.3);color:var(--cr);text-align:start;cursor:pointer;font-family:inherit;transition:transform .12s,border-color .15s,background .15s}',
+   '.wl-o{display:flex;align-items:center;gap:12px;width:100%;min-height:64px;padding:10px 14px;border-radius:18px;border:2px solid rgba(242,201,76,.32);background:linear-gradient(180deg,#154431,#103526);color:var(--cr);text-align:start;cursor:pointer;font-family:inherit;transition:transform .12s,border-color .15s,background .15s}',
    '.wl-o:active{transform:scale(.98)}.wl-o.on{border-color:var(--g);background:rgba(230,196,115,.16);box-shadow:0 0 0 3px rgba(230,196,115,.15)}',
    '.wl-oi{flex:0 0 auto;width:42px;height:42px;border-radius:14px;display:grid;place-items:center;background:rgba(230,196,115,.14);color:var(--g)}',
    '.wl-ot{flex:1;display:flex;flex-direction:column;gap:1px;min-width:0}.wl-ot b{font-size:1.06rem;font-weight:800}.wl-ot small{font-size:.86rem;opacity:.75;line-height:1.5}',
@@ -13838,6 +13796,29 @@ window.NF_DOCS={"privacy.html": "<!doctype html><html lang=\"ar\" dir=\"rtl\"><h
    '.dq-t{flex:1;min-width:0;display:grid}.dq-t b{font:700 .98rem/1.4 var(--display)}.dq-t small{color:var(--muted)}.dq-r.got .dq-t{opacity:.65}'+
    '.dq-ch{text-align:center;color:var(--muted);font-size:.9rem;padding-top:2px}.dq-ch.done{color:var(--accent-d);font-weight:700}'+
    '.skcard{display:flex;align-items:center;gap:10px;border-color:var(--flame);background:color-mix(in srgb,var(--flame) 12%,var(--surface))}.sk-i{flex:0 0 auto;width:40px;height:40px;border-radius:13px;display:grid;place-items:center;background:color-mix(in srgb,var(--flame) 22%,transparent);color:var(--flame)}.sk-t{flex:1;min-width:0;display:grid}.sk-t b{font:700 1rem/1.4 var(--display)}.sk-t small{color:var(--muted);line-height:1.5}.skcard .btn{width:auto}';
+  document.head.appendChild(st);
+})();
+
+
+/* 26: شاشة الأسئلة بألوان التطبيق: أخضر غامق وذهبي وأصفر (مثل شاشة الترحيب) */
+(function(){
+  var st=document.createElement('style');
+  st.textContent=
+  '#lesson,#lesson *{--bg:#081F16;--surface:#12392A;--fg:#FAF1CC;--muted:#D3C591;--line:#42704F;--accent:#F2C94C;--accent-d:#B88A16;--accent-soft:#1F4D37;--on-accent:#1C1503;--gold:#F2C94C;--gold-d:#B88A16;--gold-t:#F7DE7A;--accent-t:#F7DE7A;--focus:#F7DE7A;--ok-bg:#1D5237;--ok-fg:#A6F0C6;--bad-bg:#4E2523;--bad-fg:#FFB8B2;--bad:#FF7A72;--bad-d:#B8423D;--lock:#1C3B2C;--lock-d:#2B5240;--pat:rgba(242,201,76,.08);--pat2:rgba(242,201,76,.12);color-scheme:dark}'+
+  '#lesson{color:var(--fg);background:radial-gradient(circle at 50% 0,rgba(242,201,76,.20),transparent 60%),repeating-linear-gradient(45deg,transparent 0 22px,rgba(242,201,76,.045) 22px 23px),repeating-linear-gradient(-45deg,transparent 0 22px,rgba(242,201,76,.045) 22px 23px),#081F16}'+
+  '#lesson::before{background:radial-gradient(120% 45% at 50% 100%,rgba(31,120,80,.35),transparent 70%)}'+
+  '#lesson .opt{background:linear-gradient(180deg,#154431,#103526);border-color:#42704F;color:var(--fg)}'+
+  '#lesson .opt.sel,#lesson .opt[aria-pressed="true"],#lesson .opt.on{background:linear-gradient(180deg,#5A4C14,#3F3510);border-color:#F2C94C}'+
+  '#lesson .opt.right{background:var(--ok-bg);border-color:#5FD394}'+
+  '#lesson .opt.wrong{background:var(--bad-bg);border-color:var(--bad)}'+
+  '#lesson .btn:not(.ghost):not(.bad){background:linear-gradient(180deg,#F8DD76,#E2B531);color:#1C1503;border-bottom-color:#9B7410}'+
+  '#lesson .btn.ghost{background:rgba(255,255,255,.04);color:var(--fg);border-color:#42704F}'+
+  '#lesson .lfoot{background:#0A2A1D;border-top-color:rgba(242,201,76,.28)}'+
+  '#lesson .lfoot.ok{background:var(--ok-bg)}#lesson .lfoot.bad{background:var(--bad-bg)}'+
+  '#lesson .bar{background:#16402F}#lesson .bar i{background:linear-gradient(90deg,#E2B531,#F8DD76)}'+
+  '#lesson .xbtn{color:#F2C94C;border-color:#F2C94C;background:transparent}'+
+  '#lesson .bubble{background:#12392A;border-color:#42704F;color:var(--fg)}'+
+  '#lesson .stat,#lesson .card{background:#12392A;border-color:#42704F;color:var(--fg)}';
   document.head.appendChild(st);
 })();
 

@@ -22,7 +22,7 @@
   function show(){
     var c=$('#cele');c.hidden=false;c.classList.add('gd-full');
     c.innerHTML='<div class="obx gd-wrap" id="gdwrap" role="dialog" aria-modal="true" aria-label="'+esc(tt(['جولة الهدهد','Hoopoe guide','Guide du Hudhud']))+'">'+
-      '<div class="gd-lang" role="group" aria-label="Language" dir="ltr">'+[['ar','🇸🇦','ع'],['en','🇬🇧','EN'],['fr','🇫🇷','FR']].map(function(x){return '<button class="gd-l'+(LANG===x[0]?' on':'')+'" data-gl="'+x[0]+'" aria-pressed="'+(LANG===x[0])+'" aria-label="'+({ar:'العربية',en:'English',fr:'Français'})[x[0]]+'"><span aria-hidden="true">'+x[1]+'</span> '+x[2]+'</button>'}).join('')+'</div>'+
+      '<div class="gd-lang" role="group" aria-label="Language">'+[['ar','🇸🇦','ع'],['en','🇬🇧','EN'],['fr','🇫🇷','FR']].map(function(x){return '<button class="gd-l'+(LANG===x[0]?' on':'')+'" data-gl="'+x[0]+'" aria-pressed="'+(LANG===x[0])+'" aria-label="'+({ar:'العربية',en:'English',fr:'Français'})[x[0]]+'"><span aria-hidden="true">'+x[1]+'</span> '+x[2]+'</button>'}).join('')+'</div>'+
       '<div class="obtop"><div class="obowl" id="gdbird">'+hoopoe('wow',96)+'</div></div>'+
       '<div id="gdTalk" class="gd-talk" aria-live="polite"></div><div id="gdOpts" class="gd-opts"></div></div>';
     /* لا زر إغلاق: الجولة إلزامية */
