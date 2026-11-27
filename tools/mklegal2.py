@@ -1,0 +1,115 @@
+#!/usr/bin/env python3
+"""يعيد توليد الصفحات القانونية بقالب رسمي موحّد من بيانات D الموجودة فيها، ويحدّث docs_data.js وindex.html."""
+import re, json, os, sys
+root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+NAMES = ['privacy', 'terms', 'sources', 'support', 'delete-account']
+TITLES = {
+ 'privacy': ['سياسة الخصوصية', 'Privacy Policy', 'Politique de confidentialité'],
+ 'terms': ['شروط الاستخدام', 'Terms of Use', 'Conditions d’utilisation'],
+ 'sources': ['المصادر والتراخيص', 'Sources & Licences', 'Sources et licences'],
+ 'support': ['الدعم والتواصل', 'Support & Contact', 'Assistance et contact'],
+}
+CSS = """:root{--bg:#f6efd8;--card:#fffdf5;--fg:#1d2b24;--mut:#5b6a60;--g:#0f3b3a;--g2:#0e7a53;--gold:#b8892a;--line:#e3d6ac}
+@media(prefers-color-scheme:dark){:root{--bg:#0b1d1a;--card:#122824;--fg:#f1e8cc;--mut:#b9b79b;--g:#0a2a28;--g2:#3fbf8a;--gold:#e2b94e;--line:#2c4a43}}
+*{box-sizing:border-box}html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--fg);font:400 1.02rem/1.95 "Segoe UI","Noto Naskh Arabic",Tahoma,system-ui,sans-serif}
+.top{background:linear-gradient(180deg,#0f3b3a,#0a2a28);color:#f6e9c0;border-bottom:3px solid var(--gold);padding:18px 16px 22px}
+.top .in{max-width:780px;margin:0 auto}
+.bar{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap}
+.back{color:#f6e9c0;text-decoration:none;font-size:.92rem;opacity:.9}
+.lang{display:inline-flex;border:1px solid rgba(246,233,192,.4);border-radius:999px;overflow:hidden}
+.lang button{border:0;background:transparent;color:#f6e9c0;padding:5px 14px;font:inherit;font-size:.88rem;cursor:pointer}
+.lang button[aria-pressed=true]{background:#e2b94e;color:#1c1503;font-weight:700}
+.id{display:flex;align-items:center;gap:14px;margin-top:16px}
+.id img{width:60px;height:60px;border-radius:16px;border:2px solid var(--gold);background:#0a2a28}
+.id small{display:block;color:#e2b94e;letter-spacing:.04em;font-size:.88rem}
+h1{margin:0;font-size:1.65rem;line-height:1.35;font-weight:800}
+.meta{margin-top:12px;font-size:.88rem;color:#d8cfa6}
+main{max-width:780px;margin:0 auto;padding:18px 16px 40px}
+.tabs{display:flex;gap:8px;flex-wrap:wrap;margin:2px 0 16px}
+.tabs a{padding:6px 14px;border:1px solid var(--line);border-radius:999px;color:var(--fg);text-decoration:none;font-size:.9rem;background:var(--card)}
+.tabs a[aria-current=page]{background:var(--g);color:#f6e9c0;border-color:var(--g)}
+.toc{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px 18px;margin-bottom:18px}
+.toc b{display:block;margin-bottom:4px;color:var(--g2)}
+.toc ol{margin:0;padding-inline-start:22px;columns:2;column-gap:28px;font-size:.95rem;line-height:1.8}
+@media(max-width:560px){.toc ol{columns:1}}
+.toc a{color:var(--fg);text-decoration:none}.toc a:hover{text-decoration:underline}
+section{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:6px 18px 14px;margin:0 0 14px}
+h2{display:flex;align-items:center;gap:10px;margin:14px 0 4px;font-size:1.12rem;line-height:1.5;color:var(--g2)}
+.no{flex:0 0 auto;display:inline-grid;place-items:center;width:28px;height:28px;border-radius:50%;background:var(--gold);color:#1c1503;font-size:.85rem;font-weight:800}
+section p{margin:4px 0 0;text-align:justify;text-justify:inter-word;white-space:pre-line}
+a{color:var(--g2)}
+footer{max-width:780px;margin:0 auto;padding:0 16px 40px;color:var(--mut);font-size:.88rem;text-align:center;line-height:1.8}
+footer .links{display:flex;gap:6px 16px;justify-content:center;flex-wrap:wrap;margin-bottom:8px}
+footer hr{border:0;border-top:1px solid var(--line);margin:0 0 14px}
+.em{direction:ltr;unicode-bidi:isolate;display:inline-block}
+@media print{.top .bar,.tabs,.toc{display:none}body{background:#fff;color:#000}.top{background:none;color:#000;border-bottom:2px solid #000}.top .meta,.id small{color:#333}section{border:0;padding:0;break-inside:avoid}}"""
+
+def page(name, D, dr_note):
+    S = json.dumps
+    tabs = ''.join(f'<a href="{k}.html" data-k="{k}"></a>' for k in TITLES)
+    return f'''<!doctype html><html lang="ar" dir="rtl"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>نور الفرقان</title><meta name="theme-color" content="#0f3b3a"><meta name="color-scheme" content="light dark"><link rel="icon" href="favicon-32.png"><style>{CSS}</style></head><body>
+<header class="top"><div class="in"><div class="bar"><a class="back" href="./" id="bk"></a><div class="lang" role="group" aria-label="Language"><button data-l="0">العربية</button><button data-l="1">English</button><button data-l="2">Français</button></div></div>
+<div class="id"><img src="icon-192.png" alt="" onerror="this.style.display='none'"><div><small id="app"></small><h1 id="h"></h1></div></div><div class="meta" id="dr"></div></div></header>
+<main><nav class="tabs" id="tabs" aria-label="Documents">{tabs}</nav><div class="toc" id="toc" hidden></div><div id="b"></div></main>
+<footer><hr><div class="links" id="fl"></div><div id="ft"></div></footer>
+<script>
+var L=(function(){{var n=(navigator.language||'ar').slice(0,2);return n==='fr'?2:n==='en'?1:0}})();
+var D={S(D,ensure_ascii=False)};
+var KEY={S(name)},TT={S(TITLES,ensure_ascii=False)};
+var X={{app:['نور الفرقان','Nur al-Furqan','Nur al-Furqan'],back:['→ العودة إلى التطبيق','← Back to the app','← Retour à l’application'],toc:['المحتويات','Contents','Sommaire'],
+upd:['آخر تحديث: 2026-11-01 · الإصدار 1.0','Last updated: 2026-11-01 · Version 1.0','Dernière mise à jour : 2026-11-01 · Version 1.0'],
+pub:['الناشر: خلوفي أسامة — الجزائر','Publisher: Khelloufi Oussama — Algeria','Éditeur : Khelloufi Oussama — Algérie'],
+note:['هذه الوثيقة معلومات عامة للمستخدمين ولا تُعدّ استشارة قانونية. نرحّب بملاحظاتكم عبر صفحة الدعم والتواصل.','This document provides general information for users and is not legal advice. We welcome your feedback through the Support page.','Ce document fournit des informations générales aux utilisateurs et ne constitue pas un avis juridique. Vos remarques sont les bienvenues via la page Assistance.'],
+rights:['© 2026 نور الفرقان — جميع الحقوق محفوظة','© 2026 Nur al-Furqan — All rights reserved','© 2026 Nur al-Furqan — Tous droits réservés']}};
+function lk(t){{return String(t).replace(/([A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{{2,}})/g,'<a class="em" href="mailto:$1">$1</a>')}}
+function r(){{
+ document.documentElement.lang=['ar','en','fr'][L];document.documentElement.dir=L?'ltr':'rtl';
+ var T=D.t[L];document.title=T+' — Nur al-Furqan';
+ document.getElementById('h').textContent=T;document.getElementById('app').textContent=X.app[L];
+ document.getElementById('bk').textContent=X.back[L];
+ document.getElementById('dr').textContent=X.upd[L];
+ document.getElementById('b').innerHTML=D.s.map(function(s,i){{return '<section id="s'+(i+1)+'"><h2><span class="no">'+(i+1)+'</span><span>'+s[0][L]+'</span></h2><p>'+lk(s[1][L])+'</p></section>'}}).join('');
+ var tc=document.getElementById('toc');
+ if(D.s.length>=4){{tc.hidden=false;tc.innerHTML='<b>'+X.toc[L]+'</b><ol>'+D.s.map(function(s,i){{return '<li><a href="#s'+(i+1)+'">'+s[0][L]+'</a></li>'}}).join('')+'</ol>'}}else tc.hidden=true;
+ document.querySelectorAll('#tabs a').forEach(function(a){{var k=a.dataset.k;a.textContent=TT[k][L];if(k===KEY)a.setAttribute('aria-current','page');else a.removeAttribute('aria-current')}});
+ document.getElementById('fl').innerHTML=Object.keys(TT).map(function(k){{return '<a href="'+k+'.html">'+TT[k][L]+'</a>'}}).join('');
+ document.getElementById('ft').innerHTML=X.pub[L]+'<br>'+X.note[L]+'<br>'+X.rights[L];
+ document.querySelectorAll('.lang button').forEach(function(b){{b.setAttribute('aria-pressed',String(+b.dataset.l===L))}});
+}}
+try{{if(window.self!==window.top)document.getElementById('bk').hidden=true}}catch(e){{}}
+document.querySelectorAll('.lang button').forEach(function(b){{b.onclick=function(){{L=+b.dataset.l;r()}}}});r();
+</script></body></html>
+'''
+
+def extract(name):
+    t = open(os.path.join(root, 'public', name + '.html'), encoding='utf-8').read()
+    sc = t[t.index('<script>') + 8:t.index('</script>')]
+    i = sc.index('var D=') + 6
+    D, _ = json.JSONDecoder().raw_decode(sc[i:])
+    return D
+
+out = {}
+for n in NAMES:
+    D = extract(n)
+    html = page(n, D, None)
+    out[n + '.html'] = html
+    for d in ('public', 'pwa'):
+        p = os.path.join(root, d, n + '.html')
+        if os.path.isdir(os.path.dirname(p)):
+            open(p, 'w', encoding='utf-8').write(html)
+# NF_DOCS
+dd = os.path.join(root, 'src/parts/docs_data.js')
+s = open(dd, encoding='utf-8').read()
+i = s.index('window.NF_DOCS=') + 15
+_, e = json.JSONDecoder().raw_decode(s[i:])
+newjs = 'window.NF_DOCS=' + json.dumps(out, ensure_ascii=False).replace('</', '<\\/')
+s2 = s[:i - 15] + newjs + s[i + e:]
+open(dd, 'w', encoding='utf-8').write(s2)
+ix = os.path.join(root, 'public/index.html')
+h = open(ix, encoding='utf-8').read()
+a = h.index('window.NF_DOCS=') + 15
+_, e2 = json.JSONDecoder().raw_decode(h[a:])
+h = h[:a - 15] + newjs + h[a + e2:]
+open(ix, 'w', encoding='utf-8').write(h)
+print('ok', {k: len(v) for k, v in out.items()})
