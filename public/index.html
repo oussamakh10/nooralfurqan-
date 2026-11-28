@@ -5466,7 +5466,7 @@ function openSettings(){
    '<div class="field"><label for="methsel">طريقة حساب المواقيت</label><select id="methsel">'+Object.keys(METH).map(function(k){return '<option value="'+k+'"'+(S.method===k?' selected':'')+'>'+METH[k][0]+'</option>'}).join('')+'</select></div><div class="field"><label><input type="checkbox" id="asrh"'+(S.asrh?' checked':'')+'> '+g3(['العصر بالمذهب الحنفي (الظل مثلان)','Hanafi Asr (shadow = 2×)','Asr hanafite (ombre ×2)'])+'</label></div>'+
    '<div class="field"><label for="remtime">تذكير يومي</label><div class="opts2"><input type="time" id="remtime" value="'+esc(S.rem||'20:00')+'" style="width:auto"><button class="btn sm ghost" data-act="rem-save">تفعيل التنبيه داخل الصفحة</button><button class="btn sm ghost" data-act="rem-ics">حمّل تذكيرًا لتقويم هاتفك</button></div><small class="muted">لا أستطيع إرسال إشعارات والصفحة مغلقة. ملف التقويم يجعل هاتفك يذكّرك يوميًا.</small></div>'+
    extraSettings()+
-   '<div class="setrow"><span>ملفي الشخصي'+(S.prof&&S.prof.name?': '+esc(S.prof.name):'')+'</span><button class="btn sm ghost" data-act="prof-edit">تعديل</button></div>'+
+   '<div class="setrow"><span>ملفي الشخصي'+(S.prof&&S.prof.name?': '+esc(S.prof.name):'')+((window.nfTitle&&nfTitle())?' · '+esc(nfTitle()):'')+'</span><button class="btn sm ghost" data-act="prof-edit">تعديل</button></div>'+
    '<div class="setrow"><span>اللغة · Language · Langue</span>'+langBtns()+'</div>'+
    '<button class="btn ghost" data-act="reset" style="margin-top:6px">مسح كل تقدّمي</button>'+
    '<button class="btn" data-act="cclose">تم</button></div>';
@@ -9273,6 +9273,8 @@ document.addEventListener('keydown',function(e){
   const ITEMS=[
     {id:'freeze',sec:'مساعدات',t:'تجميد السلسلة',d:'يحفظ سلسلتك إن فاتك يوم (حتى 3)',p:50,k:'cons',ic:'❄'},
     {id:'boost',sec:'مساعدات',t:'مضاعف النقاط ×2',d:'ضعف النقاط لمدة ساعة (يتراكم)',p:150,k:'cons',ic:'⚡'},
+    {id:'hp:full',sec:'مساعدات',t:'تعبئة القلوب',d:'يملأ قلوبك الخمسة فورًا لتكمل بلا انتظار',p:70,k:'cons',ic:'♥'},
+    {id:'bundle:starter',sec:'مساعدات',t:'حزمة الانطلاقة',d:'تجميدان للسلسلة + مضاعف ×2 لساعة (وفّر 50 نقطة)',p:200,k:'cons',ic:'🎯'},
     {id:'hat:fez',sec:'الهدهد',t:'طربوش',d:'إكسسوار للهدهد',p:100,k:'own',ic:'🎩',eq:'hat',v:'fez'},
     {id:'hat:turban',sec:'الهدهد',t:'عمامة',d:'غطاء رأس للهدهد',p:150,k:'own',ic:'🧕',eq:'hat',v:'turban'},
     {id:'hat:cap',sec:'الهدهد',t:'قبعة التخرج',d:'غطاء رأس للهدهد',p:300,k:'own',ic:'🎓',eq:'hat',v:'cap'},
@@ -9288,6 +9290,16 @@ document.addEventListener('keydown',function(e){
     {id:'pal:crimson',sec:'ألوان التطبيق',t:'قرمزي',d:'لون التطبيق',p:150,k:'own',col:'#B83A33',eq:'pal',v:'crimson'},
     {id:'pal:teal',sec:'ألوان التطبيق',t:'فيروزي',d:'لون التطبيق',p:150,k:'own',col:'#118A8A',eq:'pal',v:'teal'},
     {id:'pal:brown',sec:'ألوان التطبيق',t:'بنّي ترابي',d:'لون التطبيق',p:150,k:'own',col:'#8A5A33',eq:'pal',v:'brown'},
+    {id:'title:talib',sec:'الألقاب',t:'طالب علم',d:'لقب يظهر تحت اسمك',p:80,k:'own',eq:'title',v:'talib'},
+    {id:'title:mujtahid',sec:'الألقاب',t:'مجتهد',d:'لقب يظهر تحت اسمك',p:120,k:'own',eq:'title',v:'mujtahid'},
+    {id:'title:quran',sec:'الألقاب',t:'محبّ القرآن',d:'لقب يظهر تحت اسمك',p:200,k:'own',eq:'title',v:'quran'},
+    {id:'title:dhikr',sec:'الألقاب',t:'ملازم الأذكار',d:'لقب يظهر تحت اسمك',p:250,k:'own',eq:'title',v:'dhikr'},
+    {id:'title:nour',sec:'الألقاب',t:'نور الفرقان',d:'أرفع الألقاب',p:400,k:'own',eq:'title',v:'nour'},
+    {id:'qbg:night',sec:'خلفيات الأسئلة',t:'ليل هادئ',d:'خلفية شاشة الأسئلة',p:100,k:'own',col:'#0B1B3A',eq:'qbg',v:'night'},
+    {id:'qbg:plum',sec:'خلفيات الأسئلة',t:'بنفسجي ملكي',d:'خلفية شاشة الأسئلة',p:100,k:'own',col:'#2B1240',eq:'qbg',v:'plum'},
+    {id:'qbg:sand',sec:'خلفيات الأسئلة',t:'رمل دافئ',d:'خلفية شاشة الأسئلة',p:120,k:'own',col:'#2A1D0E',eq:'qbg',v:'sand'},
+    {id:'qbg:sea',sec:'خلفيات الأسئلة',t:'بحر عميق',d:'خلفية شاشة الأسئلة',p:120,k:'own',col:'#07303A',eq:'qbg',v:'sea'},
+    {id:'qbg:ink',sec:'خلفيات الأسئلة',t:'فحمي',d:'خلفية شاشة الأسئلة',p:120,k:'own',col:'#141414',eq:'qbg',v:'ink'},
     {id:'spv:a',sec:'شاشة الدخول',t:'الزخرفية',d:'شاشة افتتاح مزخرفة',p:100,k:'own',ic:'✦',eq:'spv',v:'a'},
     {id:'spv:c',sec:'شاشة الدخول',t:'المصحف',d:'شاشة افتتاح بالمصحف',p:100,k:'own',ic:'📖',eq:'spv',v:'c'}
   ];
@@ -9302,6 +9314,8 @@ document.addEventListener('keydown',function(e){
     if(S.face)o['face:'+S.face]=1;
     if(S.neck)o['neck:'+S.neck]=1;
     if(S.spv&&S.spv!=='b')o['spv:'+S.spv]=1;
+    if(S.title)o['title:'+S.title]=1;
+    if(S.qbg)o['qbg:'+S.qbg]=1;
   }
   function boostLeft(){return Math.max(0,(S.boost||0)-Date.now())}
   /* مضاعف النقاط */
@@ -9342,24 +9356,31 @@ document.addEventListener('keydown',function(e){
     }).catch(function(){toast('تعذّر عرض الإعلان')});
   }
   /* ---- الشراء والاستخدام ---- */
+  let bundleBefore=null,hpBefore=5;
   function buy(id){
     const it=ITEMS.find(function(x){return x.id===id});if(!it)return;
     if(it.k==='own'&&owned(id))return;
     const PR=priceOf(it);if(S.xp<PR){toast('ينقصك '+N(PR-S.xp)+' نقطة');return}
     if(id==='freeze'&&(S.freeze||0)>=3){toast('لديك الحد الأقصى: 3');return}
+    if(id==='hp:full'&&hpNow()>=5){toast('قلوبك ممتلئة');return}
+    if(id==='bundle:starter'&&(S.freeze||0)>=3){toast('لديك الحد الأقصى من التجميد');return}
     askBuy(it,function(){
       const PR=priceOf(it);if(S.xp<PR){toast('ينقصك '+N(PR-S.xp)+' نقطة');return}
       if(it.k==='own'&&owned(id))return;
       S.xp-=PR;
       if(id==='freeze')S.freeze=(S.freeze||0)+1;
       else if(id==='boost')S.boost=Math.max(Date.now(),S.boost||0)+3600*1000;
+      else if(id==='bundle:starter'){bundleBefore={f:S.freeze||0,b:S.boost||0};S.freeze=Math.min(3,(S.freeze||0)+2);S.boost=Math.max(Date.now(),S.boost||0)+3600*1000}
+      else if(id==='hp:full'){hpBefore=hpNow();hpSet(5)}
       else own()[id]=1;
       save();try{SND.coin()}catch(e){}renderTop();toast('تم الشراء');renderShop();
       showUndo('اشتريت «'+it.t+'»',function(){
         S.xp+=PR;
         if(id==='freeze')S.freeze=Math.max(0,(S.freeze||0)-1);
         else if(id==='boost')S.boost=Math.max(Date.now(),(S.boost||0)-3600*1000);
-        else{delete own()[id];if(it.eq==='hat'&&S.hat===it.v)S.hat='';if(it.eq==='face'&&S.face===it.v)S.face='';if(it.eq==='neck'&&S.neck===it.v)S.neck=''}
+        else if(id==='bundle:starter'&&bundleBefore){S.freeze=bundleBefore.f;S.boost=bundleBefore.b}
+        else if(id==='hp:full'){hpSet(hpBefore)}
+        else{delete own()[id];if(it.eq==='title'&&S.title===it.v)S.title='';if(it.eq==='qbg'&&S.qbg===it.v)S.qbg='';if(it.eq==='hat'&&S.hat===it.v)S.hat='';if(it.eq==='face'&&S.face===it.v)S.face='';if(it.eq==='neck'&&S.neck===it.v)S.neck=''}
         save();renderTop();toast('أُعيدت '+N(PR)+' نقطة');renderShop();
       });
     });
@@ -9380,6 +9401,8 @@ document.addEventListener('keydown',function(e){
     if(it.eq==='hat'){S.hat=(S.hat===it.v)?'':it.v;save();renderTop()}
     else if(it.eq==='face'){S.face=(S.face===it.v)?'':it.v;save();renderTop()}
     else if(it.eq==='neck'){S.neck=(S.neck===it.v)?'':it.v;save();renderTop()}
+    else if(it.eq==='title'){S.title=(S.title===it.v)?'':it.v;save()}
+    else if(it.eq==='qbg'){S.qbg=(S.qbg===it.v)?'':it.v;save()}
     else if(it.eq==='pal'){S.pal=it.v;save();applyTheme()}
     else if(it.eq==='spv'){S.spv=it.v;save();try{showSplash(it.v)}catch(e){}}
     renderShop();
@@ -9388,6 +9411,8 @@ document.addEventListener('keydown',function(e){
     if(it.eq==='hat')return (S.hat||'')===it.v;
     if(it.eq==='face')return (S.face||'')===it.v;
     if(it.eq==='neck')return (S.neck||'')===it.v;
+    if(it.eq==='title')return (S.title||'')===it.v;
+    if(it.eq==='qbg')return (S.qbg||'')===it.v;
     if(it.eq==='pal')return (S.pal||'green')===it.v;
     if(it.eq==='spv')return (S.spv||'b')===it.v;
     return false;
@@ -9403,8 +9428,8 @@ document.addEventListener('keydown',function(e){
   }
   /* ---- متجر v2: تبويبات + عرض اليوم + غرفة تجربة ---- */
   let SHOPTAB='all',TRY=null;
-  const TABS=[['all','الكل'],['hoopoe','الهدهد'],['colors','الألوان'],['screens','الشاشات'],['boost','مساعدات'],['mine','مقتنياتي']];
-  function tabOf(it){return it.sec==='الهدهد'?'hoopoe':it.sec==='ألوان التطبيق'?'colors':it.sec==='شاشة الدخول'?'screens':'boost'}
+  const TABS=[['all','الكل'],['boost','مساعدات'],['hoopoe','الهدهد'],['titles','ألقاب'],['colors','الألوان'],['qbg','خلفيات'],['screens','الشاشات'],['mine','مقتنياتي']];
+  function tabOf(it){return it.sec==='الهدهد'?'hoopoe':it.sec==='ألوان التطبيق'?'colors':it.sec==='شاشة الدخول'?'screens':it.sec==='الألقاب'?'titles':it.sec==='خلفيات الأسئلة'?'qbg':'boost'}
   function dealItem(){
     const pool=ITEMS.filter(function(i){return i.k==='own'});
     let h=0;const d=today();for(let k=0;k<d.length;k++)h=(h*31+d.charCodeAt(k))>>>0;
@@ -9424,23 +9449,29 @@ document.addEventListener('keydown',function(e){
     if(isOwned(it))b.push('<span class="sbadge own">'+(equipped(it)?'مُستخدَم':'مملوك')+'</span>');
     return b.join('');
   }
+  function rar(it){return it.p<=100?['عادي','r1']:it.p<=150?['مميّز','r2']:it.p<=250?['نادر','r3']:['ملكي','r4']}
   function art(it){
+    if(it.eq==='qbg')return '<div class="shi big sw qb" style="--sw:radial-gradient(circle at 50% 0,rgba(242,201,76,.3),transparent 65%),'+it.col+';background:'+it.col+'"><i></i><i></i></div>';
     if(it.col)return '<div class="shi big sw" style="--sw:'+it.col+';background:'+it.col+'"></div>';
+    if(it.eq==='title')return '<div class="shi big ttl"><span>'+esc(it.t)+'</span></div>';
     if(it.eq==='hat'||it.eq==='face'||it.eq==='neck')return '<div class="shi big">'+preview(it)+'</div>';
+    if(it.id==='hp:full')return '<div class="shi big hp">'+IC.heart+'</div>';
     return '<div class="shi big">'+icoSvg(it.ic)+'</div>';
   }
   function card(it){
     let btn,tryb='';
-    if(it.k==='own'&&isOwned(it))btn=equipped(it)?(it.eq==='pal'||it.eq==='spv'?'<button class="btn sm ghost" disabled>مُستخدَم</button>':'<button class="btn sm ghost" data-shop="eq:'+it.id+'">إزالة</button>'):'<button class="btn sm gold" data-shop="eq:'+it.id+'">استخدم</button>';
+    const own_=it.k==='own'&&isOwned(it),rr=rar(it);
+    if(own_)btn=equipped(it)?(it.eq==='pal'||it.eq==='spv'?'<button class="btn sm ghost" disabled>مُستخدَم</button>':'<button class="btn sm ghost" data-shop="eq:'+it.id+'">إزالة</button>'):'<button class="btn sm gold" data-shop="eq:'+it.id+'">استخدم</button>';
     else{
       const pr=priceOf(it),lack=S.xp<pr,d=dealItem();
-      btn='<button class="btn sm'+(lack?' ghost':'')+'" data-shop="buy:'+it.id+'">'+((d&&d.id===it.id)?'<s class="old">'+N(it.p)+'</s> ':'')+N(pr)+' نقطة</button>';
+      btn='<button class="btn sm price'+(lack?' ghost':'')+'" data-shop="buy:'+it.id+'">'+IC.gem+((d&&d.id===it.id)?'<s class="old">'+N(it.p)+'</s>':'')+'<b>'+N(pr)+'</b></button>';
       if(it.eq==='hat'||it.eq==='face'||it.eq==='neck')tryb='<button class="btn sm ghost" data-shop="try:'+it.id+'" aria-pressed="'+(TRY===it.id)+'">'+(TRY===it.id?'إيقاف التجربة':'جرّب')+'</button>';
     }
     let st='';
     if(it.id==='freeze')st='<small class="muted">لديك: '+N(S.freeze||0)+' / 3</small>';
     if(it.id==='boost'&&boostLeft()>0)st='<small class="muted">فعّال: '+N(Math.ceil(boostLeft()/60000))+' دقيقة</small>';
-    return '<div class="card shopit v2">'+tickets(it)+art(it)+'<b class="sname">'+esc(it.t)+'</b><small class="sdesc">'+esc(it.d)+'</small>'+st+'<div class="sact">'+tryb+btn+'</div></div>';
+    if(it.id==='hp:full')st='<small class="muted">قلوبك: '+N(hpNow())+' / 5</small>';
+    return '<div class="card shopit v2 '+rr[1]+(own_?' owned':'')+'">'+tickets(it)+(it.k==='own'&&!own_?'<span class="rar">'+rr[0]+'</span>':'')+art(it)+'<b class="sname">'+esc(it.t)+'</b><small class="sdesc">'+esc(it.d)+'</small>'+st+'<div class="sact">'+tryb+btn+'</div></div>';
   }
   /* ---- هدفك القادم + استرجاع السلسلة + تراجع الشراء ---- */
   const RESTORE_COST=100;
@@ -9483,6 +9514,7 @@ document.addEventListener('keydown',function(e){
     },RESTORE_COST);
   }
   let UNDO=null,undoT=0;
+  const _sl=startLesson;startLesson=function(){const b=document.getElementById('buyundo');if(b)b.hidden=true;UNDO=null;return _sl.apply(this,arguments)};
   function showUndo(label,fn){
     UNDO=fn;clearTimeout(undoT);
     let b=document.getElementById('buyundo');
@@ -9490,18 +9522,30 @@ document.addEventListener('keydown',function(e){
     b.innerHTML='<span>'+esc(label)+'</span><button data-undo="1">تراجع</button>';b.hidden=false;
     undoT=setTimeout(function(){b.hidden=true;UNDO=null},10000);
   }
+  function titleText(){const it=ITEMS.find(function(x){return x.id==='title:'+(S.title||'_')});return it?it.t:''}
+  window.nfTitle=titleText;
+  function giftState(){const n=Math.min(40,10+streak()*2);return {can:S.gift!==today(),n:n}}
+  function claimGift(){
+    const g=giftState();if(!g.can){toast('استلمتَ هدية اليوم');return}
+    S.gift=today();S.xp+=g.n;save();try{SND.coin()}catch(e){}renderTop();toast('+'+N(g.n)+' نقطة، هدية اليوم');renderShop();
+  }
+  function dealLeft(){const n=new Date(),m=new Date(n);m.setHours(24,0,0,0);const t=Math.max(0,Math.floor((m-n)/60000));return N(Math.floor(t/60))+'س '+N(t%60)+'د'}
   function pageShop(){
     migrate();
     const a=adS(),ready=adOK(),left=ADS_CFG.dailyCap-a.n,deal=dealItem();
     const tryIt=TRY&&ITEMS.find(function(x){return x.id===TRY});
-    let h='<section class="sec" style="margin-top:16px"><div class="card fitroom"><div class="fr-art"><div class="fr-glow"></div>'+outfitSvg(150)+'</div>'+
-      '<div class="fr-info"><div class="fr-bal">'+IC.gem+'<b>'+N(S.xp)+'</b><span>نقطة</span></div>'+
-      '<small class="muted">'+(tryIt?'تجرّب الآن: '+esc(tryIt.t)+' (للمعاينة فقط)':'هدهدك بإطلالته الحالية. اضغط «جرّب» على أي إكسسوار لتراه عليه.')+'</small>'+
-      '<small class="muted">كل مرحلة تُتمّها تمنحك 15 نقطة'+(boostLeft()>0?' · مضاعف ×2 فعّال '+N(Math.ceil(boostLeft()/60000))+' د':'')+'</small></div></div></section>';
+    const tl=titleText(),gift=giftState();
+    function chip(ic,v,l){return '<span class="hch" title="'+l+'">'+ic+'<b>'+v+'</b></span>'}
+    let h='<section class="sec" style="margin-top:16px"><div class="shp-hero"><div class="hr-art"><div class="fr-glow"></div>'+outfitSvg(112)+'</div>'+
+      '<div class="hr-main"><small>رصيدك</small><div class="hr-bal">'+IC.gem+'<b>'+N(S.xp)+'</b><span>نقطة</span></div>'+
+      (tl?'<span class="hr-title">'+esc(tl)+'</span>':'')+
+      '<div class="hr-chips">'+chip(icoSvg('🔥'),N(streak()),'السلسلة')+chip(icoSvg('❄'),N(S.freeze||0)+'/3','تجميد السلسلة')+chip(IC.heart,N(hpNow())+'/5','القلوب')+(boostLeft()>0?chip(icoSvg('⚡'),'×2 '+N(Math.ceil(boostLeft()/60000))+'د','المضاعف'):'')+'</div></div>'+
+      '<div class="hr-note">'+(tryIt?'تجرّب الآن: '+esc(tryIt.t)+' (للمعاينة فقط)':'اضغط «جرّب» على أي إكسسوار لتراه على هدهدك')+'</div>'+
+      '<button class="hr-gift'+(gift.can?'':' done')+'" data-shop="gift"'+(gift.can?'':' disabled')+'>'+(gift.can?'🎁 هديتك اليوم: +'+N(gift.n)+' نقطة · استلمها':'تم استلام هدية اليوم · عُد غدًا')+'</button></div></section>';
     h+=restoreHtml()+goalHtml();
     h+='<div class="seg shoptabs" role="tablist">'+TABS.map(function(t){return '<button role="tab" aria-selected="'+(SHOPTAB===t[0])+'" class="'+(SHOPTAB===t[0]?'on':'')+'" data-shop="tab:'+t[0]+'">'+t[1]+'</button>'}).join('')+'</div>';
     if(SHOPTAB==='all'&&deal){
-      h+='<section class="sec"><h2>عرض اليوم</h2><div class="dealbox"><div class="dealtag">خصم 30% اليوم فقط</div>'+card(deal)+'</div></section>';
+      h+='<section class="sec"><h2>عرض اليوم</h2><div class="dealbox"><div class="dealtag">خصم 30% · ينتهي خلال '+dealLeft()+'</div>'+card(deal)+'</div></section>';
     }
     if(SHOPTAB==='all'||SHOPTAB==='boost'){
       h+='<section class="sec"><h2>اكسب نقاطًا</h2><div style="display:grid;gap:10px"><div class="card shopit"><div class="shi">▶</div><div class="shd"><b>شاهد إعلانًا قصيرًا</b><small>+'+ADS_CFG.reward+' نقطة'+(ready?' · المتبقي اليوم: '+N(Math.max(0,left))+'':'')+'</small></div>'+
@@ -9515,15 +9559,15 @@ document.addEventListener('keydown',function(e){
         (typeof emptyBox==='function'?emptyBox('happy','لا مقتنيات بعد','اشترِ أول إكسسوار للهدهد من تبويب «الهدهد»، وسيظهر هنا.'):'<p class="muted">لا مقتنيات بعد.</p>'))+
         '<div class="card" style="margin-top:12px;display:grid;gap:4px"><b>رصيد المساعدات</b><small class="muted">تجميد السلسلة: '+N(S.freeze||0)+' / 3 · المضاعف: '+(boostLeft()>0?N(Math.ceil(boostLeft()/60000))+' دقيقة':'غير فعّال')+'</small></div></section>';
     }else{
-      const groups=[['الهدهد','hoopoe'],['ألوان التطبيق','colors'],['شاشة الدخول','screens'],['مساعدات','boost']];
+      const groups=[['مساعدات','boost'],['الهدهد','hoopoe'],['ألقاب','titles'],['ألوان التطبيق','colors'],['خلفيات الأسئلة','qbg'],['شاشة الدخول','screens']];
       groups.forEach(function(g){
         if(SHOPTAB!=='all'&&SHOPTAB!==g[1])return;
         const list=ITEMS.filter(function(i){return tabOf(i)===g[1]});if(!list.length)return;
         h+='<section class="sec"><h2>'+esc(g[0])+'</h2><div class="shopgrid">'+list.map(card).join('')+'</div></section>';
       });
     }
-    h+='<p class="muted" style="font-size:.85rem;margin:14px 4px 90px">المشتريات بالنقاط فقط ولا تتطلب مالًا، وتُحفظ في جهازك.</p>';
-    $('#page').innerHTML='<h1 class="sr">المتجر</h1>'+h;
+    h+='<p class="muted" style="font-size:.85rem;margin:14px 4px 90px">جميع المشتريات بالنقاط فقط ولا تتطلب مالًا، وتُحفظ على جهازك. تتجدد هدية اليوم وعرض اليوم كل يوم.</p>';
+    $('#page').innerHTML='<h1 class="sr">المتجر</h1><div class="shp">'+h+'</div>';
   }
   function renderShop(){if(TAB==='shop')pageShop()}
   const _rp=renderPage;
@@ -9565,6 +9609,7 @@ document.addEventListener('keydown',function(e){
     if(a==='ad')return watchAd(id);
     if(a==='buy')return buy(id);
     if(a==='restore')return doRestore();
+    if(a==='gift')return claimGift();
     if(a==='eq')return equip(id);
   },true);
   /* إكسسوارات الإعدادات القديمة: القفل بالملكية لا بالرصيد */
@@ -9578,6 +9623,25 @@ document.addEventListener('keydown',function(e){
   st.textContent='.goalcard,.restorecard{display:grid;gap:8px;border-color:var(--gold)}.gl-h{display:grid;gap:2px}.gl-h small{color:var(--muted);font-size:.8rem}.gl-h b{font:700 1.1rem var(--display)}.gl-f{display:flex;align-items:center;justify-content:space-between;gap:10px}.goalcard.can{background:color-mix(in srgb,var(--gold) 14%,var(--surface))}'+
    '#buyundo{position:fixed;inset-inline:12px;bottom:calc(84px + env(safe-area-inset-bottom,0px));z-index:80;display:flex;align-items:center;justify-content:space-between;gap:10px;padding:10px 14px;border-radius:16px;background:#0B2A1E;color:#FAF1CC;border:2px solid #F2C94C;box-shadow:0 8px 24px rgba(0,0,0,.35);font:700 .95rem var(--text)}#buyundo[hidden]{display:none}#buyundo button{border:0;border-radius:99px;padding:6px 16px;background:#F2C94C;color:#1C1503;font:800 .9rem var(--text)}';
   document.head.appendChild(st);
+
+  const st2=document.createElement('style');
+  st2.textContent='.shp-hero{position:relative;display:grid;grid-template-columns:auto 1fr;gap:6px 14px;align-items:center;padding:16px;border-radius:26px;color:#FAF1CC;border:2px solid #E2B94E;background:radial-gradient(90% 120% at 100% 0,rgba(242,201,76,.22),transparent 60%),linear-gradient(160deg,#0F3B3A,#0A2A22);box-shadow:0 10px 26px rgba(8,31,22,.28)}'+
+   '.shp-hero .hr-art{position:relative;width:112px;height:112px;border-radius:50%;display:grid;place-items:center;background:rgba(255,255,255,.06);border:2px solid rgba(226,185,78,.55)}.shp-hero .fr-glow{opacity:.6}'+
+   '.hr-main{display:grid;gap:6px;min-width:0}.hr-main small{color:#D8C98F;font-size:.82rem}.hr-bal{display:flex;align-items:center;gap:8px;font:800 2rem/1 var(--display)}.hr-bal svg{width:26px;height:26px;color:#F2C94C}.hr-bal span{font-size:.95rem;font-weight:600;color:#D8C98F}'+
+   '.hr-title{justify-self:start;padding:2px 12px;border-radius:99px;background:#F2C94C;color:#1C1503;font:800 .8rem var(--display)}'+
+   '.hr-chips{display:flex;flex-wrap:wrap;gap:6px}.hch{display:inline-flex;align-items:center;gap:5px;padding:3px 10px;border-radius:99px;background:rgba(255,255,255,.09);border:1px solid rgba(226,185,78,.35);font-size:.82rem}.hch svg{width:15px;height:15px;color:#F2C94C}.hch b{font-variant-numeric:tabular-nums}'+
+   '.hr-note{grid-column:1/-1;font-size:.82rem;color:#CFC38E;text-align:center}'+
+   '.hr-gift{grid-column:1/-1;border:0;border-radius:16px;padding:11px 14px;font:800 .98rem var(--display);color:#1C1503;background:linear-gradient(180deg,#F8DD76,#E2B531);box-shadow:0 4px 0 #9B7410;cursor:pointer}.hr-gift.done{background:rgba(255,255,255,.1);color:#CFC38E;box-shadow:none;cursor:default}'+
+   '.shp .shoptabs{position:sticky;top:calc(env(safe-area-inset-top,0px) + 4px);z-index:5;scroll-snap-type:x proximity;box-shadow:0 6px 12px -8px rgba(0,0,0,.35)}.shp .shoptabs button{scroll-snap-align:center}'+
+   '.shp .sec h2{display:flex;align-items:center;gap:8px}'+
+   '.shp .shopit.v2{position:relative;border-width:2px}.shp .shopit.v2.r2{border-color:color-mix(in srgb,#3FBF8A 55%,var(--line))}.shp .shopit.v2.r3{border-color:color-mix(in srgb,var(--gold) 70%,var(--line))}.shp .shopit.v2.r4{border-color:var(--gold);box-shadow:0 0 0 2px color-mix(in srgb,var(--gold) 30%,transparent),0 8px 22px color-mix(in srgb,var(--gold) 24%,transparent);background:linear-gradient(180deg,color-mix(in srgb,var(--gold) 12%,var(--surface)),var(--surface))}'+
+   '.shp .shopit.v2.owned{opacity:.96}.rar{position:absolute;top:8px;inset-inline-end:8px;font:800 .66rem var(--display);padding:2px 8px;border-radius:99px;border:1px solid currentColor;color:var(--muted);background:var(--surface)}.r2 .rar{color:#1E8A5E}.r3 .rar{color:var(--gold-d,#8A5A00)}.r4 .rar{color:#fff;background:linear-gradient(135deg,#C8921B,#8A5A00);border-color:transparent}'+
+   '.btn.price{display:inline-flex;align-items:center;justify-content:center;gap:6px}.btn.price svg{width:16px;height:16px}.btn.price .old{opacity:.65;font-size:.8em}'+
+   '.shp .shopit.v2 .shi.ttl{width:100%;max-width:150px;display:grid;place-items:center;background:linear-gradient(135deg,#0F3B3A,#0A2A22)!important;color:#F2C94C;border:2px solid #E2B94E;font:800 .95rem var(--display);padding:0 10px;text-align:center}'+
+   '.shp .shopit.v2 .shi.qb{position:relative;overflow:hidden;border:2px solid var(--line)}.shi.qb i{position:absolute;inset-inline:14%;height:12px;border-radius:99px;background:rgba(242,201,76,.5)}.shi.qb i:first-child{bottom:30%}.shi.qb i:last-child{bottom:12%;inset-inline:30%;background:rgba(255,255,255,.25)}'+
+   '.shi.hp{color:#E0453A;display:grid;place-items:center}.shi.hp svg{width:42px;height:42px}'+
+   '.dealbox .dealtag{font-variant-numeric:tabular-nums}';
+  document.head.appendChild(st2);
   migrate();
   try{if(location.hash==='#shop'){TAB='shop';renderNav();renderPage()}}catch(e){}
   try{renderTop()}catch(e){}
@@ -13887,6 +13951,27 @@ window.NF_DOCS={"privacy.html": "<!doctype html><html lang=\"ar\" dir=\"rtl\"><h
   '#lesson .bubble{background:#12392A;border-color:#42704F;color:var(--fg)}'+
   '#lesson .stat,#lesson .card{background:#12392A;border-color:#42704F;color:var(--fg)}';
   document.head.appendChild(st);
+})();
+
+/* خلفيات الأسئلة المشتراة من المتجر */
+(function(){
+  var BG={
+    night:['#0B1B3A','#13294F','#4B6FB0'],plum:['#2B1240','#3F1D5C','#9A6BC4'],sand:['#2A1D0E','#3E2C16','#B58B4A'],
+    sea:['#07303A','#0E4755','#3DA5B8'],ink:['#141414','#222222','#8A8A8A']
+  };
+  var st=document.createElement('style');var css='';
+  Object.keys(BG).forEach(function(k){var c=BG[k];
+    css+='#lesson[data-qbg="'+k+'"],#lesson[data-qbg="'+k+'"] *{--bg:'+c[0]+';--surface:'+c[1]+';--line:'+c[2]+';--accent-soft:'+c[1]+';--lock:'+c[1]+'}'+
+      '#lesson[data-qbg="'+k+'"]{background:radial-gradient(circle at 50% 0,rgba(242,201,76,.18),transparent 60%),repeating-linear-gradient(45deg,transparent 0 22px,rgba(255,255,255,.035) 22px 23px),'+c[0]+'}'+
+      '#lesson[data-qbg="'+k+'"] .opt{background:linear-gradient(180deg,'+c[1]+','+c[0]+');border-color:'+c[2]+'}'+
+      '#lesson[data-qbg="'+k+'"] .lfoot{background:'+c[0]+'}'+
+      '#lesson[data-qbg="'+k+'"] .bubble,#lesson[data-qbg="'+k+'"] .card,#lesson[data-qbg="'+k+'"] .stat{background:'+c[1]+';border-color:'+c[2]+'}';
+  });
+  st.textContent=css;document.head.appendChild(st);
+  function apply(){var l=document.getElementById('lesson');if(!l)return;if(S&&S.qbg&&BG[S.qbg])l.setAttribute('data-qbg',S.qbg);else l.removeAttribute('data-qbg')}
+  var _rl=window.renderLesson||renderLesson;
+  renderLesson=function(){apply();return _rl.apply(this,arguments)};
+  apply();
 })();
 
 </script></body></html>

@@ -19,3 +19,24 @@
   '#lesson .stat,#lesson .card{background:#12392A;border-color:#42704F;color:var(--fg)}';
   document.head.appendChild(st);
 })();
+
+/* خلفيات الأسئلة المشتراة من المتجر */
+(function(){
+  var BG={
+    night:['#0B1B3A','#13294F','#4B6FB0'],plum:['#2B1240','#3F1D5C','#9A6BC4'],sand:['#2A1D0E','#3E2C16','#B58B4A'],
+    sea:['#07303A','#0E4755','#3DA5B8'],ink:['#141414','#222222','#8A8A8A']
+  };
+  var st=document.createElement('style');var css='';
+  Object.keys(BG).forEach(function(k){var c=BG[k];
+    css+='#lesson[data-qbg="'+k+'"],#lesson[data-qbg="'+k+'"] *{--bg:'+c[0]+';--surface:'+c[1]+';--line:'+c[2]+';--accent-soft:'+c[1]+';--lock:'+c[1]+'}'+
+      '#lesson[data-qbg="'+k+'"]{background:radial-gradient(circle at 50% 0,rgba(242,201,76,.18),transparent 60%),repeating-linear-gradient(45deg,transparent 0 22px,rgba(255,255,255,.035) 22px 23px),'+c[0]+'}'+
+      '#lesson[data-qbg="'+k+'"] .opt{background:linear-gradient(180deg,'+c[1]+','+c[0]+');border-color:'+c[2]+'}'+
+      '#lesson[data-qbg="'+k+'"] .lfoot{background:'+c[0]+'}'+
+      '#lesson[data-qbg="'+k+'"] .bubble,#lesson[data-qbg="'+k+'"] .card,#lesson[data-qbg="'+k+'"] .stat{background:'+c[1]+';border-color:'+c[2]+'}';
+  });
+  st.textContent=css;document.head.appendChild(st);
+  function apply(){var l=document.getElementById('lesson');if(!l)return;if(S&&S.qbg&&BG[S.qbg])l.setAttribute('data-qbg',S.qbg);else l.removeAttribute('data-qbg')}
+  var _rl=window.renderLesson||renderLesson;
+  renderLesson=function(){apply();return _rl.apply(this,arguments)};
+  apply();
+})();

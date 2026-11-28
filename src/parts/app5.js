@@ -263,7 +263,7 @@ function openSettings(){
    '<div class="field"><label for="methsel">طريقة حساب المواقيت</label><select id="methsel">'+Object.keys(METH).map(function(k){return '<option value="'+k+'"'+(S.method===k?' selected':'')+'>'+METH[k][0]+'</option>'}).join('')+'</select></div><div class="field"><label><input type="checkbox" id="asrh"'+(S.asrh?' checked':'')+'> '+g3(['العصر بالمذهب الحنفي (الظل مثلان)','Hanafi Asr (shadow = 2×)','Asr hanafite (ombre ×2)'])+'</label></div>'+
    '<div class="field"><label for="remtime">تذكير يومي</label><div class="opts2"><input type="time" id="remtime" value="'+esc(S.rem||'20:00')+'" style="width:auto"><button class="btn sm ghost" data-act="rem-save">تفعيل التنبيه داخل الصفحة</button><button class="btn sm ghost" data-act="rem-ics">حمّل تذكيرًا لتقويم هاتفك</button></div><small class="muted">لا أستطيع إرسال إشعارات والصفحة مغلقة. ملف التقويم يجعل هاتفك يذكّرك يوميًا.</small></div>'+
    extraSettings()+
-   '<div class="setrow"><span>ملفي الشخصي'+(S.prof&&S.prof.name?': '+esc(S.prof.name):'')+'</span><button class="btn sm ghost" data-act="prof-edit">تعديل</button></div>'+
+   '<div class="setrow"><span>ملفي الشخصي'+(S.prof&&S.prof.name?': '+esc(S.prof.name):'')+((window.nfTitle&&nfTitle())?' · '+esc(nfTitle()):'')+'</span><button class="btn sm ghost" data-act="prof-edit">تعديل</button></div>'+
    '<div class="setrow"><span>اللغة · Language · Langue</span>'+langBtns()+'</div>'+
    '<button class="btn ghost" data-act="reset" style="margin-top:6px">مسح كل تقدّمي</button>'+
    '<button class="btn" data-act="cclose">تم</button></div>';
